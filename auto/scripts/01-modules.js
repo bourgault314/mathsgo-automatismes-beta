@@ -58,29 +58,6 @@ function addPlaceValueShiftModule(){
 }
 addPlaceValueShiftModule();
 
-function configureSquaresModule(){
-  const mod=RAW_MODULES.find(m=>m.id==='dnb_07');
-  if(!mod) return;
-  const q=n=>mod.questions.find(item=>item.n===n);
-
-  [1,2].forEach(n=>{
-    q(n).statement=q(n).statement.replace('Donne le carré de ce nombre :','Donne le carré de ${n} :');
-    q(n).footer='$$${n}^2=[[dots]]$$';
-  });
-
-  [3,4].forEach(n=>{
-    q(n).footer='$$[[dots]]^2=${c}$$';
-  });
-
-  q(5).statement=q(5).statement.replace("Complète l'égalité :","Complète l'égalité avec deux nombres entiers :");
-  q(5).footer='$$${c}=[[dots]]\\times[[dots]]$$';
-
-  q(9).footer='$$${expr}=[[dots]]$$';
-
-  q(8).options.formula_code='setNB(1)\nn=RD(5,12)\nc=n*n\nlow=floor(c/10)*10\nhigh=low+10\nlow2=low-10\nwrong=2*n\nnlow=floor(wrong/10)*10\nnhigh=nlow+10';
-}
-configureSquaresModule();
-
 function configureRelationsModule(){
   const mod=RAW_MODULES.find(m=>m.id==='dnb_09');
   if(!mod) return;

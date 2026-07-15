@@ -41,6 +41,9 @@ changer les identifiants stables ni le résultat des séries reproductibles.
 
 - `dnb_08` — Critères de divisibilité : premier module pilote isolé dans
   `auto/scripts/modules/numbers/dnb_08.js`.
+- `dnb_07` — Carrés des entiers de 1 à 12 : pilote visuel isolé avec ses
+  gabarits et sa configuration pédagogique finalisée dans
+  `auto/scripts/modules/numbers/dnb_07.js`.
 
 ## Vérifier la banque
 

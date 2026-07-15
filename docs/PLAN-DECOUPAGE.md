@@ -34,9 +34,10 @@ niveau de séparation est le module pédagogique.
 ## Ordre proposé
 
 1. Installer les tests de structure et figer l’état V1.15. **Terminé.**
-2. Définir le contrat commun d’un module. **En cours avec `dnb_08`.**
-3. Extraire deux modules pilotes : un simple et un très visuel. **`dnb_08`
-   constitue le pilote simple.**
+2. Définir le contrat commun d’un module. **En cours avec `dnb_07` et
+   `dnb_08`.**
+3. Extraire deux modules pilotes : un simple et un très visuel. **Terminé :
+   `dnb_08` est le pilote simple et `dnb_07` le pilote visuel.**
 4. Comparer les séries avant et après extraction.
 5. Étendre le découpage domaine par domaine.
 6. Ouvrir ensuite la contribution à d’autres personnes.

@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
 const sources = [
+  'auto/scripts/modules/numbers/dnb_07.js',
   'auto/scripts/modules/numbers/dnb_08.js',
   'auto/scripts/data/01-numbers.js',
   'auto/scripts/data/02-geometry.js',
@@ -65,10 +66,15 @@ if (missingFromRegistry.length) fail(`Modules absents du registre MG1 : ${missin
 if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.join(', ')}.`);
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
-const moduleScriptPosition = indexHtml.indexOf('scripts/modules/numbers/dnb_08.js');
+const moduleScriptPositions = ['dnb_07', 'dnb_08'].map(id => ({
+  id,
+  position: indexHtml.indexOf(`scripts/modules/numbers/${id}.js`)
+}));
 const domainScriptPosition = indexHtml.indexOf('scripts/data/01-numbers.js');
-if (moduleScriptPosition < 0 || domainScriptPosition < 0 || moduleScriptPosition > domainScriptPosition) {
-  fail('Le module dnb_08 doit être chargé avant le fichier du domaine nombres.');
+for (const module of moduleScriptPositions) {
+  if (module.position < 0 || domainScriptPosition < 0 || module.position > domainScriptPosition) {
+    fail(`Le module ${module.id} doit être chargé avant le fichier du domaine nombres.`);
+  }
 }
 
 if (!process.exitCode) {
