@@ -1966,26 +1966,26 @@ function makeAngleSumInstance(mod,q){
   let bar=null;
   if(kind==='general'){
     const third=180-Number(scope.a)-Number(scope.b);
-    bar={values:[Number(scope.a),Number(scope.b),third],unknown:[2]};
+    bar={view:'bar',values:[Number(scope.a),Number(scope.b),third],unknown:[2]};
   }
   if(kind==='right'){
-    bar={values:[90,Number(scope.a),90-Number(scope.a)],unknown:[2]};
+    bar={view:'bar',values:[90,Number(scope.a),90-Number(scope.a)],unknown:[2]};
   }
   if(kind==='isosceles_vertex'){
     const base=(180-Number(scope.a))/2;
-    bar={values:[Number(scope.a),base,base],unknown:[1,2]};
+    bar={view:'bar',values:[Number(scope.a),base,base],unknown:[1,2]};
   }
   if(kind==='isosceles_base'){
-    bar={values:[Number(scope.a),Number(scope.a),180-2*Number(scope.a)],unknown:[2]};
+    bar={view:'bar',values:[Number(scope.a),Number(scope.a),180-2*Number(scope.a)],unknown:[2]};
   }
   if(kind==='equilateral'){
-    bar={values:[60,60,60],unknown:[0,1,2]};
+    bar={view:'bar',values:[60,60,60],unknown:[0,1,2]};
   }
   if(kind==='validity_three'||kind==='figure'){
-    bar={values:[Number(scope.a),Number(scope.b),Number(scope.c)],unknown:kind==='figure'?[2]:[]};
+    bar={view:kind==='figure'?'combined':'bar',values:[Number(scope.a),Number(scope.b),Number(scope.c)],unknown:kind==='figure'?[2]:[]};
   }
   if(kind==='invalid_two'){
-    bar={values:[Number(scope.a),Number(scope.b)],unknown:[],comparison:true};
+    bar={view:'bar',values:[Number(scope.a),Number(scope.b)],unknown:[],comparison:true};
   }
   return {module:mod,q,scope,answers,rawStatement,rawFooter,hasSvg:/<svg/i.test(rawStatement+rawFooter),angleSum:{kind,bar}};
 }
@@ -2952,35 +2952,13 @@ function renderMultipleFormsModule(inst,correction=false,mode=null){
   return html;
 }
 
-function angleSumBarSvg(data,correction=false){
-  const W=700,H=180,x=45,topY=16,topW=610,barH=66,bottomY=82;
-  const total=data.values.reduce((sum,value)=>sum+Number(value),0);
-  const bottomW=data.comparison?topW*total/180:topW;
-  const label=(cx,cy,value,size=21,mathVariable=false)=>`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="${mathVariable?'Cambria Math, STIX Two Math, Times New Roman, serif':'Arial,Helvetica,sans-serif'}" font-size="${size}" font-weight="800" fill="#111">${escapeHtml(value)}</text>`;
-  let fills=`<rect x="${x}" y="${topY}" width="${topW}" height="${barH}" fill="#fff"/><rect x="${x}" y="${bottomY}" width="${bottomW}" height="${barH}" fill="#fff"/>`;
-  let grid=`<rect x="${x}" y="${topY}" width="${topW}" height="${barH}" fill="none" stroke="#111" stroke-width="2.2"/><rect x="${x}" y="${bottomY}" width="${bottomW}" height="${barH}" fill="none" stroke="#111" stroke-width="2.2"/>`;
-  let labels=label(x+topW/2,topY+barH/2,'180°',23);
-  let cursor=x;
-  data.values.forEach((value,index)=>{
-    const cellW=topW*Number(value)/180;
-    if(index>0) grid+=`<line x1="${cursor}" y1="${bottomY}" x2="${cursor}" y2="${bottomY+barH}" stroke="#111" stroke-width="1.7"/>`;
-    const unknown=!correction&&data.unknown.includes(index);
-    labels+=label(cursor+cellW/2,bottomY+barH/2,unknown?'𝑥':fmt(value)+'°',Math.max(15,Math.min(21,cellW*.24)),unknown);
-    cursor+=cellW;
-  });
-  if(data.comparison){
-    labels+=`<line x1="${x+topW}" y1="${topY-4}" x2="${x+topW}" y2="${bottomY+barH+4}" stroke="#111" stroke-width="1.5" stroke-dasharray="6 5"/>`;
-  }
-  return `<div class="angle-bar-help"><svg class="angle-bar-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Schéma en barres de la somme des angles">${fills}${grid}${labels}</svg></div>`;
-}
-
 function renderAngleSumModule(inst,correction=false,mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
   const qcm=splitQCM(inst.rawStatement);
   const prompt=qcm?qcm.prompt:inst.rawStatement;
   const bar=inst.angleSum&&inst.angleSum.bar;
   let html='<div class="question angle-sum-prompt">'+renderMathSegments(prompt)+'</div>';
-  if(bar) html+=isWithoutVisuals(mode)?visualPlaceholder(mode):angleSumBarSvg(bar,correction);
+  if(bar) html+=isWithoutVisuals(mode)?visualPlaceholder(mode):triangleAngleSumVisual(bar,correction);
   if(qcm){
     const corrects=new Set(inst.answers.map(value=>String(value)));
     html+='<div class="options angle-sum-options options-'+qcm.opts.length+'">';

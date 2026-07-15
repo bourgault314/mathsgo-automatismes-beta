@@ -29,6 +29,8 @@ const sources = [
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
+  'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
   'auto/scripts/02-question-engine.js'
 ];
 
@@ -41,7 +43,8 @@ globalThis.__bank = RAW_MODULES.map(module => ({
   questions: module.questions.map(question => question.n)
 }));
 globalThis.__bankSnapshot = JSON.stringify(RAW_MODULES);
-globalThis.__renderThalesModule = renderThalesModule;`;
+globalThis.__renderThalesModule = renderThalesModule;
+globalThis.__renderAngleSumModule = renderAngleSumModule;`;
 
 const context = { console };
 context.globalThis = context;
@@ -50,7 +53,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = '0ad9d9e7fdc750c7f5c403f268b10285d7277229ddbf34bd40fdc0e5a6210733';
+const expectedBankHash = 'c0b9baabe0b20755daaf9825292ae971238b80e5e6d670c9c19d0c95cc20dfb5';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -89,8 +92,19 @@ for (const id of isolatedModuleIds) {
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
 if (questionCount !== 460) fail(`460 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
-  fail(`Le contenu ou l’ordre de la banque V1.15 a changé (${bankHash}).`);
+  fail(`Le contenu ou l’ordre de la banque V1.16 a changé (${bankHash}).`);
 }
+
+const angleInstance={
+  module:{id:'dnb_18'},q:{n:9},answers:['51'],
+  rawStatement:'Lis les deux angles donnés et calcule la mesure de l’angle C.',
+  rawFooter:'[[formula]]°',angleSum:{kind:'figure',bar:{view:'combined',values:[58,71,51],unknown:[2]}}
+};
+const angleQuestion=context.__renderAngleSumModule(angleInstance,false,'with');
+const angleCorrection=context.__renderAngleSumModule(angleInstance,true,'with');
+if(!angleQuestion.includes('angle-triangle-svg')||!angleQuestion.includes('angle-bar-svg')) fail('La question Angles 9 doit assembler la figure et la barre partagées.');
+if(!angleQuestion.includes('𝑥')||!angleCorrection.includes('51°')) fail('Le composant Angles doit masquer puis révéler la mesure inconnue.');
+if(angleQuestion.includes('<polygon points="80,230')) fail('L’ancien SVG de la banque Angles ne doit plus être utilisé.');
 
 const thalesInstance={
   module:{id:'dnb_25'},q:{n:1},answers:['1'],
@@ -145,5 +159,5 @@ for (const [domain, ids] of Object.entries(isolatedModulesByDomain)) {
 }
 
 if (!process.exitCode) {
-  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.15 inchangée, registre MG1 cohérent.`);
+  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.16 figée, registre MG1 cohérent.`);
 }
