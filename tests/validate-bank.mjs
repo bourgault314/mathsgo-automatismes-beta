@@ -14,6 +14,7 @@ const sources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
+  'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   ...isolatedModulesByDomain.numbers.map(id => `auto/scripts/modules/numbers/${id}.js`),
   'auto/scripts/data/01-numbers.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),

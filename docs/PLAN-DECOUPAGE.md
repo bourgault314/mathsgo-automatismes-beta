@@ -60,6 +60,8 @@ niveau de séparation est le module pédagogique.
   indépendants ;
 - les configurations pédagogiques sont intégrées à leurs fichiers ; elles ne
   sont plus appliquées après coup par le moteur ;
+- les neuf repères répétés de `dnb_15` sont rendus par
+  `geometry.coordinate-plane` ;
 - le tableau interactif de conversion de `dnb_19` est isolé dans
   `measures.conversion-table` ; le moteur conserve l’assemblage de l’exercice,
   mais plus la construction du tableau.

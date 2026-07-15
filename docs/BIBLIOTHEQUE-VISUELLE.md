@@ -57,6 +57,12 @@ La virgule reste fixe entre unités et dixièmes tandis que la bande de chiffres
 se déplace de une à trois colonnes. Les cinq références couvrent les deux sens
 et les facteurs 10, 100 et 1 000 ; leurs états question/correction sont figés.
 
+`geometry.coordinate-plane` produit les repères de `dnb_15`. Il fixe la place
+de l’origine, des graduations et de leurs nombres, les flèches des axes et les
+croix colorées des points. Il couvre aussi deux points simultanés et une grille
+secondaire pour les demi-unités. Les neuf copies historiques ont été retirées
+du module sans changer la banque.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle

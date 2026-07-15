@@ -7,6 +7,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
+  'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
@@ -31,7 +32,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 7) fail(`7 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 8) fail(`8 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
@@ -55,6 +56,28 @@ const numberLineModule = fs.readFileSync(new URL('auto/scripts/modules/numbers/d
 const numberLineCalls = [...numberLineModule.matchAll(/numberLineSvg\(/g)].length;
 if (numberLineCalls !== 18) fail(`Les 18 gabarits de dnb_14 doivent utiliser la droite graduée commune (${numberLineCalls} appel(s)).`);
 if (numberLineModule.includes('<svg')) fail('dnb_14 ne doit plus embarquer de copie du SVG de droite graduée.');
+
+const coordinatePlane = registry?.get('geometry.coordinate-plane');
+if (!coordinatePlane) fail('Le composant geometry.coordinate-plane est absent.');
+if (coordinatePlane && coordinatePlane.version !== '1.0.0') fail('Version 1.0.0 attendue pour le repère du plan.');
+if (coordinatePlane && coordinatePlane.presets.length !== 4) fail('Quatre repères du plan de référence sont attendus.');
+if (coordinatePlane && context.coordinatePlaneSvg !== coordinatePlane.render) {
+  fail('Le module dnb_15 doit utiliser le repère du plan enregistré.');
+}
+const coordinateHashes = new Map([
+  ['point','d5163af9569b4e32afaf8c4dd8804a91ab19b1647dd3f273045117c1fd297c26'],
+  ['axe','d7f23e7bf63f3df863993805ed67ab39b0c151cf2cc2583b4f6705e3a3e4741b'],
+  ['deux-points','7f1a8b99796674e4576e07c827dae9d68d076f2d4ef51f3a3c3d3c61b3cc7cab'],
+  ['demi-unites','2ccf925860b3683bb9b1b632329f79424ed9f960d22c992325ef8f27dabfbc78']
+]);
+for (const preset of coordinatePlane?.presets || []) {
+  const actual=hash(coordinatePlane.render(preset.data));
+  if(actual!==coordinateHashes.get(preset.id)) fail(`Le repère du plan ${preset.id} a changé (${actual}).`);
+}
+const coordinateModule = fs.readFileSync(new URL('auto/scripts/modules/geometry/dnb_15.js', root), 'utf8');
+const coordinateCalls = [...coordinateModule.matchAll(/coordinatePlaneSvg\(/g)].length;
+if (coordinateCalls !== 9) fail(`Les 9 gabarits de dnb_15 doivent utiliser le repère commun (${coordinateCalls} appel(s)).`);
+if (coordinateModule.includes('<svg')) fail('dnb_15 ne doit plus embarquer de copie du SVG de repère.');
 
 const conversionTable = registry?.get('measures.conversion-table');
 if (!conversionTable) fail('Le composant measures.conversion-table est absent.');
@@ -190,16 +213,18 @@ const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
+const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
 const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_14.js');
+const coordinateModulePosition = indexHtml.indexOf('scripts/modules/geometry/dnb_15.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const conversionPosition = indexHtml.indexOf('scripts/shared/visuals/measures/conversion-table.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || numberLineModulePosition < numberLinePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 5 droites graduées, 10 tableaux de numération, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 5 droites graduées, 4 repères du plan, 10 tableaux de numération, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
 }
