@@ -5,7 +5,9 @@ import { createHash } from 'node:crypto';
 const root = new URL('../', import.meta.url);
 const isolatedModulesByDomain = {
   numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14'],
-  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27']
+  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27'],
+  data: ['dnb_28', 'dnb_29', 'dnb_30', 'dnb_31', 'dnb_32', 'dnb_33', 'dnb_34', 'dnb_35', 'dnb_36'],
+  algorithm: ['dnb_37']
 };
 const isolatedModuleIds = Object.values(isolatedModulesByDomain).flat();
 const sources = [
@@ -13,7 +15,9 @@ const sources = [
   'auto/scripts/data/01-numbers.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
   'auto/scripts/data/02-geometry.js',
+  ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   'auto/scripts/data/03-data.js',
+  ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
   'auto/scripts/data/04-algorithm.js',
   'auto/scripts/01-modules.js',
   'auto/scripts/02-question-engine.js'
@@ -90,7 +94,9 @@ if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.j
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const domainFiles = {
   numbers: '01-numbers',
-  geometry: '02-geometry'
+  geometry: '02-geometry',
+  data: '03-data',
+  algorithm: '04-algorithm'
 };
 for (const [domain, ids] of Object.entries(isolatedModulesByDomain)) {
   const dataPath = `auto/scripts/data/${domainFiles[domain]}.js`;

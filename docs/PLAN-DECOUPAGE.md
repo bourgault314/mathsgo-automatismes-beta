@@ -56,3 +56,10 @@ niveau de séparation est le module pédagogique.
   indépendants ;
 - les configurations pédagogiques sont intégrées à leurs fichiers ; elles ne
   sont plus appliquées après coup par le moteur.
+
+### Avancement des domaines Données et Algorithmique
+
+- `dnb_28` à `dnb_36` et `dnb_37` sont isolés dans des fichiers indépendants ;
+- leurs configurations pédagogiques sont intégrées à leurs fichiers ;
+- le fichier d’assemblage `01-modules.js` ne transforme plus les contenus après
+  leur chargement.

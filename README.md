@@ -26,16 +26,17 @@ d’audience du site public.
 | Chemin | Rôle |
 |---|---|
 | `auto/index.html` | Interface de sélection et de lancement |
-| `auto/scripts/data/` | Banque encore regroupée en quatre grands domaines |
-| `auto/scripts/01-modules.js` | Corrections et compléments pédagogiques hérités |
+| `auto/scripts/modules/` | Un fichier par module pédagogique |
+| `auto/scripts/data/` | Assemblage des modules par domaine |
+| `auto/scripts/01-modules.js` | Assemblage de la banque complète |
 | `auto/scripts/02-question-engine.js` | Génération et rendu des questions |
 | `auto/scripts/03-slideshow.js` | Diaporama et mode interactif |
 | `auto/scripts/04-app.js` | Tirage et lancement des séries |
 | `auto/scripts/core/` | Contrats, identifiants et partage |
 | `tests/` | Vérifications structurelles de la banque |
 
-Le prochain chantier consiste à isoler progressivement chaque module sans
-changer les identifiants stables ni le résultat des séries reproductibles.
+Les 40 modules sont maintenant isolés sans changement des identifiants stables
+ni du résultat des séries reproductibles.
 
 ### Découpage en cours
 
@@ -44,6 +45,8 @@ changer les identifiants stables ni le résultat des séries reproductibles.
   fichiers indépendants ;
 - Domaine Géométrie — les treize modules historiques `dnb_15` à `dnb_27` et
   le complément `dnb_26b` sont tous extraits dans des fichiers indépendants ;
+- Domaines Données et Algorithmique — `dnb_28` à `dnb_37` sont extraits dans
+  des fichiers indépendants ;
 - `dnb_08` — Critères de divisibilité : premier module pilote isolé dans
   `auto/scripts/modules/numbers/dnb_08.js`.
 - `dnb_07` — Carrés des entiers de 1 à 12 : pilote visuel isolé avec ses

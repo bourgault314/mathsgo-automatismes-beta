@@ -66,5 +66,8 @@ fichiers.
 Le domaine Géométrie suit le même contrat pour ses quatorze modules, y compris
 le complément de trigonométrie `dnb_26b`.
 
+Les domaines Données et Algorithmique complètent ce découpage : les 40 modules
+de la banque suivent maintenant ce contrat.
+
 Les fonctions de rendu visuel de `dnb_07` restent provisoirement dans le moteur.
 Elles seront déplacées dans un lot distinct, avec un test adapté à leur contrat.
