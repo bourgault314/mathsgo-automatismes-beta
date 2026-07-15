@@ -2600,10 +2600,6 @@ function conversionDurationHtml(data,correction=false){
     +(correction?'<div class="duration-correction-line"><strong>('+hours+' × 60) + '+minutes+' = '+totalMinutes+' min</strong><span>puis</span><strong>'+totalMinutes+' × 60</strong><span>=</span><b>'+totalSeconds+' s</b></div>':'')
     +'</div>';
 }
-function conversionTheme(data){
-  const themes={length:['#1283ff','#dcecff'],mass:['#16a34a','#e2f5e8'],capacity:['#06b6d4','#ddf7fb'],area:['#f59e0b','#fff0d8'],volume:['#7c3aed','#eee6ff']};
-  return themes[data.family]||themes.length;
-}
 function conversionUnitMarkup(unit){
   return escapeHtml(String(unit||'')).replace(/²/g,'<sup>2</sup>').replace(/³/g,'<sup>3</sup>');
 }
@@ -2628,30 +2624,6 @@ function conversionEquationHtml(inst,correction=false){
   }
   const displayedTarget=number===5?'L':data.target;
   return '<span class="conversion-source-expression"><span class="conversion-source-value">'+conversionValueMarkup(data.value)+'</span> <span class="conversion-source-unit">'+conversionUnitMarkup(data.source)+'</span></span><span class="conversion-equals">=</span>'+answer+'<span class="conversion-target-unit">'+conversionUnitMarkup(displayedTarget)+'</span>';
-}
-function conversionTableHtml(data,correction=false){
-  const units=data.units||[];
-  const slots=Math.max(1,Number(data.slots)||1);
-  const sourceIndex=units.indexOf(data.source),targetIndex=units.indexOf(data.target);
-  const totalSlots=units.length*slots,sourceRightSlot=sourceIndex*slots+(slots-1);
-  const digits=digitsInPlaceValueColumns(data.value,totalSlots,sourceRightSlot);
-  const theme=conversionTheme(data);
-  const crossLabels={'3_2':'kL','4_0':'hL','4_1':'daL','4_2':'L','5_0':'dL','5_1':'cL','5_2':'mL'};
-  let headers='',subcells='';
-  units.forEach((unit,index)=>{
-    for(let slot=0;slot<slots;slot++){
-      const absolute=index*slots+slot,digit=digits[absolute]||'';
-      const isUnitSlot=slot===slots-1;
-      const cross=data.crossLabels?crossLabels[index+'_'+slot]:'';
-      const areaAlias=data.family==='area'&&isUnitSlot?(unit==='hm²'?'ha':(unit==='dam²'?'a':'')):'';
-      headers+='<div class="conversion-unit '+(index===sourceIndex&&isUnitSlot?'source':'')+' '+(index===targetIndex&&isUnitSlot?'target':'')+'" data-unit-index="'+index+'" data-unit-slot="'+(isUnitSlot?'true':'false')+'">'
-        +(isUnitSlot?'<strong>'+unit+'</strong>':'')+(cross?'<small>'+cross+'</small>':'')+(areaAlias?'<small>'+areaAlias+'</small>':'')+'</div>';
-      subcells+='<div class="conversion-slot '+(index===sourceIndex?'source':'')+' '+(index===targetIndex?'target':'')+'" data-slot="'+absolute+'" data-unit-index="'+index+'" data-unit-slot="'+(isUnitSlot?'true':'false')+'" data-digit="'+digit+'">'+digit+'</div>';
-    }
-  });
-  return '<div class="conversion-tool conversion-family-'+data.family+'" data-source-unit="'+sourceIndex+'" data-target-unit="'+targetIndex+'" data-initial-unit="'+(correction?targetIndex:sourceIndex)+'" data-unit-slots="'+slots+'" style="--conversion-slots:'+totalSlots+';--conversion-unit-slots:'+slots+';--conversion-units:'+units.length+';--conversion-color:'+theme[0]+';--conversion-pale:'+theme[1]+'">'
-    +'<div class="conversion-grid-wrap"><div class="conversion-grid">'+headers+subcells+'</div><button class="conversion-cursor" type="button" aria-label="Déplacer le repère vers l’unité demandée" data-unit="'+(correction?targetIndex:sourceIndex)+'"><span class="conversion-cursor-label">L’unité de<br>mesure</span><span class="conversion-cursor-comma">,</span><span class="conversion-cursor-digit-label">Le chiffre des<br>unités</span></button></div>'
-    +'</div>';
 }
 function renderConversionModule(inst,correction=false,mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;

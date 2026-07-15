@@ -26,6 +26,19 @@
   figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
   .visual{padding:10px}
   .visual svg{display:block;width:100%;height:auto}
+  .component[data-component-id="measures.conversion-table"] .presets{grid-template-columns:1fr}
+  .component[data-component-id="measures.conversion-table"] .visual{overflow-x:auto;padding:14px 18px}
+  .conversion-tool{width:max(760px,calc(var(--conversion-slots)*48px));margin:76px auto 78px;user-select:none}
+  .conversion-grid-wrap{position:relative}
+  .conversion-grid{position:relative;display:grid;grid-template-columns:repeat(var(--conversion-slots),minmax(0,1fr));gap:4px;isolation:isolate}
+  .conversion-unit{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:54px;padding:4px 1px;border:2px solid var(--conversion-color);border-radius:8px;background:color-mix(in srgb,var(--conversion-color) 12%,white);color:#17384d;font-size:.88rem;font-weight:800}
+  .conversion-unit strong{font-size:1.08em}.conversion-unit small{color:color-mix(in srgb,var(--conversion-color) 82%,#17384d);font-size:.78em;font-weight:900}.conversion-unit:not([data-unit-slot="true"]){background:transparent;border-color:color-mix(in srgb,var(--conversion-color) 34%,transparent)}
+  .conversion-slot{position:relative;z-index:2;display:grid;place-items:center;min-height:82px;border:2px solid var(--conversion-color);border-radius:8px;background:#fff;color:#0b2147;font-family:Cambria Math,Times New Roman,serif;font-size:2rem;font-weight:750}.conversion-slot.ghost-zero{color:#526a82}.conversion-unit.is-cursor-unit strong,.conversion-slot.is-cursor-unit{color:var(--conversion-color);font-weight:950}
+  .conversion-cursor{position:absolute;z-index:4;top:0;bottom:0;left:0;width:calc(100% / var(--conversion-slots));padding:0;border:3px solid color-mix(in srgb,var(--conversion-color) 72%,#17384d);border-radius:8px;background:color-mix(in srgb,var(--conversion-color) 15%,transparent);outline:none;transition:transform .16s ease}
+  .conversion-cursor-label,.conversion-cursor-digit-label{position:absolute;left:50%;width:142px;padding:10px 8px;border:3px solid #fff;border-radius:14px;background:linear-gradient(135deg,var(--conversion-color),color-mix(in srgb,var(--conversion-color) 78%,#17384d));color:#fff;font-size:.82rem;font-weight:950;line-height:1.05;text-transform:uppercase;box-shadow:0 8px 22px rgba(23,56,77,.24)}
+  .conversion-cursor-label{bottom:calc(100% + 24px);transform:translateX(-50%)}.conversion-cursor-label:after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border-left:14px solid transparent;border-right:14px solid transparent;border-top:15px solid color-mix(in srgb,var(--conversion-color) 78%,#17384d)}
+  .conversion-cursor-digit-label{top:calc(100% + 25px);transform:translateX(-50%)}.conversion-cursor-digit-label:before{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:15px solid var(--conversion-color)}
+  .conversion-cursor-comma{position:absolute;right:-13px;bottom:28px;color:color-mix(in srgb,var(--conversion-color) 78%,#17384d);font-family:Nunito,Arial,sans-serif;font-size:3.3rem;font-weight:950;line-height:0;text-shadow:2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff}
   details{margin-top:14px;color:#53677d;font-size:.85rem}
   pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#071a2f;color:#eef6ff;border-radius:10px;padding:12px}
   @media(max-width:620px){body{padding:20px 10px 44px}header,.component-head{display:block}.badge{display:inline-block;margin-top:14px}.component{padding:14px}}
@@ -46,6 +59,7 @@
 <script src="../scripts/shared/visuals/numbers/number-line.js"></script>
 <script src="../scripts/shared/visuals/arithmetic/relation-bar.js"></script>
 <script src="../scripts/shared/visuals/arithmetic/fraction-percent-bar.js"></script>
+<script src="../scripts/shared/visuals/measures/conversion-table.js"></script>
 <script src="../scripts/shared/visuals/algebra/equation-splat.js"></script>
 <script src="../scripts/shared/visuals/geometry/thales-configuration.js"></script>
 <script>
@@ -53,6 +67,7 @@
   MATHSGO_VISUALS.list().forEach(component=>{
     const section=document.createElement('section');
     section.className='component';
+    section.dataset.componentId=component.id;
     const head=document.createElement('div');
     head.className='component-head';
     const title=document.createElement('h2');
@@ -76,6 +91,23 @@
         const visual=document.createElement('div');
         visual.className='visual';
         visual.innerHTML=component.render(preset.data,revealed);
+        visual.querySelectorAll('.conversion-tool').forEach(tool=>{
+          const units=Number(getComputedStyle(tool).getPropertyValue('--conversion-units'))||7;
+          const unitSlots=Number(tool.dataset.unitSlots)||1;
+          const unit=Number(tool.dataset.initialUnit)||0;
+          const unitSlot=unit*unitSlots+(unitSlots-1);
+          const cursor=tool.querySelector('.conversion-cursor');
+          if(cursor) cursor.style.transform='translateX('+(unitSlot*100)+'%)';
+          const cells=[...tool.querySelectorAll('.conversion-slot')];
+          const occupied=cells.filter(cell=>(cell.dataset.digit||'')!=='').map(cell=>Number(cell.dataset.slot));
+          if(occupied.length){
+            const start=Math.min(occupied[0],unitSlot),end=Math.max(occupied[occupied.length-1],unitSlot);
+            for(let index=start;index<=end;index++) if(cells[index]&&cells[index].textContent===''){cells[index].textContent='0';cells[index].classList.add('ghost-zero');}
+          }
+          const activeHeader=[...tool.querySelectorAll('.conversion-unit')].find(header=>Number(header.dataset.unitIndex)===unit&&header.dataset.unitSlot==='true');
+          if(activeHeader) activeHeader.classList.add('is-cursor-unit');
+          if(cells[unitSlot]) cells[unitSlot].classList.add('is-cursor-unit');
+        });
         figure.append(caption,visual);
         states.append(figure);
       });

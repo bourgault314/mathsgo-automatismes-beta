@@ -8,6 +8,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
+  'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js'
 ];
@@ -29,7 +30,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 5) fail(`5 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 6) fail(`6 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
@@ -53,6 +54,31 @@ const numberLineModule = fs.readFileSync(new URL('auto/scripts/modules/numbers/d
 const numberLineCalls = [...numberLineModule.matchAll(/numberLineSvg\(/g)].length;
 if (numberLineCalls !== 18) fail(`Les 18 gabarits de dnb_14 doivent utiliser la droite graduée commune (${numberLineCalls} appel(s)).`);
 if (numberLineModule.includes('<svg')) fail('dnb_14 ne doit plus embarquer de copie du SVG de droite graduée.');
+
+const conversionTable = registry?.get('measures.conversion-table');
+if (!conversionTable) fail('Le composant measures.conversion-table est absent.');
+if (conversionTable && conversionTable.version !== '1.0.0') fail('Version 1.0.0 attendue pour le tableau de conversion.');
+if (conversionTable && conversionTable.presets.length !== 5) fail('Cinq familles de tableaux de conversion sont attendues.');
+if (conversionTable && context.conversionTableHtml !== conversionTable.render) {
+  fail('Le moteur doit utiliser le tableau de conversion enregistré.');
+}
+const conversionHashes = new Map([
+  ['longueur', ['8d176109af4b1ad3bea205de2462526b5bad4ae5824bd6404c91d66e6444129b','5333b51c584645db9ebb5494b1c797d1138e19534eabbb4819422ca916d27d64']],
+  ['masse', ['41b6dd35ade28df34d99a5f1e5431c04ffb1cbaa48da8268e5feef8e41c5a644','2a7468026552f110f9fec2f3f4a4dc32fb5a41c0eee02928e4745940824a935b']],
+  ['capacite', ['0772dd9ee4aa5fa0ef420c694ecaecee73fb796e0164f788bcf1c5befdddea2e','74989d521edc2feda31c23a630a1d68da18a6df612aa78dd7f6a57ce322aa0d7']],
+  ['aire', ['4799ef5a6f4908adf706232dc0fa0ecd947a2da4670a71e691814c05cf2a83ac','86126629f51770d9ea250e3f26e13f04fb8a693cbe843ab5023af36630fd13fd']],
+  ['volume', ['86bcc5fb2a3212621e1e23f7a7aa530a88302879c2cf3fd704102fc1a435eb61','f563a5f05e4ff35d4cdb5af1d1491c6d53f8fe749661576db264223192db3518']]
+]);
+for (const preset of conversionTable?.presets || []) {
+  for (const correction of [false,true]) {
+    const actual=hash(conversionTable.render(preset.data,correction));
+    if(actual!==conversionHashes.get(preset.id)?.[correction?1:0]) fail(`Le tableau de conversion ${preset.id} a changé (${actual}).`);
+  }
+}
+const questionEngine = fs.readFileSync(new URL('auto/scripts/02-question-engine.js', root), 'utf8');
+if (questionEngine.includes('function conversionTableHtml') || questionEngine.includes('function conversionTheme')) {
+  fail('Le générateur de tableau de conversion ne doit plus être défini dans le gros moteur.');
+}
 
 const equationSplat = registry?.get('algebra.equation-splat');
 if (!equationSplat) fail('Le composant algebra.equation-splat est absent.');
@@ -141,12 +167,13 @@ const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/num
 const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_14.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
+const conversionPosition = indexHtml.indexOf('scripts/shared/visuals/measures/conversion-table.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || numberLineModulePosition < numberLinePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || numberLineModulePosition < numberLinePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 5 droites graduées, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 5 droites graduées, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
 }

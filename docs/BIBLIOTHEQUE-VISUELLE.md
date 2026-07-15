@@ -45,6 +45,13 @@ points, ce qui couvre les unités entières, les relatifs, les graduations
 fractionnaires, les échelles variables et la lecture de deux points. Les SVG
 répétés ont été remplacés par ce composant sans changer la banque V1.15.
 
+`measures.conversion-table` conserve le tableau interactif de `dnb_19` :
+repère de l’unité de mesure, chiffre des unités, virgule fixe, couleurs par
+famille, deux positions par unité d’aire et trois par unité de volume. Les
+correspondances avec les litres et les alias `a`/`ha` font partie du composant.
+Les conversions de durée, visuellement différentes, restent volontairement
+séparées.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle

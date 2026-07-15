@@ -48,7 +48,7 @@ niveau de séparation est le module pédagogique.
   fichiers indépendants ;
 - les configurations pédagogiques des modules Nombres sont maintenant
   intégrées à leurs fichiers ; elles ne sont plus appliquées après coup par le
-  moteur.
+  moteur ;
 - les dix-huit droites graduées répétées dans `dnb_14` sont maintenant rendues
   par le composant partagé `numbers.number-line`.
 
@@ -57,7 +57,10 @@ niveau de séparation est le module pédagogique.
 - `dnb_15` à `dnb_27`, ainsi que `dnb_26b`, sont isolés dans des fichiers
   indépendants ;
 - les configurations pédagogiques sont intégrées à leurs fichiers ; elles ne
-  sont plus appliquées après coup par le moteur.
+  sont plus appliquées après coup par le moteur ;
+- le tableau interactif de conversion de `dnb_19` est isolé dans
+  `measures.conversion-table` ; le moteur conserve l’assemblage de l’exercice,
+  mais plus la construction du tableau.
 
 ### Avancement des domaines Données et Algorithmique
 
