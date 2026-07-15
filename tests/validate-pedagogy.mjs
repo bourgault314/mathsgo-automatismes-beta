@@ -37,9 +37,9 @@ const expected={
   3:['calculer-ae','numeric','essential',['ratios','calculation','coherence']],
   4:['calculer-ab','numeric','essential',['ratios','calculation','coherence']],
   5:['calculer-de','numeric','essential',['ratios','calculation','coherence']],
-  6:['tester-parallelisme','qcm-one','none',['parallelism-test','coherence']],
+  6:['tester-parallelisme','qcm-one','aid-only',['parallelism-test','coherence']],
   7:['reperer-condition-manquante','qcm-one','essential',['conditions']],
-  8:['choisir-egalite','qcm-one','none',['ratios','calculation']],
+  8:['choisir-egalite','qcm-one','aid-only',['ratios','calculation']],
   9:['controler-coherence','qcm-one','none',['coherence']],
   10:['calculer-bc','numeric','essential',['ratios','calculation','coherence']]
 };
@@ -57,6 +57,7 @@ const catalogue=fs.readFileSync(new URL('auto/dev/visual-library.html',root),'ut
 const app=fs.readFileSync(new URL('auto/scripts/04-app.js',root),'utf8');
 const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'utf8');
 const functionBlock=(source,name,nextName)=>source.slice(source.indexOf(`function ${name}(`),source.indexOf(`function ${nextName}(`));
+const thalesTemplateBlock=slideshow.slice(slideshow.indexOf('function courseThalesTemplateVisual('),slideshow.indexOf('const courseCatalog='));
 const registryPosition=index.indexOf('scripts/shared/pedagogy/00-registry.js');
 const metadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_25.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
@@ -76,6 +77,7 @@ context.courseCatalog={thales:{title:'Thalès',rules:[
   ['Parallélisme','',false,'parallelism-test'],['Cohérence','',false,'coherence']
 ]}};
 vm.runInContext(
+  thalesTemplateBlock+
   functionBlock(slideshow,'courseForSlide','fitNavNumbers')+
   functionBlock(slideshow,'courseKindForModule','courseContextForInstance')+
   functionBlock(slideshow,'courseContextForInstance','slidesDataForQuiz')+
@@ -84,10 +86,10 @@ vm.runInContext(
 );
 const q6Context=context.courseContextForInstance({module:{id:'dnb_25'},q:{n:6}});
 const q6Course=context.courseForSlide({courseKind:context.courseKindForModule('dnb_25','with'),courseContext:q6Context});
-if(q6Course.rules.map(rule=>rule[3]).join(',')!=='parallelism-test,coherence') fail('La question 6 doit proposer seulement l’aide sur le parallélisme et la cohérence.');
+if(q6Course.rules[0]?.[0]!=='La méthode'||q6Course.rules.slice(1).map(rule=>rule[3]).join(',')!=='parallelism-test,coherence') fail('La question 6 doit proposer le gabarit puis seulement l’aide sur le parallélisme et la cohérence.');
 const q3Context=context.courseContextForInstance({module:{id:'dnb_25'},q:{n:3}});
 const q3Course=context.courseForSlide({courseKind:'thales',courseContext:q3Context});
-if(q3Course.rules.map(rule=>rule[3]).join(',')!=='ratios,calculation,coherence') fail('La question 3 doit proposer seulement rapports, calcul et cohérence.');
-if(context.visualPolicyForQuestion({id:'dnb_25'},{n:1})!=='essential'||context.visualPolicyForQuestion({id:'dnb_25'},{n:6})!=='none') fail('La politique visuelle Thalès n’est pas appliquée par l’application.');
+if(q3Course.rules[0]?.[0]!=='La méthode'||q3Course.rules.slice(1).map(rule=>rule[3]).join(',')!=='ratios,calculation,coherence') fail('La question 3 doit proposer le gabarit puis seulement rapports, calcul et cohérence.');
+if(context.visualPolicyForQuestion({id:'dnb_25'},{n:1})!=='essential'||context.visualPolicyForQuestion({id:'dnb_25'},{n:6})!=='aid-only') fail('La politique visuelle Thalès n’est pas appliquée par l’application.');
 
 if(!process.exitCode) console.log('OK — les 10 types Thalès, leurs réponses, leurs figures et leurs aides sont classés et branchés.');

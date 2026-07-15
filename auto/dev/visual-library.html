@@ -83,7 +83,7 @@
 </main>
 <script src="../scripts/shared/visuals/00-registry.js"></script>
 <script src="../scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
-<script src="../scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-2"></script>
+<script src="../scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-3"></script>
 <script src="../scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
 <script src="../scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
 <script src="../scripts/shared/visuals/geometry/coordinate-plane.js?v=20260715-2"></script>
@@ -91,11 +91,11 @@
 <script src="../scripts/shared/visuals/arithmetic/fraction-percent-bar.js"></script>
 <script src="../scripts/shared/visuals/measures/conversion-table.js"></script>
 <script src="../scripts/shared/visuals/algebra/equation-splat.js"></script>
-<script src="../scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-3"></script>
+<script src="../scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-4"></script>
 <script>
   const pedagogyCatalogue=document.getElementById('pedagogyCatalogue');
   const responseLabels={'qcm-one':'QCM · une réponse','qcm-multiple':'QCM · plusieurs réponses',numeric:'Réponse numérique'};
-  const visualLabels={essential:'Figure intégrée à la question',optional:'Aide visuelle facultative',none:'Aucune figure nécessaire'};
+  const visualLabels={essential:'Figure intégrée à la question',optional:'Aide facultative révélable','aid-only':'Figure visible uniquement avec aide',none:'Aucune figure nécessaire'};
   const helpLabels={conditions:'Conditions',ratios:'Rapports correspondants',calculation:'Calcul','parallelism-test':'Réciproque / contraposée',coherence:'Vérification'};
   MATHSGO_PEDAGOGY.list().forEach(module=>{
     const section=document.createElement('section');section.className='component pedagogy-component';

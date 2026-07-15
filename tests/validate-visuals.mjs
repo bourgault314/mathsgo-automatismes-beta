@@ -189,7 +189,7 @@ for (const testCase of relationCases) {
 
 const thales = registry?.get('geometry.thales-configuration');
 if (!thales) fail('Le composant geometry.thales-configuration est absent.');
-if (thales && thales.version !== '0.3.0') fail('Version 0.3.0 attendue pour les configurations de Thalès.');
+if (thales && thales.version !== '0.4.0') fail('Version 0.4.0 attendue pour les configurations de Thalès.');
 if (thales && thales.presets.length !== 5) fail('Les configurations de Thalès doivent couvrir les deux styles et le cas non parallèle.');
 if (thales) {
   const nested = thales.render({ configuration: 'nested' });
@@ -197,14 +197,17 @@ if (thales) {
   if (!nested.includes('stroke-linejoin="miter"') || !butterfly.includes('stroke-linejoin="miter"')) {
     fail('Les sommets des configurations de Thalès doivent rester nets et sans arrondi.');
   }
-  if (hash(nested) !== 'c83cd1fcb62876a1fbaa94f6997b04e2a79c09f02f80160e573cd83cc3edc240') fail('La configuration de Thalès emboîtée a changé.');
+  if (hash(nested) !== '65dca6e1487ce1e02818f28501001518538c3295275e9a73e342d948a066d58e') fail('La configuration de Thalès emboîtée a changé.');
   if (hash(butterfly) !== '43161c04f1942ea7cbe243cb9fa8a048af45c1ef0e82042b68a655ab95eb3c81') fail('La configuration de Thalès en papillon a changé.');
+  if(nested.includes('stroke="#11468c"')||nested.includes('stroke="#1daeae"')) fail('Les droites de la figure de cours Thalès ne doivent pas être colorées comme les points correspondants.');
   const exerciseNested=thales.render({configuration:'nested',style:'exercise'});
   const exerciseButterfly=thales.render({configuration:'butterfly',style:'exercise'});
   if(exerciseNested.includes('#11468c')||exerciseNested.includes('#1daeae')||exerciseButterfly.includes('#ff9114')) fail('Les figures de Thalès en mode exercice doivent être monochromes.');
   if(!exerciseNested.includes('stroke="#111111"')||!exerciseButterfly.includes('stroke="#111111"')) fail('Le mode exercice de Thalès doit tracer les figures en noir.');
   const nonParallel=thales.render({configuration:'nested',parallel:false});
   if(nonParallel===nested||!nonParallel.includes('Triangles emboîtés avec deux droites non parallèles')) fail('Le composant Thalès doit savoir tracer le cas non parallèle.');
+  const withLengths=thales.render({configuration:'nested',lengths:{AM:'4 cm',AB:'8 cm',AN:'6 cm',AC:'12 cm'}});
+  if(!withLengths.includes('AD = 4 cm')&&!withLengths.includes('AM = 4 cm')) fail('Le composant Thalès doit savoir placer les longueurs sur la figure d’aide.');
 }
 
 const fractionPercent = registry?.get('arithmetic.fraction-percent-bar');
@@ -233,6 +236,7 @@ const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const slideshow = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
 if (!slideshow.includes('@media(min-width:1200px){.answer-dock .answer-body{display:block;position:relative;padding:0 195px}')) fail('Le bouton Suivant doit utiliser le même ancrage à droite pour tous les modes sur ordinateur.');
 if (slideshow.includes('.answer-dock.qcm-mode .dock-actions{grid-template-columns:')||slideshow.includes('.answer-dock.qcm-mode .dock-actions{position:absolute')) fail('Le QCM ne doit plus déplacer ni redimensionner le bouton Suivant.');
+if(!slideshow.includes('thales-structured-mode')||!slideshow.includes('courseThalesTemplateVisual')||!slideshow.includes('thales-course-table')) fail('Les diapositives structurées et le gabarit progressif de cours Thalès doivent être présents.');
 if (/function setupPlaceValueTools\s*\(/.test(slideshow)) fail('Le contrôleur du glisse-nombre ne doit plus être défini dans le diaporama.');
 if (!slideshow.includes('${setupPlaceValueTools.toString()}')) fail('La fenêtre d’entraînement doit recevoir le contrôleur partagé du glisse-nombre.');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');

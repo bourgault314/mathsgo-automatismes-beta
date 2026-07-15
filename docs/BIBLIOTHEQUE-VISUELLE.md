@@ -93,7 +93,19 @@ aident à associer les côtés ; le style `exercise` trace la même géométrie 
 noir. Ces figures sont visibles dans le catalogue et servent de source commune
 aux exercices migrés.
 
-La version `0.3.0` ajoute le cas emboîté non parallèle et alimente désormais
-directement les diapositives de `dnb_25` sans modifier les gabarits historiques.
-La question utilise le style noir ; la correction peut reprendre les couleurs
-du gabarit afin de rendre visibles les côtés correspondants.
+La version `0.4.0` ajoute le cas emboîté non parallèle, les étiquettes de
+longueurs et alimente directement les diapositives de `dnb_25` sans modifier
+les gabarits historiques. La question utilise le style noir ; l’aide et la
+correction colorent les points et les écritures correspondantes, mais pas les
+droites elles-mêmes.
+
+Deux rôles d’aide sont distingués. Une figure `essential` appartient à
+l’énoncé et reste visible. Une figure `aid-only` est affichée seulement quand
+la série est lancée « Avec aide » ; en mode « Sans aide », elle n’est ni
+affichée ni révélable. Les questions 6 et 8 de Thalès utilisent ce deuxième
+cas afin que l’élève puisse produire lui-même son dessin sans étayage.
+
+Le cours Thalès ouvre un gabarit progressif : figure, tableau des côtés du
+petit et du grand triangle, puis égalité des rapports. Le fichier source
+`fiche_reciproque_thales_v9_logo_site.tex` devra être importé dans le dépôt
+avant d’ajouter le lien d’impression et de figer définitivement les couleurs.

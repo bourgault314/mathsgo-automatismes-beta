@@ -102,6 +102,15 @@ const thalesCorrection=context.__renderThalesModule(thalesInstance,true,'with');
 if(!thalesQuestion.includes('thales-question-figure')) fail('Le module Thalès doit utiliser sa figure partagée.');
 if(thalesQuestion.includes('width="320"')||!thalesQuestion.includes('stroke="#111111"')) fail('La question Thalès doit remplacer l’ancien dessin par une figure d’exercice noire.');
 if(!thalesCorrection.includes('#ff9114')||!thalesCorrection.includes('#11468c')) fail('La correction Thalès doit utiliser les couleurs d’aide pour les côtés correspondants.');
+const thalesAidInstance={
+  module:{id:'dnb_25'},q:{n:8},scope:{AD:4,AB:8,AC:16},answers:['1'],
+  rawStatement:'Énoncé long&&$$\\dfrac{AD}{AB}=\\dfrac{x}{AC}$$&&Autre réponse&&',rawFooter:'[[qcm1]]'
+};
+const thalesWithAid=context.__renderThalesModule(thalesAidInstance,false,'with');
+const thalesWithoutAid=context.__renderThalesModule(thalesAidInstance,false,'without');
+if(!thalesWithAid.includes('thales-task-card')||!thalesWithAid.includes('Choisir l’égalité adaptée')) fail('La question Thalès 8 doit utiliser un énoncé structuré.');
+if(!thalesWithAid.includes('thales-question-figure')||!thalesWithAid.includes('AD = 4 cm')) fail('La question Thalès 8 doit afficher la figure et ses longueurs avec aide.');
+if(thalesWithoutAid.includes('thales-question-figure')) fail('La figure d’étayage Thalès doit être totalement absente sans aide.');
 
 const contracts = fs.readFileSync(new URL('auto/scripts/core/01-series-contracts.js', root), 'utf8');
 const registeredLegacyIds = [...contracts.matchAll(/\['[^']+','(dnb_[^']+)',\d+\]/g)].map(match => match[1]);

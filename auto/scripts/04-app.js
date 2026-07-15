@@ -242,6 +242,8 @@ function visualPolicyForQuestion(m,q){
    *   la question reste disponible et l'élève peut révéler cette seule aide.
    * - "essential" : le dessin contient les données nécessaires (droite,
    *   graphique, figure à lire...). La question n'est jamais affichée sans lui.
+   * - "aid-only" : le dessin est une aide d'étayage. Il est affiché en mode
+   *   « Avec aide » et totalement absent en mode « Sans aide ».
    * Tout nouveau visuel doit être classé selon son rôle pédagogique, pas
    * seulement selon la présence d'une balise SVG.
    */
@@ -291,6 +293,7 @@ function slideModeForVisualPolicy(mode,policy){
   if(mode!=='without') return mode;
   if(policy==='essential') return 'with';
   if(policy==='optional') return 'without-reveal';
+  if(policy==='aid-only') return 'without';
   return 'without';
 }
 
