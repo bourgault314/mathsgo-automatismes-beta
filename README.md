@@ -1,2 +1,49 @@
-# mathsgo-automatismes-beta
-Version de développement et de test d’Automatismes maths&amp;go
+# Automatismes maths&go — bêta
+
+Ce dépôt est l’espace permanent de développement et de test d’Automatismes
+maths&go. La version publique stable reste dans `bourgault314/maths`, au chemin
+`auto/`.
+
+## Fonctionnement
+
+1. Les modifications sont réalisées et testées ici.
+2. La bêta est vérifiée sur ordinateur et sur téléphone.
+3. Une version validée est transférée vers `bourgault314/maths/auto/`.
+4. Le site public n’est jamais utilisé comme espace d’essai.
+
+La page bêta n’est pas destinée au référencement et ne charge pas la mesure
+d’audience du site public.
+
+## Point de départ
+
+- Application : **V1.15**
+- Source : `bourgault314/maths`, dossier `auto/`
+- Révision copiée : `cd8c2b0407f10be7f272dbb7a42d7af2f682a0f8`
+- Banque chargée : **40 modules et 460 gabarits de questions**
+
+## Organisation actuelle
+
+| Chemin | Rôle |
+|---|---|
+| `auto/index.html` | Interface de sélection et de lancement |
+| `auto/scripts/data/` | Banque encore regroupée en quatre grands domaines |
+| `auto/scripts/01-modules.js` | Corrections et compléments pédagogiques hérités |
+| `auto/scripts/02-question-engine.js` | Génération et rendu des questions |
+| `auto/scripts/03-slideshow.js` | Diaporama et mode interactif |
+| `auto/scripts/04-app.js` | Tirage et lancement des séries |
+| `auto/scripts/core/` | Contrats, identifiants et partage |
+| `tests/` | Vérifications structurelles de la banque |
+
+Le prochain chantier consiste à isoler progressivement chaque module sans
+changer les identifiants stables ni le résultat des séries reproductibles.
+
+## Vérifier la banque
+
+Avec Node.js 18 ou plus récent :
+
+```bash
+npm test
+```
+
+La vérification contrôle notamment le nombre de modules, les identifiants, les
+numéros de gabarits et la correspondance avec le registre des liens MG1.

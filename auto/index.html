@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<script>if(new URLSearchParams(location.search).get('partage')==='1')document.documentElement.classList.add('share-test');</script>
+  <title>Bêta Automatismes maths cycle 4 et DNB — version 1.15 | maths&amp;go</title>
+<meta name="description" content="Outil d’automatismes de mathématiques pour le cycle 4 et le DNB : entraînez vos élèves en vidéoprojection ou sur téléphone, avec aides et corrections.">
+<link rel="canonical" href="https://mathsgo.re/auto/">
+<link rel="stylesheet" href="styles/setup.css">
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <a class="logo-link" href="https://mathsgo.re/outils/" aria-label="Retour aux outils maths&go" title="Retour aux outils maths&go">
+    <img class="logo" src="assets/logo-mathsgo.png" alt="maths&go">
+    </a>
+    <div class="title">
+      <h1>Automatismes<span class="title-cycle">Cycle 4 – DNB</span></h1>
+      <span class="revision-badge">BÊTA · V1.15</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="controls-row">
+      <div class="field field-level">
+        <label id="levelLabel">Niveau</label>
+        <input type="hidden" id="level" value="3e">
+        <div class="segmented-control" data-control="level" role="group" aria-labelledby="levelLabel">
+          <button type="button" class="segment-btn" data-value="5e" aria-pressed="false">5e</button>
+          <button type="button" class="segment-btn" data-value="4e" aria-pressed="false">4e</button>
+          <button type="button" class="segment-btn is-active" data-value="3e" aria-pressed="true">3e</button>
+          <button type="button" class="segment-btn" data-value="DNB" aria-pressed="false">DNB</button>
+        </div>
+      </div>
+      <div class="field field-visual">
+        <label id="visualModeLabel">Aide</label>
+        <input type="hidden" id="visualMode" value="with">
+        <div class="segmented-control" data-control="visualMode" role="group" aria-labelledby="visualModeLabel">
+          <button type="button" class="segment-btn is-active" data-value="with" aria-pressed="true">Avec</button>
+          <button type="button" class="segment-btn" data-value="without" aria-pressed="false">Sans</button>
+        </div>
+      </div>
+      <div class="field field-experience">
+        <label id="experienceModeLabel">Mode</label>
+        <input type="hidden" id="experienceMode" value="interactive">
+        <div class="segmented-control" data-control="experienceMode" role="group" aria-labelledby="experienceModeLabel">
+          <button type="button" class="segment-btn" data-value="presentation" aria-pressed="false">Diaporama</button>
+          <button type="button" class="segment-btn is-active" data-value="interactive" aria-pressed="true">Interactif</button>
+        </div>
+      </div>
+      <div class="field field-count">
+        <label id="countLabel">Questions</label>
+        <input type="hidden" id="count" value="5">
+        <div class="segmented-control" data-control="count" role="group" aria-labelledby="countLabel">
+          <button type="button" class="segment-btn is-active" data-value="5" aria-pressed="true">5</button>
+          <button type="button" class="segment-btn" data-value="10" aria-pressed="false">10</button>
+          <button type="button" class="segment-btn" data-value="15" aria-pressed="false">15</button>
+          <button type="button" class="segment-btn" data-value="20" aria-pressed="false">20</button>
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="seed" value="">
+    <div class="setup-tools">
+      <button class="setup-tool-button" id="openSeriesButton" type="button" aria-expanded="false" aria-controls="openSeriesOverlay" onclick="setOpenSeriesPanel(true)">Ouvrir une série</button>
+    </div>
+    <div class="modules-toolbar">
+      <h2>Choisir les automatismes</h2>
+      <div class="bulk-actions" role="group" aria-label="Sélection des automatismes">
+        <button class="secondary" type="button" onclick="selectVisible(true)">Tout</button>
+        <button class="secondary" type="button" onclick="selectVisible(false)">Effacer</button>
+      </div>
+    </div>
+    <div class="series-message" id="seriesMessage" role="status" aria-live="polite" hidden></div>
+    <div id="modules" class="modules"></div>
+  </div>
+  <p class="credit">Remerciements à Eric Hakenholz, créateur de <a href="https://doctools.org/dnb/automatismes_dnb.html" target="_blank" rel="noopener noreferrer">DocTools</a>, pour le partage du fichier, et à Claire Lagarde, pour son aide précieuse.</p>
+</div>
+
+<div class="modal-overlay" id="openSeriesOverlay" hidden onclick="if(event.target===this)setOpenSeriesPanel(false)">
+  <section class="modal-card series-entry" role="dialog" aria-modal="true" aria-labelledby="openSeriesTitle">
+    <div class="modal-head"><h2 id="openSeriesTitle">Ouvrir une série</h2><button class="modal-close" type="button" aria-label="Fermer" onclick="setOpenSeriesPanel(false)">×</button></div>
+    <label for="seriesCodeInput">Saisissez un code MG1 ou collez un lien</label>
+    <div class="series-entry-row">
+      <input id="seriesCodeInput" autocomplete="off" spellcheck="false" placeholder="Code MG1-… ou lien">
+      <button type="button" onclick="openSeriesFromEntry()">Ouvrir</button>
+    </div>
+    <div class="series-message" id="openSeriesMessage" role="status" aria-live="polite" hidden></div>
+  </section>
+</div>
+
+<div class="modal-overlay" id="shareOverlay" hidden onclick="if(event.target===this)closeSeriesShare()">
+  <section class="modal-card share-panel" id="sharePanel" role="dialog" aria-modal="true" aria-labelledby="sharePanelTitle">
+    <div class="share-panel-head"><h2 id="sharePanelTitle">Partager la série</h2><button class="share-close" type="button" aria-label="Fermer" onclick="closeSeriesShare()">×</button></div>
+    <label for="shareLink">Lien</label>
+    <div class="share-copy-row"><input id="shareLink" readonly><button type="button" onclick="copySeriesLink()">Copier</button></div>
+    <label for="shareCode">Code autonome</label>
+    <div class="share-copy-row"><input id="shareCode" readonly><button type="button" onclick="copySeriesCode()">Copier</button></div>
+    <div class="share-qr-actions"><button type="button" class="secondary" id="toggleQrButton" aria-controls="qrBox" aria-expanded="false" onclick="showSeriesQr()">Afficher le QR code</button><button type="button" class="secondary" onclick="downloadSeriesQr()">Enregistrer le QR</button></div>
+    <div class="qr-box" id="qrBox" hidden></div>
+    <p class="share-privacy">Le lien contient uniquement les réglages et le numéro du tirage. Il ne contient ni identité ni réponse d’élève.</p>
+    <div class="series-message" id="shareSeriesMessage" role="status" aria-live="polite" hidden></div>
+  </section>
+</div>
+
+<div class="setup-action-shell is-empty" aria-label="Résumé et lancement de la série">
+  <div class="setup-action-bar">
+    <div class="setup-summary" aria-live="polite">
+      <strong id="selectionSummary">Choisis au moins un automatisme</strong>
+      <span id="settingsSummary">3e · 5 questions · Interactif · Avec aide</span>
+    </div>
+    <button class="share-action" id="shareButton" type="button" aria-expanded="false" aria-controls="shareOverlay" onclick="prepareSeriesShare()" disabled>Partager</button>
+    <button class="generate-action" id="generateButton" type="button" onclick="generate()" disabled><span class="generate-label">Lancer l’entraînement</span><span class="generate-count" id="generateCount" aria-hidden="true"></span></button>
+  </div>
+</div>
+<script src="scripts/data/01-numbers.js"></script>
+<script src="scripts/data/02-geometry.js"></script>
+<script src="scripts/data/03-data.js"></script>
+<script src="scripts/data/04-algorithm.js"></script>
+<script src="scripts/01-modules.js"></script>
+<script src="scripts/02-question-engine.js"></script>
+<script src="scripts/core/01-series-contracts.js"></script>
+<script src="scripts/03-slideshow.js"></script>
+<script src="scripts/04-app.js"></script>
+<script src="scripts/vendor/qrcode-generator.js"></script>
+<script src="scripts/core/02-share-ui.js"></script>
+</body>
+</html>
