@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Catalogue visuel — bêta maths&amp;go</title>
+<style>
+  :root{color-scheme:light;font-family:Arial,Helvetica,sans-serif;color:#071a2f;background:#eef2f7}
+  *{box-sizing:border-box}
+  body{margin:0;padding:32px 18px 64px}
+  main{max-width:1180px;margin:auto}
+  header{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:28px}
+  h1{margin:0 0 8px;font-size:clamp(1.8rem,4vw,2.8rem)}
+  p{line-height:1.55;margin:0;color:#42556c}
+  .badge{white-space:nowrap;background:#071a2f;color:white;border-radius:999px;padding:8px 12px;font-weight:800;font-size:.78rem;letter-spacing:.04em}
+  .component{background:white;border:1px solid #d9e0e8;border-radius:22px;padding:22px;box-shadow:0 10px 28px rgba(7,26,47,.07)}
+  .component-head{display:flex;gap:16px;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+  h2{margin:0;font-size:1.35rem}
+  code{font-size:.82rem;color:#53677d}
+  .presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:18px}
+  .preset{border:1px solid #e1e6ec;border-radius:16px;padding:16px;background:#fbfcfd}
+  h3{font-size:1rem;margin:0 0 14px}
+  .states{display:grid;gap:12px}
+  figure{margin:0;border-radius:12px;border:1px solid #e1e6ec;background:white;overflow:hidden}
+  figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
+  .visual{padding:10px}
+  .visual svg{display:block;width:100%;height:auto}
+  details{margin-top:14px;color:#53677d;font-size:.85rem}
+  pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#071a2f;color:#eef6ff;border-radius:10px;padding:12px}
+  @media(max-width:620px){body{padding:20px 10px 44px}header,.component-head{display:block}.badge{display:inline-block;margin-top:14px}.component{padding:14px}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Bibliothèque visuelle maths&amp;go</h1>
+      <p>Catalogue technique de la bêta : chaque composant est présenté avec ses préréglages et ses deux états de référence.</p>
+    </div>
+    <span class="badge">BÊTA · NON PUBLIC</span>
+  </header>
+  <div id="catalogue"></div>
+</main>
+<script src="../scripts/shared/visuals/00-registry.js"></script>
+<script src="../scripts/shared/visuals/algebra/equation-splat.js"></script>
+<script>
+  const catalogue=document.getElementById('catalogue');
+  MATHSGO_VISUALS.list().forEach(component=>{
+    const section=document.createElement('section');
+    section.className='component';
+    const head=document.createElement('div');
+    head.className='component-head';
+    const title=document.createElement('h2');
+    title.textContent=component.label;
+    const id=document.createElement('code');
+    id.textContent=component.id+' · v'+component.version;
+    head.append(title,id);
+    const presets=document.createElement('div');
+    presets.className='presets';
+    component.presets.forEach(preset=>{
+      const card=document.createElement('article');
+      card.className='preset';
+      const presetTitle=document.createElement('h3');
+      presetTitle.textContent=preset.label;
+      const states=document.createElement('div');
+      states.className='states';
+      [['Question',false],['Correction',true]].forEach(([label,revealed])=>{
+        const figure=document.createElement('figure');
+        const caption=document.createElement('figcaption');
+        caption.textContent=label;
+        const visual=document.createElement('div');
+        visual.className='visual';
+        visual.innerHTML=component.render(preset.data,revealed);
+        figure.append(caption,visual);
+        states.append(figure);
+      });
+      const details=document.createElement('details');
+      const summary=document.createElement('summary');
+      summary.textContent='Paramètres du préréglage';
+      const data=document.createElement('pre');
+      data.textContent=JSON.stringify(preset.data,null,2);
+      details.append(summary,data);
+      card.append(presetTitle,states,details);
+      presets.append(card);
+    });
+    section.append(head,presets);
+    catalogue.append(section);
+  });
+</script>
+</body>
+</html>

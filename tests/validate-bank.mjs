@@ -20,6 +20,8 @@ const sources = [
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
   'auto/scripts/data/04-algorithm.js',
   'auto/scripts/01-modules.js',
+  'auto/scripts/shared/visuals/00-registry.js',
+  'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/02-question-engine.js'
 ];
 

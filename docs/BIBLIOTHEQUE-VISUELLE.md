@@ -1,0 +1,44 @@
+# Bibliothèque visuelle maths&go
+
+Cette bibliothèque rassemble les figures pédagogiques générées par le code.
+Elle doit permettre de réutiliser un rendu déjà validé dans Automatismes ou
+dans un autre outil maths&go sans le redessiner ni en réinventer les règles.
+
+## Contrat d’un composant
+
+Chaque composant enregistré fournit au minimum :
+
+- un identifiant stable, indépendant d’un exercice précis ;
+- une version ;
+- une fonction `render(data, état)` qui renvoie un SVG ;
+- des paramètres sémantiques, par exemple des coefficients ou des longueurs ;
+- des préréglages de référence visibles dans le catalogue ;
+- des tests de non-régression qui figent les rendus validés.
+
+Le registre commun se trouve dans
+`auto/scripts/shared/visuals/00-registry.js`. Les composants sont classés par
+famille dans `auto/scripts/shared/visuals/`.
+
+## Premier composant
+
+`algebra.equation-splat` représente les deux membres d’une équation avec des
+Splats et des jetons signés. Son extraction depuis le moteur est strictement
+structurelle : les quatre rendus de référence ont le même contenu SVG qu’avant
+le déplacement.
+
+Le catalogue de développement est disponible à l’adresse relative
+`auto/dev/visual-library.html`. Il est exclu du référencement.
+
+## Règles d’évolution
+
+1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle
+   version dans la bêta.
+2. Elle est observée dans le catalogue, sur ordinateur et sur téléphone.
+3. Les captures ou empreintes de référence ne sont actualisées qu’après
+   validation visuelle.
+4. Les automatismes consomment une version locale et testée du composant ; ils
+   ne dépendront pas d’un autre site au moment de l’affichage.
+
+Le Splat officiel avec son X arrondi, les schémas en barres et les figures de
+Thalès seront intégrés suivant ce contrat. Le dépôt séparé de composants ne sera
+créé qu’une fois plusieurs composants éprouvés et leur interface stabilisée.

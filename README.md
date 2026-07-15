@@ -33,6 +33,8 @@ d’audience du site public.
 | `auto/scripts/03-slideshow.js` | Diaporama et mode interactif |
 | `auto/scripts/04-app.js` | Tirage et lancement des séries |
 | `auto/scripts/core/` | Contrats, identifiants et partage |
+| `auto/scripts/shared/visuals/` | Composants SVG pédagogiques réutilisables |
+| `auto/dev/visual-library.html` | Catalogue visuel de développement |
 | `tests/` | Vérifications structurelles de la banque |
 
 Les 40 modules sont maintenant isolés sans changement des identifiants stables
@@ -56,6 +58,11 @@ ni du résultat des séries reproductibles.
 Le contrat suivi par tous les fichiers isolés est décrit dans
 [`docs/CONTRAT-MODULE.md`](docs/CONTRAT-MODULE.md).
 
+La bibliothèque visuelle interne et ses règles d’évolution sont décrites dans
+[`docs/BIBLIOTHEQUE-VISUELLE.md`](docs/BIBLIOTHEQUE-VISUELLE.md). Le premier
+composant extrait est le rendu d’équation avec Splats ; ses sorties sont figées
+par des tests avant toute évolution graphique.
+
 ## Vérifier la banque
 
 Avec Node.js 18 ou plus récent :
@@ -65,4 +72,5 @@ npm test
 ```
 
 La vérification contrôle notamment le nombre de modules, les identifiants, les
-numéros de gabarits et la correspondance avec le registre des liens MG1.
+numéros de gabarits, la correspondance avec le registre des liens MG1 et les
+rendus visuels de référence.

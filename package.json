@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/validate-bank.mjs"
+    "test": "node tests/validate-bank.mjs && node tests/validate-visuals.mjs"
   }
 }
