@@ -567,6 +567,7 @@ svg{display:block;max-width:100%;height:auto}
 <script>
 const seriesBank=${payload};
 const experienceMode=${experiencePayload};
+${setupPlaceValueTools.toString()}
 const interactiveMode=experienceMode==='interactive';
 let seriesIndex=0;
 let slides=seriesBank[seriesIndex]||[];

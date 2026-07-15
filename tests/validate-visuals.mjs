@@ -231,6 +231,7 @@ const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const slideshow = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
 if (!slideshow.includes('.answer-dock.qcm-mode .dock-actions{position:absolute;right:14px')) fail('Le bouton Suivant des QCM doit rester ancré à droite sur ordinateur.');
 if (/function setupPlaceValueTools\s*\(/.test(slideshow)) fail('Le contrôleur du glisse-nombre ne doit plus être défini dans le diaporama.');
+if (!slideshow.includes('${setupPlaceValueTools.toString()}')) fail('La fenêtre d’entraînement doit recevoir le contrôleur partagé du glisse-nombre.');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');

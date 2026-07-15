@@ -37,7 +37,7 @@
       +(instruction?'<div class="place-value-tool-note">'+instruction+'</div>':'')+'</div>';
   }
 
-  function setupPlaceValueTools(root=global.document){
+  function setupPlaceValueTools(root=globalThis.document){
     if(!root||typeof root.querySelectorAll!=='function')return;
     root.querySelectorAll('.place-value-tool').forEach(tool=>{
       const grid=tool.querySelector('.place-value-grid'),bar=tool.querySelector('.place-value-drag-bar'),strip=tool.querySelector('.place-value-strip');
@@ -80,7 +80,7 @@
         shift=clamp(Math.round(value),-3,3);renderDigits(shift);setTransforms(-shift*step,snap);bar.setAttribute('aria-valuenow',String(shift));
       };
       const refresh=()=>{step=grid.clientWidth/columnCount;apply(shift,false);};
-      const requestFrame=typeof global.requestAnimationFrame==='function'?global.requestAnimationFrame.bind(global):(callback=>callback());
+      const requestFrame=typeof globalThis.requestAnimationFrame==='function'?globalThis.requestAnimationFrame.bind(globalThis):(callback=>callback());
       requestFrame(refresh);
       bar.addEventListener('pointerdown',event=>{event.preventDefault();refresh();startX=event.clientX;startPx=currentPx;bar.setPointerCapture(event.pointerId);});
       bar.addEventListener('pointermove',event=>{if(!bar.hasPointerCapture(event.pointerId))return;const px=clamp(startPx+(event.clientX-startX),-3*step,3*step),next=clamp(Math.round(-px/step),-3,3);if(next!==shift){shift=next;renderDigits(shift);bar.setAttribute('aria-valuenow',String(shift));}setTransforms(px,false);});
