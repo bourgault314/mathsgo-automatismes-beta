@@ -37,6 +37,11 @@ d’audience du site public.
 Le prochain chantier consiste à isoler progressivement chaque module sans
 changer les identifiants stables ni le résultat des séries reproductibles.
 
+### Découpage en cours
+
+- `dnb_08` — Critères de divisibilité : premier module pilote isolé dans
+  `auto/scripts/modules/numbers/dnb_08.js`.
+
 ## Vérifier la banque
 
 Avec Node.js 18 ou plus récent :
