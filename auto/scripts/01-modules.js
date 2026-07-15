@@ -38,26 +38,6 @@ function configureDecimalComparisonModule(){
 }
 configureDecimalComparisonModule();
 
-function addPlaceValueShiftModule(){
-  if(RAW_MODULES.some(module=>module.id==='dnb_02b')) return;
-  const kinds=[
-    'multiply10','multiply100','multiply1000',
-    'divide10','divide100','divide1000',
-    'mixed','mixed','qcm_result','qcm_result','missing_factor','missing_number'
-  ];
-  const module={
-    id:'dnb_02b',num:2.5,domain:'numbers',
-    title:'Multiplier et diviser par 10, 100 et 1 000',
-    level_tags:['5e','4e','3e','DNB'],source:'mathsgo',has_svg:true,
-    questions:kinds.map((kind,index)=>({
-      n:index+1,statement:'',answer:'[]',footer:'',options:{place_value_kind:kind}
-    }))
-  };
-  const index=RAW_MODULES.findIndex(item=>item.id==='dnb_02');
-  RAW_MODULES.splice(index+1,0,module);
-}
-addPlaceValueShiftModule();
-
 function configureRelationsModule(){
   const mod=RAW_MODULES.find(m=>m.id==='dnb_09');
   if(!mod) return;

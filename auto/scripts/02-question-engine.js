@@ -705,29 +705,6 @@ if(MODULE03){
     options:{...(question.options||{}),fraction_ops_kind:FRACTION_OPS_KINDS[index]}
   }));
 }
-// La manipulation reste présente, mais la majorité des divisions travaille la
-// technique : conserver le premier nombre, multiplier, inverser le diviseur.
-const FRACTION_MUL_DIV_KINDS=['multiply','multiply_cancel','divide_fraction','divide_fraction','divide_mixed','divide_integer_unit'];
-const FRACTION_MUL_DIV_MODULE={
-  id:'dnb_03b',
-  num:3.5,
-  domain:'numbers',
-  title:'Fractions : multiplier et diviser',
-  level_tags:['4e','3e','DNB'],
-  source:'mathsgo',
-  has_svg:true,
-  questions:FRACTION_MUL_DIV_KINDS.map((kind,index)=>({
-    n:index+1,
-    statement:'',
-    answer:'[]',
-    footer:'',
-    options:{fraction_ops_kind:kind}
-  }))
-};
-const MODULE03_INDEX=RAW_MODULES.findIndex(module=>module.id==='dnb_03');
-if(MODULE03_INDEX>=0&&!RAW_MODULES.some(module=>module.id===FRACTION_MUL_DIV_MODULE.id)){
-  RAW_MODULES.splice(MODULE03_INDEX+1,0,FRACTION_MUL_DIV_MODULE);
-}
 const TRIG_NO_CALCULATOR_KINDS=[
   'condition','locate_side','ratio_definition','choose_ratio','ratio_from_lengths','useful_formula',
   'formula_analysis','ratio_invariance','choose_method','method_diagnostic','coherence','method_first_step'
