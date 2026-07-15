@@ -27,7 +27,10 @@ structurelle : les quatre rendus de référence ont le même contenu SVG qu’av
 le déplacement.
 
 Le catalogue de développement est disponible à l’adresse relative
-`auto/dev/visual-library.html`. Il est exclu du référencement.
+`auto/dev/visual-library.html`. Il est exclu du référencement. Il affiche aussi
+le registre pédagogique : pour chaque notion migrée, on peut y contrôler les
+types de questions, les réponses attendues, le rôle des figures et les aides
+associées sans ouvrir le moteur.
 
 `arithmetic.relation-bar` est le premier socle commun pour les schémas en
 barres. Il couvre actuellement le double, le triple, le quadruple, la moitié,

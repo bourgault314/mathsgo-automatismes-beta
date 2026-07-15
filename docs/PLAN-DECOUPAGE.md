@@ -21,6 +21,18 @@ Les composants réellement partagés resteront dans le moteur ou dans une
 bibliothèque commune. Une question ne deviendra pas un fichier isolé : le bon
 niveau de séparation est le module pédagogique.
 
+Le découpage comporte désormais cinq couches explicites :
+
+1. la banque historique et ses gabarits numérotés ;
+2. la logique qui tire les valeurs et construit une instance ;
+3. le registre pédagogique qui classe les types de tâches, les réponses, les
+   figures et les aides ;
+4. les composants visuels partagés ;
+5. l’interface qui sélectionne, affiche et recueille la réponse.
+
+Le registre pédagogique est séparé de la banque afin que son enrichissement ne
+change ni les gabarits ni leur empreinte de référence.
+
 ## Contraintes à préserver
 
 - conserver les 40 identifiants de modules ;
@@ -65,6 +77,9 @@ niveau de séparation est le module pédagogique.
 - le tableau interactif de conversion de `dnb_19` est isolé dans
   `measures.conversion-table` ; le moteur conserve l’assemblage de l’exercice,
   mais plus la construction du tableau.
+- `dnb_25` est le premier pilote du registre pédagogique : ses dix gabarits
+  Thalès sont classés individuellement avec leur mode de réponse, le rôle de la
+  figure et les rubriques d’aide pertinentes.
 
 ### Avancement des domaines Données et Algorithmique
 

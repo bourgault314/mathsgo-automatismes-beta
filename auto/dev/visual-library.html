@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Catalogue visuel — bêta maths&amp;go</title>
+<title>Catalogue pédagogique et visuel — bêta maths&amp;go</title>
 <style>
   :root{color-scheme:light;font-family:Arial,Helvetica,sans-serif;color:#071a2f;background:#eef2f7}
   *{box-sizing:border-box}
@@ -14,6 +14,9 @@
   h1{margin:0 0 8px;font-size:clamp(1.8rem,4vw,2.8rem)}
   p{line-height:1.55;margin:0;color:#42556c}
   .badge{white-space:nowrap;background:#071a2f;color:white;border-radius:999px;padding:8px 12px;font-weight:800;font-size:.78rem;letter-spacing:.04em}
+  .catalogue-nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 30px}.catalogue-nav a{padding:9px 12px;border:1px solid #cbd7e4;border-radius:999px;background:#fff;color:#17384d;font-size:.82rem;font-weight:850;text-decoration:none}
+  .catalogue-block{margin-top:34px}.section-heading{margin:0 0 14px}.section-heading h2{font-size:1.7rem}.section-heading p{margin-top:6px}
+  #pedagogyCatalogue,#catalogue{display:grid;gap:18px}
   .component{background:white;border:1px solid #d9e0e8;border-radius:22px;padding:22px;box-shadow:0 10px 28px rgba(7,26,47,.07)}
   .component-head{display:flex;gap:16px;align-items:baseline;justify-content:space-between;margin-bottom:18px}
   h2{margin:0;font-size:1.35rem}
@@ -23,6 +26,7 @@
   h3{font-size:1rem;margin:0 0 14px}
   .supports{display:flex;flex-wrap:wrap;gap:5px;margin:-7px 0 12px}.support{padding:4px 7px;border-radius:999px;background:#eaf2fb;color:#35526e;font-size:.68rem;font-weight:800;text-transform:uppercase}
   .states{display:grid;gap:12px}
+  .pedagogy-table{width:100%;border-collapse:collapse;font-size:.86rem}.pedagogy-table th,.pedagogy-table td{padding:11px 10px;border-top:1px solid #e1e6ec;text-align:left;vertical-align:top}.pedagogy-table thead th{border-top:0;background:#f4f7fa;color:#35526e;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}.pedagogy-table tbody th{width:62px;color:#0879d0;font-size:1rem}.type-id{display:block;margin-top:4px;color:#6d7d8e;font-size:.72rem}.help-tags{display:flex;flex-wrap:wrap;gap:4px}.help-tag{padding:4px 7px;border-radius:999px;background:#fff0df;color:#8b4a00;font-size:.68rem;font-weight:850}.visual-role{font-weight:850;color:#17384d}.visual-component{display:block;margin-top:4px}
   figure{margin:0;border-radius:12px;border:1px solid #e1e6ec;background:white;overflow:hidden}
   figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
   .visual{padding:10px}
@@ -53,6 +57,7 @@
   .conversion-cursor-comma{position:absolute;right:-13px;bottom:28px;color:color-mix(in srgb,var(--conversion-color) 78%,#17384d);font-family:Nunito,Arial,sans-serif;font-size:3.3rem;font-weight:950;line-height:0;text-shadow:2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff}
   details{margin-top:14px;color:#53677d;font-size:.85rem}
   pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#071a2f;color:#eef6ff;border-radius:10px;padding:12px}
+  @media(max-width:760px){.pedagogy-table,.pedagogy-table tbody,.pedagogy-table tr,.pedagogy-table th,.pedagogy-table td{display:block}.pedagogy-table thead{display:none}.pedagogy-table tr{padding:12px 0;border-top:1px solid #dfe6ee}.pedagogy-table tr:first-child{border-top:0}.pedagogy-table th,.pedagogy-table td{width:auto;padding:5px 0;border:0}.pedagogy-table td:before{content:attr(data-label);display:block;margin-bottom:3px;color:#6d7d8e;font-size:.66rem;font-weight:850;text-transform:uppercase}}
   @media(max-width:620px){body{padding:20px 10px 44px}header,.component-head{display:block}.badge{display:inline-block;margin-top:14px}.component{padding:14px}}
 </style>
 </head>
@@ -60,14 +65,24 @@
 <main>
   <header>
     <div>
-      <h1>Bibliothèque visuelle maths&amp;go</h1>
-      <p>Catalogue technique de la bêta : chaque composant est présenté avec ses préréglages et ses deux états de référence.</p>
+      <h1>Bibliothèque pédagogique et visuelle maths&amp;go</h1>
+      <p>Catalogue de la bêta : les types de questions, leurs aides et les composants visuels réutilisables sont observables au même endroit.</p>
     </div>
     <span class="badge">BÊTA · NON PUBLIC</span>
   </header>
-  <div id="catalogue"></div>
+  <nav class="catalogue-nav" aria-label="Accès aux catalogues"><a href="#pedagogie">Types de questions et aides</a><a href="#visuels">Composants visuels</a></nav>
+  <section class="catalogue-block" id="pedagogie">
+    <div class="section-heading"><h2>Catalogue pédagogique</h2><p>Classement principal par notion mathématique, puis par tâche demandée à l’élève.</p></div>
+    <div id="pedagogyCatalogue"></div>
+  </section>
+  <section class="catalogue-block" id="visuels">
+    <div class="section-heading"><h2>Catalogue visuel</h2><p>Composants générés par le code, avec leurs préréglages et leurs supports compatibles.</p></div>
+    <div id="catalogue"></div>
+  </section>
 </main>
 <script src="../scripts/shared/visuals/00-registry.js"></script>
+<script src="../scripts/shared/pedagogy/00-registry.js?v=20260715-1"></script>
+<script src="../scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-1"></script>
 <script src="../scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
 <script src="../scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
 <script src="../scripts/shared/visuals/geometry/coordinate-plane.js?v=20260715-2"></script>
@@ -77,6 +92,31 @@
 <script src="../scripts/shared/visuals/algebra/equation-splat.js"></script>
 <script src="../scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-2"></script>
 <script>
+  const pedagogyCatalogue=document.getElementById('pedagogyCatalogue');
+  const responseLabels={'qcm-one':'QCM · une réponse','qcm-multiple':'QCM · plusieurs réponses',numeric:'Réponse numérique'};
+  const visualLabels={essential:'Figure intégrée à la question',optional:'Aide visuelle facultative',none:'Aucune figure nécessaire'};
+  const helpLabels={conditions:'Conditions',ratios:'Rapports correspondants',calculation:'Calcul','parallelism-test':'Réciproque / contraposée',coherence:'Vérification'};
+  MATHSGO_PEDAGOGY.list().forEach(module=>{
+    const section=document.createElement('section');section.className='component pedagogy-component';
+    const head=document.createElement('div');head.className='component-head';
+    const title=document.createElement('h2');title.textContent=module.topic;
+    const id=document.createElement('code');id.textContent=module.id+' · '+module.levelTags.join(' · ');
+    head.append(title,id);
+    const table=document.createElement('table');table.className='pedagogy-table';
+    table.innerHTML='<thead><tr><th>Question</th><th>Type de tâche</th><th>Réponse</th><th>Figure</th><th>Aide proposée</th></tr></thead>';
+    const body=document.createElement('tbody');
+    module.questionTypes.forEach(type=>{
+      const row=document.createElement('tr');
+      const number=document.createElement('th');number.scope='row';number.textContent=type.questions.map(value=>'Q'+value).join(', ');
+      const task=document.createElement('td');task.dataset.label='Type de tâche';task.textContent=type.label;const typeId=document.createElement('code');typeId.className='type-id';typeId.textContent=type.id;task.append(typeId);
+      const response=document.createElement('td');response.dataset.label='Réponse';response.textContent=responseLabels[type.response]||type.response;
+      const visual=document.createElement('td');visual.dataset.label='Figure';const role=document.createElement('span');role.className='visual-role';role.textContent=visualLabels[type.visual.policy]||type.visual.policy;visual.append(role);if(type.visual.component){const component=document.createElement('code');component.className='visual-component';component.textContent=type.visual.component;visual.append(component);}
+      const help=document.createElement('td');help.dataset.label='Aide proposée';const tags=document.createElement('div');tags.className='help-tags';type.helpSections.forEach(name=>{const tag=document.createElement('span');tag.className='help-tag';tag.textContent=helpLabels[name]||name;tags.append(tag);});help.append(tags);
+      row.append(number,task,response,visual,help);body.append(row);
+    });
+    table.append(body);section.append(head,table);pedagogyCatalogue.append(section);
+  });
+
   const catalogue=document.getElementById('catalogue');
   MATHSGO_VISUALS.list().forEach(component=>{
     const section=document.createElement('section');

@@ -245,6 +245,10 @@ function visualPolicyForQuestion(m,q){
    * Tout nouveau visuel doit être classé selon son rôle pédagogique, pas
    * seulement selon la présence d'une balise SVG.
    */
+  const pedagogyType=globalThis.MATHSGO_PEDAGOGY&&globalThis.MATHSGO_PEDAGOGY.getQuestionType(m.id,q.n);
+  if(pedagogyType&&pedagogyType.visual&&pedagogyType.visual.policy){
+    return pedagogyType.visual.policy;
+  }
   if(m.id==='dnb_01'){
     return q.options&&q.options.module01_kind==='read_visual'?'essential':'optional';
   }

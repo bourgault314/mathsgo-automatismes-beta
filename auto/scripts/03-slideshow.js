@@ -790,9 +790,11 @@ Object.assign(courseCatalog,{
     ['Cylindre et sphère','Un cylindre possède deux disques parallèles. Une sphère est la surface dont tous les points sont à la même distance du centre.']
   ]},
   thales:{title:'Utiliser le théorème de Thalès',rules:[
-    ['Conditions','Les points sont alignés sur deux droites sécantes et les deux autres droites sont parallèles.'],
-    ['Rapports correspondants','On écrit les longueurs dans le même ordre : '+courseFraction('AD','AB')+' = '+courseFraction('AE','AC')+' = '+courseFraction('DE','BC')+'.'],
-    ['Calcul','On choisit deux rapports contenant la longueur cherchée et trois longueurs connues, puis on résout l’égalité.<span class="course-example">Toujours vérifier que le résultat est cohérent avec la figure.</span>']
+    ['Conditions','Les points sont alignés sur deux droites sécantes et les deux autres droites sont parallèles.',false,'conditions'],
+    ['Rapports correspondants','On écrit les longueurs dans le même ordre : '+courseFraction('AD','AB')+' = '+courseFraction('AE','AC')+' = '+courseFraction('DE','BC')+'.',false,'ratios'],
+    ['Calcul','On choisit deux rapports contenant la longueur cherchée et trois longueurs connues, puis on résout l’égalité.',false,'calculation'],
+    ['Réciproque et contraposée','Avec des points alignés dans le même ordre : des rapports correspondants égaux permettent de conclure que les droites sont parallèles ; des rapports différents permettent de conclure qu’elles ne le sont pas.',false,'parallelism-test'],
+    ['Vérification','Le résultat doit rester cohérent avec la figure : une longueur intérieure à un segment ne peut pas être plus grande que le segment entier.',false,'coherence']
   ]},
   cosine:{title:'Cosinus dans un triangle rectangle',rules:[
     ['Condition','La formule du cosinus utilisée au collège s’applique dans un triangle rectangle.'],
@@ -975,6 +977,12 @@ function courseForSlide(slide){
  if(slide.courseKind==='trigonometry_calculator') return trigonometryCourse(slide.courseContext||{},true);
  if(slide.courseKind==='area_formulas') return contextualAreaCourse(slide.courseContext||{});
  if(slide.courseKind==='volume_formulas') return contextualVolumeCourse(slide.courseContext||{});
+ if(slide.courseKind==='thales'){
+   const course=courseCatalog.thales,sections=Array.isArray(slide.courseContext&&slide.courseContext.helpSections)?slide.courseContext.helpSections:[];
+   if(!sections.length) return course;
+   const rules=course.rules.filter(rule=>sections.includes(rule[3]));
+   return {title:course.title,rules:rules.length?rules:course.rules};
+ }
  return courseCatalog[slide.courseKind]||null;
 }
 function fitNavNumbers(){
@@ -1714,6 +1722,8 @@ function interactiveSpecForInstance(inst,correctionHtml){
 
 function courseKindForModule(moduleId,mode){
   if(mode!=='with') return null;
+  const pedagogyModule=globalThis.MATHSGO_PEDAGOGY&&globalThis.MATHSGO_PEDAGOGY.getModule(moduleId);
+  if(pedagogyModule&&pedagogyModule.courseKind) return pedagogyModule.courseKind;
   const alwaysAvailable={
     dnb_01:'fraction_decimal',dnb_02:'decimal_numbers',dnb_02b:'place_value_shift',dnb_03:'fraction_ops',dnb_03b:'fraction_mul_div',
     dnb_04:'fraction_quantity_percent',dnb_05:'equivalent_forms',dnb_06:'scientific_notation',dnb_07:'squares',
@@ -1736,6 +1746,8 @@ function courseContextForInstance(inst){
   if(inst.module.id==='dnb_22'&&inst.area) return {kind:inst.area.kind,shape:inst.area.courseShape||''};
   if(inst.module.id==='dnb_23') return {questionNumber:Number(inst.q.n)};
   if(['dnb_26','dnb_26b'].includes(inst.module.id)&&inst.trig) return {kind:inst.trig.kind};
+  const pedagogyType=globalThis.MATHSGO_PEDAGOGY&&globalThis.MATHSGO_PEDAGOGY.getQuestionType(inst.module.id,inst.q.n);
+  if(pedagogyType) return {questionTypeId:pedagogyType.id,helpSections:[...pedagogyType.helpSections]};
   return null;
 }
 

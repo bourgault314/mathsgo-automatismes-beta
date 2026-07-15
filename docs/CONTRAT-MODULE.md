@@ -53,6 +53,23 @@ Le test fige actuellement les 40 modules, les 460 gabarits, le registre MG1 et
 l’empreinte complète de la banque V1.15. Une extraction pure doit donc laisser
 cette empreinte inchangée.
 
+## Registre pédagogique associé
+
+Les informations qui pilotent l’aide et l’affichage sans appartenir au texte
+historique du gabarit résident dans `auto/scripts/shared/pedagogy/`.
+
+Pour chaque type de question, ce registre peut déclarer :
+
+- les numéros de gabarits concernés ;
+- la tâche mathématique demandée ;
+- le mode de réponse ;
+- le rôle de la figure et son composant partagé ;
+- les rubriques d’aide utiles à cette tâche précise.
+
+`dnb_25` constitue le premier module pilote. Tant qu’un autre module n’est pas
+migré, les anciennes règles du moteur restent disponibles comme solution de
+repli : le découpage peut donc avancer notion par notion.
+
 ## Pilotes de référence
 
 - `dnb_08` est le pilote simple ;
