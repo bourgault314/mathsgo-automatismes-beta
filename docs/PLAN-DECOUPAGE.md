@@ -79,7 +79,9 @@ change ni les gabarits ni leur empreinte de référence.
   mais plus la construction du tableau.
 - `dnb_25` est le premier pilote du registre pédagogique : ses dix gabarits
   Thalès sont classés individuellement avec leur mode de réponse, le rôle de la
-  figure et les rubriques d’aide pertinentes.
+  figure et les rubriques d’aide pertinentes. Son contrat de génération décrit
+  aussi les cas emboîté/papillon, théorème/réciproque/contraposée, les
+  représentations autorisées et les règles visuelles.
 
 ### Avancement des domaines Données et Algorithmique
 

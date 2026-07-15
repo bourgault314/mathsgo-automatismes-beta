@@ -40,7 +40,8 @@ globalThis.__bank = RAW_MODULES.map(module => ({
   title: module.title,
   questions: module.questions.map(question => question.n)
 }));
-globalThis.__bankSnapshot = JSON.stringify(RAW_MODULES);`;
+globalThis.__bankSnapshot = JSON.stringify(RAW_MODULES);
+globalThis.__renderThalesModule = renderThalesModule;`;
 
 const context = { console };
 context.globalThis = context;
@@ -90,6 +91,17 @@ if (questionCount !== 460) fail(`460 gabarits attendus, ${questionCount} trouvé
 if (bankHash !== expectedBankHash) {
   fail(`Le contenu ou l’ordre de la banque V1.15 a changé (${bankHash}).`);
 }
+
+const thalesInstance={
+  module:{id:'dnb_25'},q:{n:1},answers:['1'],
+  rawStatement:'Conditions.<br><div style="text-align:center"><svg width="320"><path d="M0 0"/></svg></div><br>Peut-on appliquer Thalès ?&&Oui&&Non&&',
+  rawFooter:'[[qcm1]]'
+};
+const thalesQuestion=context.__renderThalesModule(thalesInstance,false,'with');
+const thalesCorrection=context.__renderThalesModule(thalesInstance,true,'with');
+if(!thalesQuestion.includes('thales-question-figure')) fail('Le module Thalès doit utiliser sa figure partagée.');
+if(thalesQuestion.includes('width="320"')||!thalesQuestion.includes('stroke="#111111"')) fail('La question Thalès doit remplacer l’ancien dessin par une figure d’exercice noire.');
+if(!thalesCorrection.includes('#ff9114')||!thalesCorrection.includes('#11468c')) fail('La correction Thalès doit utiliser les couleurs d’aide pour les côtés correspondants.');
 
 const contracts = fs.readFileSync(new URL('auto/scripts/core/01-series-contracts.js', root), 'utf8');
 const registeredLegacyIds = [...contracts.matchAll(/\['[^']+','(dnb_[^']+)',\d+\]/g)].map(match => match[1]);

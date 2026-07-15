@@ -5,14 +5,20 @@
   const point=(x,y,color)=>`<circle cx="${x}" cy="${y}" r="3.2" fill="${color}"/>`;
   const label=(x,y,value,color,anchor='middle')=>`<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Arial,Helvetica,sans-serif" font-size="17" font-style="italic" font-weight="800" fill="${color}">${value}</text>`;
 
-  function nested(labels,colors){
+  function nested(labels,colors,options={}){
+    const isParallel=options.parallel!==false;
+    const mx=192.45,my=176.9;
+    const nx=isParallel?174.3:210.27,ny=isParallel?86.7:69.98;
+    const lineNames=options.showLineNames===false?'':(isParallel
+      ?label(211,127,'('+labels.M+labels.N+')',colors.blue)+label(356,111,'('+labels.B+labels.C+')',colors.teal)
+      :label((mx+nx)/2+8,(my+ny)/2-4,'('+labels.M+labels.N+')',colors.blue)+label(356,111,'('+labels.B+labels.C+')',colors.teal));
     return `<polygon points="50,145 347,211 308.5,24" fill="${colors.softTeal}"/>`
       +`<path d="M50 145L347 211M50 145L308.5 24" fill="none" stroke="${colors.navy}" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"/>`
       +`<path d="M347 211L308.5 24" fill="none" stroke="${colors.teal}" stroke-width="3.3" stroke-linecap="butt"/>`
-      +`<path d="M192.45 176.9L174.3 86.7" fill="none" stroke="${colors.blue}" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="butt"/>`
-      +point(50,145,colors.orange)+point(192.45,176.9,colors.blue)+point(174.3,86.7,colors.blue)+point(347,211,colors.teal)+point(308.5,24,colors.teal)
-      +label(34,139,labels.A,colors.orange,'end')+label(194,202,labels.M,colors.blue)+label(158,80,labels.N,colors.blue,'end')+label(362,216,labels.B,colors.teal,'start')+label(314,18,labels.C,colors.teal,'start')
-      +label(211,127,'('+labels.M+labels.N+')',colors.blue)+label(356,111,'('+labels.B+labels.C+')',colors.teal);
+      +`<path d="M${mx} ${my}L${nx} ${ny}" fill="none" stroke="${colors.blue}" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="butt"/>`
+      +point(50,145,colors.orange)+point(mx,my,colors.blue)+point(nx,ny,colors.blue)+point(347,211,colors.teal)+point(308.5,24,colors.teal)
+      +label(34,139,labels.A,colors.orange,'end')+label(isParallel?194:mx+2,isParallel?202:my+25,labels.M,colors.blue)+label(isParallel?158:nx-16,isParallel?80:ny-7,labels.N,colors.blue,'end')+label(362,216,labels.B,colors.teal,'start')+label(314,18,labels.C,colors.teal,'start')
+      +lineNames;
   }
 
   function butterfly(labels,colors){
@@ -29,8 +35,8 @@
     const colors=data.style==='exercise'?exerciseColors:courseColors;
     const labels=Object.assign({},defaults,data.labels||{});
     const viewBox=configuration==='butterfly'?'0 0 430 230':'0 0 400 240';
-    const body=configuration==='butterfly'?butterfly(labels,colors):nested(labels,colors);
-    const description=(configuration==='butterfly'?'Configuration de Thalès en papillon':'Configuration de Thalès avec triangles emboîtés')+(data.style==='exercise'?' en noir':'' );
+    const body=configuration==='butterfly'?butterfly(labels,colors):nested(labels,colors,{parallel:data.parallel!==false,showLineNames:data.showLineNames!==false});
+    const description=(configuration==='butterfly'?'Configuration de Thalès en papillon':(data.parallel===false?'Triangles emboîtés avec deux droites non parallèles':'Configuration de Thalès avec triangles emboîtés'))+(data.style==='exercise'?' en noir':'' );
     return `<svg class="thales-configuration-svg" viewBox="${viewBox}" role="img" aria-label="${description}">${body}</svg>`;
   }
 
@@ -38,10 +44,11 @@
     Object.freeze({id:'emboitee',label:'Triangles emboîtés',data:Object.freeze({configuration:'nested'})}),
     Object.freeze({id:'papillon',label:'Configuration papillon',data:Object.freeze({configuration:'butterfly'})}),
     Object.freeze({id:'emboitee-exercice',label:'Emboîtés · exercice noir',data:Object.freeze({configuration:'nested',style:'exercise'})}),
-    Object.freeze({id:'papillon-exercice',label:'Papillon · exercice noir',data:Object.freeze({configuration:'butterfly',style:'exercise'})})
+    Object.freeze({id:'papillon-exercice',label:'Papillon · exercice noir',data:Object.freeze({configuration:'butterfly',style:'exercise'})}),
+    Object.freeze({id:'emboitee-non-parallele',label:'Emboîtés · droites non parallèles',data:Object.freeze({configuration:'nested',parallel:false})})
   ]);
   global.MATHSGO_VISUALS.register('geometry.thales-configuration',{
-    version:'0.2.0',label:'Configurations de Thalès',family:'Géométrie',
+    version:'0.3.0',label:'Configurations de Thalès',family:'Géométrie',
     supports:Object.freeze(['phone','computer','projection','print']),
     description:'Deux usages distincts : gabarit de cours coloré pour guider la lecture, ou figure d’exercice entièrement noire.',
     presets,render

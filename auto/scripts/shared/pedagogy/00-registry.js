@@ -5,6 +5,15 @@
     return Object.freeze(Array.isArray(value)?value.slice():[]);
   }
 
+  function freezeValue(value){
+    if(Array.isArray(value)) return Object.freeze(value.map(freezeValue));
+    if(value&&typeof value==='object'){
+      const copy={};Object.entries(value).forEach(([key,item])=>{copy[key]=freezeValue(item);});
+      return Object.freeze(copy);
+    }
+    return value;
+  }
+
   function registerModule(id,definition){
     const moduleId=String(id||'').trim();
     if(!/^dnb_[0-9]+b?$/.test(moduleId)) throw new Error('Identifiant pédagogique invalide : '+moduleId);
@@ -50,6 +59,7 @@
       label:String(definition.label||definition.topic||moduleId),
       levelTags:freezeArray(definition.levelTags).map(String),
       courseKind:definition.courseKind?String(definition.courseKind):null,
+      generatorContract:freezeValue(definition.generatorContract||{}),
       questionTypes:Object.freeze(questionTypes)
     });
     modules.set(moduleId,{module,questionMap});

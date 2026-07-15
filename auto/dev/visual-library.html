@@ -27,6 +27,7 @@
   .supports{display:flex;flex-wrap:wrap;gap:5px;margin:-7px 0 12px}.support{padding:4px 7px;border-radius:999px;background:#eaf2fb;color:#35526e;font-size:.68rem;font-weight:800;text-transform:uppercase}
   .states{display:grid;gap:12px}
   .pedagogy-table{width:100%;border-collapse:collapse;font-size:.86rem}.pedagogy-table th,.pedagogy-table td{padding:11px 10px;border-top:1px solid #e1e6ec;text-align:left;vertical-align:top}.pedagogy-table thead th{border-top:0;background:#f4f7fa;color:#35526e;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}.pedagogy-table tbody th{width:62px;color:#0879d0;font-size:1rem}.type-id{display:block;margin-top:4px;color:#6d7d8e;font-size:.72rem}.help-tags{display:flex;flex-wrap:wrap;gap:4px}.help-tag{padding:4px 7px;border-radius:999px;background:#fff0df;color:#8b4a00;font-size:.68rem;font-weight:850}.visual-role{font-weight:850;color:#17384d}.visual-component{display:block;margin-top:4px}
+  .generator-contract{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.contract-card{padding:13px 14px;border:1px solid #dce5ee;border-radius:14px;background:#f8fbfe}.contract-card h3{margin-bottom:8px;color:#17384d}.contract-card ul{margin:0;padding-left:18px;color:#42556c;font-size:.82rem;line-height:1.42}.contract-card li+li{margin-top:5px}.contract-card strong{color:#17384d}
   figure{margin:0;border-radius:12px;border:1px solid #e1e6ec;background:white;overflow:hidden}
   figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
   .visual{padding:10px}
@@ -57,7 +58,7 @@
   .conversion-cursor-comma{position:absolute;right:-13px;bottom:28px;color:color-mix(in srgb,var(--conversion-color) 78%,#17384d);font-family:Nunito,Arial,sans-serif;font-size:3.3rem;font-weight:950;line-height:0;text-shadow:2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff}
   details{margin-top:14px;color:#53677d;font-size:.85rem}
   pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#071a2f;color:#eef6ff;border-radius:10px;padding:12px}
-  @media(max-width:760px){.pedagogy-table,.pedagogy-table tbody,.pedagogy-table tr,.pedagogy-table th,.pedagogy-table td{display:block}.pedagogy-table thead{display:none}.pedagogy-table tr{padding:12px 0;border-top:1px solid #dfe6ee}.pedagogy-table tr:first-child{border-top:0}.pedagogy-table th,.pedagogy-table td{width:auto;padding:5px 0;border:0}.pedagogy-table td:before{content:attr(data-label);display:block;margin-bottom:3px;color:#6d7d8e;font-size:.66rem;font-weight:850;text-transform:uppercase}}
+  @media(max-width:760px){.pedagogy-table,.pedagogy-table tbody,.pedagogy-table tr,.pedagogy-table th,.pedagogy-table td{display:block}.pedagogy-table thead{display:none}.pedagogy-table tr{padding:12px 0;border-top:1px solid #dfe6ee}.pedagogy-table tr:first-child{border-top:0}.pedagogy-table th,.pedagogy-table td{width:auto;padding:5px 0;border:0}.pedagogy-table td:before{content:attr(data-label);display:block;margin-bottom:3px;color:#6d7d8e;font-size:.66rem;font-weight:850;text-transform:uppercase}.generator-contract{grid-template-columns:1fr}}
   @media(max-width:620px){body{padding:20px 10px 44px}header,.component-head{display:block}.badge{display:inline-block;margin-top:14px}.component{padding:14px}}
 </style>
 </head>
@@ -81,8 +82,8 @@
   </section>
 </main>
 <script src="../scripts/shared/visuals/00-registry.js"></script>
-<script src="../scripts/shared/pedagogy/00-registry.js?v=20260715-1"></script>
-<script src="../scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-1"></script>
+<script src="../scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
+<script src="../scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-2"></script>
 <script src="../scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
 <script src="../scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
 <script src="../scripts/shared/visuals/geometry/coordinate-plane.js?v=20260715-2"></script>
@@ -90,7 +91,7 @@
 <script src="../scripts/shared/visuals/arithmetic/fraction-percent-bar.js"></script>
 <script src="../scripts/shared/visuals/measures/conversion-table.js"></script>
 <script src="../scripts/shared/visuals/algebra/equation-splat.js"></script>
-<script src="../scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-2"></script>
+<script src="../scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-3"></script>
 <script>
   const pedagogyCatalogue=document.getElementById('pedagogyCatalogue');
   const responseLabels={'qcm-one':'QCM · une réponse','qcm-multiple':'QCM · plusieurs réponses',numeric:'Réponse numérique'};
@@ -114,7 +115,17 @@
       const help=document.createElement('td');help.dataset.label='Aide proposée';const tags=document.createElement('div');tags.className='help-tags';type.helpSections.forEach(name=>{const tag=document.createElement('span');tag.className='help-tag';tag.textContent=helpLabels[name]||name;tags.append(tag);});help.append(tags);
       row.append(number,task,response,visual,help);body.append(row);
     });
-    table.append(body);section.append(head,table);pedagogyCatalogue.append(section);
+    table.append(body);section.append(head,table);
+    const contract=module.generatorContract||{};
+    const contractGrid=document.createElement('div');contractGrid.className='generator-contract';
+    const addContractCard=(title,items,formatter)=>{if(!items||!items.length)return;const card=document.createElement('section');card.className='contract-card';const heading=document.createElement('h3');heading.textContent=title;const list=document.createElement('ul');items.forEach(item=>{const line=document.createElement('li');line.textContent=formatter(item);list.append(line);});card.append(heading,list);contractGrid.append(card);};
+    addContractCard('Configurations',contract.configurations,item=>item.label);
+    addContractCard('Raisonnements',contract.reasoning,item=>item.label+' — '+item.rule);
+    addContractCard('Représentations',contract.representations,item=>item.label+(item.usage==='direct-only'?' · théorème direct':''));
+    addContractCard('Points de vigilance',contract.cautions,item=>item);
+    addContractCard('Règles visuelles',contract.visualRules,item=>item);
+    if(contractGrid.childElementCount)section.append(contractGrid);
+    pedagogyCatalogue.append(section);
   });
 
   const catalogue=document.getElementById('catalogue');

@@ -189,8 +189,8 @@ for (const testCase of relationCases) {
 
 const thales = registry?.get('geometry.thales-configuration');
 if (!thales) fail('Le composant geometry.thales-configuration est absent.');
-if (thales && thales.version !== '0.2.0') fail('Version 0.2.0 attendue pour les configurations de Thalès.');
-if (thales && thales.presets.length !== 4) fail('Deux configurations de Thalès dans deux styles sont attendues.');
+if (thales && thales.version !== '0.3.0') fail('Version 0.3.0 attendue pour les configurations de Thalès.');
+if (thales && thales.presets.length !== 5) fail('Les configurations de Thalès doivent couvrir les deux styles et le cas non parallèle.');
 if (thales) {
   const nested = thales.render({ configuration: 'nested' });
   const butterfly = thales.render({ configuration: 'butterfly' });
@@ -203,6 +203,8 @@ if (thales) {
   const exerciseButterfly=thales.render({configuration:'butterfly',style:'exercise'});
   if(exerciseNested.includes('#11468c')||exerciseNested.includes('#1daeae')||exerciseButterfly.includes('#ff9114')) fail('Les figures de Thalès en mode exercice doivent être monochromes.');
   if(!exerciseNested.includes('stroke="#111111"')||!exerciseButterfly.includes('stroke="#111111"')) fail('Le mode exercice de Thalès doit tracer les figures en noir.');
+  const nonParallel=thales.render({configuration:'nested',parallel:false});
+  if(nonParallel===nested||!nonParallel.includes('Triangles emboîtés avec deux droites non parallèles')) fail('Le composant Thalès doit savoir tracer le cas non parallèle.');
 }
 
 const fractionPercent = registry?.get('arithmetic.fraction-percent-bar');
@@ -229,7 +231,8 @@ for (const testCase of fractionPercentCases) {
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const slideshow = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
-if (!slideshow.includes('.answer-dock.qcm-mode .dock-actions{position:absolute;right:14px')) fail('Le bouton Suivant des QCM doit rester ancré à droite sur ordinateur.');
+if (!slideshow.includes('@media(min-width:1200px){.answer-dock .answer-body{display:block;position:relative;padding:0 195px}')) fail('Le bouton Suivant doit utiliser le même ancrage à droite pour tous les modes sur ordinateur.');
+if (slideshow.includes('.answer-dock.qcm-mode .dock-actions{grid-template-columns:')||slideshow.includes('.answer-dock.qcm-mode .dock-actions{position:absolute')) fail('Le QCM ne doit plus déplacer ni redimensionner le bouton Suivant.');
 if (/function setupPlaceValueTools\s*\(/.test(slideshow)) fail('Le contrôleur du glisse-nombre ne doit plus être défini dans le diaporama.');
 if (!slideshow.includes('${setupPlaceValueTools.toString()}')) fail('La fenêtre d’entraînement doit recevoir le contrôleur partagé du glisse-nombre.');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
@@ -248,5 +251,5 @@ if (registryPosition < 0 || numberLinePosition < registryPosition || placeValueP
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 4 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 5 configurations de Thalès figées.');
 }

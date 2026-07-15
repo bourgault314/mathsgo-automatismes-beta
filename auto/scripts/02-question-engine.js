@@ -2524,6 +2524,45 @@ function renderGenericQuestion(inst, correction=false, mode=null){
   return html;
 }
 
+function thalesQuestionFigure(inst,correction=false){
+  const component=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get('geometry.thales-configuration');
+  if(!component) return '';
+  return '<div class="thales-question-figure">'+component.render({
+    configuration:'nested',
+    style:correction?'course':'exercise',
+    parallel:Number(inst.q.n)!==7,
+    showLineNames:false,
+    labels:{A:'A',M:'D',N:'E',B:'B',C:'C'}
+  })+'</div>';
+}
+
+function renderThalesModule(inst,correction=false,mode=null){
+  if(mode===null) mode=document.getElementById('visualMode').value;
+  let statement=inst.rawStatement,footer=inst.rawFooter;
+  const figure=thalesQuestionFigure(inst,correction);
+  if(figure){
+    statement=statement.replace(/<div style="text-align:center"><svg[\s\S]*?<\/svg><\/div>/i,figure);
+  }
+  if(isWithoutVisuals(mode)){
+    const keepPlaceholder=mode==='without-reveal';
+    statement=stripVisuals(statement,keepPlaceholder);
+    footer=stripVisuals(footer,keepPlaceholder);
+  }
+  const qcm=splitQCM(statement);
+  let html='';
+  if(qcm){
+    html+='<div class="question thales-prompt">'+renderMathSegments(qcm.prompt)+'</div>';
+    const corrects=new Set(inst.answers.map(value=>String(value)));
+    html+='<div class="options thales-options options-'+qcm.opts.length+compactQcmClass(qcm.opts)+'">';
+    qcm.opts.forEach((option,index)=>{const isCorrect=correction&&corrects.has(String(index+1));html+='<div class="opt '+(isCorrect?'correct':'')+'"><strong>'+String.fromCharCode(65+index)+'.</strong> '+renderMathSegments(option)+'</div>';});
+    html+='</div>';
+  }else{
+    html+='<div class="question thales-prompt">'+renderMathSegments(statement)+'</div>';
+  }
+  if(footer) html+='<div class="footer thales-answer">'+renderPlaceholders(footer,inst.answers,correction?'correction':'question')+'</div>';
+  return html;
+}
+
 function placeValueNumberMarkup(value,highlightUnits=false){
   const valueText=fmt(value),parts=valueText.split(','),integer=parts[0]||'0';
   const integerMarkup=Array.from(integer).map((character,index)=>index===integer.length-1&&highlightUnits
@@ -4055,6 +4094,7 @@ function renderQuestion(inst, correction=false, mode=null){
   if(inst && inst.module && inst.module.id==='dnb_21') return renderPerimeterModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_22') return renderAreaModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_23') return renderVolumeModule(inst, correction, mode);
+  if(inst && inst.module && inst.module.id==='dnb_25') return renderThalesModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_30') return renderAverageModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_34') return renderProportionModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_35') return renderEvolutionModule(inst, correction, mode);
