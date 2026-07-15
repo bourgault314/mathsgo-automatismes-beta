@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
 const isolatedModulesByDomain = {
-  numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14'],
+  numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14', 'dnb_38'],
   geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27'],
   data: ['dnb_28', 'dnb_29', 'dnb_30', 'dnb_31', 'dnb_32', 'dnb_33', 'dnb_34', 'dnb_35', 'dnb_36'],
   algorithm: ['dnb_37']
@@ -44,7 +44,10 @@ globalThis.__bank = RAW_MODULES.map(module => ({
 }));
 globalThis.__bankSnapshot = JSON.stringify(RAW_MODULES);
 globalThis.__renderThalesModule = renderThalesModule;
-globalThis.__renderAngleSumModule = renderAngleSumModule;`;
+globalThis.__renderAngleSumModule = renderAngleSumModule;
+globalThis.__relativeModule = MODULE_DNB_38;
+globalThis.__makeInstance = makeInstance;
+globalThis.__renderQuestion = renderQuestion;`;
 
 const context = { console };
 context.globalThis = context;
@@ -53,7 +56,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'c0b9baabe0b20755daaf9825292ae971238b80e5e6d670c9c19d0c95cc20dfb5';
+const expectedBankHash = 'c72350e1567a79e1a671cc3d126c90e05bc665971ed8b27c38b7523fbae45094';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -61,7 +64,7 @@ const fail = message => {
 
 const requiredModuleFields = ['id', 'num', 'title', 'level_tags', 'source', 'has_svg', 'questions'];
 
-if (bank.length !== 40) fail(`40 modules attendus, ${bank.length} trouvés.`);
+if (bank.length !== 41) fail(`41 modules attendus, ${bank.length} trouvés.`);
 
 const moduleIds = bank.map(module => module.id);
 if (new Set(moduleIds).size !== moduleIds.length) fail('Un identifiant de module est utilisé plusieurs fois.');
@@ -90,7 +93,7 @@ for (const id of isolatedModuleIds) {
 }
 
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
-if (questionCount !== 460) fail(`460 gabarits attendus, ${questionCount} trouvés.`);
+if (questionCount !== 468) fail(`468 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
   fail(`Le contenu ou l’ordre de la banque V1.16 a changé (${bankHash}).`);
 }
@@ -126,9 +129,22 @@ if(!thalesWithAid.includes('thales-task-card')||!thalesWithAid.includes('Choisir
 if(!thalesWithAid.includes('thales-question-figure')||!thalesWithAid.includes('AD = 4 cm')) fail('La question Thalès 8 doit afficher la figure et ses longueurs avec aide.');
 if(thalesWithoutAid.includes('thales-question-figure')) fail('La figure d’étayage Thalès doit être totalement absente sans aide.');
 
+const relativeExpectedAnswers=['7','1','0','2','2','2','3','1'];
+for (const [index, question] of context.__relativeModule.questions.entries()) {
+  const instance=context.__makeInstance(context.__relativeModule,question);
+  if(String(instance.answers?.[0])!==relativeExpectedAnswers[index]) fail(`Réponse incorrecte pour l’addition relative ${question.n}.`);
+  const questionHtml=context.__renderQuestion(instance,false,'with');
+  const correctionHtml=context.__renderQuestion(instance,true,'with');
+  if(!questionHtml.includes('relative-token')) fail(`Le visuel de jetons manque pour l’addition relative ${question.n}.`);
+  if(index%2===0&&!questionHtml.includes('data-relative-board')) fail(`Le plateau tactile manque pour l’addition relative ${question.n}.`);
+  if(index%2===1&&!questionHtml.includes('class="opt')) fail(`Les propositions manquent pour l’addition relative ${question.n}.`);
+  if(index%2===0&&!correctionHtml.includes('relative-token-result')) fail(`La correction du plateau tactile manque pour l’addition relative ${question.n}.`);
+  if(index%2===1&&!correctionHtml.includes('relative-token')) fail(`La correction visuelle manque pour l’addition relative ${question.n}.`);
+}
+
 const contracts = fs.readFileSync(new URL('auto/scripts/core/01-series-contracts.js', root), 'utf8');
 const registeredLegacyIds = [...contracts.matchAll(/\['[^']+','(dnb_[^']+)',\d+\]/g)].map(match => match[1]);
-if (registeredLegacyIds.length !== 40) fail(`40 entrées MG1 attendues, ${registeredLegacyIds.length} trouvées.`);
+if (registeredLegacyIds.length !== 41) fail(`41 entrées MG1 attendues, ${registeredLegacyIds.length} trouvées.`);
 
 const missingFromRegistry = moduleIds.filter(id => !registeredLegacyIds.includes(id));
 const missingFromBank = registeredLegacyIds.filter(id => !moduleIds.includes(id));
