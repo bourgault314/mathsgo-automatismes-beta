@@ -49,7 +49,7 @@ usuels sont `statement`, `answer`, `options` et `footer`.
    interface avec le moteur.
 5. `npm test` doit réussir avant toute publication sur la bêta.
 
-Le test fige actuellement les 40 modules, les 460 gabarits, le registre MG1 et
+Le test fige actuellement les 41 modules, les 468 gabarits, le registre MG1 et
 l’empreinte complète de la banque V1.15. Une extraction pure doit donc laisser
 cette empreinte inchangée.
 
@@ -76,7 +76,7 @@ repli : le découpage peut donc avancer notion par notion.
 - `dnb_07` est le pilote visuel et contient déjà sa configuration pédagogique
   finalisée.
 
-Le domaine Nombres suit désormais entièrement ce contrat : ses seize modules
+Le domaine Nombres suit désormais entièrement ce contrat : ses dix-sept modules
 sont explicites et leurs configurations pédagogiques résident dans leurs
 fichiers.
 
@@ -85,6 +85,11 @@ le complément de trigonométrie `dnb_26b`.
 
 Les domaines Données et Algorithmique complètent ce découpage : les 40 modules
 de la banque suivent maintenant ce contrat.
+
+Le module `dnb_38` ajoute un contrat pédagogique associé dans
+`auto/scripts/shared/pedagogy/numbers/dnb_38.js` et utilise le composant partagé
+`numbers.relative-tokens`. Les règles visuelles et tactiles sont détaillées
+dans [`docs/RELATIFS-AUTOMATISMES.md`](RELATIFS-AUTOMATISMES.md).
 
 Les fonctions de rendu visuel de `dnb_07` restent provisoirement dans le moteur.
 Elles seront déplacées dans un lot distinct, avec un test adapté à leur contrat.
