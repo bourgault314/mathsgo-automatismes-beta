@@ -29,6 +29,11 @@ le déplacement.
 Le catalogue de développement est disponible à l’adresse relative
 `auto/dev/visual-library.html`. Il est exclu du référencement.
 
+`arithmetic.relation-bar` est le premier socle commun pour les schémas en
+barres. Il couvre actuellement le double, le triple, le quadruple, la moitié,
+le quart, le prédécesseur et le successeur. Ses dix états de référence sont
+également figés sans changement graphique.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle

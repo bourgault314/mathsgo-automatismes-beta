@@ -60,8 +60,9 @@ Le contrat suivi par tous les fichiers isolés est décrit dans
 
 La bibliothèque visuelle interne et ses règles d’évolution sont décrites dans
 [`docs/BIBLIOTHEQUE-VISUELLE.md`](docs/BIBLIOTHEQUE-VISUELLE.md). Le premier
-composant extrait est le rendu d’équation avec Splats ; ses sorties sont figées
-par des tests avant toute évolution graphique.
+composant extrait est le rendu d’équation avec Splats. Le premier socle de
+schémas en barres est lui aussi partagé ; leurs sorties sont figées par des
+tests avant toute évolution graphique.
 
 ## Vérifier la banque
 

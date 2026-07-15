@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 const root = new URL('../', import.meta.url);
 const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
+  'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js'
 ];
 const code = visualSources
@@ -25,7 +26,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 1) fail(`1 composant visuel attendu, ${components.length} trouvé(s).`);
+if (components.length !== 2) fail(`2 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const equationSplat = registry?.get('algebra.equation-splat');
 if (!equationSplat) fail('Le composant algebra.equation-splat est absent.');
@@ -51,14 +52,37 @@ for (const testCase of cases) {
   }
 }
 
+const relationBar = registry?.get('arithmetic.relation-bar');
+if (!relationBar) fail('Le composant arithmetic.relation-bar est absent.');
+if (relationBar && relationBar.presets.length !== 5) fail('Cinq préréglages de schémas en barres sont attendus.');
+if (relationBar && context.relationBarSvg !== relationBar.render) {
+  fail('Le point d’entrée historique relationBarSvg doit utiliser le composant enregistré.');
+}
+const relationCases = relationBar ? [
+  { data: { kind: 'multiple_direct', factor: 2, value: 7, result: 14 }, expected: ['a871998d70900cbd3107e077c667582774609d93c630ce2aa1b4d05b760f4ed9', '0f9bfd51390cf9ddd7537b54b80b34203d3450d6d0bec5df7e7a5a332ff237a2'] },
+  { data: { kind: 'multiple_inverse', factor: 3, value: 8, result: 24 }, expected: ['e16d98130bb6711f647d486d1a4d4abed2539368eb1c21e7612ddb324d901fd7', '970cdff01153a337835333e06bc4afa15d153b03c8b5a6c07d1edbb0ccdec173'] },
+  { data: { kind: 'fraction_direct', divisor: 4, value: 20, result: 5 }, expected: ['008d9f6dd7a98576aa3f1b2b7fdedbd311c0141826af9d618a54d00fc9738665', 'bc88ea4fd7cb6281b61133b8f5952415a9937ba7839eeec9ec40e1155eaad19a'] },
+  { data: { kind: 'predecessor', value: 42, result: 41 }, expected: ['42bc8f235366141b0a40d988c4fab44dbc228393c802a9dfd06ec312a54aa6f2', 'd43c256bb85a59099a7600883dff8cbebc2db6f9b528bba2d212434ac7d73dbd'] },
+  { data: { kind: 'successor', value: 42, result: 43 }, expected: ['2fe48065cb63ce3db6a7e5cd4d7ea196fb4bee6809f324039c30526020c8f139', '04408891107e5bf1c4a2ff973c4af1586d6c42c6ecca0a117f7e8b1650a8e1b5'] }
+] : [];
+for (const testCase of relationCases) {
+  for (const revealed of [false, true]) {
+    const actual = hash(relationBar.render(testCase.data, revealed));
+    if (actual !== testCase.expected[revealed ? 1 : 0]) {
+      fail(`Un rendu de schéma en barres a changé (${actual}).`);
+    }
+  }
+}
+
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
+const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || componentPosition < registryPosition || enginePosition < componentPosition) {
-  fail('Le registre et le composant équation/Splat doivent être chargés avant le moteur de questions.');
+if (registryPosition < 0 || relationPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition) {
+  fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre visuel cohérent et 4 rendus équation/Splat inchangés.');
+  console.log('OK — registre cohérent, 4 rendus équation/Splat et 10 schémas en barres inchangés.');
 }

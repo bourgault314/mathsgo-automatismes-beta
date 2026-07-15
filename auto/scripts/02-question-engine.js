@@ -3151,68 +3151,6 @@ function renderEvolutionModule(inst,correction=false,mode=null){
   return html;
 }
 
-function relationPalette(kind,size){
-  if(kind==='multiple'&&size===2) return {fill:'#fff7d6',stroke:'#8a7420'};
-  if(kind==='multiple'&&size===3) return {fill:'#fde5eb',stroke:'#9b455f'};
-  if(kind==='multiple'&&size===4) return {fill:'#e6f5e4',stroke:'#477a45'};
-  if(kind==='fraction'&&size===2) return {fill:'#fff7d6',stroke:'#8a7420'};
-  if(kind==='fraction'&&size===4) return {fill:'#e6f5e4',stroke:'#477a45'};
-  return {fill:'#e7f1fb',stroke:'#35658c'};
-}
-
-function relationBarSvg(data,correction=false){
-  const x=60,width=640,topY=28,topH=70,bottomY=98,bottomH=70;
-  const text=(x,y,value,size=24,weight=800)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="#17283f">${escapeHtml(value)}</text>`;
-  let body='';
-
-  if(data.kind==='multiple_direct'||data.kind==='multiple_inverse'){
-    const factor=data.factor;
-    const palette=relationPalette('multiple',factor);
-    const names={2:'LE DOUBLE',3:'LE TRIPLE',4:'LE QUADRUPLE'};
-    const cellW=width/factor;
-    body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
-    body+=text(x+width/2,topY+topH/2,correction?fmt(data.result):names[factor],25,850);
-    for(let i=0;i<factor;i++){
-      body+=`<rect x="${x+i*cellW}" y="${bottomY}" width="${cellW}" height="${bottomH}" fill="${i===0?palette.fill:'#fff'}" stroke="#222" stroke-width="2" ${i===0?'':'stroke-dasharray="8 6"'}/>`;
-      if(correction) body+=text(x+(i+.5)*cellW,bottomY+bottomH/2,fmt(data.value),21,800);
-    }
-    if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,'la quantité',Math.min(21,Math.max(15,180/cellW*18)),780);
-  }
-
-  if(data.kind==='fraction_direct'){
-    const divisor=data.divisor;
-    const palette=relationPalette('fraction',divisor);
-    const names={2:'la moitié',4:'le quart'};
-    const cellW=width/divisor;
-    body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
-    body+=text(x+width/2,topY+topH/2,correction?fmt(data.value):'LE TOUT',25,850);
-    for(let i=0;i<divisor;i++){
-      body+=`<rect x="${x+i*cellW}" y="${bottomY}" width="${cellW}" height="${bottomH}" fill="${i===0?palette.fill:'#fff'}" stroke="#222" stroke-width="2"/>`;
-      if(correction) body+=text(x+(i+.5)*cellW,bottomY+bottomH/2,fmt(data.result),divisor===4?20:22,800);
-    }
-    if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,names[divisor],divisor===4?18:21,780);
-  }
-
-  if(data.kind==='predecessor'||data.kind==='successor'){
-    const palette=relationPalette('neighbor',1),unitW=82,mainW=width-unitW;
-    const isPredecessor=data.kind==='predecessor';
-    const topLabel=correction
-      ? fmt(isPredecessor?data.value:data.result)
-      : (isPredecessor?'LE NOMBRE : '+fmt(data.value):'LE SUCCESSEUR');
-    const bottomLabel=correction
-      ? fmt(isPredecessor?data.result:data.value)
-      : (isPredecessor?'le prédécesseur':'le nombre : '+fmt(data.value));
-    body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
-    body+=text(x+width/2,topY+topH/2,topLabel,25,850);
-    body+=`<rect x="${x}" y="${bottomY}" width="${mainW}" height="${bottomH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
-    body+=`<rect x="${x+mainW}" y="${bottomY}" width="${unitW}" height="${bottomH}" fill="#fff" stroke="#222" stroke-width="2"/>`;
-    body+=text(x+mainW/2,bottomY+bottomH/2,bottomLabel,22,780);
-    body+=text(x+mainW+unitW/2,bottomY+bottomH/2,'1',23,850);
-  }
-
-  return `<div class="relation-bar-help"><svg class="relation-bar-svg" viewBox="0 0 760 198" role="img" aria-label="Schéma en barres">${body}</svg></div>`;
-}
-
 function relationTileUnit(type,sign=1){
   const positive=sign>0,fill=positive?'#31a98e':'#ef5142';
   const label=type==='n2'?(positive?'𝑛²':'−𝑛²'):(type==='n'?(positive?'𝑛':'−𝑛'):(positive?'1':'−1'));
