@@ -34,6 +34,11 @@ barres. Il couvre actuellement le double, le triple, le quadruple, la moitié,
 le quart, le prédécesseur et le successeur. Ses dix états de référence sont
 également figés sans changement graphique.
 
+`arithmetic.fraction-percent-bar` conserve les découpages en parts égales,
+les couleurs des fractions usuelles, les grilles de 1 %, ainsi que la forme et
+le placement des accolades. Sept cas de référence couvrent les demis, quarts,
+huitièmes et pourcentages usuels ; leurs états question/correction sont testés.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle

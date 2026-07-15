@@ -64,6 +64,9 @@ composant extrait est le rendu d’équation avec Splats. Le premier socle de
 schémas en barres est lui aussi partagé ; leurs sorties sont figées par des
 tests avant toute évolution graphique.
 
+Les barres de fractions et de pourcentages, y compris leurs accolades, sont
+également extraites du moteur et visibles dans le catalogue de développement.
+
 ## Vérifier la banque
 
 Avec Node.js 18 ou plus récent :

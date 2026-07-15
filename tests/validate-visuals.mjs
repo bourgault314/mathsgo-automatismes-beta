@@ -6,6 +6,7 @@ const root = new URL('../', import.meta.url);
 const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js'
 ];
@@ -27,7 +28,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 3) fail(`3 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 4) fail(`4 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const equationSplat = registry?.get('algebra.equation-splat');
 if (!equationSplat) fail('Le composant algebra.equation-splat est absent.');
@@ -88,15 +89,38 @@ if (thales) {
   if (hash(butterfly) !== '43161c04f1942ea7cbe243cb9fa8a048af45c1ef0e82042b68a655ab95eb3c81') fail('La configuration de Thalès en papillon a changé.');
 }
 
+const fractionPercent = registry?.get('arithmetic.fraction-percent-bar');
+if (!fractionPercent) fail('Le composant arithmetic.fraction-percent-bar est absent.');
+if (fractionPercent && fractionPercent.presets.length !== 7) fail('Sept préréglages fractions/pourcentages sont attendus.');
+if (fractionPercent && context.fractionPercentBarSvg !== fractionPercent.render) {
+  fail('Le moteur doit utiliser le composant fractions/pourcentages enregistré.');
+}
+const fractionPercentCases = fractionPercent ? [
+  {data:{kind:'fraction',numerator:1,denominator:2,total:24,part:12},expected:['e7ed02d1d7bc0c5561c255ee20340a5717e8de933cf508ef3a2d56e06a1a4344','481a00fa9299aa393a5690c38e667f81bd7c28ba925edf0b146edb5c02a2b982']},
+  {data:{kind:'fraction',numerator:3,denominator:4,total:28,part:7},expected:['294dc47d73c37ecb749fbb71cb17f88f38b691cb26bd13b981fcc9ee02f29d66','4283eb568a67213fb5fa2b3df2fdba03cf6ae195d1067d6a8eef6d8e892dd4b3']},
+  {data:{kind:'fraction',numerator:5,denominator:8,total:40,part:5},expected:['13f77fd27af0493dbc9a8bb7788cd95a231d056ac1d7eea39aa0d894757bab2b','5fc2a12759cb568197f8c7c7c8275275d7e4e948f3359675ccc9483df9305fc6']},
+  {data:{kind:'percent',percent:50,denominator:2,total:80,part:40},expected:['410afc3483aa4456b1efe886e6952e91d531edabf4407bdd57b387c47ad12b83','f9ebeb78197cc353463ccce8e5ae32bfd411a08c605827890c6f260246d9f995']},
+  {data:{kind:'percent',percent:25,denominator:4,total:60,part:15},expected:['9a58d02288096f6a05c8df1aa3c04643aae81f6d1d9db9b6e4c0bc4fc8ef9c85','d2a0cd6b3507161cad5233386b3d18175120737a09db385030491b1628dde055']},
+  {data:{kind:'percent',percent:10,denominator:10,total:230,part:23},expected:['ffd0d90ceffef4b33a102e8c16ed28abf329960513c056fe4121549516e5cc67','aa35e0b53385b5cc93285e9f9e86feeb73b5354e10135ea8eeeaba92a8717dec']},
+  {data:{kind:'percent',percent:1,denominator:100,total:300,part:3},expected:['f47242753f69311859dca965d554ffa140eb5a177e66c12566e9e5c2d9d48ef3','07fcb170613fc934b46e0bdfaf573b6856154662093b22e2a5bf68aebae3e7e4']}
+] : [];
+for (const testCase of fractionPercentCases) {
+  for (const correction of [false,true]) {
+    const actual=hash(fractionPercent.render(testCase.data,correction));
+    if(actual!==testCase.expected[correction?1:0]) fail(`Un schéma fraction/pourcentage a changé (${actual}).`);
+  }
+}
+
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
+const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || relationPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition) {
+if (registryPosition < 0 || relationPosition < registryPosition || fractionPercentPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 4 équations/Splats, 10 schémas en barres et 2 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
 }

@@ -22,6 +22,7 @@ const sources = [
   'auto/scripts/01-modules.js',
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/02-question-engine.js'
