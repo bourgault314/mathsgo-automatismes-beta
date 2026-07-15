@@ -50,7 +50,9 @@ niveau de séparation est le module pédagogique.
   intégrées à leurs fichiers ; elles ne sont plus appliquées après coup par le
   moteur ;
 - les dix-huit droites graduées répétées dans `dnb_14` sont maintenant rendues
-  par le composant partagé `numbers.number-line`.
+  par le composant partagé `numbers.number-line` ;
+- le tableau de numération de `dnb_02b` et sa virgule fixe sont isolés dans
+  `numbers.place-value-table`.
 
 ### Avancement du domaine Géométrie
 

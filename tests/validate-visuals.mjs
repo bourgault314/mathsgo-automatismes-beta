@@ -6,6 +6,7 @@ const root = new URL('../', import.meta.url);
 const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
+  'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
@@ -30,7 +31,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 6) fail(`6 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 7) fail(`7 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
@@ -78,6 +79,30 @@ for (const preset of conversionTable?.presets || []) {
 const questionEngine = fs.readFileSync(new URL('auto/scripts/02-question-engine.js', root), 'utf8');
 if (questionEngine.includes('function conversionTableHtml') || questionEngine.includes('function conversionTheme')) {
   fail('Le générateur de tableau de conversion ne doit plus être défini dans le gros moteur.');
+}
+
+const placeValueTable = registry?.get('numbers.place-value-table');
+if (!placeValueTable) fail('Le composant numbers.place-value-table est absent.');
+if (placeValueTable && placeValueTable.version !== '1.0.0') fail('Version 1.0.0 attendue pour le tableau de numération.');
+if (placeValueTable && placeValueTable.presets.length !== 5) fail('Cinq déplacements de référence sont attendus dans le tableau de numération.');
+if (placeValueTable && context.placeValueToolHtml !== placeValueTable.render) {
+  fail('Le moteur doit utiliser le tableau de numération enregistré.');
+}
+const placeValueHashes = new Map([
+  ['fois-dix', ['2d39510274d85f99451ab578bc05e40d79dd91e44c1788c00567ac650b217159','6724b8e3baa36f5265222268c465dafa4accfe6e7a5391daf66abd434646005f']],
+  ['fois-mille', ['d18fa815e34c01fd21452f81ba0dd168ba13445a6136409f8e927cad5614b932','9557415f5da75e0b80322df9d26c58bc8c350b3597c6be1d5194be7776d50efb']],
+  ['divise-dix', ['4e2cd998c06fa0a301cb01fde87b9d6d4a21e296825512d193cd763321bd3ae4','163c607570c73dae74abaa72cc48ee5015d00f40e1373bedbb73920e8ba85ea4']],
+  ['divise-cent', ['9dbb8f456404a4f7c689e623fd26d2d6915be98dbbfd19e7f729f1c2b85f7adb','0176296bbf02c9e13f8d61da2566f3bd19799e4eb9e6c23a75152c3e86343494']],
+  ['divise-mille', ['9b3751ff673c70fd10651d60ad90688df8da997215053c1cab823a514d3c5025','eae9a56e3d85c66a61b5cd5c277415cd8de29093efc9f9a14cb32a3e951057fa']]
+]);
+for (const preset of placeValueTable?.presets || []) {
+  for (const correction of [false,true]) {
+    const actual=hash(placeValueTable.render(preset.data,correction));
+    if(actual!==placeValueHashes.get(preset.id)?.[correction?1:0]) fail(`Le tableau de numération ${preset.id} a changé (${actual}).`);
+  }
+}
+if (questionEngine.includes('function placeValueToolHtml') || questionEngine.includes('function digitsInPlaceValueColumns')) {
+  fail('Le tableau de numération ne doit plus être construit dans le gros moteur.');
 }
 
 const equationSplat = registry?.get('algebra.equation-splat');
@@ -164,16 +189,17 @@ for (const testCase of fractionPercentCases) {
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
+const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_14.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const conversionPosition = indexHtml.indexOf('scripts/shared/visuals/measures/conversion-table.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || numberLineModulePosition < numberLinePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || numberLineModulePosition < numberLinePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 5 droites graduées, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 5 droites graduées, 10 tableaux de numération, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
 }

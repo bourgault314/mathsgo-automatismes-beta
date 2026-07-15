@@ -2524,33 +2524,6 @@ function renderGenericQuestion(inst, correction=false, mode=null){
   return html;
 }
 
-function digitsInPlaceValueColumns(value,columnCount=7,unitsIndex=3){
-  const cells=Array(columnCount).fill('');
-  const normalized=fmt(Math.abs(Number(value))).replace(/\s/g,'').replace(',','.');
-  const parts=normalized.split('.'),integer=(parts[0]||'0').replace(/^\+/,''),decimals=parts[1]||'';
-  [...integer].reverse().forEach((digit,offset)=>{const index=unitsIndex-offset;if(index>=0&&index<columnCount)cells[index]=digit;});
-  [...decimals].forEach((digit,offset)=>{const index=unitsIndex+1+offset;if(index>=0&&index<columnCount)cells[index]=digit;});
-  return cells;
-}
-function placeValueToolHtml(data,correction=false){
-  const labels=['milliers','centaines','dizaines','unités','dixièmes','centièmes','millièmes'];
-  const digits=digitsInPlaceValueColumns(data.value);
-  const shift=correction?data.shift:0;
-  const headers=labels.map(label=>'<div class="place-value-head">'+label+'</div>').join('');
-  const windows=labels.map(()=>'<div class="place-value-window"></div>').join('');
-  const fixed=digits.map((digit,index)=>'<span class="place-value-fixed-digit'+(index===3?' is-units-digit':'')+'">'+digit+'</span>').join('');
-  const strip=Array(13).fill(0).map(()=>'<span class="place-value-strip-digit"></span>').join('');
-  const instruction=correction
-    ? '<strong>'+fmt(data.value)+' '+data.symbol+' '+data.factor+' = '+fmt(data.result)+'</strong>'
-    : '';
-  return '<div class="place-value-tool" data-base-digits="'+escapeHtml(digits.join('|'))+'" data-target-shift="'+data.shift+'" data-initial-shift="'+shift+'">'
-    +'<div class="place-value-grid">'
-      +'<div class="place-value-head-row">'+headers+'</div>'
-      +'<div class="place-value-preview-row"><div class="place-value-strip-viewport"><div class="place-value-strip">'+strip+'</div></div><div class="place-value-window-row">'+windows+'</div><span class="place-value-comma place-value-preview-comma" aria-hidden="true">,</span><div class="place-value-drag-bar" tabindex="0" role="slider" aria-label="Faire glisser la bandelette" aria-valuemin="-3" aria-valuemax="3" aria-valuenow="'+shift+'"><span></span></div></div>'
-      +'<div class="place-value-fixed-row">'+fixed+'<span class="place-value-comma place-value-fixed-comma" aria-hidden="true">,</span></div>'
-    +'</div><div class="place-value-row-labels"><span>Résultat obtenu</span><span>Nombre de départ</span></div>'
-    +(instruction?'<div class="place-value-tool-note">'+instruction+'</div>':'')+'</div>';
-}
 function placeValueNumberMarkup(value,highlightUnits=false){
   const valueText=fmt(value),parts=valueText.split(','),integer=parts[0]||'0';
   const integerMarkup=Array.from(integer).map((character,index)=>index===integer.length-1&&highlightUnits

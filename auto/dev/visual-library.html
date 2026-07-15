@@ -26,6 +26,17 @@
   figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
   .visual{padding:10px}
   .visual svg{display:block;width:100%;height:auto}
+  .component[data-component-id="numbers.place-value-table"] .presets{grid-template-columns:1fr}
+  .place-value-tool{width:min(100%,1000px);margin:8px auto 0;user-select:none}
+  .place-value-grid{position:relative;overflow:hidden;border:3px solid #17384d;border-radius:14px;background:#fff}
+  .place-value-head-row,.place-value-window-row,.place-value-fixed-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+  .place-value-head{display:flex;align-items:center;justify-content:center;height:38px;padding:0 4px;border-right:1.5px solid #9fb3c8;border-bottom:1.5px solid #9fb3c8;background:#eef6ff;color:#35526e;font-size:clamp(.68rem,1.3vw,1rem);font-weight:800}.place-value-head:nth-child(4){background:#dceeff;color:#0879d0}.place-value-head:last-child{border-right:0}
+  .place-value-preview-row,.place-value-fixed-row{position:relative;height:66px}.place-value-preview-row{background:#f7f8fa}.place-value-fixed-row{border-top:1.5px solid #9fb3c8;background:#fff}
+  .place-value-window-row{position:absolute;inset:0;z-index:5;pointer-events:none}.place-value-window{border-right:1.5px solid #9fb3c8}.place-value-window:last-child{border-right:0}
+  .place-value-strip-viewport{position:absolute;inset:0;z-index:3;overflow:hidden;pointer-events:none}.place-value-strip{position:absolute;inset:0 auto 0 0;display:grid;grid-template-columns:repeat(13,calc(100% / 13));width:calc(100% * 13 / 7);align-items:center;justify-items:center}
+  .place-value-strip-digit,.place-value-fixed-digit{display:grid;place-items:center;color:#0b2147;font-family:Cambria Math,Times New Roman,serif;font-size:clamp(1.8rem,3.8vw,3.2rem);font-weight:850}.place-value-strip-digit.ghost-zero{color:#334d68}.place-value-fixed-digit{border-right:1.5px solid #9fb3c8}.place-value-fixed-digit:nth-child(7){border-right:0}.place-value-fixed-digit.is-units-digit,.place-value-strip-digit.is-units-digit{color:#0879d0}
+  .place-value-drag-bar{position:absolute;z-index:2;left:-24px;right:-24px;top:8px;height:50px;outline:none}.place-value-drag-bar span{display:block;width:100%;height:100%;border:1px solid rgba(107,114,128,.3);background:rgba(209,213,219,.62);box-shadow:inset 0 2px 3px rgba(0,0,0,.12),inset 0 -2px 3px rgba(255,255,255,.55)}
+  .place-value-comma{position:absolute;z-index:7;left:calc(57.142857% - 4px);bottom:4px;color:#e86100;font-family:Cambria Math,serif;font-size:2.6rem;font-weight:900;line-height:1;pointer-events:none}.place-value-row-labels{position:absolute;width:1px;height:1px;overflow:hidden}.place-value-tool-note{display:flex;align-items:center;justify-content:center;min-height:44px;margin-top:8px;color:#31516e;font-size:1.25rem}.place-value-tool-note strong{color:#087a55}
   .component[data-component-id="measures.conversion-table"] .presets{grid-template-columns:1fr}
   .component[data-component-id="measures.conversion-table"] .visual{overflow-x:auto;padding:14px 18px}
   .conversion-tool{width:max(760px,calc(var(--conversion-slots)*48px));margin:76px auto 78px;user-select:none}
@@ -57,6 +68,7 @@
 </main>
 <script src="../scripts/shared/visuals/00-registry.js"></script>
 <script src="../scripts/shared/visuals/numbers/number-line.js"></script>
+<script src="../scripts/shared/visuals/numbers/place-value-table.js"></script>
 <script src="../scripts/shared/visuals/arithmetic/relation-bar.js"></script>
 <script src="../scripts/shared/visuals/arithmetic/fraction-percent-bar.js"></script>
 <script src="../scripts/shared/visuals/measures/conversion-table.js"></script>
@@ -91,6 +103,32 @@
         const visual=document.createElement('div');
         visual.className='visual';
         visual.innerHTML=component.render(preset.data,revealed);
+        visual.querySelectorAll('.place-value-tool').forEach(tool=>{
+          const base=String(tool.dataset.baseDigits||'').split('|');
+          const strip=tool.querySelector('.place-value-strip');
+          const stripDigits=[...tool.querySelectorAll('.place-value-strip-digit')];
+          const shift=Number(tool.dataset.initialShift)||0,pad=3,columnCount=7;
+          const mapped=Array(columnCount).fill('');
+          for(let windowIndex=0;windowIndex<columnCount;windowIndex++){
+            const source=windowIndex+shift;
+            mapped[windowIndex]=source>=0&&source<columnCount?(base[source]||''):'';
+          }
+          const nonEmpty=[];mapped.forEach((digit,index)=>{if(digit!=='')nonEmpty.push(index);});
+          const display=Array(columnCount).fill(''),ghost=Array(columnCount).fill(false);
+          if(nonEmpty.length){
+            let left=nonEmpty[0],right=nonEmpty[nonEmpty.length-1];
+            while(left<3&&mapped[left]==='0'&&nonEmpty.some(index=>index>left)) left++;
+            const leftLimit=left<=3?left:3,rightLimit=right>3?right:3;
+            for(let index=leftLimit;index<=rightLimit;index++){
+              if(mapped[index]===''){display[index]='0';ghost[index]=true;}else display[index]=mapped[index];
+            }
+          }
+          display.forEach((digit,windowIndex)=>{
+            const node=stripDigits[pad+windowIndex+shift];if(!node)return;
+            node.textContent=digit;node.classList.toggle('ghost-zero',ghost[windowIndex]);node.classList.toggle('is-units-digit',windowIndex===3);
+          });
+          if(strip) strip.style.transform='translateX('+(((-pad-shift)*100)/13)+'%)';
+        });
         visual.querySelectorAll('.conversion-tool').forEach(tool=>{
           const units=Number(getComputedStyle(tool).getPropertyValue('--conversion-units'))||7;
           const unitSlots=Number(tool.dataset.unitSlots)||1;

@@ -52,6 +52,11 @@ correspondances avec les litres et les alias `a`/`ha` font partie du composant.
 Les conversions de durée, visuellement différentes, restent volontairement
 séparées.
 
+`numbers.place-value-table` conserve le tableau de numération de `dnb_02b`.
+La virgule reste fixe entre unités et dixièmes tandis que la bande de chiffres
+se déplace de une à trois colonnes. Les cinq références couvrent les deux sens
+et les facteurs 10, 100 et 1 000 ; leurs états question/correction sont figés.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle
