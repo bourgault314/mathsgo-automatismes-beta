@@ -83,6 +83,7 @@
 </main>
 <script src="../scripts/shared/visuals/00-registry.js"></script>
 <script src="../scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
+<script src="../scripts/shared/pedagogy/geometry/dnb_18.js?v=20260716-1"></script>
 <script src="../scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-3"></script>
 <script src="../scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
 <script src="../scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
@@ -92,11 +93,13 @@
 <script src="../scripts/shared/visuals/measures/conversion-table.js"></script>
 <script src="../scripts/shared/visuals/algebra/equation-splat.js"></script>
 <script src="../scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-4"></script>
+<script src="../scripts/shared/visuals/geometry/triangle-angle-sum.js?v=20260716-1"></script>
+<script src="../scripts/shared/visuals/geometry/pythagoras-mill.js?v=20260716-1"></script>
 <script>
   const pedagogyCatalogue=document.getElementById('pedagogyCatalogue');
   const responseLabels={'qcm-one':'QCM · une réponse','qcm-multiple':'QCM · plusieurs réponses',numeric:'Réponse numérique'};
   const visualLabels={essential:'Figure intégrée à la question',optional:'Aide facultative révélable','aid-only':'Figure visible uniquement avec aide',none:'Aucune figure nécessaire'};
-  const helpLabels={conditions:'Conditions',ratios:'Rapports correspondants',calculation:'Calcul','parallelism-test':'Réciproque / contraposée',coherence:'Vérification'};
+  const helpLabels={conditions:'Conditions',ratios:'Rapports correspondants',calculation:'Calcul','parallelism-test':'Réciproque / contraposée',coherence:'Vérification','sum-180':'Somme égale à 180°','bar-model':'Modèle en barres','right-angle':'Angle droit','isosceles':'Angles égaux','equilateral':'Trois angles égaux'};
   MATHSGO_PEDAGOGY.list().forEach(module=>{
     const section=document.createElement('section');section.className='component pedagogy-component';
     const head=document.createElement('div');head.className='component-head';

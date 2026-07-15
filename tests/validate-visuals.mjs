@@ -12,7 +12,9 @@ const visualSources = [
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
-  'auto/scripts/shared/visuals/geometry/thales-configuration.js'
+  'auto/scripts/shared/visuals/geometry/thales-configuration.js',
+  'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-mill.js'
 ];
 const code = visualSources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
@@ -32,7 +34,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 8) fail(`8 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 10) fail(`10 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
@@ -210,6 +212,47 @@ if (thales) {
   if(!withLengths.includes('AD = 4 cm')&&!withLengths.includes('AM = 4 cm')) fail('Le composant Thalès doit savoir placer les longueurs sur la figure d’aide.');
 }
 
+const triangleAngleSum=registry?.get('geometry.triangle-angle-sum');
+if(!triangleAngleSum) fail('Le composant geometry.triangle-angle-sum est absent.');
+if(triangleAngleSum&&triangleAngleSum.version!=='1.0.0') fail('Version 1.0.0 attendue pour le composant somme des angles.');
+if(triangleAngleSum&&triangleAngleSum.presets.length!==6) fail('Six références sont attendues pour la somme des angles.');
+if(triangleAngleSum&&context.triangleAngleSumVisual!==triangleAngleSum.render) fail('Le moteur doit utiliser le composant partagé de somme des angles.');
+const angleHashes=new Map([
+  ['fiche-exemple',['da243f641d4ccd17d833097537ac6e63b2cfd087b764c290138b0a2170291ece','feb0ad91ba5969fc4631535eb8b3ca00a7edc7c8793767ed5bfe119a740dddae']],
+  ['triangle-rectangle',['7df5b2d976d3e1f840acd503ae5b4a74c82f674f2d50fd75a6e9b237d00982c2','98e43c821a5c511b78e3109b0c415310346e08bd758410e43d6103933cd79735']],
+  ['triangle-isoscele',['f0d3e9b486e1edf39751f64fcb26d752e1cfc8f132e1cc4bf5bf564e8b491346','7ed5a1c98b9e5ea49116580046fdb3f57dd1d5e477b18637c4a980d0c17deb7d']],
+  ['triangle-seul',['a6dbb3edd38b416438ecced2c787b32e26ee8b5cddd55dcf7c0a63abfa085390','225a4a97eee258e7e35bee80c0d91800fb80761835ca79384c79d359d2791bc6']],
+  ['barre-seule',['cd5e0efc60d986baae93b7904bc6e170354c35037450ece248f8efb71ccc7530','3f51f93fca765cedeacd90335067e46beef43fc7509d0c2421e47b2d99e10836']],
+  ['triangle-impossible',['73f9833914f19851e8e12d52f6565181b6038026190cac4db5ee4a12d99be7a5','73f9833914f19851e8e12d52f6565181b6038026190cac4db5ee4a12d99be7a5']]
+]);
+for(const preset of triangleAngleSum?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(triangleAngleSum.render(preset.data,correction));
+    if(actual!==angleHashes.get(preset.id)?.[correction?1:0]) fail(`Le rendu angles ${preset.id} a changé (${actual}).`);
+  }
+}
+const angleModule=fs.readFileSync(new URL('auto/scripts/modules/geometry/dnb_18.js',root),'utf8');
+if(angleModule.includes('<svg')) fail('dnb_18 ne doit plus embarquer son propre SVG de triangle.');
+if(questionEngine.includes('function angleSumBarSvg')) fail('Le modèle en barres des angles ne doit plus être défini dans le gros moteur.');
+if(!questionEngine.includes('triangleAngleSumVisual(bar,correction)')) fail('Le module angles doit appeler le composant partagé.');
+
+const pythagorasMill=registry?.get('geometry.pythagoras-mill');
+if(!pythagorasMill) fail('Le composant geometry.pythagoras-mill est absent.');
+if(pythagorasMill&&pythagorasMill.version!=='1.0.0') fail('Version 1.0.0 attendue pour le moulin de Pythagore.');
+if(pythagorasMill&&pythagorasMill.presets.length!==4) fail('Quatre références sont attendues pour le moulin de Pythagore.');
+const pythagorasHashes=new Map([
+  ['vide',['ebcebeea95a9c411307a36fe6c567080851a69ee4d6ae5130d5e81292bd1b4b5','ebcebeea95a9c411307a36fe6c567080851a69ee4d6ae5130d5e81292bd1b4b5']],
+  ['relation',['a7dff40295f8ba91d0e985b64a9db1a021d0b64f7e20022e03be8281afcb808d','a7dff40295f8ba91d0e985b64a9db1a021d0b64f7e20022e03be8281afcb808d']],
+  ['hypotenuse',['dce1a82ab44a549d50de89766fc55dbcbe93da0dd8c5506a060996bced0dd335','2fa134b1acbcff5ceb6cf551700afbe385a1779f26725a6fdccf93cafc52a6b3']],
+  ['cote',['86f9144523d870d4e3355f3270641e14a407f5f5d0ac81243cedc9b4ad7398d7','2fa134b1acbcff5ceb6cf551700afbe385a1779f26725a6fdccf93cafc52a6b3']]
+]);
+for(const preset of pythagorasMill?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(pythagorasMill.render(preset.data,correction));
+    if(actual!==pythagorasHashes.get(preset.id)?.[correction?1:0]) fail(`Le moulin de Pythagore ${preset.id} a changé (${actual}).`);
+  }
+}
+
 const fractionPercent = registry?.get('arithmetic.fraction-percent-bar');
 if (!fractionPercent) fail('Le composant arithmetic.fraction-percent-bar est absent.');
 if (fractionPercent && fractionPercent.presets.length !== 7) fail('Sept préréglages fractions/pourcentages sont attendus.');
@@ -249,11 +292,13 @@ const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/re
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const conversionPosition = indexHtml.indexOf('scripts/shared/visuals/measures/conversion-table.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
+const triangleAnglePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/triangle-angle-sum.js');
+const pythagorasMillPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-mill.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 5 configurations de Thalès figées.');
+  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres, 5 configurations de Thalès, 12 états Angles et 8 moulins de Pythagore figés.');
 }

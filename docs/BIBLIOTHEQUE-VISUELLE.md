@@ -109,3 +109,33 @@ Le cours Thalès ouvre un gabarit progressif : figure, tableau des côtés du
 petit et du grand triangle, puis égalité des rapports. Le fichier source
 `fiche_reciproque_thales_v9_logo_site.tex` devra être importé dans le dépôt
 avant d’ajouter le lien d’impression et de figer définitivement les couleurs.
+
+## Référence Angles dans un triangle
+
+`geometry.triangle-angle-sum` est extrait de la fiche
+`fiche_angles_triangles_mathsgo_tikz_v11`. Il rassemble désormais dans une
+seule API :
+
+- le triangle annoncé comme non nécessairement à l’échelle ;
+- les arcs et les mesures des trois angles ;
+- le codage carré de l’angle droit ;
+- l’angle inconnu puis révélé en correction ;
+- la barre entière de 180° et son partage proportionnel en trois cellules ;
+- le contrôle d’une configuration impossible lorsque les mesures dépassent
+  180°.
+
+Le module `dnb_18` utilise ce composant. Son ancien SVG calculé directement
+dans la banque a été supprimé : la géométrie et le modèle en barres peuvent
+donc être repris dans une diapositive, une aide, un exerciseur ou une fiche
+sans être redessinés.
+
+## Référence PythaBarre
+
+`geometry.pythagoras-mill` extrait le moulin de la fiche PythaBarre v34 : le
+triangle rectangle, les trois carrés, la palette bleu/orange/vert et les
+variantes relation, recherche de l’hypoténuse et recherche d’un côté. Il est
+d’abord exposé dans le catalogue. Son utilisation par `dnb_24` sera faite
+après validation de ses proportions sur téléphone et en projection.
+
+L’audit complet du lot reçu est conservé dans
+`docs/AUDIT-RESSOURCES-2026-07-16.md`.
