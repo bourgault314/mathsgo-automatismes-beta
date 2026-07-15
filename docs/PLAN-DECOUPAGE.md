@@ -44,7 +44,7 @@ niveau de séparation est le module pédagogique.
 
 ### Avancement du domaine Nombres
 
-- `dnb_01` à `dnb_08` sont isolés dans des fichiers indépendants ;
+- `dnb_01` à `dnb_14` sont isolés dans des fichiers indépendants ;
 - les modules ajoutés historiquement par le moteur (`dnb_02b` et `dnb_03b`)
   seront intégrés au prochain lot ;
 - les configurations héritées encore appliquées après le chargement seront
