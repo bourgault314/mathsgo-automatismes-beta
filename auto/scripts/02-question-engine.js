@@ -2453,6 +2453,62 @@ function makeTrigInstance(mod,q){
   return trigDirectInstance(mod,q,'On donne $$\\widehat{'+triangle.angle+'}='+degrees+'°$$ et $$'+triangle.adjacent+'='+adjacent+'\\text{ cm}$$. Calcule le périmètre du triangle. Arrondis au dixième.'+visual,'$$P=[[dec]]\\text{ cm}$$',result,triangle,{kind,degrees,adjacent});
 }
 
+function relativeDisplayNumber(value){
+  const text=String(value);
+  return text.startsWith('-')?'−'+text.slice(1):text;
+}
+function relativeExpression(a,b){
+  return relativeDisplayNumber(a)+' + '+(b<0?'('+relativeDisplayNumber(b)+')':relativeDisplayNumber(b));
+}
+function relativeTokenList(value,zone,prefix){
+  const sign=value<0?-1:1;
+  return Array.from({length:Math.abs(value)},(_,index)=>({id:prefix+String(index+1),sign,zone,origin:zone}));
+}
+function relativePairIndexes(tokens,zone){
+  const positive=[],negative=[];
+  tokens.forEach((token,index)=>{
+    if(token.zone!==zone)return;
+    (token.sign>0?positive:negative).push(index);
+  });
+  const paired=new Set();
+  for(let index=0;index<Math.min(positive.length,negative.length);index++){
+    paired.add(positive[index]);paired.add(negative[index]);
+  }
+  return paired;
+}
+function relativeStaticToken(token,paired=false){
+  return '<span class="relative-token '+(token.sign>0?'relative-token-positive':'relative-token-negative')+(paired?' is-null-pair':'')+'" aria-label="Jeton '+(token.sign>0?'+1':'−1')+'">'+(token.sign>0?'+1':'−1')+'</span>';
+}
+function relativeStaticZoneMarkup(label,zone,tokens){
+  const paired=relativePairIndexes(tokens,zone);
+  const visible=tokens.filter(token=>token.zone===zone);
+  const tokenHtml=visible.map(token=>relativeStaticToken(token,paired.has(tokens.indexOf(token)))).join('');
+  return '<section class="relative-token-zone relative-token-zone-'+zone+'"><h3>'+label+'</h3><div class="relative-token-list">'+(tokenHtml||'<span class="relative-token-empty">—</span>')+'</div></section>';
+}
+function relativeStaticBoardMarkup(data){
+  return '<div class="relative-token-static-board">'+relativeStaticZoneMarkup('Premier nombre','a',data.initialTokens)+relativeStaticZoneMarkup('Deuxième nombre','b',data.initialTokens)+'</div>';
+}
+function makeRelativeAdditionInstance(mod,q){
+  const options=q.options||{};
+  const a=Number(options.relative_a),b=Number(options.relative_b),result=a+b;
+  const initialTokens=[...relativeTokenList(a,'a','a'),...relativeTokenList(b,'b','b')];
+  const questionKind=String(options.relative_addition_kind||'manipulate');
+  const relativeTokens={kind:'addition',questionKind,a,b,result,initialTokens,interactive:questionKind==='manipulate',instanceKey:'addition-'+q.n+'-'+a+'-'+b};
+  if(questionKind==='manipulate'){
+    return {module:mod,q,scope:{},answers:[String(result)],rawStatement:'',rawFooter:'',hasSvg:true,relativeTokens};
+  }
+  const choices=Array.isArray(options.choices)?options.choices:[];
+  const correctChoice=questionKind==='qcm-result'
+    ?relativeDisplayNumber(result)
+    :(questionKind==='qcm-zero-pair'?'Elle vaut 0.':'On rassemble les jetons puis on repère les paires nulles.');
+  const correctIndex=String(Math.max(0,choices.indexOf(correctChoice)+1));
+  const prompt=questionKind==='qcm-result'
+    ?'Calcule '+relativeExpression(a,b)+' en observant les jetons.'
+    :questionKind==='qcm-zero-pair'
+      ?'Que remarques-tu dans '+relativeExpression(a,b)+' ?'
+      :'Quelle méthode décrit correctement '+relativeExpression(a,b)+' ?';
+  return {module:mod,q,scope:{},answers:[correctIndex],rawStatement:prompt+relativeStaticBoardMarkup(relativeTokens)+'&&'+choices.join('&&')+'&&',rawFooter:'',hasSvg:true,relativeTokens};
+}
 function makeInstance(mod,q){
   if(mod&&mod.id==='dnb_01') return makeModule01Instance(mod,q);
   if(mod&&mod.id==='dnb_02b') return makePlaceValueInstance(mod,q);
@@ -2470,6 +2526,7 @@ function makeInstance(mod,q){
   if(mod&&mod.id==='dnb_22') return makeAreaInstance(mod,q);
   if(mod&&mod.id==='dnb_30') return makeAverageInstance(mod,q);
   if(mod&&mod.id==='dnb_35') return makeEvolutionInstance(mod,q);
+  if(mod&&mod.id==='dnb_38') return makeRelativeAdditionInstance(mod,q);
   let scope={};
   if(q.options&&q.options.formula_code) scope=runCode(q.options.formula_code);
   let answerChoices=parseAnswerChoices(q,scope);
@@ -4095,6 +4152,30 @@ function renderProportionModule(inst,correction=false,mode=null){
   if(inst.rawFooter) html+='<div class="footer proportion-answer">'+renderPlaceholders(inst.rawFooter,inst.answers,correction?'correction':'question')+'</div>';
   return html;
 }
+function relativeInitialState(data){return {tokens:data.initialTokens.map(token=>({...token})),nextPair:1};}
+function relativeSolutionState(data){
+  const state=relativeInitialState(data);
+  state.tokens.forEach(token=>{token.zone='result';});
+  return state;
+}
+function relativeTokensBoardMarkup(data,state,correction=false){
+  const visible=correction?relativeSolutionState(data):state;
+  const instruction=correction?'Les jetons sont rassemblés. Les paires +1/−1 s’annulent.':'Rassemble les deux groupes dans la zone résultat. Les paires +1/−1 valent zéro.';
+  const controls=correction?'':'<p class="relative-token-instruction">'+instruction+'</p><div class="relative-token-actions"><button type="button" class="relative-token-action" data-relative-action="reset">Recommencer</button></div>';
+  return '<div class="relative-token-board" data-relative-board>'+relativeZoneMarkup('Premier nombre','a',visible.tokens)+relativeZoneMarkup('Deuxième nombre','b',visible.tokens)+relativeZoneMarkup('Résultat','result',visible.tokens)+controls+(correction?'<p class="relative-token-result">'+relativeExpression(data.a,data.b)+' = <strong>'+relativeDisplayNumber(data.result)+'</strong></p>':'')+'</div>';
+}
+function relativeZoneMarkup(label,zone,tokens){
+  const paired=relativePairIndexes(tokens,zone),visible=tokens.filter(token=>token.zone===zone);
+  const tokenHtml=visible.map(token=>relativeStaticToken(token,paired.has(tokens.indexOf(token)))).join('');
+  return '<section class="relative-token-zone relative-token-zone-'+zone+'" data-relative-zone="'+zone+'"><h3>'+label+'</h3><div class="relative-token-list">'+(tokenHtml||'<span class="relative-token-empty">—</span>')+'</div></section>';
+}
+function renderRelativeTokensModule(inst,correction=false,mode=null){
+  if(mode===null)mode=document.getElementById('visualMode').value;
+  const data=inst.relativeTokens;
+  const prompt='<div class="question relative-token-prompt">Calcule <strong>'+relativeExpression(data.a,data.b)+'</strong> en manipulant les jetons.</div>';
+  if(mode==='without-reveal'&&!correction)return prompt+'<div class="visual-placeholder relative-token-placeholder"><button class="btn" onclick="revealVisual()">Afficher l’aide</button></div>';
+  return prompt+relativeTokensBoardMarkup(data,relativeInitialState(data),correction);
+}
 function renderQuestion(inst, correction=false, mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
   if(inst && inst.module && inst.module.id==='dnb_01') return renderModule01(inst, correction, mode);
@@ -4117,6 +4198,7 @@ function renderQuestion(inst, correction=false, mode=null){
   if(inst && inst.module && inst.module.id==='dnb_30') return renderAverageModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_34') return renderProportionModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_35') return renderEvolutionModule(inst, correction, mode);
+  if(inst && inst.module && inst.module.id==='dnb_38'&&inst.relativeTokens&&inst.relativeTokens.interactive) return renderRelativeTokensModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_07'){
     return renderModule07(inst, correction, mode);
   }
@@ -4156,7 +4238,8 @@ const LEVEL_5E_QUESTIONS={
   dnb_32:'all',
   dnb_33:[1,2,3,4,8,9,10],
   dnb_34:'all',
-  dnb_37:'all'
+  dnb_37:'all',
+  dnb_38:'all'
 };
 
 // Pendant la transition des programmes, ces contenus sont déjà travaillés
@@ -4186,6 +4269,7 @@ const MODULE_MENU_GROUPS={
     {id:'numeration',title:'Numération',moduleIds:['dnb_02','dnb_02b','dnb_14']},
     {id:'entiers-divisibilite',title:'Nombres entiers et divisibilité',moduleIds:['dnb_08','dnb_09']},
     {id:'fractions',title:'Fractions et nombres rationnels',moduleIds:['dnb_01','dnb_03','dnb_03b','dnb_04','dnb_05']},
+    {id:'relatifs',title:'Nombres relatifs',moduleIds:['dnb_38']},
     {id:'puissances',title:'Puissances',moduleIds:['dnb_07','dnb_06']},
     {id:'algebre',title:'Calcul littéral et algèbre',moduleIds:['dnb_10','dnb_11','dnb_12','dnb_13']}
   ],
