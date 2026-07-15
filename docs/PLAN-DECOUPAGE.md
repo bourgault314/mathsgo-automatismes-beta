@@ -52,8 +52,7 @@ niveau de séparation est le module pédagogique.
 
 ### Avancement du domaine Géométrie
 
-- `dnb_15` à `dnb_27` sont isolés dans des fichiers indépendants ;
-- le complément `dnb_26b`, encore créé par le moteur, sera rendu explicite
-  dans le prochain lot ;
-- les configurations héritées seront ensuite intégrées à chaque module avec la
-  même vérification d’empreinte que pour le domaine Nombres.
+- `dnb_15` à `dnb_27`, ainsi que `dnb_26b`, sont isolés dans des fichiers
+  indépendants ;
+- les configurations pédagogiques sont intégrées à leurs fichiers ; elles ne
+  sont plus appliquées après coup par le moteur.

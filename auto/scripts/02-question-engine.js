@@ -689,33 +689,6 @@ function makeModule01Instance(mod,q){
   };
 }
 
-const TRIG_NO_CALCULATOR_KINDS=[
-  'condition','locate_side','ratio_definition','choose_ratio','ratio_from_lengths','useful_formula',
-  'formula_analysis','ratio_invariance','choose_method','method_diagnostic','coherence','method_first_step'
-];
-const TRIG_CALCULATOR_KINDS=[
-  'ratio_decimal','missing_adjacent_cos','missing_hypotenuse_cos','missing_opposite_sin',
-  'missing_opposite_tan','missing_angle_cos','missing_angle_sin','missing_angle_tan',
-  'missing_hypotenuse_sin','missing_adjacent_tan','area_application','perimeter_application'
-];
-const TRIG_UPDATED_TEMPLATE_KINDS=new Set([...TRIG_NO_CALCULATOR_KINDS,'ratio_decimal']);
-function trigQuestionTemplate(kind,index){
-  return {
-    n:index+1,statement:'',answer:'[]',footer:'',
-    options:{trig_kind:kind,...(TRIG_UPDATED_TEMPLATE_KINDS.has(kind)?{template_version:3}:{})}
-  };
-}
-const TRIG_MODULE=RAW_MODULES.find(module=>module.id==='dnb_26');
-if(TRIG_MODULE){
-  TRIG_MODULE.title='Trigonométrie sans calculatrice';
-  TRIG_MODULE.level_tags=['3e','DNB'];
-  TRIG_MODULE.questions=TRIG_NO_CALCULATOR_KINDS.map(trigQuestionTemplate);
-  const trigIndex=RAW_MODULES.indexOf(TRIG_MODULE);
-  if(!RAW_MODULES.some(module=>module.id==='dnb_26b')) RAW_MODULES.splice(trigIndex+1,0,{
-    id:'dnb_26b',num:26.5,domain:'geometry',title:'Trigonométrie avec calculatrice',level_tags:['3e'],source:'mathsgo',has_svg:true,
-    questions:TRIG_CALCULATOR_KINDS.map(trigQuestionTemplate)
-  });
-}
 
 function fractionOpsReduce(num,den){
   const divisor=GCD(Math.abs(num),Math.abs(den));

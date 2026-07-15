@@ -1,12 +1,12 @@
-const MODULE_DNB_26 = {
-  "id": "dnb_26",
-  "num": 26,
-  "title": "Trigonométrie sans calculatrice",
+const MODULE_DNB_26B = {
+  "id": "dnb_26b",
+  "num": 26.5,
+  "domain": "geometry",
+  "title": "Trigonométrie avec calculatrice",
   "level_tags": [
-    "3e",
-    "DNB"
+    "3e"
   ],
-  "source": "import_dnb_zip",
+  "source": "mathsgo",
   "has_svg": true,
   "questions": [
     {
@@ -15,7 +15,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "condition",
+        "trig_kind": "ratio_decimal",
         "template_version": 3
       }
     },
@@ -25,8 +25,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "locate_side",
-        "template_version": 3
+        "trig_kind": "missing_adjacent_cos"
       }
     },
     {
@@ -35,8 +34,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "ratio_definition",
-        "template_version": 3
+        "trig_kind": "missing_hypotenuse_cos"
       }
     },
     {
@@ -45,8 +43,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "choose_ratio",
-        "template_version": 3
+        "trig_kind": "missing_opposite_sin"
       }
     },
     {
@@ -55,8 +52,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "ratio_from_lengths",
-        "template_version": 3
+        "trig_kind": "missing_opposite_tan"
       }
     },
     {
@@ -65,8 +61,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "useful_formula",
-        "template_version": 3
+        "trig_kind": "missing_angle_cos"
       }
     },
     {
@@ -75,8 +70,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "formula_analysis",
-        "template_version": 3
+        "trig_kind": "missing_angle_sin"
       }
     },
     {
@@ -85,8 +79,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "ratio_invariance",
-        "template_version": 3
+        "trig_kind": "missing_angle_tan"
       }
     },
     {
@@ -95,8 +88,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "choose_method",
-        "template_version": 3
+        "trig_kind": "missing_hypotenuse_sin"
       }
     },
     {
@@ -105,8 +97,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "method_diagnostic",
-        "template_version": 3
+        "trig_kind": "missing_adjacent_tan"
       }
     },
     {
@@ -115,8 +106,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "coherence",
-        "template_version": 3
+        "trig_kind": "area_application"
       }
     },
     {
@@ -125,8 +115,7 @@ const MODULE_DNB_26 = {
       "answer": "[]",
       "footer": "",
       "options": {
-        "trig_kind": "method_first_step",
-        "template_version": 3
+        "trig_kind": "perimeter_application"
       }
     }
   ]

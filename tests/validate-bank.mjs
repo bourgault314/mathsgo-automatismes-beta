@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 const root = new URL('../', import.meta.url);
 const isolatedModulesByDomain = {
   numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14'],
-  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_27']
+  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27']
 };
 const isolatedModuleIds = Object.values(isolatedModulesByDomain).flat();
 const sources = [
