@@ -39,6 +39,12 @@ les couleurs des fractions usuelles, les grilles de 1 %, ainsi que la forme et
 le placement des accolades. Sept cas de référence couvrent les demis, quarts,
 huitièmes et pourcentages usuels ; leurs états question/correction sont testés.
 
+`numbers.number-line` produit la droite graduée utilisée par les dix-huit
+gabarits de `dnb_14`. Ses paramètres décrivent les repères chiffrés et les
+points, ce qui couvre les unités entières, les relatifs, les graduations
+fractionnaires, les échelles variables et la lecture de deux points. Les SVG
+répétés ont été remplacés par ce composant sans changer la banque V1.15.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle

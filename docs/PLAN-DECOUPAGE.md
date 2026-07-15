@@ -49,6 +49,8 @@ niveau de séparation est le module pédagogique.
 - les configurations pédagogiques des modules Nombres sont maintenant
   intégrées à leurs fichiers ; elles ne sont plus appliquées après coup par le
   moteur.
+- les dix-huit droites graduées répétées dans `dnb_14` sont maintenant rendues
+  par le composant partagé `numbers.number-line`.
 
 ### Avancement du domaine Géométrie
 

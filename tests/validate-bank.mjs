@@ -11,6 +11,8 @@ const isolatedModulesByDomain = {
 };
 const isolatedModuleIds = Object.values(isolatedModulesByDomain).flat();
 const sources = [
+  'auto/scripts/shared/visuals/00-registry.js',
+  'auto/scripts/shared/visuals/numbers/number-line.js',
   ...isolatedModulesByDomain.numbers.map(id => `auto/scripts/modules/numbers/${id}.js`),
   'auto/scripts/data/01-numbers.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
@@ -20,7 +22,6 @@ const sources = [
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
   'auto/scripts/data/04-algorithm.js',
   'auto/scripts/01-modules.js',
-  'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',

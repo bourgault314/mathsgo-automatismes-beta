@@ -66,6 +66,8 @@ tests avant toute évolution graphique.
 
 Les barres de fractions et de pourcentages, y compris leurs accolades, sont
 également extraites du moteur et visibles dans le catalogue de développement.
+Les dix-huit gabarits de droites graduées de `dnb_14` utilisent désormais un
+unique composant commun, sans modifier le contenu de la banque V1.15.
 
 ## Vérifier la banque
 

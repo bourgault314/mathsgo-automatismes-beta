@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 const root = new URL('../', import.meta.url);
 const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
+  'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
@@ -28,7 +29,30 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 4) fail(`4 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 5) fail(`5 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const numberLine = registry?.get('numbers.number-line');
+if (!numberLine) fail('Le composant numbers.number-line est absent.');
+if (numberLine && numberLine.version !== '1.0.0') fail('Version 1.0.0 attendue pour le composant droite graduée.');
+if (numberLine && numberLine.presets.length !== 5) fail('Cinq familles de droites graduées sont attendues.');
+if (numberLine && context.numberLineSvg !== numberLine.render) {
+  fail('Le module dnb_14 doit utiliser le composant droite graduée enregistré.');
+}
+const numberLineHashes = new Map([
+  ['unite', '9849822d67da6bf91ae191fc146b5fbbab5062c5f4e1eb40e17f3f5c1cb08390'],
+  ['relatifs', '33181d27eafe25f16b802ecd378343cf9711375c48419f56615128730d0f3d79'],
+  ['fraction', 'd6911fe60a2ea0267c827bc30bcf2cc247ec5ff7a92774d0e979fa06c25dd3fd'],
+  ['echelle', 'fb1a0df975801b58bdc8418d0ba40034f4ee646b00206d2d945b78c87a3f7b16'],
+  ['deux-points', '4bf638ad01681c48fd61d55091269a85d3a0eae451557a511b90a0e8972b1091']
+]);
+for (const preset of numberLine?.presets || []) {
+  const actual = hash(numberLine.render(preset.data));
+  if (actual !== numberLineHashes.get(preset.id)) fail(`La droite graduée ${preset.id} a changé (${actual}).`);
+}
+const numberLineModule = fs.readFileSync(new URL('auto/scripts/modules/numbers/dnb_14.js', root), 'utf8');
+const numberLineCalls = [...numberLineModule.matchAll(/numberLineSvg\(/g)].length;
+if (numberLineCalls !== 18) fail(`Les 18 gabarits de dnb_14 doivent utiliser la droite graduée commune (${numberLineCalls} appel(s)).`);
+if (numberLineModule.includes('<svg')) fail('dnb_14 ne doit plus embarquer de copie du SVG de droite graduée.');
 
 const equationSplat = registry?.get('algebra.equation-splat');
 if (!equationSplat) fail('Le composant algebra.equation-splat est absent.');
@@ -113,14 +137,16 @@ for (const testCase of fractionPercentCases) {
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
+const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
+const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_14.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || relationPosition < registryPosition || fractionPercentPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || numberLineModulePosition < numberLinePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || componentPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 5 droites graduées, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
 }
