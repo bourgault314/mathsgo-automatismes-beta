@@ -47,3 +47,11 @@ le quart, le prédécesseur et le successeur. Ses dix états de référence sont
 Le Splat officiel avec son X arrondi, les schémas en barres et les figures de
 Thalès seront intégrés suivant ce contrat. Le dépôt séparé de composants ne sera
 créé qu’une fois plusieurs composants éprouvés et leur interface stabilisée.
+
+## Référence Thalès
+
+`geometry.thales-configuration` reprend les coordonnées de la fiche méthode
+`fiche_reciproque_thales_v9_logo_site.tex` : cas emboîté et cas papillon,
+lettres `A, M, N, B, C`, droites `(MN)` et `(BC)`, traits sans extrémités
+arrondies et sommet `A` pointu. Cette version `0.1.0` est visible dans le
+catalogue mais ne remplace pas encore les figures des exercices.

@@ -6,7 +6,8 @@ const root = new URL('../', import.meta.url);
 const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
-  'auto/scripts/shared/visuals/algebra/equation-splat.js'
+  'auto/scripts/shared/visuals/algebra/equation-splat.js',
+  'auto/scripts/shared/visuals/geometry/thales-configuration.js'
 ];
 const code = visualSources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
@@ -26,7 +27,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 2) fail(`2 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 3) fail(`3 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const equationSplat = registry?.get('algebra.equation-splat');
 if (!equationSplat) fail('Le composant algebra.equation-splat est absent.');
@@ -74,6 +75,19 @@ for (const testCase of relationCases) {
   }
 }
 
+const thales = registry?.get('geometry.thales-configuration');
+if (!thales) fail('Le composant geometry.thales-configuration est absent.');
+if (thales && thales.presets.length !== 2) fail('Deux configurations de Thalès sont attendues.');
+if (thales) {
+  const nested = thales.render({ configuration: 'nested' });
+  const butterfly = thales.render({ configuration: 'butterfly' });
+  if (!nested.includes('stroke-linejoin="miter"') || !butterfly.includes('stroke-linejoin="miter"')) {
+    fail('Les sommets des configurations de Thalès doivent rester nets et sans arrondi.');
+  }
+  if (hash(nested) !== 'c83cd1fcb62876a1fbaa94f6997b04e2a79c09f02f80160e573cd83cc3edc240') fail('La configuration de Thalès emboîtée a changé.');
+  if (hash(butterfly) !== '43161c04f1942ea7cbe243cb9fa8a048af45c1ef0e82042b68a655ab95eb3c81') fail('La configuration de Thalès en papillon a changé.');
+}
+
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
@@ -84,5 +98,5 @@ if (registryPosition < 0 || relationPosition < registryPosition || componentPosi
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 4 rendus équation/Splat et 10 schémas en barres inchangés.');
+  console.log('OK — registre cohérent, 4 équations/Splats, 10 schémas en barres et 2 configurations de Thalès figés.');
 }
