@@ -21,16 +21,17 @@
   .presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:18px}
   .preset{border:1px solid #e1e6ec;border-radius:16px;padding:16px;background:#fbfcfd}
   h3{font-size:1rem;margin:0 0 14px}
+  .supports{display:flex;flex-wrap:wrap;gap:5px;margin:-7px 0 12px}.support{padding:4px 7px;border-radius:999px;background:#eaf2fb;color:#35526e;font-size:.68rem;font-weight:800;text-transform:uppercase}
   .states{display:grid;gap:12px}
   figure{margin:0;border-radius:12px;border:1px solid #e1e6ec;background:white;overflow:hidden}
   figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
   .visual{padding:10px}
   .visual svg{display:block;width:100%;height:auto}
-  .component[data-component-id="numbers.place-value-table"] .presets{grid-template-columns:1fr}
+  .component[data-component-id="numbers.glisse-nombre"] .presets{grid-template-columns:1fr}
   .place-value-tool{width:min(100%,1000px);margin:8px auto 0;user-select:none}
   .place-value-grid{position:relative;overflow:hidden;border:3px solid #17384d;border-radius:14px;background:#fff}
   .place-value-head-row,.place-value-window-row,.place-value-fixed-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
-  .place-value-head{display:flex;align-items:center;justify-content:center;height:38px;padding:0 4px;border-right:1.5px solid #9fb3c8;border-bottom:1.5px solid #9fb3c8;background:#eef6ff;color:#35526e;font-size:clamp(.68rem,1.3vw,1rem);font-weight:800}.place-value-head:nth-child(4){background:#dceeff;color:#0879d0}.place-value-head:last-child{border-right:0}
+  .place-value-head{display:flex;min-width:0;align-items:center;justify-content:center;height:38px;padding:0 2px;overflow:hidden;border-right:1.5px solid #9fb3c8;border-bottom:1.5px solid #9fb3c8;background:#eef6ff;color:#35526e;font-size:clamp(.48rem,1.25vw,1rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;white-space:nowrap}.place-value-head:nth-child(4){background:#dceeff;color:#0879d0}.place-value-head:last-child{border-right:0}
   .place-value-preview-row,.place-value-fixed-row{position:relative;height:66px}.place-value-preview-row{background:#f7f8fa}.place-value-fixed-row{border-top:1.5px solid #9fb3c8;background:#fff}
   .place-value-window-row{position:absolute;inset:0;z-index:5;pointer-events:none}.place-value-window{border-right:1.5px solid #9fb3c8}.place-value-window:last-child{border-right:0}
   .place-value-strip-viewport{position:absolute;inset:0;z-index:3;overflow:hidden;pointer-events:none}.place-value-strip{position:absolute;inset:0 auto 0 0;display:grid;grid-template-columns:repeat(13,calc(100% / 13));width:calc(100% * 13 / 7);align-items:center;justify-items:center}
@@ -95,6 +96,10 @@
       card.className='preset';
       const presetTitle=document.createElement('h3');
       presetTitle.textContent=preset.label;
+      const supports=document.createElement('div');
+      supports.className='supports';
+      const supportLabels={phone:'Téléphone',computer:'Ordinateur',projection:'Projection',print:'Impression'};
+      (preset.supports||component.supports||[]).forEach(name=>{const badge=document.createElement('span');badge.className='support';badge.textContent=supportLabels[name]||name;supports.append(badge);});
       const states=document.createElement('div');
       states.className='states';
       [['Question',false],['Correction',true]].forEach(([label,revealed])=>{
@@ -104,32 +109,7 @@
         const visual=document.createElement('div');
         visual.className='visual';
         visual.innerHTML=component.render(preset.data,revealed);
-        visual.querySelectorAll('.place-value-tool').forEach(tool=>{
-          const base=String(tool.dataset.baseDigits||'').split('|');
-          const strip=tool.querySelector('.place-value-strip');
-          const stripDigits=[...tool.querySelectorAll('.place-value-strip-digit')];
-          const shift=Number(tool.dataset.initialShift)||0,pad=3,columnCount=7;
-          const mapped=Array(columnCount).fill('');
-          for(let windowIndex=0;windowIndex<columnCount;windowIndex++){
-            const source=windowIndex+shift;
-            mapped[windowIndex]=source>=0&&source<columnCount?(base[source]||''):'';
-          }
-          const nonEmpty=[];mapped.forEach((digit,index)=>{if(digit!=='')nonEmpty.push(index);});
-          const display=Array(columnCount).fill(''),ghost=Array(columnCount).fill(false);
-          if(nonEmpty.length){
-            let left=nonEmpty[0],right=nonEmpty[nonEmpty.length-1];
-            while(left<3&&mapped[left]==='0'&&nonEmpty.some(index=>index>left)) left++;
-            const leftLimit=left<=3?left:3,rightLimit=right>3?right:3;
-            for(let index=leftLimit;index<=rightLimit;index++){
-              if(mapped[index]===''){display[index]='0';ghost[index]=true;}else display[index]=mapped[index];
-            }
-          }
-          display.forEach((digit,windowIndex)=>{
-            const node=stripDigits[pad+windowIndex+shift];if(!node)return;
-            node.textContent=digit;node.classList.toggle('ghost-zero',ghost[windowIndex]);node.classList.toggle('is-units-digit',windowIndex===3);
-          });
-          if(strip) strip.style.transform='translateX('+(((-pad-shift)*100)/13)+'%)';
-        });
+        if(typeof component.setup==='function')component.setup(visual);
         visual.querySelectorAll('.conversion-tool').forEach(tool=>{
           const units=Number(getComputedStyle(tool).getPropertyValue('--conversion-units'))||7;
           const unitSlots=Number(tool.dataset.unitSlots)||1;
@@ -156,7 +136,7 @@
       const data=document.createElement('pre');
       data.textContent=JSON.stringify(preset.data,null,2);
       details.append(summary,data);
-      card.append(presetTitle,states,details);
+      card.append(presetTitle,...(supports.childElementCount?[supports]:[]),states,details);
       presets.append(card);
     });
     section.append(head,presets);

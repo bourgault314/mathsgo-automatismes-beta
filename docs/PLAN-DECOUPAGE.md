@@ -51,8 +51,8 @@ niveau de séparation est le module pédagogique.
   moteur ;
 - les dix-huit droites graduées répétées dans `dnb_14` sont maintenant rendues
   par le composant partagé `numbers.number-line` ;
-- le tableau de numération de `dnb_02b` et sa virgule fixe sont isolés dans
-  `numbers.place-value-table`.
+- le glisse-nombre de `dnb_02b`, sa virgule fixe et son contrôleur animé sont
+  isolés dans `numbers.glisse-nombre`.
 
 ### Avancement du domaine Géométrie
 

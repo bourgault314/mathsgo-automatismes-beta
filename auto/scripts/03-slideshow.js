@@ -119,7 +119,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .place-value-tool{width:min(98%,1480px);margin:8px auto 0;user-select:none;touch-action:none}
 .place-value-grid{position:relative;overflow:hidden;border:3px solid #17384d;border-radius:14px;background:#fff}
 .place-value-head-row,.place-value-window-row,.place-value-fixed-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
-.place-value-head{display:flex;align-items:center;justify-content:center;height:38px;padding:0 4px;border-right:1.5px solid #9fb3c8;border-bottom:1.5px solid #9fb3c8;background:#eef6ff;color:#35526e;font-size:clamp(.72rem,1.4vw,1rem);font-weight:800}
+.place-value-head{display:flex;min-width:0;align-items:center;justify-content:center;height:38px;padding:0 2px;overflow:hidden;border-right:1.5px solid #9fb3c8;border-bottom:1.5px solid #9fb3c8;background:#eef6ff;color:#35526e;font-size:clamp(.5rem,1.35vw,1rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;white-space:nowrap}
 .place-value-head:nth-child(4){background:#dceeff;color:#0879d0}.place-value-head:last-child{border-right:0}
 .place-value-preview-row,.place-value-fixed-row{position:relative;height:66px}.place-value-preview-row{background:#f7f8fa}.place-value-fixed-row{border-top:1.5px solid #9fb3c8;background:#fff}
 .place-value-window-row{position:absolute;inset:0;z-index:5;pointer-events:none}.place-value-window{border-right:1.5px solid #9fb3c8}.place-value-window:last-child{border-right:0}
@@ -438,6 +438,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .interactive-polynomial-term{display:inline-flex;align-items:center;gap:.12em;white-space:nowrap}.interactive-polynomial-separator{margin:0 -.08em;font-family:Arial,Helvetica,sans-serif;font-weight:750}
 @media(min-width:801px){.diapo.interactive-mode .stage{padding:6px 18px 10px}.diapo.interactive-mode .question svg{max-height:255px;width:auto;margin-left:auto;margin-right:auto}}
 @media(min-width:1200px){.answer-dock:not(.qcm-mode) .answer-body{display:block;position:relative;padding:0 195px}.answer-dock:not(.qcm-mode) .answer-main{width:100%;max-width:var(--keypad-max);margin:0 auto}.answer-dock:not(.qcm-mode) .dock-actions{position:absolute;right:14px;top:0;bottom:0}}
+@media(min-width:1200px){.answer-dock.qcm-mode .answer-body{display:block;position:relative;padding:0 239px}.answer-dock.qcm-mode .answer-main{width:100%;max-width:var(--keypad-max);margin:0 auto}.answer-dock.qcm-mode .dock-actions{position:absolute;right:14px;top:0;bottom:0}}
 @media(min-width:801px) and (max-height:760px){.diapo.interactive-mode.module01-mode .module01-prompt{font-size:clamp(2rem,3vw,2.7rem);margin-bottom:4px}.diapo.interactive-mode.module01-mode .module01-source{font-size:clamp(2.45rem,4vw,3.75rem);margin:1px auto 3px}.diapo.interactive-mode.module01-mode .module01-visual{margin:3px auto 2px}.diapo.interactive-mode.module01-mode .module01-visual svg{width:auto;max-width:100%;max-height:220px}.diapo.interactive-mode.module01-mode .module01-options .opt{padding:9px 14px}.diapo.interactive-mode.median-mode .question{font-size:clamp(1.9rem,3.3vw,2.85rem);line-height:1.12;margin-bottom:10px}.diapo.interactive-mode.median-mode .options{gap:10px 14px;margin-top:10px}.diapo.interactive-mode.median-mode .opt{padding:13px 16px;font-size:clamp(1.15rem,1.7vw,1.55rem)}.diapo.interactive-mode.angle-sum-mode .angle-sum-prompt{font-size:clamp(1.65rem,2.4vw,2.15rem);margin-bottom:2px}.diapo.interactive-mode.angle-sum-mode .angle-sum-prompt svg{max-height:158px;margin-top:3px}.diapo.interactive-mode.angle-sum-mode .angle-bar-help{height:138px;margin-top:0}.diapo.interactive-mode.geometry-long-prompt-mode .question svg{max-height:285px!important}.diapo.interactive-mode.geometry-long-prompt-mode .opt{min-height:54px;padding:11px 14px}.diapo.interactive-mode.proportion-table-mode .proportion-line-desktop{width:min(100%,760px)}}
 @media(min-width:801px) and (max-height:760px){.diapo.interactive-mode.fraction-ops-mode .fraction-product-manipulator .fraction-ops-area{max-height:285px}.diapo.interactive-mode.fraction-ops-mode .fraction-product-manipulator{padding-top:5px;padding-bottom:4px}.diapo.interactive-mode.fraction-ops-mode .fraction-product-manipulator p{font-size:.8rem}}
 @media(min-width:801px) and (max-height:760px){.diapo.interactive-mode.area-formula-mode .area-main{height:clamp(250px,38vh,300px)}}
@@ -1123,56 +1124,6 @@ function setupGridPointInteraction(spec){
  }
  if(interactiveLocked)return;
  svg.querySelectorAll('.transformation-grid-hit').forEach(hit=>{hit.setAttribute('tabindex','0');hit.setAttribute('role','button');const choose=()=>{interactiveValues=[hit.dataset.gridX,hit.dataset.gridY];interactiveTouched=[true,true];setupGridPointInteraction(spec);updateInteractiveControls();};hit.onclick=choose;hit.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};});
-}
-function setupPlaceValueTools(){
- document.querySelectorAll('.place-value-tool').forEach(tool=>{
-   const grid=tool.querySelector('.place-value-grid'),bar=tool.querySelector('.place-value-drag-bar'),strip=tool.querySelector('.place-value-strip');
-   if(!grid||!bar||!strip||bar.dataset.ready==='1')return;
-   bar.dataset.ready='1';
-   const base=String(tool.dataset.baseDigits||'').split('|'),stripDigits=[...strip.querySelectorAll('.place-value-strip-digit')],pad=3,columnCount=7;
-   let shift=Number(tool.dataset.initialShift)||0,step=1,startX=0,startPx=0,currentPx=0;
-   const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
-   const displayForShift=value=>{
-     const mapped=Array(columnCount).fill('');
-     for(let windowIndex=0;windowIndex<columnCount;windowIndex++){
-       const source=windowIndex+value;
-       mapped[windowIndex]=source>=0&&source<columnCount?(base[source]||''):'';
-     }
-     const nonEmpty=[];mapped.forEach((digit,index)=>{if(digit!=='')nonEmpty.push(index);});
-     const display=Array(columnCount).fill(''),ghost=Array(columnCount).fill(false);
-     if(nonEmpty.length){
-       let left=nonEmpty[0],right=nonEmpty[nonEmpty.length-1];
-       while(left<3&&mapped[left]==='0'&&nonEmpty.some(index=>index>left))left++;
-       const leftLimit=left<=3?left:3,rightLimit=right>3?right:3;
-       for(let index=leftLimit;index<=rightLimit;index++){
-         if(mapped[index]===''){display[index]='0';ghost[index]=true;}else display[index]=mapped[index];
-       }
-     }
-     return {display,ghost};
-   };
-   const renderDigits=value=>{
-     const result=displayForShift(value);
-     stripDigits.forEach(node=>{node.textContent='';node.classList.remove('ghost-zero','is-units-digit');});
-     result.display.forEach((digit,windowIndex)=>{
-       const stripIndex=pad+windowIndex+value,node=stripDigits[stripIndex];if(!node)return;
-       node.textContent=digit;node.classList.toggle('ghost-zero',result.ghost[windowIndex]);node.classList.toggle('is-units-digit',windowIndex===3);
-     });
-   };
-   const setTransforms=(px,snap=false)=>{
-     bar.style.transition=snap?'transform .16s ease':'none';strip.style.transition=snap?'transform .16s ease':'none';
-     bar.style.transform='translateX('+px+'px)';strip.style.transform='translateX('+(-pad*step+px)+'px)';currentPx=px;
-   };
-   const apply=(value,snap=true)=>{
-     shift=clamp(Math.round(value),-3,3);renderDigits(shift);setTransforms(-shift*step,snap);bar.setAttribute('aria-valuenow',String(shift));
-   };
-   const refresh=()=>{step=grid.clientWidth/columnCount;apply(shift,false);};
-   requestAnimationFrame(refresh);
-   bar.addEventListener('pointerdown',event=>{event.preventDefault();refresh();startX=event.clientX;startPx=currentPx;bar.setPointerCapture(event.pointerId);});
-   bar.addEventListener('pointermove',event=>{if(!bar.hasPointerCapture(event.pointerId))return;const px=clamp(startPx+(event.clientX-startX),-3*step,3*step),next=clamp(Math.round(-px/step),-3,3);if(next!==shift){shift=next;renderDigits(shift);bar.setAttribute('aria-valuenow',String(shift));}setTransforms(px,false);});
-   const end=event=>{if(!bar.hasPointerCapture(event.pointerId))return;bar.releasePointerCapture(event.pointerId);apply(shift,true);};
-   bar.addEventListener('pointerup',end);bar.addEventListener('pointercancel',end);
-   bar.addEventListener('keydown',event=>{if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;event.preventDefault();refresh();apply(shift+(event.key==='ArrowLeft'?1:-1),true);});
- });
 }
 function setupConversionTools(){
  document.querySelectorAll('.conversion-tool').forEach(tool=>{

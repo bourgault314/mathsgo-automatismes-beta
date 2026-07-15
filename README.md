@@ -70,8 +70,9 @@ Les dix-huit gabarits de droites graduées de `dnb_14` utilisent désormais un
 unique composant commun, sans modifier le contenu de la banque V1.15.
 Le tableau interactif de conversion de `dnb_19` est lui aussi séparé du gros
 moteur pour les longueurs, masses, capacités, aires et volumes.
-Le tableau de numération de `dnb_02b`, avec sa virgule fixe et sa bande de
-chiffres déplaçable, est maintenant un composant partagé séparé.
+Le glisse-nombre de `dnb_02b`, avec sa virgule fixe, sa bande grise et sa bande
+de chiffres déplaçable, est isolé dans `numbers.glisse-nombre`. Son contrôleur
+de glissement fait partie du composant et sert aussi dans le catalogue.
 Les neuf gabarits de repères du plan de `dnb_15`, y compris les demi-unités et
 les lectures à deux points, utilisent un générateur commun.
 

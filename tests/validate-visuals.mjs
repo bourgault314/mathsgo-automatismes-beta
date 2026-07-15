@@ -36,8 +36,8 @@ if (components.length !== 8) fail(`8 composants visuels attendus, ${components.l
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
-if (numberLine && numberLine.version !== '1.0.0') fail('Version 1.0.0 attendue pour le composant droite graduée.');
-if (numberLine && numberLine.presets.length !== 5) fail('Cinq familles de droites graduées sont attendues.');
+if (numberLine && numberLine.version !== '1.1.0') fail('Version 1.1.0 attendue pour le composant droite graduée.');
+if (numberLine && numberLine.presets.length !== 9) fail('Neuf familles de droites graduées sont attendues.');
 if (numberLine && context.numberLineSvg !== numberLine.render) {
   fail('Le module dnb_14 doit utiliser le composant droite graduée enregistré.');
 }
@@ -46,12 +46,18 @@ const numberLineHashes = new Map([
   ['relatifs', '33181d27eafe25f16b802ecd378343cf9711375c48419f56615128730d0f3d79'],
   ['fraction', 'd6911fe60a2ea0267c827bc30bcf2cc247ec5ff7a92774d0e979fa06c25dd3fd'],
   ['echelle', 'fb1a0df975801b58bdc8418d0ba40034f4ee646b00206d2d945b78c87a3f7b16'],
-  ['deux-points', '4bf638ad01681c48fd61d55091269a85d3a0eae451557a511b90a0e8972b1091']
+  ['deux-points', '4bf638ad01681c48fd61d55091269a85d3a0eae451557a511b90a0e8972b1091'],
+  ['courte-parametree','740e60f5405b92e12c2efe52b297e426addb1ae1eae9817b5d95346e402790c2'],
+  ['longue-decimale','0f80e1e9f139db37c30a329ec9ab3351579cd4a55b783e8ade0c4bf45abd036c'],
+  ['centiemes','ce71a186ddb1bfe90c8230bab0966f69ba676cfac2dfe94b887361a7094fb719'],
+  ['huitiemes','eebffe9be8793498e7855904a2489c85ec87df0da34231a28e1913d9861458ce']
 ]);
 for (const preset of numberLine?.presets || []) {
   const actual = hash(numberLine.render(preset.data));
   if (actual !== numberLineHashes.get(preset.id)) fail(`La droite graduée ${preset.id} a changé (${actual}).`);
 }
+if (!numberLine?.presets.find(preset=>preset.id==='courte-parametree')?.supports.includes('phone')) fail('La droite courte doit être déclarée compatible téléphone.');
+if (numberLine?.presets.find(preset=>preset.id==='longue-decimale')?.supports.includes('phone')) fail('La droite longue ne doit pas être proposée telle quelle sur téléphone.');
 const numberLineModule = fs.readFileSync(new URL('auto/scripts/modules/numbers/dnb_14.js', root), 'utf8');
 const numberLineCalls = [...numberLineModule.matchAll(/numberLineSvg\(/g)].length;
 if (numberLineCalls !== 18) fail(`Les 18 gabarits de dnb_14 doivent utiliser la droite graduée commune (${numberLineCalls} appel(s)).`);
@@ -59,8 +65,8 @@ if (numberLineModule.includes('<svg')) fail('dnb_14 ne doit plus embarquer de co
 
 const coordinatePlane = registry?.get('geometry.coordinate-plane');
 if (!coordinatePlane) fail('Le composant geometry.coordinate-plane est absent.');
-if (coordinatePlane && coordinatePlane.version !== '1.0.0') fail('Version 1.0.0 attendue pour le repère du plan.');
-if (coordinatePlane && coordinatePlane.presets.length !== 4) fail('Quatre repères du plan de référence sont attendus.');
+if (coordinatePlane && coordinatePlane.version !== '1.1.0') fail('Version 1.1.0 attendue pour le repère du plan.');
+if (coordinatePlane && coordinatePlane.presets.length !== 8) fail('Huit repères du plan de référence sont attendus.');
 if (coordinatePlane && context.coordinatePlaneSvg !== coordinatePlane.render) {
   fail('Le module dnb_15 doit utiliser le repère du plan enregistré.');
 }
@@ -68,12 +74,18 @@ const coordinateHashes = new Map([
   ['point','d5163af9569b4e32afaf8c4dd8804a91ab19b1647dd3f273045117c1fd297c26'],
   ['axe','d7f23e7bf63f3df863993805ed67ab39b0c151cf2cc2583b4f6705e3a3e4741b'],
   ['deux-points','7f1a8b99796674e4576e07c827dae9d68d076f2d4ef51f3a3c3d3c61b3cc7cab'],
-  ['demi-unites','2ccf925860b3683bb9b1b632329f79424ed9f960d22c992325ef8f27dabfbc78']
+  ['demi-unites','2ccf925860b3683bb9b1b632329f79424ed9f960d22c992325ef8f27dabfbc78'],
+  ['compact-parametre','262cd86902737bf5fbe319b9b625b3bbf13a04d43621dfe59fed2f4c658a4d25'],
+  ['grand-parametre','31ab6354de74a7c8888b69925c41bb49dbcd5ab25939ee191af4d4932be9437f'],
+  ['demi-pas-parametre','101b6dcce0d98fda1ce39b41298a89807883450ad7e5d9ff867fdb6edc34e9ef'],
+  ['rectangulaire','83fc90440e8b2e7bc62b646f2eaaa2f50c9d8fcf7535d2503e9b82fcd680754e']
 ]);
 for (const preset of coordinatePlane?.presets || []) {
   const actual=hash(coordinatePlane.render(preset.data));
   if(actual!==coordinateHashes.get(preset.id)) fail(`Le repère du plan ${preset.id} a changé (${actual}).`);
 }
+const tracedPlane=coordinatePlane?.render(coordinatePlane.presets.find(preset=>preset.id==='compact-parametre').data)||'';
+if(!tracedPlane.includes('y1="160.5"')&&!tracedPlane.includes('stroke-width="1.5"')) fail('Le traceur de repère doit dessiner de petits traits de graduation sur les axes.');
 const coordinateModule = fs.readFileSync(new URL('auto/scripts/modules/geometry/dnb_15.js', root), 'utf8');
 const coordinateCalls = [...coordinateModule.matchAll(/coordinatePlaneSvg\(/g)].length;
 if (coordinateCalls !== 9) fail(`Les 9 gabarits de dnb_15 doivent utiliser le repère commun (${coordinateCalls} appel(s)).`);
@@ -104,13 +116,14 @@ if (questionEngine.includes('function conversionTableHtml') || questionEngine.in
   fail('Le générateur de tableau de conversion ne doit plus être défini dans le gros moteur.');
 }
 
-const placeValueTable = registry?.get('numbers.place-value-table');
-if (!placeValueTable) fail('Le composant numbers.place-value-table est absent.');
-if (placeValueTable && placeValueTable.version !== '1.0.0') fail('Version 1.0.0 attendue pour le tableau de numération.');
-if (placeValueTable && placeValueTable.presets.length !== 5) fail('Cinq déplacements de référence sont attendus dans le tableau de numération.');
+const placeValueTable = registry?.get('numbers.glisse-nombre');
+if (!placeValueTable) fail('Le composant numbers.glisse-nombre est absent.');
+if (placeValueTable && placeValueTable.version !== '1.1.0') fail('Version 1.1.0 attendue pour le glisse-nombre.');
+if (placeValueTable && placeValueTable.presets.length !== 5) fail('Cinq déplacements de référence sont attendus dans le glisse-nombre.');
 if (placeValueTable && context.placeValueToolHtml !== placeValueTable.render) {
-  fail('Le moteur doit utiliser le tableau de numération enregistré.');
+  fail('Le moteur doit utiliser le glisse-nombre enregistré.');
 }
+if (placeValueTable && context.setupPlaceValueTools !== placeValueTable.setup) fail('Le contrôleur animé doit appartenir au composant glisse-nombre.');
 const placeValueHashes = new Map([
   ['fois-dix', ['2d39510274d85f99451ab578bc05e40d79dd91e44c1788c00567ac650b217159','6724b8e3baa36f5265222268c465dafa4accfe6e7a5391daf66abd434646005f']],
   ['fois-mille', ['d18fa815e34c01fd21452f81ba0dd168ba13445a6136409f8e927cad5614b932','9557415f5da75e0b80322df9d26c58bc8c350b3597c6be1d5194be7776d50efb']],
@@ -176,7 +189,8 @@ for (const testCase of relationCases) {
 
 const thales = registry?.get('geometry.thales-configuration');
 if (!thales) fail('Le composant geometry.thales-configuration est absent.');
-if (thales && thales.presets.length !== 2) fail('Deux configurations de Thalès sont attendues.');
+if (thales && thales.version !== '0.2.0') fail('Version 0.2.0 attendue pour les configurations de Thalès.');
+if (thales && thales.presets.length !== 4) fail('Deux configurations de Thalès dans deux styles sont attendues.');
 if (thales) {
   const nested = thales.render({ configuration: 'nested' });
   const butterfly = thales.render({ configuration: 'butterfly' });
@@ -185,6 +199,10 @@ if (thales) {
   }
   if (hash(nested) !== 'c83cd1fcb62876a1fbaa94f6997b04e2a79c09f02f80160e573cd83cc3edc240') fail('La configuration de Thalès emboîtée a changé.');
   if (hash(butterfly) !== '43161c04f1942ea7cbe243cb9fa8a048af45c1ef0e82042b68a655ab95eb3c81') fail('La configuration de Thalès en papillon a changé.');
+  const exerciseNested=thales.render({configuration:'nested',style:'exercise'});
+  const exerciseButterfly=thales.render({configuration:'butterfly',style:'exercise'});
+  if(exerciseNested.includes('#11468c')||exerciseNested.includes('#1daeae')||exerciseButterfly.includes('#ff9114')) fail('Les figures de Thalès en mode exercice doivent être monochromes.');
+  if(!exerciseNested.includes('stroke="#111111"')||!exerciseButterfly.includes('stroke="#111111"')) fail('Le mode exercice de Thalès doit tracer les figures en noir.');
 }
 
 const fractionPercent = registry?.get('arithmetic.fraction-percent-bar');
@@ -210,6 +228,9 @@ for (const testCase of fractionPercentCases) {
 }
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
+const slideshow = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
+if (!slideshow.includes('.answer-dock.qcm-mode .dock-actions{position:absolute;right:14px')) fail('Le bouton Suivant des QCM doit rester ancré à droite sur ordinateur.');
+if (/function setupPlaceValueTools\s*\(/.test(slideshow)) fail('Le contrôleur du glisse-nombre ne doit plus être défini dans le diaporama.');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
@@ -226,5 +247,5 @@ if (registryPosition < 0 || numberLinePosition < registryPosition || placeValueP
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 5 droites graduées, 4 repères du plan, 10 tableaux de numération, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 2 configurations de Thalès figés.');
+  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres et 4 configurations de Thalès figés.');
 }

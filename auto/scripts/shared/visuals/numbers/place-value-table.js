@@ -37,6 +37,59 @@
       +(instruction?'<div class="place-value-tool-note">'+instruction+'</div>':'')+'</div>';
   }
 
+  function setupPlaceValueTools(root=global.document){
+    if(!root||typeof root.querySelectorAll!=='function')return;
+    root.querySelectorAll('.place-value-tool').forEach(tool=>{
+      const grid=tool.querySelector('.place-value-grid'),bar=tool.querySelector('.place-value-drag-bar'),strip=tool.querySelector('.place-value-strip');
+      if(!grid||!bar||!strip||bar.dataset.ready==='1')return;
+      bar.dataset.ready='1';
+      const base=String(tool.dataset.baseDigits||'').split('|'),stripDigits=[...strip.querySelectorAll('.place-value-strip-digit')],pad=3,columnCount=7;
+      let shift=Number(tool.dataset.initialShift)||0,step=1,startX=0,startPx=0,currentPx=0;
+      const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
+      const displayForShift=value=>{
+        const mapped=Array(columnCount).fill('');
+        for(let windowIndex=0;windowIndex<columnCount;windowIndex++){
+          const source=windowIndex+value;
+          mapped[windowIndex]=source>=0&&source<columnCount?(base[source]||''):'';
+        }
+        const nonEmpty=[];mapped.forEach((digit,index)=>{if(digit!=='')nonEmpty.push(index);});
+        const display=Array(columnCount).fill(''),ghost=Array(columnCount).fill(false);
+        if(nonEmpty.length){
+          let left=nonEmpty[0],right=nonEmpty[nonEmpty.length-1];
+          while(left<3&&mapped[left]==='0'&&nonEmpty.some(index=>index>left))left++;
+          const leftLimit=left<=3?left:3,rightLimit=right>3?right:3;
+          for(let index=leftLimit;index<=rightLimit;index++){
+            if(mapped[index]===''){display[index]='0';ghost[index]=true;}else display[index]=mapped[index];
+          }
+        }
+        return {display,ghost};
+      };
+      const renderDigits=value=>{
+        const result=displayForShift(value);
+        stripDigits.forEach(node=>{node.textContent='';node.classList.remove('ghost-zero','is-units-digit');});
+        result.display.forEach((digit,windowIndex)=>{
+          const stripIndex=pad+windowIndex+value,node=stripDigits[stripIndex];if(!node)return;
+          node.textContent=digit;node.classList.toggle('ghost-zero',result.ghost[windowIndex]);node.classList.toggle('is-units-digit',windowIndex===3);
+        });
+      };
+      const setTransforms=(px,snap=false)=>{
+        bar.style.transition=snap?'transform .16s ease':'none';strip.style.transition=snap?'transform .16s ease':'none';
+        bar.style.transform='translateX('+px+'px)';strip.style.transform='translateX('+(-pad*step+px)+'px)';currentPx=px;
+      };
+      const apply=(value,snap=true)=>{
+        shift=clamp(Math.round(value),-3,3);renderDigits(shift);setTransforms(-shift*step,snap);bar.setAttribute('aria-valuenow',String(shift));
+      };
+      const refresh=()=>{step=grid.clientWidth/columnCount;apply(shift,false);};
+      const requestFrame=typeof global.requestAnimationFrame==='function'?global.requestAnimationFrame.bind(global):(callback=>callback());
+      requestFrame(refresh);
+      bar.addEventListener('pointerdown',event=>{event.preventDefault();refresh();startX=event.clientX;startPx=currentPx;bar.setPointerCapture(event.pointerId);});
+      bar.addEventListener('pointermove',event=>{if(!bar.hasPointerCapture(event.pointerId))return;const px=clamp(startPx+(event.clientX-startX),-3*step,3*step),next=clamp(Math.round(-px/step),-3,3);if(next!==shift){shift=next;renderDigits(shift);bar.setAttribute('aria-valuenow',String(shift));}setTransforms(px,false);});
+      const end=event=>{if(!bar.hasPointerCapture(event.pointerId))return;bar.releasePointerCapture(event.pointerId);apply(shift,true);};
+      bar.addEventListener('pointerup',end);bar.addEventListener('pointercancel',end);
+      bar.addEventListener('keydown',event=>{if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;event.preventDefault();refresh();apply(shift+(event.key==='ArrowLeft'?1:-1),true);});
+    });
+  }
+
   const presets=Object.freeze([
     {id:'fois-dix',label:'Multiplier par 10',data:{value:3.07,factor:10,shift:1,result:30.7,symbol:'×'}},
     {id:'fois-mille',label:'Multiplier par 1 000',data:{value:0.84,factor:1000,shift:3,result:840,symbol:'×'}},
@@ -45,13 +98,16 @@
     {id:'divise-mille',label:'Diviser par 1 000',data:{value:125,factor:1000,shift:-3,result:0.125,symbol:'÷'}}
   ].map(item=>Object.freeze({id:item.id,label:item.label,data:Object.freeze(item.data)})));
 
-  global.MATHSGO_VISUALS.register('numbers.place-value-table',{
-    version:'1.0.0',
-    label:'Tableau de numération',
+  global.MATHSGO_VISUALS.register('numbers.glisse-nombre',{
+    version:'1.1.0',
+    label:'Glisse-nombre',
     family:'Nombres',
-    description:'Bande de chiffres déplaçable devant une virgule fixe pour multiplier ou diviser par 10, 100 ou 1 000.',
+    supports:Object.freeze(['phone','computer','projection','print']),
+    description:'Outil interactif complet : la bande grise et les chiffres glissent devant une virgule fixe pour multiplier ou diviser par 10, 100 ou 1 000.',
     presets,
-    render:placeValueTableHtml
+    render:placeValueTableHtml,
+    setup:setupPlaceValueTools
   });
   global.placeValueToolHtml=placeValueTableHtml;
+  global.setupPlaceValueTools=setupPlaceValueTools;
 })(globalThis);
