@@ -59,5 +59,9 @@ cette empreinte inchangée.
 - `dnb_07` est le pilote visuel et contient déjà sa configuration pédagogique
   finalisée.
 
+Le domaine Nombres suit désormais entièrement ce contrat : ses seize modules
+sont explicites et leurs configurations pédagogiques résident dans leurs
+fichiers.
+
 Les fonctions de rendu visuel de `dnb_07` restent provisoirement dans le moteur.
 Elles seront déplacées dans un lot distinct, avec un test adapté à leur contrat.

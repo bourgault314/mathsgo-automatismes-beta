@@ -46,5 +46,6 @@ niveau de séparation est le module pédagogique.
 
 - `dnb_01` à `dnb_14`, ainsi que `dnb_02b` et `dnb_03b`, sont isolés dans des
   fichiers indépendants ;
-- les configurations héritées encore appliquées après le chargement seront
-  résorbées progressivement sans modifier l’empreinte V1.15.
+- les configurations pédagogiques des modules Nombres sont maintenant
+  intégrées à leurs fichiers ; elles ne sont plus appliquées après coup par le
+  moteur.

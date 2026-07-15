@@ -56,13 +56,6 @@ function stripVisuals(html,keepPlaceholder=false){
     .replace(/<div(?![^>]*visual-placeholder)[^>]*>\s*<\/div>/gi,'');
 }
 
-// Les tirages d'origine pouvaient produire deux propositions identiques dans
-// ces QCM. Les distracteurs sont maintenant construits dans des intervalles
-// disjoints, et les deux multiples de 5 sont forcés à être différents.
-const DIVISIBILITY_BY_FIVE_QUESTION=RAW_MODULES.find(module=>module.id==='dnb_08')?.questions.find(question=>Number(question.n)===8);
-if(DIVISIBILITY_BY_FIVE_QUESTION?.options){
-  DIVISIBILITY_BY_FIVE_QUESTION.options.formula_code='setNB(1)\nka=RD(10,99)\nkc=RD(10,99,[ka])\na=ka*5\nb=RD(10,99)*10+RD(1,4)\ncc=kc*5\ne=RD(10,99)*10+RD(6,9)';
-}
 function splitQCM(statement){
   let source=String(statement||'').trim();
   let wrapperStart='',wrapperEnd='';
@@ -696,15 +689,6 @@ function makeModule01Instance(mod,q){
   };
 }
 
-const FRACTION_OPS_KINDS=['simplify_simple','simplify_harder','compare_same_den','compare_same_num','add_same_den','subtract_same_den','add_multiple_den'];
-const MODULE03=RAW_MODULES.find(module=>module.id==='dnb_03');
-if(MODULE03){
-  MODULE03.title='Fractions : simplifier, comparer, additionner';
-  MODULE03.questions=MODULE03.questions.slice(0,7).map((question,index)=>({
-    ...question,
-    options:{...(question.options||{}),fraction_ops_kind:FRACTION_OPS_KINDS[index]}
-  }));
-}
 const TRIG_NO_CALCULATOR_KINDS=[
   'condition','locate_side','ratio_definition','choose_ratio','ratio_from_lengths','useful_formula',
   'formula_analysis','ratio_invariance','choose_method','method_diagnostic','coherence','method_first_step'
@@ -730,16 +714,6 @@ if(TRIG_MODULE){
   if(!RAW_MODULES.some(module=>module.id==='dnb_26b')) RAW_MODULES.splice(trigIndex+1,0,{
     id:'dnb_26b',num:26.5,domain:'geometry',title:'Trigonométrie avec calculatrice',level_tags:['3e'],source:'mathsgo',has_svg:true,
     questions:TRIG_CALCULATOR_KINDS.map(trigQuestionTemplate)
-  });
-}
-const MODULE11=RAW_MODULES.find(module=>module.id==='dnb_11');
-if(MODULE11&&!MODULE11.questions.some(question=>Number(question.n)===11)){
-  MODULE11.questions.push({
-    n:11,
-    statement:'Calcule la valeur de cette expression :',
-    answer:'[]',
-    footer:'',
-    options:{substitution_kind:'factorised'}
   });
 }
 
