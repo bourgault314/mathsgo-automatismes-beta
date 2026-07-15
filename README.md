@@ -42,6 +42,8 @@ changer les identifiants stables ni le résultat des séries reproductibles.
 - Domaine Nombres — les quatorze modules historiques `dnb_01` à `dnb_14` et
   les deux compléments `dnb_02b` et `dnb_03b` sont tous extraits dans des
   fichiers indépendants ;
+- Domaine Géométrie — les treize modules historiques `dnb_15` à `dnb_27`
+  sont extraits ; le complément `dnb_26b` reste à rendre explicite ;
 - `dnb_08` — Critères de divisibilité : premier module pilote isolé dans
   `auto/scripts/modules/numbers/dnb_08.js`.
 - `dnb_07` — Carrés des entiers de 1 à 12 : pilote visuel isolé avec ses

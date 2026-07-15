@@ -49,3 +49,11 @@ niveau de séparation est le module pédagogique.
 - les configurations pédagogiques des modules Nombres sont maintenant
   intégrées à leurs fichiers ; elles ne sont plus appliquées après coup par le
   moteur.
+
+### Avancement du domaine Géométrie
+
+- `dnb_15` à `dnb_27` sont isolés dans des fichiers indépendants ;
+- le complément `dnb_26b`, encore créé par le moteur, sera rendu explicite
+  dans le prochain lot ;
+- les configurations héritées seront ensuite intégrées à chaque module avec la
+  même vérification d’empreinte que pour le domaine Nombres.

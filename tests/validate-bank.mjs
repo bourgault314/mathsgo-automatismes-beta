@@ -3,24 +3,15 @@ import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
+const isolatedModulesByDomain = {
+  numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14'],
+  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_27']
+};
+const isolatedModuleIds = Object.values(isolatedModulesByDomain).flat();
 const sources = [
-  'auto/scripts/modules/numbers/dnb_01.js',
-  'auto/scripts/modules/numbers/dnb_02.js',
-  'auto/scripts/modules/numbers/dnb_02b.js',
-  'auto/scripts/modules/numbers/dnb_03.js',
-  'auto/scripts/modules/numbers/dnb_03b.js',
-  'auto/scripts/modules/numbers/dnb_04.js',
-  'auto/scripts/modules/numbers/dnb_05.js',
-  'auto/scripts/modules/numbers/dnb_06.js',
-  'auto/scripts/modules/numbers/dnb_07.js',
-  'auto/scripts/modules/numbers/dnb_08.js',
-  'auto/scripts/modules/numbers/dnb_09.js',
-  'auto/scripts/modules/numbers/dnb_10.js',
-  'auto/scripts/modules/numbers/dnb_11.js',
-  'auto/scripts/modules/numbers/dnb_12.js',
-  'auto/scripts/modules/numbers/dnb_13.js',
-  'auto/scripts/modules/numbers/dnb_14.js',
+  ...isolatedModulesByDomain.numbers.map(id => `auto/scripts/modules/numbers/${id}.js`),
   'auto/scripts/data/01-numbers.js',
+  ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
   'auto/scripts/data/02-geometry.js',
   'auto/scripts/data/03-data.js',
   'auto/scripts/data/04-algorithm.js',
@@ -66,7 +57,7 @@ for (const module of bank) {
   }
 }
 
-for (const id of ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14']) {
+for (const id of isolatedModuleIds) {
   const module = context.__bankSnapshot
     ? JSON.parse(context.__bankSnapshot).find(item => item.id === id)
     : null;
@@ -97,23 +88,23 @@ if (missingFromRegistry.length) fail(`Modules absents du registre MG1 : ${missin
 if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.join(', ')}.`);
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
-const isolatedModuleIds = ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14'];
-const moduleScriptPositions = isolatedModuleIds.map(id => ({
-  id,
-  position: indexHtml.indexOf(`scripts/modules/numbers/${id}.js`)
-}));
-const domainScriptPosition = indexHtml.indexOf('scripts/data/01-numbers.js');
-for (const module of moduleScriptPositions) {
-  if (module.position < 0 || domainScriptPosition < 0 || module.position > domainScriptPosition) {
-    fail(`Le module ${module.id} doit être chargé avant le fichier du domaine nombres.`);
-  }
-}
-
-const numberBankSource = fs.readFileSync(new URL('auto/scripts/data/01-numbers.js', root), 'utf8');
-for (const id of isolatedModuleIds) {
-  const constant = `MODULE_${id.toUpperCase()}`;
-  if (!numberBankSource.includes(constant)) {
-    fail(`Le domaine nombres doit référencer la constante ${constant}.`);
+const domainFiles = {
+  numbers: '01-numbers',
+  geometry: '02-geometry'
+};
+for (const [domain, ids] of Object.entries(isolatedModulesByDomain)) {
+  const dataPath = `auto/scripts/data/${domainFiles[domain]}.js`;
+  const domainScriptPosition = indexHtml.indexOf(`scripts/data/${domainFiles[domain]}.js`);
+  const bankSource = fs.readFileSync(new URL(dataPath, root), 'utf8');
+  for (const id of ids) {
+    const moduleScriptPosition = indexHtml.indexOf(`scripts/modules/${domain}/${id}.js`);
+    if (moduleScriptPosition < 0 || domainScriptPosition < 0 || moduleScriptPosition > domainScriptPosition) {
+      fail(`Le module ${id} doit être chargé avant le fichier du domaine ${domain}.`);
+    }
+    const constant = `MODULE_${id.toUpperCase()}`;
+    if (!bankSource.includes(constant)) {
+      fail(`Le domaine ${domain} doit référencer la constante ${constant}.`);
+    }
   }
 }
 
