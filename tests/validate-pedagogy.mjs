@@ -4,24 +4,28 @@ import vm from 'node:vm';
 const root=new URL('../',import.meta.url);
 const sources=[
   'auto/scripts/shared/visuals/00-registry.js',
+  'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
   'auto/scripts/shared/pedagogy/00-registry.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_18.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_25.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/geometry/dnb_18.js',
-  'auto/scripts/modules/geometry/dnb_25.js'
+  'auto/scripts/modules/geometry/dnb_25.js',
+  'auto/scripts/modules/numbers/dnb_38.js'
 ];
 const code=sources.map(path=>fs.readFileSync(new URL(path,root),'utf8')).join('\n')+`
 globalThis.__angleQuestionNumbers=MODULE_DNB_18.questions.map(question=>Number(question.n));
-globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(question.n));`;
+globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(question.n));
+globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));`;
 const context={};context.globalThis=context;vm.createContext(context);vm.runInContext(code,context,{timeout:5000});
 
 const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;};
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==2) fail(`Deux modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==3) fail(`Trois modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
 
 const angles=registry?.getModule('dnb_18');
 if(!angles) fail('Le classement pédagogique de dnb_18 est absent.');
@@ -108,6 +112,8 @@ if(!slideshow.includes('MATHSGO_PEDAGOGY.getModule(moduleId)')||!slideshow.inclu
 context.courseCatalog={thales:{title:'Thalès',rules:[
   ['Conditions','',false,'conditions'],['Rapports','',false,'ratios'],['Calcul','',false,'calculation'],
   ['Parallélisme','',false,'parallelism-test'],['Cohérence','',false,'coherence']
+]},relative_addition:{title:'Additionner des nombres entiers relatifs',rules:[
+  ['Les jetons','',false,'tokens'],['Rassembler','',false,'tokens'],['Paire nulle','',false,'zero-pair'],['Méthode','',false,'method']
 ]}};
 vm.runInContext(
   thalesTemplateBlock+
@@ -125,4 +131,34 @@ const q3Course=context.courseForSlide({courseKind:'thales',courseContext:q3Conte
 if(q3Course.rules[0]?.[0]!=='La méthode'||q3Course.rules.slice(1).map(rule=>rule[3]).join(',')!=='ratios,calculation,coherence') fail('La question 3 doit proposer le gabarit puis seulement rapports, calcul et cohérence.');
 if(context.visualPolicyForQuestion({id:'dnb_25'},{n:1})!=='essential'||context.visualPolicyForQuestion({id:'dnb_25'},{n:6})!=='aid-only') fail('La politique visuelle Thalès n’est pas appliquée par l’application.');
 
-if(!process.exitCode) console.log('OK — les questions Angles et les 10 types Thalès, leurs réponses, leurs figures et leurs aides sont classés et branchés.');
+const relative=registry?.getModule('dnb_38');
+if(!relative) fail('Le classement pédagogique de dnb_38 est absent.');
+if(relative&&relative.topic!=='Addition de nombres entiers relatifs') fail('La notion principale de dnb_38 doit être l’addition de nombres entiers relatifs.');
+if(relative&&relative.courseKind!=='relative_addition') fail('dnb_38 doit appeler le cours Addition de nombres entiers relatifs.');
+if(relative&&relative.generatorContract.operation!=='addition') fail('dnb_38 doit déclarer une opération d’addition.');
+const relativeBankNumbers=[...(context.__relativeQuestionNumbers||[])].sort((a,b)=>a-b);
+const relativeClassifiedNumbers=(relative?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(relativeClassifiedNumbers)!==JSON.stringify(relativeBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Relatifs exactement une fois.');
+const expectedRelative={
+  1:['addition-manipuler','relative-tokens','essential',['tokens','zero-pair']],
+  2:['addition-resultat','qcm-one','optional',['tokens','opposite-signs']],
+  3:['addition-manipuler','relative-tokens','essential',['tokens','zero-pair']],
+  4:['addition-paire-nulle','qcm-one','optional',['zero-pair']],
+  5:['addition-manipuler','relative-tokens','essential',['tokens','zero-pair']],
+  6:['addition-resultat','qcm-one','optional',['tokens','opposite-signs']],
+  7:['addition-manipuler','relative-tokens','essential',['tokens','zero-pair']],
+  8:['addition-methode','qcm-one','optional',['method','zero-pair']]
+};
+for(const [questionNumber,[id,response,policy,helpSections]] of Object.entries(expectedRelative)){
+  const type=registry?.getQuestionType('dnb_38',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Relatifs ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Relatifs ${questionNumber}.`);
+  if(type&&type.visual.policy!==policy) fail(`Rôle visuel incorrect pour la question Relatifs ${questionNumber}.`);
+  if(type&&JSON.stringify([...type.helpSections])!==JSON.stringify(helpSections)) fail(`Aide incorrecte pour la question Relatifs ${questionNumber}.`);
+  if(type&&policy!=='none'&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Relatifs ${questionNumber}.`);
+}
+const relativeCourse=context.courseForSlide({courseKind:'relative_addition',courseContext:{}});
+if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
+if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
+
+if(!process.exitCode) console.log('OK — les questions Angles, Thalès et Addition de relatifs, leurs réponses, leurs visuels et leurs aides sont classés et branchés.');
