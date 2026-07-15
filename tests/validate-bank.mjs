@@ -4,6 +4,12 @@ import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
 const sources = [
+  'auto/scripts/modules/numbers/dnb_01.js',
+  'auto/scripts/modules/numbers/dnb_02.js',
+  'auto/scripts/modules/numbers/dnb_03.js',
+  'auto/scripts/modules/numbers/dnb_04.js',
+  'auto/scripts/modules/numbers/dnb_05.js',
+  'auto/scripts/modules/numbers/dnb_06.js',
   'auto/scripts/modules/numbers/dnb_07.js',
   'auto/scripts/modules/numbers/dnb_08.js',
   'auto/scripts/data/01-numbers.js',
@@ -52,7 +58,7 @@ for (const module of bank) {
   }
 }
 
-for (const id of ['dnb_07', 'dnb_08']) {
+for (const id of ['dnb_01', 'dnb_02', 'dnb_03', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08']) {
   const module = context.__bankSnapshot
     ? JSON.parse(context.__bankSnapshot).find(item => item.id === id)
     : null;
@@ -83,7 +89,7 @@ if (missingFromRegistry.length) fail(`Modules absents du registre MG1 : ${missin
 if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.join(', ')}.`);
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
-const isolatedModuleIds = ['dnb_07', 'dnb_08'];
+const isolatedModuleIds = ['dnb_01', 'dnb_02', 'dnb_03', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08'];
 const moduleScriptPositions = isolatedModuleIds.map(id => ({
   id,
   position: indexHtml.indexOf(`scripts/modules/numbers/${id}.js`)

@@ -41,3 +41,11 @@ niveau de séparation est le module pédagogique.
 4. Comparer les séries avant et après extraction.
 5. Étendre le découpage domaine par domaine.
 6. Ouvrir ensuite la contribution à d’autres personnes.
+
+### Avancement du domaine Nombres
+
+- `dnb_01` à `dnb_08` sont isolés dans des fichiers indépendants ;
+- les modules ajoutés historiquement par le moteur (`dnb_02b` et `dnb_03b`)
+  seront intégrés au prochain lot ;
+- les configurations héritées encore appliquées après le chargement seront
+  résorbées progressivement sans modifier l’empreinte V1.15.
