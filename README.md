@@ -45,6 +45,9 @@ changer les identifiants stables ni le résultat des séries reproductibles.
   gabarits et sa configuration pédagogique finalisée dans
   `auto/scripts/modules/numbers/dnb_07.js`.
 
+Le contrat suivi par tous les fichiers isolés est décrit dans
+[`docs/CONTRAT-MODULE.md`](docs/CONTRAT-MODULE.md).
+
 ## Vérifier la banque
 
 Avec Node.js 18 ou plus récent :

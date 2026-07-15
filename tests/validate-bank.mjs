@@ -37,6 +37,8 @@ const fail = message => {
   process.exitCode = 1;
 };
 
+const requiredModuleFields = ['id', 'num', 'title', 'level_tags', 'source', 'has_svg', 'questions'];
+
 if (bank.length !== 40) fail(`40 modules attendus, ${bank.length} trouvés.`);
 
 const moduleIds = bank.map(module => module.id);
@@ -47,6 +49,21 @@ for (const module of bank) {
   if (!module.questions.length) fail(`Le module ${module.id} ne contient aucun gabarit.`);
   if (new Set(module.questions.map(String)).size !== module.questions.length) {
     fail(`Le module ${module.id} contient deux gabarits portant le même numéro.`);
+  }
+}
+
+for (const id of ['dnb_07', 'dnb_08']) {
+  const module = context.__bankSnapshot
+    ? JSON.parse(context.__bankSnapshot).find(item => item.id === id)
+    : null;
+  if (!module) {
+    fail(`Le module isolé ${id} est absent de la banque.`);
+    continue;
+  }
+  const missingFields = requiredModuleFields.filter(field => !Object.prototype.hasOwnProperty.call(module, field));
+  if (missingFields.length) fail(`Champs manquants dans ${id} : ${missingFields.join(', ')}.`);
+  if (!module.questions.every(question => Number.isFinite(Number(question.n)))) {
+    fail(`Chaque gabarit de ${id} doit conserver un numéro stable.`);
   }
 }
 
@@ -66,7 +83,8 @@ if (missingFromRegistry.length) fail(`Modules absents du registre MG1 : ${missin
 if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.join(', ')}.`);
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
-const moduleScriptPositions = ['dnb_07', 'dnb_08'].map(id => ({
+const isolatedModuleIds = ['dnb_07', 'dnb_08'];
+const moduleScriptPositions = isolatedModuleIds.map(id => ({
   id,
   position: indexHtml.indexOf(`scripts/modules/numbers/${id}.js`)
 }));
@@ -74,6 +92,14 @@ const domainScriptPosition = indexHtml.indexOf('scripts/data/01-numbers.js');
 for (const module of moduleScriptPositions) {
   if (module.position < 0 || domainScriptPosition < 0 || module.position > domainScriptPosition) {
     fail(`Le module ${module.id} doit être chargé avant le fichier du domaine nombres.`);
+  }
+}
+
+const numberBankSource = fs.readFileSync(new URL('auto/scripts/data/01-numbers.js', root), 'utf8');
+for (const id of isolatedModuleIds) {
+  const constant = `MODULE_${id.toUpperCase()}`;
+  if (!numberBankSource.includes(constant)) {
+    fail(`Le domaine nombres doit référencer la constante ${constant}.`);
   }
 }
 
