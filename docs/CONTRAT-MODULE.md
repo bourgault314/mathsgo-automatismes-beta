@@ -85,7 +85,8 @@ notion.
 - `dnb_08` est le pilote simple ;
 - `dnb_02b` est le pilote de sélection pédagogique par familles ;
 - `dnb_02` est le pilote d'une catégorie enrichie avec sélection équilibrée,
-  aides partagées et réponses manipulables ;
+  aides partagées et réponses manipulables ; ses décisions sont consignées
+  dans [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md) ;
 - `dnb_07` est le pilote visuel et contient déjà sa configuration pédagogique
   finalisée.
 

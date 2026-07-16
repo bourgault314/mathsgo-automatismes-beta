@@ -256,34 +256,9 @@ ses familles de questions.
   local, poussé, en pull request, fusionné et déployé. Une demande de
   publication inclut le commit, le push et la pull request de la bêta ; un lot
   encore local doit être signalé spontanément.
+- **2026-07-16 — Décimaux.** Les décisions propres à `dnb_02` sont consignées
+  dans [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md).
 
 Lorsqu'un nouveau point est validé, consigner ici la date, la décision, les
 catégories concernées et les composants retenus. Ne pas transformer une piste
 de discussion en règle avant validation explicite.
-
-### 2026-07-16 — Décimaux, catégorie `dnb_02`
-
-- La répartition d'une autre catégorie peut nourrir la réflexion, mais ne
-  devient jamais un quota commun. Chaque catégorie reçoit une composition
-  adaptée à ses notions et aux interactions qui ont un sens.
-- La banque « Comparer et calculer avec des nombres décimaux » est organisée en
-  quatre blocs : comparer/ranger, encadrer, calcul additif et calcul
-  multiplicatif.
-- Douze familles sont retenues : deux comparaisons en QCM, un rangement
-  tactile, deux encadrements, une addition complétant une unité, une
-  soustraction, un complément à trouver, une multiplication directe, une
-  division directe, un partage en contexte très court et un raisonnement par
-  distributivité.
-- Pour une série de dix questions consacrée à la catégorie, la sélection vise
-  deux questions de comparaison/rangement, deux encadrements, trois questions
-  additives et trois questions multiplicatives. Les familles tournent avant de
-  se répéter.
-- L'encadrement devient une activité de placement : le décimal est déjà placé
-  sur une droite courte ; l'élève place les deux étiquettes des entiers
-  consécutifs dans les emplacements de gauche et de droite.
-- Sur téléphone, le geste principal des rangements, encadrements et tableaux de
-  distributivité est « toucher une carte, puis toucher une case ». Le clavier
-  ne s'ouvre pas ; la même interaction reste utilisable sur ordinateur.
-- Les additions de décimaux relatifs quittent `dnb_02`. Leur future catégorie
-  séparée sera conçue après validation de ses questions ; elle ne doit pas être
-  inventée ou publiée vide pendant ce chantier.

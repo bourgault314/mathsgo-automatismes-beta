@@ -12,6 +12,7 @@ const protocol = read(protocolPath);
 const agents = read('AGENTS.md');
 const docsIndex = read('docs/README.md');
 const rootReadme = read('README.md');
+const decimalDecisions = read('docs/DECIMAUX-AUTOMATISMES.md');
 
 const requiredHeadings = [
   '## Méthode permanente',
@@ -59,6 +60,17 @@ if (!agents.includes(protocolPath)) {
 
 if (!docsIndex.includes('PROTOCOLE-AUTOMATISMES-MATHSGO.md')) {
   fail('L’index documentaire doit pointer vers le protocole canonique.');
+}
+
+if (!docsIndex.includes('DECIMAUX-AUTOMATISMES.md') ||
+    !protocol.includes('DECIMAUX-AUTOMATISMES.md')) {
+  fail('Les décisions propres aux décimaux doivent être reliées depuis l’index et le protocole.');
+}
+
+for (const decision of ['douze familles', '2 + 2 + 3 + 3', 'toucher une carte, puis toucher une case', 'Somme de nombres décimaux relatifs']) {
+  if (!decimalDecisions.includes(decision)) {
+    fail(`La décision décimale « ${decision} » a disparu de la fiche dédiée.`);
+  }
 }
 
 if (!rootReadme.includes('docs/README.md') || !rootReadme.includes(protocolPath)) {

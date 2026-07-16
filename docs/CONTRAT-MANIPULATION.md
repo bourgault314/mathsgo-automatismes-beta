@@ -91,6 +91,9 @@ promet pas encore un stockage de progression.
 | `numbers.glisse-nombre` | chiffres et décalage | valeur dérivée | rejeu vers l’état cible | actif |
 | `numbers.relative-tokens` | jetons, signes et zones | état équivalent | rassemblement et paires nulles | actif |
 | `geometry.pythagoras-builder` | tâche, triangle et cases | cases ordonnées | relation et aires exactes | actif |
+| `numbers.order-cards` | cartes, positions et sens de rangement | cases ordonnées | ordre croissant résolu | actif |
+| `numbers.frame-integers` | décimal, entiers proposés et deux emplacements | cases ordonnées | deux entiers consécutifs | actif |
+| `numbers.distributivity-cards` | facteurs, produits proposés et deux cases | cases ordonnées | décomposition résolue | actif |
 | `algorithm.block-sequence` | instruction, variables, position, orientation et trace | résultat sémantique | rejeu pas à pas | planifié |
 
 ## Jeux futurs
