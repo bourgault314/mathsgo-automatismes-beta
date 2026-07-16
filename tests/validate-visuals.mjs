@@ -12,6 +12,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/data/cartesian-graph.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/shared/visuals/geometry/angle-vocabulary.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/arithmetic/equal-sharing-board.js',
@@ -50,7 +51,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 26) fail(`26 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 27) fail(`27 composants visuels attendus, ${components.length} trouvé(s).`);
 for(const component of components){
   if(!Array.isArray(component.presets)||!component.presets.length) fail(`Le composant ${component.id} doit fournir au moins un préréglage au catalogue.`);
 }
@@ -81,6 +82,30 @@ for(const preset of solid?.presets||[]){
   if(!rendered.includes('role="img"')) fail(`Le solide ${preset.id} doit rester accessible.`);
 }
 if(solid&&!solid.render({kind:'cylinder'}).includes('stroke-dasharray="6 5"')) fail('Les arêtes cachées des solides doivent rester pointillées.');
+
+const angleVocabulary=registry?.get('geometry.angle-vocabulary');
+if(!angleVocabulary) fail('Le composant geometry.angle-vocabulary est absent.');
+if(angleVocabulary&&angleVocabulary.version!=='1.0.0') fail('Version 1.0.0 attendue pour le vocabulaire des angles.');
+if(angleVocabulary&&angleVocabulary.presets.length!==11) fail('Onze représentations de référence sont attendues pour les angles.');
+for(const preset of angleVocabulary?.presets||[]){
+  const rendered=angleVocabulary.render(preset.data);
+  if(!rendered.startsWith('<svg class="angle-vocabulary-svg')) fail(`Le visuel d’angles ${preset.id} doit produire un SVG autonome.`);
+  if(!rendered.includes('role="img"')) fail(`Le visuel d’angles ${preset.id} doit rester accessible.`);
+}
+const fourAngles=angleVocabulary?.render({kind:'gallery'})||'';
+if(!fourAngles.includes('aigu')||!fourAngles.includes('droit')||!fourAngles.includes('90°')||!fourAngles.includes('obtus')||!fourAngles.includes('plat')||!fourAngles.includes('180°')) fail('Le cours des quatre angles doit afficher les noms et les repères 90° et 180°.');
+const sixAngles=angleVocabulary?.render({kind:'gallery',extended:true})||'';
+if(!sixAngles.includes('nul')||!sixAngles.includes('plein')||!sixAngles.includes('360°')) fail('Le cours étendu doit inclure les angles nul et plein.');
+const namedAngle=angleVocabulary?.render({kind:'named'})||'';
+if(!namedAngle.includes('AOB')||!namedAngle.includes('O, le sommet, est au milieu')) fail('Le cours doit nommer un angle avec trois lettres et le sommet au milieu.');
+const variableNamedAngle=angleVocabulary?.render({kind:'named',letters:['C','E','D']})||'';
+if(!variableNamedAngle.includes('CED')||!variableNamedAngle.includes('E, le sommet, est au milieu')) fail('Le schéma nommé doit reprendre les trois lettres de la question.');
+const hiddenNature=angleVocabulary?.render({kind:'single',angleKind:'obtuse',showLabel:false,showMeasure:false})||'';
+if(hiddenNature.includes('>obtus<')||hiddenNature.includes('Angle obtus')) fail('Une figure à identifier ne doit pas révéler sa nature dans le texte ou son libellé accessible.');
+const isoscelesSetSquare=angleVocabulary?.render({kind:'set-square',known:45,reveal:true})||'';
+if(!isoscelesSetSquare.includes('M 130 238 L 130 58 L 310 238 Z')||!isoscelesSetSquare.includes('45°–45°–90°')) fail('L’équerre à 45° doit être représentée par un triangle rectangle isocèle.');
+const comparison=angleVocabulary?.render({kind:'compare'})||'';
+if(!comparison.includes('pas la longueur des côtés')) fail('La comparaison doit rappeler que la longueur des côtés ne détermine pas l’angle.');
 
 const squareArea=registry?.get('numbers.square-area');
 if(!squareArea) fail('Le composant numbers.square-area est absent.');
@@ -695,6 +720,7 @@ const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/num
 const orderCardsPosition = indexHtml.indexOf('scripts/shared/visuals/numbers/order-cards.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
+const angleVocabularyPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/angle-vocabulary.js');
 const squareAreaPosition = indexHtml.indexOf('scripts/shared/visuals/numbers/square-area.js');
 const numberLineModuleDeclared = moduleManifest.includes("file:'scripts/modules/numbers/dnb_14.js'");
 const coordinateModuleDeclared = moduleManifest.includes("file:'scripts/modules/geometry/dnb_15.js'");
@@ -716,7 +742,7 @@ const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/ge
 const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
 const solidPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/solid.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || orderCardsPosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || solidPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < orderCardsPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < solidPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || orderCardsPosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || angleVocabularyPosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || solidPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < orderCardsPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < angleVocabularyPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < solidPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
@@ -734,5 +760,5 @@ for(const component of components){
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 26 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
+  console.log('OK — registre cohérent, 27 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
 }

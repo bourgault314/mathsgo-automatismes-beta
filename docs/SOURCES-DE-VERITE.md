@@ -33,6 +33,7 @@ Les statuts sont :
 | `algebra.relation-tiles` | `modules/numbers/dnb_09.js` historique | partiel |
 | `measures.conversion-table` | `/outils/conversions/` et `dnb_19` | branché |
 | `geometry.coordinate-plane` | `modules/geometry/dnb_15.js` historique | branché |
+| `geometry.angle-vocabulary` | espace Axelle, jour 1, programme cycle 4 2026 et `dnb_17` historique | branché |
 | `geometry.thales-configuration` | fiches Thalès publiées et `dnb_25` | partiel |
 | `geometry.triangle-angle-sum` | `/outils/angles/anglebarre.html` et fiche Angles v11 | branché |
 | `geometry.pythagoras-mill` | `/outils/plateaux_manipulation/moulin_pythagore.html` | partiel |

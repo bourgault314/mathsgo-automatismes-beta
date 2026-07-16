@@ -309,6 +309,15 @@ dans la banque a été supprimé : la géométrie et le modèle en barres peuven
 donc être repris dans une diapositive, une aide, un exerciseur ou une fiche
 sans être redessinés.
 
+## Vocabulaire et relations entre angles
+
+`geometry.angle-vocabulary` rassemble les dessins utilisés par `dnb_17` et son
+cours contextuel : six natures d’angles, angle nommé, comparaison d’ouvertures,
+angles opposés, adjacents, complémentaires, supplémentaires, bissectrice,
+angles alternes-internes et équerre. Il reprend les conventions validées dans
+l’espace Axelle : vrais arcs, carré d’angle droit rattaché au sommet, noms à
+trois lettres et absence de points décoratifs aux extrémités.
+
 ## Référence PythaBarre
 
 La fiche PythaBarre v34 fournit désormais trois constructions séparées :

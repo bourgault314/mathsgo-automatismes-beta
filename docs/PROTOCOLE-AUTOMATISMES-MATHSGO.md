@@ -274,6 +274,15 @@ réellement utile.
   Une série de 5 en contient un ; les erreurs vrai/faux visent l’ordre et les
   signes. Les décisions détaillées sont consignées dans
   [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md).
+- **2026-07-16 — Angles `dnb_17`.** Le cours déclaré
+  `angle_vocabulary` devient contextuel et appelle le composant partagé
+  `geometry.angle-vocabulary`. Neuf formats fonctionnels complètent les dix
+  gabarits historiques : six natures, nom à trois lettres, comparaison
+  d’ouvertures, analyse de l’erreur de longueur, mesure d’angles opposés,
+  bissectrice, parallélisme, équerre et choix inverse d’une figure. Les
+  distracteurs de comparaison suivent l’analyse Eduscol de l’évaluation 6e
+  2025, question 22. Les décisions propres au module sont consignées dans
+  [`ANGLES-AUTOMATISMES.md`](ANGLES-AUTOMATISMES.md).
 - **2026-07-16 — Droite graduée `dnb_14`.** Les 18 gabarits de la banque V1.18
   restent inchangés. Trois formats fonctionnels limités sont ajoutés hors de la
   banque figée : placer un point, déterminer le pas et choisir la droite
