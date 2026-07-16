@@ -237,9 +237,12 @@ réutilisables par Automatismes.
 4. Ce lot reste volontairement limité au traceur : le branchement du module
    fera l’objet d’un prochain petit commit après comparaison visuelle.
 
-## Ordre de reprise
+## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;
 2. récupérer une archive complète du dossier maître Calcul littéral ;
-3. seulement ensuite créer le dépôt de sources/studio pour sortir ces maîtres
-   du site public sans perdre leur historique.
+3. conserver ensuite les maîtres complets dans la source prévue par le Studio,
+   sans créer une copie concurrente dans la bêta.
+
+Ces deux archives manquantes ne bloquent ni l'amélioration pédagogique
+d'Automatismes ni le pilote fonctionnel du découpage.
