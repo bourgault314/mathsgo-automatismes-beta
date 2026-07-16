@@ -4,6 +4,9 @@ Ce registre empêche de redessiner une représentation déjà validée. Les chem
 `/outils/…` désignent le dépôt public `bourgault314/maths`. Les chemins
 `modules/…` et `shared/…` désignent cette bêta.
 
+Les familles qui n’ont pas encore de composant et leur ordre de traitement sont
+recensés dans [`AUDIT-VISUELS-RESTANTS.md`](AUDIT-VISUELS-RESTANTS.md).
+
 Les statuts sont :
 
 - **branché** : au moins une question appelle le composant commun ;

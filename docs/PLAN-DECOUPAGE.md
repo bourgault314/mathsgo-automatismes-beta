@@ -100,7 +100,9 @@ blocs nécessaires aux questions. Ne pas reproduire un logiciel complet.
 ### 3. Visuels encore historiques
 
 Migrer par familles homogènes et uniquement après comparaison avec
-[`SOURCES-DE-VERITE.md`](SOURCES-DE-VERITE.md) :
+[`SOURCES-DE-VERITE.md`](SOURCES-DE-VERITE.md). Le comptage, les anomalies et
+l’ordre recommandé sont tenus dans
+[`AUDIT-VISUELS-RESTANTS.md`](AUDIT-VISUELS-RESTANTS.md) :
 
 - `dnb_20` : solides et objets ;
 - `dnb_27` : transformations sur quadrillage ;
