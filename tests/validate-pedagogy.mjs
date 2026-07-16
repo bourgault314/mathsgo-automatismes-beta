@@ -889,6 +889,20 @@ if(!slideshow.includes("coursePythagorasLibraryVisual('bar')")||!slideshow.inclu
 if(!slideshow.includes("'read-data-mode':['dnb_32']")||!slideshow.includes('.diapo.read-data-mode .stage>.slide{width:100%;max-width:1180px;margin-top:auto;margin-bottom:auto}')) fail('Le module de lecture de données doit disposer de son centrage local.');
 if(!slideshow.includes('courseReadDataTableVisual()')||!slideshow.includes('courseReadDataChartVisual()')||!slideshow.includes('courseReadDataPictogramVisual()')) fail('Le cours de lecture de données doit proposer ses trois exemples explicites.');
 if(!slideshow.includes('variation = valeur finale − valeur initiale')) fail('Le cours de lecture de données doit expliciter le sens de la variation.');
+const readDataRendererSource=fs.readFileSync(new URL('auto/scripts/modules/data/dnb_32/render.js',root),'utf8');
+let readDataRenderer=null;
+const readDataRendererContext=vm.createContext({
+  globalThis:null,
+  MATHSGO_MODULE_RUNTIME:{register(moduleId,extension){if(moduleId==='dnb_32') readDataRenderer=extension.renderer;}}
+});
+readDataRendererContext.globalThis=readDataRendererContext;
+vm.runInContext(readDataRendererSource,readDataRendererContext,{timeout:5000});
+const expectedReadDataFamilies=['table-total','table-compare','bar-read','line-difference','pie-part','table-column-total','bar-compare','line-compare','pictogram','table-difference'];
+const actualReadDataFamilies=expectedReadDataFamilies.map((_,index)=>readDataRenderer?.aidSpecForQuestion(index+1)?.family);
+if(JSON.stringify(actualReadDataFamilies)!==JSON.stringify(expectedReadDataFamilies)) fail('Chaque variante de lecture de données doit disposer d’une aide visuelle adaptée.');
+if(!readDataRendererSource.includes("renderGenericQuestion(instance,correction,'with')")||!readDataRendererSource.includes("mode==='without-essential'")) fail('Le support de données essentiel doit rester visible quand l’aide est masquée.');
+if(!readDataRendererSource.includes('completeTemperatureScale(question,number)')||!readDataRendererSource.includes('[30,35,40].forEach')) fail('L’échelle des températures doit rester complète jusqu’à la valeur maximale générée.');
+if(!slideshow.includes("const readDataAid=mode==='without'&&inst.module.id==='dnb_32'")||!slideshow.includes("const hiddenMode=readDataAid?'without-essential'")) fail('Le mode sans aide doit permettre de révéler le chemin de lecture sans masquer le support.');
 
 context.courseCatalog={thales:{title:'Thalès',rules:[
   ['Conditions','',false,'conditions'],['Rapports','',false,'ratios'],['Calcul','',false,'calculation'],
