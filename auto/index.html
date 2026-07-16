@@ -115,39 +115,66 @@
     <button class="generate-action" id="generateButton" type="button" onclick="generate()" disabled><span class="generate-label">Lancer l’entraînement</span><span class="generate-count" id="generateCount" aria-hidden="true"></span></button>
   </div>
 </div>
-<script src="scripts/shared/visuals/00-registry.js"></script>
-<script src="scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
-<script src="scripts/shared/pedagogy/numbers/dnb_09.js?v=20260716-1"></script>
-<script src="scripts/shared/pedagogy/geometry/dnb_18.js?v=20260716-1"></script>
-<script src="scripts/shared/pedagogy/geometry/dnb_24.js?v=20260716-1"></script>
-<script src="scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-3"></script>
-<script src="scripts/shared/pedagogy/numbers/dnb_38.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
-<script src="scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
-<script src="scripts/shared/visuals/numbers/relative-tokens.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/geometry/coordinate-plane.js?v=20260715-2"></script>
+<!-- Le catalogue et le premier rendu sont critiques : ils doivent apparaître
+     avant le moteur complet et les bibliothèques visuelles. -->
 <script src="scripts/00-module-manifest.js?v=20260716-2"></script>
 <script src="scripts/01-modules.js"></script>
-<script src="scripts/shared/visuals/arithmetic/relation-bar.js"></script>
-<script src="scripts/shared/visuals/arithmetic/fraction-percent-bar.js"></script>
-<script src="scripts/shared/visuals/arithmetic/equal-sharing-board.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/arithmetic/fraction-wall.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/measures/conversion-table.js"></script>
-<script src="scripts/shared/visuals/algebra/equation-splat.js"></script>
-<script src="scripts/shared/visuals/algebra/inquiry-bar.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/algebra/algebra-tiles.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/algebra/area-model.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/algebra/relation-tiles.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-4"></script>
-<script src="scripts/shared/visuals/geometry/triangle-angle-sum.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/geometry/pythagoras-mill.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/geometry/pythagoras-bar.js?v=20260716-1"></script>
-<script src="scripts/shared/visuals/geometry/pythagoras-reasoning.js?v=20260716-1"></script>
-<script src="scripts/02-question-engine.js?v=20260716-1"></script>
-<script src="scripts/core/01-series-contracts.js"></script>
-<script src="scripts/03-slideshow.js?v=20260715-6"></script>
-<script src="scripts/04-app.js?v=20260715-2"></script>
-<script src="scripts/vendor/qrcode-generator.js"></script>
-<script src="scripts/core/02-share-ui.js"></script>
+<script src="scripts/00-menu-bootstrap.js"></script>
+
+<!-- Ces scripts restent dans leur ordre historique, mais sont chargés après
+     le premier affichage du menu. -->
+<script data-runtime-src="scripts/shared/visuals/00-registry.js"></script>
+<script data-runtime-src="scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
+<script data-runtime-src="scripts/shared/pedagogy/numbers/dnb_09.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/pedagogy/geometry/dnb_18.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/pedagogy/geometry/dnb_24.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/pedagogy/geometry/dnb_25.js?v=20260715-3"></script>
+<script data-runtime-src="scripts/shared/pedagogy/numbers/dnb_38.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
+<script data-runtime-src="scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
+<script data-runtime-src="scripts/shared/visuals/numbers/relative-tokens.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/geometry/coordinate-plane.js?v=20260715-2"></script>
+<script data-runtime-src="scripts/shared/visuals/arithmetic/relation-bar.js"></script>
+<script data-runtime-src="scripts/shared/visuals/arithmetic/fraction-percent-bar.js"></script>
+<script data-runtime-src="scripts/shared/visuals/arithmetic/equal-sharing-board.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/arithmetic/fraction-wall.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/measures/conversion-table.js"></script>
+<script data-runtime-src="scripts/shared/visuals/algebra/equation-splat.js"></script>
+<script data-runtime-src="scripts/shared/visuals/algebra/inquiry-bar.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/algebra/algebra-tiles.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/algebra/area-model.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/algebra/relation-tiles.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/geometry/thales-configuration.js?v=20260715-4"></script>
+<script data-runtime-src="scripts/shared/visuals/geometry/triangle-angle-sum.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/geometry/pythagoras-mill.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/geometry/pythagoras-bar.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/shared/visuals/geometry/pythagoras-reasoning.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/02-question-engine.js?v=20260716-1"></script>
+<script data-runtime-src="scripts/core/01-series-contracts.js"></script>
+<script data-runtime-src="scripts/03-slideshow.js?v=20260715-6"></script>
+<script data-runtime-src="scripts/04-app.js?v=20260715-2"></script>
+<script data-runtime-src="scripts/vendor/qrcode-generator.js"></script>
+<script data-runtime-src="scripts/core/02-share-ui.js"></script>
+<script>
+  (function loadRuntimeAfterFirstPaint(){
+    const placeholders=[...document.querySelectorAll('script[data-runtime-src]')];
+    const run=()=>placeholders.reduce((chain,placeholder)=>chain.then(()=>new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      script.src=placeholder.dataset.runtimeSrc;
+      script.onload=resolve;
+      script.onerror=()=>reject(new Error('Impossible de charger le moteur d’automatismes.'));
+      document.body.appendChild(script);
+    })),Promise.resolve()).then(()=>{
+      const selected=globalThis.MATHSGO_BOOTSTRAP_SELECTION;
+      if(Array.isArray(selected)){
+        const selectedIds=new Set(selected);
+        document.querySelectorAll('.modcb').forEach(box=>{box.checked=selectedIds.has(box.value);});
+        if(typeof updateThemeCounts==='function') updateThemeCounts();
+      }
+    }).catch(error=>console.error(error));
+    const nextFrame=globalThis.requestAnimationFrame||((callback)=>setTimeout(callback,16));
+    nextFrame(()=>nextFrame(run));
+  })();
+</script>
 </body>
 </html>
