@@ -84,6 +84,14 @@ Le module `dnb_38` est le premier module de calcul mental avec jetons
 manipulables. Son plateau est prévu pour 390 × 844 px et 1280 × 720 px ; les
 contrôles tactiles et le rendu de correction sont testés avec la banque.
 
+## Adresse bêta officielle
+
+Pour vérifier l’application Automatismes, utiliser une seule adresse :
+
+**https://bourgault314.github.io/mathsgo-automatismes-beta/auto/**
+
+Le dépôt GitHub sert uniquement à suivre le code et les versions. La validation se fait sur cette adresse bêta, puis seulement après validation la version est transférée vers le site public. Il ne faut pas créer une autre adresse bêta pour le même outil.
+
 ## Vérifier la banque
 
 Avec Node.js 18 ou plus récent :
