@@ -194,6 +194,14 @@ les demi-unités, plusieurs points et la lecture d’une seule coordonnée. Ce
 classement conserve la même construction tout en permettant au générateur de
 choisir une variante adaptée au support.
 
+`geometry.solid` fournit un traceur commun pour le cube, le pavé droit, le
+prisme droit, le cylindre, la pyramide, le cône et la sphère. Les faces
+visibles, les arêtes cachées pointillées, les palettes par famille, la rotation
+et le miroir sont paramétrables. Ses sept préréglages sont vectoriels et
+compatibles téléphone, ordinateur, projection et impression. Les SVG
+historiques de `dnb_20` sont conservés jusqu’à leur comparaison visuelle
+question par question avec ce nouveau traceur.
+
 ## Règles d’évolution
 
 1. Une amélioration visuelle est d’abord ajoutée comme préréglage ou nouvelle
