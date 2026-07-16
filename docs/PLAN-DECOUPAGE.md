@@ -13,11 +13,11 @@ correction tout en conservant le résultat pédagogique attendu.
 
 ## État actuel
 
-- 42 modules et 473 gabarits sont isolés dans `auto/scripts/modules/` ;
+- 42 modules et 475 gabarits sont isolés dans `auto/scripts/modules/` ;
 - le manifeste charge les modules sans recopier leurs blocs dans la page ;
 - les 42 modules possèdent un classement pédagogique complet ;
-- 25 composants visuels partagés sont enregistrés ;
-- la banque V1.17, les codes MG1 et les rendus de référence sont testés ;
+- 26 composants visuels partagés sont enregistrés ;
+- la banque V1.18, les codes MG1 et les rendus de référence sont testés ;
 - génération, fréquences, rendus et corrections restent encore partiellement
   couplés à `02-question-engine.js`, `03-slideshow.js` et `04-app.js`.
 - `dnb_08` éprouve désormais un registre fonctionnel séparant génération,
@@ -58,7 +58,7 @@ Les éléments réellement partagés restent dans :
 - conserver les codes numériques permanents des liens MG1 ;
 - conserver les numéros `n` des gabarits ;
 - conserver la reproductibilité d'une série à seed identique ;
-- ne pas modifier l'empreinte V1.17 pendant une extraction pure ;
+- ne pas modifier l'empreinte V1.18 pendant une extraction pure ;
 - ne pas déplacer une règle propre à une notion dans un composant générique ;
 - comparer la meilleure source maths&go avant de remplacer un rendu ;
 - vérifier téléphone et ordinateur avant de déclarer un support compatible ;
@@ -66,13 +66,13 @@ Les éléments réellement partagés restent dans :
 
 ## Étapes déjà terminées
 
-1. Tests de structure et banque V1.17 figée.
+1. Tests de structure et banque V1.18 figée.
 2. Contrat minimal d'un module.
 3. Isolation des 42 banques par domaine.
 4. Pilotes simples et visuels (`dnb_08`, `dnb_07`).
 5. Classement pédagogique complet de Nombres et calculs.
 6. Classement pédagogique complet d'Espace et géométrie.
-7. Extraction de 25 composants visuels et tactiles.
+7. Extraction de 26 composants visuels et tactiles.
 8. Classement du premier lot Données : probabilités, fréquences, moyennes,
    médiane et étendue (`dnb_28` à `dnb_31`).
 9. Classement complet du domaine Données avec tableaux, graphiques,

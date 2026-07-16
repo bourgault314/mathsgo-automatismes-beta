@@ -214,21 +214,22 @@ Après chaque petit lot validé pédagogiquement :
 
 ## Points actuellement contradictoires ou incomplets
 
-Ces points ne sont pas des règles : ils doivent être résolus explicitement.
+Aucune contradiction documentaire connue ne subsiste pour `dnb_02` après le
+lot du 16 juillet 2026. Les décisions suivantes sont maintenant appliquées :
 
-- Le module `dnb_02` déclare des composants d'aide dans son registre
-  pédagogique, mais son générateur et son rendu restent génériques : ces aides
-  ne sont pas affichées actuellement.
-- `dnb_02` est déclaré pour les niveaux 4e, 3e et DNB dans le manifeste, mais une
-  dérogation du moteur rend ses dix questions visibles en 5e. Les sources de
-  vérité doivent être harmonisées après validation du classement.
-- Les additions de décimaux relatifs sont encore mélangées à `dnb_02`, malgré
-  le contrat du module d'addition d'entiers relatifs qui prévoit une extension
-  séparée.
-- Le registre associe actuellement `numbers.glisse-nombre` à plusieurs tâches
-  pour lesquelles ce composant n'a pas le bon sens pédagogique. Le glisse-nombre
-  est conçu pour multiplier ou diviser par 10, 100 ou 1 000, pas pour comparer,
-  additionner, multiplier par un entier ou partager.
+- le cours reste accessible en modes « Avec aide » et « Sans aide » ; ce sont
+  les aides facultatives de la question qui sont masquées en mode sans aide ;
+- le manifeste, le module et le registre pédagogique déclarent tous les
+  niveaux 5e, 4e, 3e et DNB ;
+- le générateur, la sélection et le rendu de `dnb_02` sont isolés dans trois
+  extensions fonctionnelles ;
+- les additions de décimaux relatifs ont quitté `dnb_02` ;
+- `numbers.glisse-nombre` reste réservé aux changements de rang par 10, 100 et
+  1 000 dans `dnb_02b`.
+
+Le point encore ouvert est la conception de la future catégorie « Somme de
+nombres décimaux relatifs ». Elle ne doit pas être créée avant validation de
+ses familles de questions.
 
 ## Journal de décision
 
@@ -255,3 +256,30 @@ Ces points ne sont pas des règles : ils doivent être résolus explicitement.
 Lorsqu'un nouveau point est validé, consigner ici la date, la décision, les
 catégories concernées et les composants retenus. Ne pas transformer une piste
 de discussion en règle avant validation explicite.
+
+### 2026-07-16 — Décimaux, catégorie `dnb_02`
+
+- La répartition d'une autre catégorie peut nourrir la réflexion, mais ne
+  devient jamais un quota commun. Chaque catégorie reçoit une composition
+  adaptée à ses notions et aux interactions qui ont un sens.
+- La banque « Comparer et calculer avec des nombres décimaux » est organisée en
+  quatre blocs : comparer/ranger, encadrer, calcul additif et calcul
+  multiplicatif.
+- Douze familles sont retenues : deux comparaisons en QCM, un rangement
+  tactile, deux encadrements, une addition complétant une unité, une
+  soustraction, un complément à trouver, une multiplication directe, une
+  division directe, un partage en contexte très court et un raisonnement par
+  distributivité.
+- Pour une série de dix questions consacrée à la catégorie, la sélection vise
+  deux questions de comparaison/rangement, deux encadrements, trois questions
+  additives et trois questions multiplicatives. Les familles tournent avant de
+  se répéter.
+- L'encadrement devient une activité de placement : le décimal est déjà placé
+  sur une droite courte ; l'élève place les deux étiquettes des entiers
+  consécutifs dans les emplacements de gauche et de droite.
+- Sur téléphone, le geste principal des rangements, encadrements et tableaux de
+  distributivité est « toucher une carte, puis toucher une case ». Le clavier
+  ne s'ouvre pas ; la même interaction reste utilisable sur ordinateur.
+- Les additions de décimaux relatifs quittent `dnb_02`. Leur future catégorie
+  séparée sera conçue après validation de ses questions ; elle ne doit pas être
+  inventée ou publiée vide pendant ce chantier.

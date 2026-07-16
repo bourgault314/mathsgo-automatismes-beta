@@ -5,6 +5,7 @@ const root=new URL('../',import.meta.url);
 const sources=[
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
+  'auto/scripts/shared/visuals/numbers/order-cards.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
@@ -185,16 +186,18 @@ function expectedQuestions(...groups){
 }
 
 assertClassifiedModule('dnb_02',context.__decimalQuestionNumbers,'decimal_numbers',{
-  1:['comparer-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
-  2:['comparer-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
-  3:['ranger-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
-  4:['encadrer-entre-entiers','numeric','optional','numbers.number-line'],
-  5:['encadrer-entre-entiers','numeric','optional','numbers.number-line'],
-  6:['addition-soustraction','numeric','optional','numbers.glisse-nombre'],
-  7:['addition-soustraction','numeric','optional','numbers.glisse-nombre'],
-  8:['addition-signee','numeric','optional','numbers.number-line'],
-  9:['multiplier-diviser','numeric','optional','numbers.glisse-nombre'],
-  10:['multiplier-diviser','numeric','optional','numbers.glisse-nombre']
+  1:['comparer-decimaux-positifs','qcm-one','none',null],
+  2:['comparer-decimaux-negatifs','qcm-one','none',null],
+  3:['ranger-decimaux','manipulation','essential','numbers.order-cards'],
+  4:['encadrer-decimal','manipulation','essential','numbers.number-line'],
+  5:['encadrer-decimal','manipulation','essential','numbers.number-line'],
+  6:['addition-unite','numeric','optional','arithmetic.fraction-decimal-grid'],
+  7:['soustraction-decimale','numeric','none',null],
+  8:['complement-unite','numeric','optional','arithmetic.fraction-decimal-grid'],
+  9:['multiplication-decimale','numeric','optional','algebra.area-model'],
+  10:['division-decimale','numeric','optional','arithmetic.relation-bar'],
+  11:['partage-decimal-contexte','numeric','optional','arithmetic.relation-bar'],
+  12:['raisonnement-distributivite','manipulation','essential','algebra.area-model']
 });
 
 assertClassifiedModule('dnb_06',context.__scientificQuestionNumbers,'scientific_notation',{

@@ -192,8 +192,9 @@ réutilisables par Automatismes.
 
 ## Quatorzième lot préparé
 
-1. Les dix questions de décimaux de `dnb_02` sont classées en comparaison,
-   rangement, encadrement, addition-soustraction et changement d’échelle.
+1. Les douze questions de décimaux de `dnb_02` sont classées en comparaison et
+   rangement, encadrement, calcul additif et calcul multiplicatif. Les sommes
+   de décimaux relatifs sont sorties de cette catégorie.
 2. Les onze questions de notation scientifique de `dnb_06` distinguent le
    sens de conversion, le signe de l’exposant et la reconnaissance d’une
    mantisse correcte.
@@ -225,7 +226,7 @@ réutilisables par Automatismes.
    de transformations.
 5. Les quinze modules du domaine Espace et géométrie sont désormais classés.
    Avec Nombres et calculs, le registre couvre 32 modules sur 42 sans changer
-   les 473 gabarits ni leurs tirages reproductibles.
+   les 475 gabarits ni leurs tirages reproductibles.
 
 ## Seizième lot préparé
 
@@ -250,7 +251,7 @@ réutilisables par Automatismes.
    encore de composant partagé : `component: null` rend ce travail restant
    explicite.
 5. L’audit a repéré une incohérence historique dans `dnb_28`, question 4 :
-   la banque V1.17 déclare deux choix corrects. La correction doit rester un
+   la banque V1.18 déclare deux choix corrects. La correction doit rester un
    lot de contenu distinct pour ne pas la confondre avec cette extraction.
 
 ## Dix-huitième lot préparé
@@ -309,7 +310,7 @@ réutilisables par Automatismes.
 4. Le rendu direct des six SVG a été contrôlé sur une planche d’aperçu ; la
    comparaison en navigateur du même gabarit et de la même seed reste requise
    avant branchement.
-5. Le catalogue charge maintenant les 25 composants visuels, y compris les
+5. Le catalogue charge maintenant les 26 composants visuels, y compris les
    jetons relatifs qui avaient été omis de cette page ; un test rend cette
    liste exhaustive.
 
