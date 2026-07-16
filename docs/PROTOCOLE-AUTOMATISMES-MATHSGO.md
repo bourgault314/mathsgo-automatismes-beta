@@ -15,6 +15,10 @@ cette catégorie ; une règle commune validée est ajoutée ici.
   composant partagé n'est modifié qu'après vérification de tous ses usages.
 - Avant toute modification, relire ce protocole, les contrats du projet, la
   source de vérité du composant et les règles propres à la catégorie.
+- Ce fichier est l'unique protocole commun canonique. Une branche repart de la
+  version de `main` et fusionne ses ajouts sans remplacer les règles existantes
+  par une copie plus ancienne. Une décision propre à une catégorie reste dans
+  le document de cette catégorie.
 
 ## Méthode permanente
 
