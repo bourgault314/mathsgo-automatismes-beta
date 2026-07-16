@@ -269,6 +269,19 @@ réutilisables par Automatismes.
    `dnb_33` question 6 peut toucher le bord supérieur et `dnb_36` question 9
    peut placer la valeur 25 au-dessus de la dernière graduation.
 
+## Dix-neuvième lot préparé
+
+1. `dnb_37` est classé entre programmes de calcul, déplacements sur
+   quadrillage, orientation, boucles de tracé et constructions géométriques.
+2. Les 42 modules sur 42 disposent désormais d’un contrat pédagogique complet.
+3. Les blocs et quadrillages restent `essential` car ils portent les
+   instructions et les données de chaque question.
+4. Le contrat d’interaction décrit l’état, les actions, la réinitialisation et
+   la correction pas à pas. Il prépare la bibliothèque manipulable sans créer
+   un clone complet de Scratch dans la bêta.
+5. Les composants restent `null` jusqu’à la comparaison des douze SVG
+   historiques avec les références maths&go.
+
 ## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

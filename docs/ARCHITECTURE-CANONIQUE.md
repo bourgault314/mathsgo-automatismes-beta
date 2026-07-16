@@ -44,8 +44,8 @@ Le flux normal est :
 
 - 42 modules et 473 gabarits sont isolés et protégés par la banque V1.17 ;
 - 24 composants visuels sont enregistrés ;
-- Nombres et calculs, Espace et géométrie et les neuf modules Données
-  (`dnb_28` à `dnb_36`) sont classés pédagogiquement, soit 41 modules sur 42 ;
+- Nombres et calculs, Espace et géométrie, les neuf modules Données et le
+  module Algorithmique sont classés pédagogiquement, soit 42 modules sur 42 ;
 - le manifeste, le partage MG1 et les identifiants stables sont testés.
 
 Cette séparation est réelle mais incomplète : la génération, les règles de

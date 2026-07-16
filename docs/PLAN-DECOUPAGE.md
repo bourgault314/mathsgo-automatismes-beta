@@ -15,7 +15,7 @@ correction tout en conservant le résultat pédagogique attendu.
 
 - 42 modules et 473 gabarits sont isolés dans `auto/scripts/modules/` ;
 - le manifeste charge les modules sans recopier leurs blocs dans la page ;
-- 41 modules sur 42 possèdent un classement pédagogique complet ;
+- les 42 modules possèdent un classement pédagogique complet ;
 - 24 composants visuels partagés sont enregistrés ;
 - la banque V1.17, les codes MG1 et les rendus de référence sont testés ;
 - génération, fréquences, rendus et corrections restent encore partiellement
@@ -77,6 +77,8 @@ Les éléments réellement partagés restent dans :
    médiane et étendue (`dnb_28` à `dnb_31`).
 9. Classement complet du domaine Données avec tableaux, graphiques,
    proportionnalité et évolutions (`dnb_32` à `dnb_36`).
+10. Classement du module Algorithmique et contrat d’interaction pour les
+    blocs, états, déplacements et boucles (`dnb_37`).
 
 ## Ordre de travail actuel
 
@@ -90,10 +92,10 @@ de choisir le pilote pédagogique visuel suivant.
 
 ### 2. Données et Algorithmique
 
-Les neuf modules Données `dnb_28` à `dnb_36` sont classés. Classer maintenant
-`dnb_37`, puis choisir les représentations réellement partagées : graphiques,
-diagrammes, arbres de probabilité, quadrillages et blocs nécessaires aux
-questions. Ne pas reproduire un logiciel complet.
+Les neuf modules Données `dnb_28` à `dnb_36` et le module Algorithmique
+`dnb_37` sont classés. Choisir maintenant les représentations réellement
+partagées : graphiques, diagrammes, arbres de probabilité, quadrillages et
+blocs nécessaires aux questions. Ne pas reproduire un logiciel complet.
 
 ### 3. Visuels encore historiques
 
