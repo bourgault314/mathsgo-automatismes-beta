@@ -93,7 +93,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = '662ac08d547b3aca31626f04b3af1ad7c57333a8ec32e9cc7276d3ba577e63ac';
+const expectedBankHash = 'e9c9a86143cb5cf0304b9961ae5507d99510c00d0c6b4b33826106b93b352d3b';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -132,8 +132,13 @@ for (const id of isolatedModuleIds) {
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
 if (questionCount !== 476) fail(`476 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
-  fail(`Le contenu ou l’ordre de la banque V1.19 a changé (${bankHash}).`);
+  fail(`Le contenu ou l’ordre de la banque V1.20 a changé (${bankHash}).`);
 }
+
+const integerRelativeModule=JSON.parse(context.__bankSnapshot).find(module=>module.id==='dnb_38');
+if(!integerRelativeModule?.level_tags?.includes('DNB')) fail('L’addition d’entiers relatifs doit rester accessible dans le filtre DNB.');
+const integerRelativeManifest=context.__moduleManifest.find(module=>module.id==='dnb_38');
+if(!integerRelativeManifest?.level_tags?.includes('DNB')) fail('Le manifeste doit également annoncer dnb_38 dans le filtre DNB.');
 
 const runtime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_08');
 if(!runtime?.generator||!runtime?.selection||!runtime?.renderer) fail('Le pilote dnb_08 doit enregistrer génération, sélection et rendu.');
@@ -464,5 +469,5 @@ for (const domain of Object.keys(isolatedModulesByDomain)) {
 if ((indexHtml.match(/<script defer src=/g)||[]).length < 30) fail('Les scripts de démarrage doivent rester non bloquants pour le premier affichage.');
 
 if (!process.exitCode) {
-  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.19 figée, registre MG1 cohérent.`);
+  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.20 figée, registre MG1 cohérent.`);
 }

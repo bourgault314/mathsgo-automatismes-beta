@@ -7,8 +7,10 @@ page Automatisme.
 ## Périmètre
 
 - Une seule catégorie du générateur : **Addition de nombres entiers relatifs**.
-- Calcul mental, niveaux 5e–4e–3e ; ce module n’est pas présenté comme une
-  méthode de résolution du DNB.
+- Calcul mental, niveaux 5e–4e–3e et filtre DNB : l’addition d’entiers relatifs
+  reste un automatisme fondamental attendu avant les calculs relatifs plus
+  complexes. Ce module n’est pas présenté comme une méthode complète de
+  résolution d’un exercice du DNB.
 - Les relatifs décimaux seront une extension séparée, sans jetons si le
   support ne sert pas la compréhension.
 - Les questions peuvent varier à l’intérieur de la catégorie : manipulation,

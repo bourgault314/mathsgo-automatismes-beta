@@ -278,6 +278,11 @@ réellement utile.
 - **2026-07-16 — Banque V1.19.** La séparation des décimaux relatifs porte la
   banque à 43 modules et 476 gabarits. Le générateur passe en version 1.14.0 ;
   le nouveau code MG1 permanent de `dnb_39` est 42.
+- **2026-07-16 — Banque V1.20 et filtre DNB des relatifs.** Dès lors que les
+  calculs avec des décimaux relatifs sont proposés dans le filtre DNB,
+  l’addition d’entiers relatifs doit également y rester accessible. `dnb_38`
+  porte donc les niveaux 5e, 4e, 3e et DNB, comme `dnb_39`. Ce changement de
+  classement ne modifie ni les huit gabarits de `dnb_38`, ni leurs tirages.
 - **2026-07-16 — Clôture et publication.** Tout compte rendu distingue l'état
   local, poussé, en pull request, fusionné et déployé. Une demande de
   publication inclut le commit, le push et la pull request de la bêta ; un lot

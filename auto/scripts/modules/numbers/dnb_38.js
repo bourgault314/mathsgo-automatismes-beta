@@ -2,7 +2,7 @@ const MODULE_DNB_38={
   id:'dnb_38',
   num:38,
   title:'Addition de nombres entiers relatifs',
-  level_tags:['5e','4e','3e'],
+  level_tags:['5e','4e','3e','DNB'],
   source:'mathsgo_relative_tokens',
   has_svg:true,
   questions:[
