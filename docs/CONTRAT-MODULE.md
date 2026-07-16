@@ -71,7 +71,9 @@ Pour chaque type de question, ce registre peut déclarer :
 - le rôle de la figure et son composant partagé ;
 - les rubriques d’aide utiles à cette tâche précise.
 
-`dnb_25` constitue le premier module pilote. Tant qu’un autre module n’est pas
+`dnb_25` constitue le premier pilote de classement et de rendu. `dnb_08` est le
+premier pilote fonctionnel : sa génération, sa sélection et son rendu passent
+par le registre `MATHSGO_MODULE_RUNTIME`. Tant qu’un autre module n’est pas
 migré, les anciennes règles du moteur restent disponibles comme solution de
 repli : le découpage peut donc avancer notion par notion.
 
@@ -107,3 +109,18 @@ pilote stable, les responsabilités pourront être séparées en `module.js`,
 `generate.js`, `selection.js` et `render.js`. Cette structure n'est généralisée
 qu'après vérification de l'équivalence, de la seed et des interactions avec le
 moteur. Voir [`PLAN-DECOUPAGE.md`](PLAN-DECOUPAGE.md).
+
+Le pilote `dnb_08` conserve provisoirement sa banque historique dans
+`dnb_08.js` et place ses extensions dans `dnb_08/`. Cette étape intermédiaire
+évite de déplacer le fichier canonique pendant que le contrat est éprouvé :
+
+- `generate.js` produit uniquement les paramètres mathématiques ;
+- `selection.js` construit un cycle de gabarits sans connaître l’interface ;
+- `render.js` possède le point d’entrée question/correction ;
+- le moteur conserve l’interpolation, le paquet de tirage et l’orchestration.
+
+Le registre commun refuse qu’une même responsabilité soit enregistrée deux
+fois. Le manifeste charge les trois extensions uniquement lorsque `dnb_08` est
+choisi. Les tests comparent l’ancien et le nouveau chemin sur plusieurs seeds,
+les dix gabarits, les questions, les corrections et plus de deux cycles de
+tirage.

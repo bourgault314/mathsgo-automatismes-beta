@@ -2520,7 +2520,30 @@ function makePythagorasTactileInstance(mod,q){
   const model=globalThis.pythagorasBuilderModel(data);
   return {module:mod,q,scope:{},answers:model.expected,answerChoices:model.expected.map(value=>[value]),rawStatement:'',rawFooter:'',hasSvg:true,pythagorasTactile:{...data,...model}};
 }
+function makeGenericInstance(mod,q,generatedScope=null){
+  let scope=generatedScope;
+  if(scope===null&&q.options&&q.options.formula_code) scope=runCode(q.options.formula_code);
+  if(scope===null) scope={};
+  let answerChoices=parseAnswerChoices(q,scope);
+  let answers=answerChoices.map(choices=>choices[0]||'');
+  let rawStatement=subVars(q.statement||'', scope);
+  const rawFooter=subVars(q.footer||'', scope);
+  if(q.options&&q.options.shuffle_answers){
+    const shuffled=shuffledQcm(rawStatement,answers);
+    rawStatement=shuffled.statement;
+    answers=shuffled.answers;
+    answerChoices=answers.map(answer=>[answer]);
+  }
+  const hasSvg=/<svg/i.test(rawStatement+rawFooter);
+  return {module:mod, q, scope, answers, answerChoices, rawStatement, rawFooter, hasSvg};
+}
 function makeInstance(mod,q){
+  const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(mod&&mod.id);
+  if(runtime&&runtime.generator&&typeof runtime.generator.createScope==='function'){
+    const generatedScope=runtime.generator.createScope({module:mod,question:q,randomInt:RD});
+    if(!generatedScope||typeof generatedScope!=='object') throw new Error(`Le générateur ${mod.id} doit retourner un objet de paramètres.`);
+    return makeGenericInstance(mod,q,generatedScope);
+  }
   if(mod&&mod.id==='dnb_01') return makeModule01Instance(mod,q);
   if(mod&&mod.id==='dnb_02b') return makePlaceValueInstance(mod,q);
   if(mod&&['dnb_03','dnb_03b'].includes(mod.id)) return makeFractionOpsInstance(mod,q);
@@ -2539,20 +2562,7 @@ function makeInstance(mod,q){
   if(mod&&mod.id==='dnb_35') return makeEvolutionInstance(mod,q);
   if(mod&&mod.id==='dnb_38') return makeRelativeAdditionInstance(mod,q);
   if(mod&&mod.id==='dnb_24b') return makePythagorasTactileInstance(mod,q);
-  let scope={};
-  if(q.options&&q.options.formula_code) scope=runCode(q.options.formula_code);
-  let answerChoices=parseAnswerChoices(q,scope);
-  let answers=answerChoices.map(choices=>choices[0]||'');
-  let rawStatement=subVars(q.statement||'', scope);
-  const rawFooter=subVars(q.footer||'', scope);
-  if(q.options&&q.options.shuffle_answers){
-    const shuffled=shuffledQcm(rawStatement,answers);
-    rawStatement=shuffled.statement;
-    answers=shuffled.answers;
-    answerChoices=answers.map(answer=>[answer]);
-  }
-  const hasSvg=/<svg/i.test(rawStatement+rawFooter);
-  return {module:mod, q, scope, answers, answerChoices, rawStatement, rawFooter, hasSvg};
+  return makeGenericInstance(mod,q);
 }
 function compactQcmClass(options){
   if(!Array.isArray(options) || options.length!==4) return '';
@@ -3905,6 +3915,10 @@ function renderRelativeTokensModule(inst,correction=false,mode=null){
 }
 function renderQuestion(inst, correction=false, mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
+  const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(inst&&inst.module&&inst.module.id);
+  if(runtime&&runtime.renderer&&typeof runtime.renderer.renderQuestion==='function'){
+    return runtime.renderer.renderQuestion({instance:inst,correction,mode,renderGenericQuestion});
+  }
   if(inst && inst.module && inst.module.id==='dnb_01') return renderModule01(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_02b') return renderPlaceValueModule(inst, correction, mode);
   if(inst && inst.module && ['dnb_03','dnb_03b'].includes(inst.module.id)) return renderFractionOpsModule(inst, correction, mode);

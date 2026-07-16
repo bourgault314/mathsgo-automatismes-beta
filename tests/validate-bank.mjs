@@ -16,8 +16,12 @@ const sources = [
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/modules/00-runtime-registry.js',
   'auto/scripts/00-module-manifest.js',
   ...isolatedModulesByDomain.numbers.map(id => `auto/scripts/modules/numbers/${id}.js`),
+  'auto/scripts/modules/numbers/dnb_08/generate.js',
+  'auto/scripts/modules/numbers/dnb_08/selection.js',
+  'auto/scripts/modules/numbers/dnb_08/render.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
@@ -36,9 +40,11 @@ const sources = [
   'auto/scripts/02-question-engine.js'
 ];
 
+const selectionSource = fs.readFileSync(new URL('auto/scripts/04-app.js', root), 'utf8')
+  .split('let currentSeriesDefinition=null;')[0];
 const code = sources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
-  .join('\n') + `
+  .join('\n') + '\n' + selectionSource + `
 globalThis.__bank = RAW_MODULES.map(module => ({
   id: module.id,
   title: module.title,
@@ -50,8 +56,17 @@ globalThis.__renderPythagorasModule = renderPythagorasModule;
 globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
+globalThis.__divisibilityModule = MODULE_DNB_08;
 globalThis.__makeInstance = makeInstance;
-globalThis.__renderQuestion = renderQuestion;`;
+globalThis.__makeGenericInstance = makeGenericInstance;
+globalThis.__renderQuestion = renderQuestion;
+globalThis.__renderGenericQuestion = renderGenericQuestion;
+globalThis.__setSeed = setSeed;
+globalThis.__beginQuizBank = beginQuizBank;
+globalThis.__drawFromQuestionDeck = drawFromQuestionDeck;
+globalThis.__shuffledCopy = shuffledCopy;
+globalThis.__moduleManifest = MATHSGO_MODULE_MANIFEST;
+globalThis.__moduleFiles = MATHSGO_MODULE_FILES;`;
 
 const context = { console };
 context.globalThis = context;
@@ -101,6 +116,55 @@ if (questionCount !== 473) fail(`473 gabarits attendus, ${questionCount} trouvé
 if (bankHash !== expectedBankHash) {
   fail(`Le contenu ou l’ordre de la banque V1.17 a changé (${bankHash}).`);
 }
+
+const runtime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_08');
+if(!runtime?.generator||!runtime?.selection||!runtime?.renderer) fail('Le pilote dnb_08 doit enregistrer génération, sélection et rendu.');
+
+function comparableInstance(instance){
+  const scope=instance.scope||{};
+  return {
+    answers:instance.answers,
+    answerChoices:instance.answerChoices,
+    rawStatement:instance.rawStatement,
+    rawFooter:instance.rawFooter,
+    hasSvg:instance.hasSvg,
+    parameters:Object.fromEntries(['P','ka','kc','a','b','cc','e'].filter(key=>Object.prototype.hasOwnProperty.call(scope,key)).map(key=>[key,scope[key]]))
+  };
+}
+
+for(const seed of [1,2,42,999,233279]){
+  for(const question of context.__divisibilityModule.questions){
+    context.__setSeed(seed);
+    const legacy=comparableInstance(context.__makeGenericInstance(context.__divisibilityModule,question));
+    context.__setSeed(seed);
+    const pilot=comparableInstance(context.__makeInstance(context.__divisibilityModule,question));
+    if(JSON.stringify(pilot)!==JSON.stringify(legacy)) fail(`Le pilote dnb_08 change le gabarit ${question.n} avec la seed ${seed}.`);
+    for(const correction of [false,true]){
+      const genericHtml=context.__renderGenericQuestion(pilot,correction,'with');
+      const pilotHtml=context.__renderQuestion(pilot,correction,'with');
+      if(pilotHtml!==genericHtml) fail(`Le rendu extrait de dnb_08 change le gabarit ${question.n}.`);
+    }
+  }
+}
+
+for(const seed of [3,17,81,2026]){
+  context.__setSeed(seed);
+  context.__beginQuizBank([context.__divisibilityModule]);
+  const legacy=context.__drawFromQuestionDeck('dnb_08:all',context.__divisibilityModule.questions,24).map(question=>question.n);
+  context.__setSeed(seed);
+  context.__beginQuizBank([context.__divisibilityModule]);
+  const pilot=context.__drawFromQuestionDeck(
+    'dnb_08:all',
+    context.__divisibilityModule.questions,
+    24,
+    ()=>runtime.selection.buildCycle({module:context.__divisibilityModule,questions:context.__divisibilityModule.questions,shuffle:context.__shuffledCopy})
+  ).map(question=>question.n);
+  if(JSON.stringify(pilot)!==JSON.stringify(legacy)) fail(`La sélection extraite de dnb_08 change la seed ${seed}.`);
+}
+
+const divisibilityManifest=context.__moduleManifest.find(module=>module.id==='dnb_08');
+if(!divisibilityManifest||divisibilityManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_08.');
+if(context.__moduleFiles.get('dnb_08')?.length!==4) fail('Le chargeur doit préparer la banque et les trois extensions de dnb_08.');
 
 const angleInstance={
   module:{id:'dnb_18'},q:{n:9},answers:['51'],
@@ -179,6 +243,8 @@ if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.j
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
 if (!indexHtml.includes('scripts/00-module-manifest.js')) fail('Le catalogue léger doit être chargé par la page.');
+if (!indexHtml.includes('scripts/modules/00-runtime-registry.js')) fail('Le registre fonctionnel doit être chargé par la page.');
+if (indexHtml.indexOf('scripts/modules/00-runtime-registry.js')>indexHtml.indexOf('scripts/02-question-engine.js')) fail('Le registre fonctionnel doit précéder le moteur de questions.');
 if (indexHtml.includes('scripts/data/01-numbers.js')||indexHtml.includes('scripts/data/02-geometry.js')||indexHtml.includes('scripts/data/03-data.js')||indexHtml.includes('scripts/data/04-algorithm.js')) {
   fail('Les banques complètes ne doivent plus être chargées au démarrage.');
 }

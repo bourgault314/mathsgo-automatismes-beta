@@ -73,6 +73,15 @@ function drawFromQuestionDeck(deckKey,questions,count,cycleBuilder=null){
   return selected;
 }
 
+function drawRuntimeModuleQuestions(module,questions,count){
+  const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(module&&module.id);
+  const selection=runtime&&runtime.selection;
+  const cycleBuilder=selection&&typeof selection.buildCycle==='function'
+    ?()=>selection.buildCycle({module,questions,shuffle:shuffledCopy})
+    :null;
+  return drawFromQuestionDeck(module.id+':all',questions,count,cycleBuilder);
+}
+
 function drawOrderKey(deckKey,keys){
   const signature=[...keys].sort().join('|');
   let deck=quizSelectionState.orderDecks.get(deckKey);
@@ -445,7 +454,7 @@ function buildBalancedQuiz(mods,count){
           ? chooseNumberLineQuestions(item.m.id,item.questions,moduleCount)
         : ['dnb_26','dnb_26b'].includes(item.m.id)
           ? chooseTrigQuestions(item.m.id,item.questions,moduleCount)
-        : drawFromQuestionDeck(item.m.id+':all',item.questions,moduleCount);
+        : drawRuntimeModuleQuestions(item.m,item.questions,moduleCount);
     return {m:item.m,questions:chosen};
   });
 

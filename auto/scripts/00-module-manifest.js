@@ -16,7 +16,7 @@ const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_05',title:'Un même nombre sous plusieurs formes',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_05',file:'scripts/modules/numbers/dnb_05.js'},
   {id:'dnb_06',title:'Notation scientifique',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_06',file:'scripts/modules/numbers/dnb_06.js'},
   {id:'dnb_07',title:'Carrés des entiers de 1 à 12',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_07',file:'scripts/modules/numbers/dnb_07.js'},
-  {id:'dnb_08',title:'Critères de divisibilité par 2, 3, 5, 9',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_08',file:'scripts/modules/numbers/dnb_08.js'},
+  {id:'dnb_08',title:'Critères de divisibilité par 2, 3, 5, 9',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_08',file:'scripts/modules/numbers/dnb_08.js',runtimeFiles:['scripts/modules/numbers/dnb_08/generate.js','scripts/modules/numbers/dnb_08/selection.js','scripts/modules/numbers/dnb_08/render.js']},
   {id:'dnb_09',title:'Double, triple, moitié, prédécesseur, successeur et carré',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_09',file:'scripts/modules/numbers/dnb_09.js'},
   {id:'dnb_10',title:'Simplifier des expressions littérales',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_10',file:'scripts/modules/numbers/dnb_10.js'},
   {id:'dnb_11',title:"Calculer la valeur d'une expression algébrique",level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_11',file:'scripts/modules/numbers/dnb_11.js'},
@@ -51,7 +51,10 @@ const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_37',title:'Interpréter une suite d’instructions',level_tags:['4e','3e','DNB'],domain:'algorithm',globalName:'MODULE_DNB_37',file:'scripts/modules/algorithm/dnb_37.js'}
 ]);
 
-const MATHSGO_MODULE_FILES=new Map(MATHSGO_MODULE_MANIFEST.map(module=>[module.id,module.file]));
+const MATHSGO_MODULE_FILES=new Map(MATHSGO_MODULE_MANIFEST.map(module=>[
+  module.id,
+  [module.file,...(module.runtimeFiles||[])]
+]));
 const MATHSGO_LOADED_MODULE_SCRIPTS=new Map();
 let modulePreparationInProgress=false;
 
@@ -69,7 +72,7 @@ function loadModuleScript(src){
 }
 
 async function loadModulesForIds(ids){
-  const files=[...new Set(ids.map(id=>MATHSGO_MODULE_FILES.get(id)).filter(Boolean))];
+  const files=[...new Set(ids.flatMap(id=>MATHSGO_MODULE_FILES.get(id)||[]))];
   await Promise.all(files.map(loadModuleScript));
   if(typeof refreshModuleBank==='function') refreshModuleBank();
 }
