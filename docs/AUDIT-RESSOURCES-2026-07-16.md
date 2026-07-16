@@ -282,6 +282,21 @@ réutilisables par Automatismes.
 5. Les composants restent `null` jusqu’à la comparaison des douze SVG
    historiques avec les références maths&go.
 
+## Vingtième lot préparé
+
+1. Le registre `MATHSGO_MANIPULATIONS` donne un contrat commun aux outils qui
+   changent d’état sans créer un second moteur d’exercices.
+2. Le Glisse-nombre, les jetons relatifs et le constructeur Pythagore sont
+   décrits à partir de leurs comportements actuels ; la suite de blocs
+   Algorithmique reste explicitement planifiée.
+3. Chaque contrat distingue état reconstructible, actions, réinitialisation,
+   validation, correction et sérialisation `MG-MANIP-1`.
+4. Les identifiants conservés et sérialisés sont contrôlés par les tests, de
+   même que l’alternative clavier et l’existence des trois composants actifs.
+5. Le catalogue développeur montre les quatre contrats et charge désormais les
+   42 modules pédagogiques ; il manquait jusque-là les onze derniers fichiers
+   de classement.
+
 ## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

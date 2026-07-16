@@ -77,8 +77,9 @@ composant bêta existant.
 
 ### 3. Données et Algorithmique
 
-Classer les dix modules restants, puis extraire seulement les représentations
-et règles nécessaires aux questions réelles.
+Les dix modules sont classés. Cette carte permet maintenant d’extraire les
+représentations par familles et seulement lorsqu’elles répondent aux questions
+réelles ; les graphiques de données restent notamment à construire.
 
 ### 4. Visuels à la demande
 
@@ -88,9 +89,9 @@ composant commun n'est pas visuellement équivalent ou meilleur.
 
 ### 5. Jeux et manipulations
 
-À partir des pilotes tactiles déjà présents, définir un contrat commun pour les
-états, gestes, réinitialisation, validation et correction. Un jeu ou un plateau
-n'est pas réduit à un SVG : son comportement fait partie du composant.
+Le registre `MATHSGO_MANIPULATIONS` fixe les états, gestes, réinitialisation,
+validation, correction et sérialisation des pilotes tactiles. Un jeu ou un
+plateau n'est pas réduit à un SVG : son comportement fait partie du composant.
 
 ### 6. Passage en production
 

@@ -865,6 +865,10 @@ if(registryPosition<0||pedagogyPositions.some(position=>position<registryPositio
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
 if(!catalogue.includes('id="pedagogyCatalogue"')||!catalogue.includes('MATHSGO_PEDAGOGY.list()')) fail('Le catalogue pédagogique doit être visible dans la bibliothèque.');
+for(const path of sources.filter(path=>path.startsWith('auto/scripts/shared/pedagogy/')&&!path.endsWith('/00-registry.js'))){
+  const catalogueSource='../'+path.slice('auto/'.length);
+  if(!catalogue.includes(catalogueSource)) fail(`Le catalogue ne charge pas ${catalogueSource}.`);
+}
 for(const script of [...catalogue.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(match=>match[1]).filter(Boolean)){
   try{new vm.Script(script);}catch(error){fail('Un script intégré du catalogue est invalide : '+error.message);}
 }

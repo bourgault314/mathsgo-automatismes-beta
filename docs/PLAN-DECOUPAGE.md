@@ -115,10 +115,11 @@ référence tant que chaque variante utile n'est pas équivalente ou meilleure.
 
 ### 4. Jeux et manipulations
 
-À partir de `numbers.relative-tokens`, `geometry.pythagoras-builder` et
-`numbers.glisse-nombre`, définir un contrat pour l'état, les gestes, la
-réinitialisation, la validation et la correction. Ce contrat alimentera le
-Studio ; il n'est pas créé comme un second moteur dans la bêta.
+Le registre `MATHSGO_MANIPULATIONS` décrit maintenant l'état, les gestes, la
+réinitialisation, la validation, la correction et la sérialisation. Les
+contrats du Glisse-nombre, des jetons relatifs et du constructeur Pythagore sont
+actifs ; la suite de blocs Algorithmique est planifiée. Le prochain jeu devra
+réutiliser ce registre et non créer un second moteur dans la bêta.
 
 ### 5. Revue et passage en production
 
