@@ -116,6 +116,34 @@
     serialization:{version:'MG-MANIP-1',fields:['task','slots','triangle']}
   });
 
+  registry.register('geometry.triangle-angle-builder',{
+    version:'1.0.0',label:'Somme des angles à compléter',status:'active',moduleId:'dnb_18',componentId:'geometry.triangle-angle-sum',
+    description:'Placer 180°, deux angles connus et 𝑥 dans le modèle en barres, valider le schéma, puis calculer 𝑥.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'known-angles',label:'Deux mesures d’angles connues',serializable:true},
+      {id:'total-first',label:'Orientation de la rangée totale',serializable:true},
+      {id:'slots',label:'Carte placée dans chaque case',serializable:true},
+      {id:'selected-card',label:'Carte temporairement sélectionnée',serializable:false},
+      {id:'placement-validated',label:'Validation de la première étape',serializable:true},
+      {id:'answer',label:'Valeur proposée pour 𝑥',serializable:true}
+    ],
+    actions:[
+      {id:'drag-card',label:'Faire glisser une carte vers une case'},
+      {id:'select-card',label:'Sélectionner une carte'},
+      {id:'place-card',label:'Placer la carte dans une case'},
+      {id:'remove-card',label:'Retirer une carte placée'},
+      {id:'reset',label:'Vider le schéma'},
+      {id:'validate-placement',label:'Valider le placement des quatre cartes'},
+      {id:'enter-answer',label:'Saisir la valeur de 𝑥'},
+      {id:'validate-answer',label:'Valider la valeur de 𝑥'}
+    ],
+    reset:{mode:'empty-slots',preserves:['known-angles','total-first']},
+    validation:{mode:'two-stage',trigger:'explicit',expected:'placement ordonné puis angle manquant égal à 180° moins les deux angles connus'},
+    correction:{mode:'target-state',shows:['même triangle','barre complétée','valeur de 𝑥']},
+    serialization:{version:'MG-MANIP-1',fields:['known-angles','total-first','slots','placement-validated','answer']}
+  });
+
   registry.register('numbers.order-cards',{
     version:'1.1.0',label:'Cartes de nombres à ranger',status:'active',moduleId:'dnb_02',componentId:'numbers.order-cards',
     description:'Glisser un nombre vers une position ou toucher successivement la carte et la case, sans retaper les valeurs.',

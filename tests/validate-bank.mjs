@@ -42,6 +42,9 @@ const sources = [
   'auto/scripts/modules/geometry/dnb_17/generate.js',
   'auto/scripts/modules/geometry/dnb_17/selection.js',
   'auto/scripts/modules/geometry/dnb_17/render.js',
+  'auto/scripts/modules/geometry/dnb_18/generate.js',
+  'auto/scripts/modules/geometry/dnb_18/selection.js',
+  'auto/scripts/modules/geometry/dnb_18/render.js',
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
   'auto/scripts/01-modules.js',
@@ -83,6 +86,7 @@ globalThis.__placeValueModule = MODULE_DNB_02B;
 globalThis.__numberLineModule = MODULE_DNB_14;
 globalThis.__coordinateModule = MODULE_DNB_15;
 globalThis.__angleVocabularyModule = MODULE_DNB_17;
+globalThis.__angleModule = MODULE_DNB_18;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -155,6 +159,8 @@ const placeValueRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02b');
 if(!placeValueRuntime?.generator||!placeValueRuntime?.selection||!placeValueRuntime?.renderer) fail('Le pilote dnb_02b doit enregistrer génération, sélection et rendu.');
 const decimalRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02');
 if(!decimalRuntime?.generator||!decimalRuntime?.selection||!decimalRuntime?.renderer) fail('Le pilote dnb_02 doit enregistrer génération, sélection et rendu.');
+const angleRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_18');
+if(!angleRuntime?.generator||!angleRuntime?.selection||!angleRuntime?.renderer) fail('Le pilote dnb_18 doit enregistrer génération, sélection et rendu.');
 
 function comparableInstance(instance){
   const scope=instance.scope||{};
@@ -350,6 +356,30 @@ const twoCoordinateQuestion=context.__makeInstance(context.__coordinateModule,co
 const twoCoordinateHtml=context.__renderQuestion(twoCoordinateQuestion,false,'with');
 if(!twoCoordinateHtml.includes('coordinate-pairs-response')||(twoCoordinateHtml.match(/class="coordinate-pair"/g)||[]).length!==2||(twoCoordinateHtml.match(/class="math-display"/g)||[]).length<2||twoCoordinateHtml.includes('$$')) fail('La réponse à deux points de dnb_15 doit être séparée en deux groupes mathématiques adaptables au téléphone.');
 
+for(let seed=0;seed<500;seed++){
+  for(const count of [5,10,15,20]){
+    context.__setSeed(seed);context.__beginQuizBank([context.__angleModule]);
+    const selected=context.__drawRuntimeModuleQuestions(context.__angleModule,context.__angleModule.questions,count);
+    const fresh=selected.filter(question=>Number(question.n)===11),expected=Math.floor(count/5);
+    if(selected.length!==count||fresh.length!==expected) fail(`Répartition incorrecte du format tactile dnb_18 (${count} questions, seed ${seed}).`);
+    if(selected.some((question,index)=>index>0&&Number(question.n)===11&&Number(selected[index-1].n)===11)) fail(`Deux manipulations dnb_18 se suivent avec la seed ${seed}.`);
+  }
+}
+
+const angleOrientations=new Set();
+for(let seed=0;seed<300;seed++){
+  context.__setSeed(seed);
+  const template=angleRuntime.selection.virtualTemplates[0];
+  const instance=context.__makeInstance(context.__angleModule,template),data=instance.angleSumTactile;
+  angleOrientations.add(data.totalFirst?'total-first':'total-last');
+  if(!data||data.known.length!==2||data.missing!==180-data.known[0]-data.known[1]||data.missing<=0) fail(`Le calcul tactile dnb_18 est incohérent avec la seed ${seed}.`);
+  if(data.cards.length!==4||new Set(data.cards).size!==4||data.expected.length!==4) fail(`Les quatre cartes tactiles dnb_18 doivent être distinctes avec la seed ${seed}.`);
+  const questionHtml=context.__renderQuestion(instance,false,'with'),correctionHtml=context.__renderQuestion(instance,true,'with');
+  if((questionHtml.match(/data-angle-sum-slot=/g)||[]).length!==4||(questionHtml.match(/data-angle-sum-token=/g)||[]).length!==4||!questionHtml.includes('angle-triangle-svg')) fail('La manipulation dnb_18 doit afficher le triangle, quatre cases et quatre cartes.');
+  if(!correctionHtml.includes('angle-sum-builder is-correction')||!correctionHtml.includes('>'+data.missing+'</strong>°')) fail('La correction tactile dnb_18 doit conserver le schéma et révéler 𝑥.');
+}
+if(angleOrientations.size!==2) fail('La manipulation dnb_18 doit varier la position de la rangée 180°.');
+
 context.__setSeed(14);
 const legacyNumberLine=context.__makeInstance(context.__numberLineModule,context.__numberLineModule.questions[0]);
 const legacyNumberLineHtml=context.__renderQuestion(legacyNumberLine,false,'with');
@@ -393,6 +423,8 @@ if(context.__renderQuestion(legacySupplement,false,'with').includes('dont suppl�
 const decimalManifest=context.__moduleManifest.find(module=>module.id==='dnb_02');
 if(!decimalManifest||decimalManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_02.');
 if(context.__moduleFiles.get('dnb_02')?.length!==4) fail('Le chargeur doit préparer la banque et les trois extensions de dnb_02.');
+const angleManifest=context.__moduleManifest.find(module=>module.id==='dnb_18');
+if(!angleManifest||angleManifest.runtimeFiles?.length!==3||context.__moduleFiles.get('dnb_18')?.length!==4) fail('Le manifeste doit charger la banque Angles et ses trois extensions fonctionnelles.');
 if(context.__decimalModule.questions.length!==10) fail('La catégorie des décimaux positifs doit contenir dix familles distinctes.');
 if(context.__decimalModule.questions.some(question=>String(question.options?.decimal_kind).includes('relative'))) fail('Les sommes de décimaux relatifs doivent avoir quitté dnb_02.');
 if(!context.__decimalModule.level_tags.includes('5e')||!context.__decimalModule.level_tags.includes('3e')||!context.__decimalModule.level_tags.includes('DNB')) fail('dnb_02 doit rester accessible en 5e, 3e et DNB.');

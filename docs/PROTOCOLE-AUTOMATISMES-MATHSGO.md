@@ -259,6 +259,12 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-16 — Manipulation de la somme des angles.** Les dix gabarits
+  historiques de `dnb_18` restent figés. Un format fonctionnel en deux temps
+  ajoute le placement de `180°`, de deux angles connus et de `𝑥`, puis le
+  calcul de `𝑥`. Une série de cinq questions de cette catégorie en contient
+  une. Le générateur passe en version 1.15.0 ; les décisions détaillées sont
+  consignées dans [`ANGLES-TRIANGLE-AUTOMATISMES.md`](ANGLES-TRIANGLE-AUTOMATISMES.md).
 - **2026-07-16 — Largeur mobile des tableaux et schémas en barres.** Le rendu
   de « Fraction d’un nombre et pourcentage » devient la référence commune :
   700 unités utiles dans un cadre de 760, cases hautes et hauteur uniforme. Le

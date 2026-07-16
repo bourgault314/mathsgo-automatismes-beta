@@ -275,7 +275,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .triangle-angle-sum-visual{width:100%;display:grid;gap:2px;align-items:center;justify-items:center}
 .angle-triangle-help{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(180px,30vh,250px);margin:2px auto 0}
 .angle-triangle-svg{display:block;width:min(100%,720px);height:auto;max-height:100%}
-.angle-bar-help{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(250px,39vh,350px);margin:2px auto 1px}
+.angle-bar-help{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(270px,41vh,370px);margin:2px auto 1px}
 .angle-bar-svg{display:block;width:min(100%,1000px);height:auto;max-height:100%}
 .angle-sum-answer{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(2.1rem,3.8vw,3.9rem);margin-top:3px}
 .angle-sum-answer .answer-slot-filled{margin-right:0}
@@ -285,6 +285,20 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .diapo.angle-sum-mode.angle-figure-mode .angle-sum-prompt svg{max-height:205px;margin-top:2px}
 .diapo.angle-sum-mode.angle-figure-mode .angle-triangle-help{height:195px;margin-top:0}
 .diapo.angle-sum-mode.angle-figure-mode .angle-bar-help{height:170px;margin-top:0}
+.angle-sum-builder{display:grid;justify-items:center;gap:7px;width:min(100%,900px);margin:0 auto;user-select:none}
+.angle-sum-builder-prompt{margin:0;color:#0b2147;font-size:clamp(1.25rem,2.15vw,1.85rem);font-weight:900;line-height:1.12}
+.angle-sum-builder-triangle{width:100%;height:145px;overflow:hidden}.angle-sum-builder-triangle .angle-triangle-help{height:145px;margin:0}.angle-sum-builder-triangle .angle-triangle-svg{width:min(100%,510px)}
+.angle-sum-builder-table{width:min(100%,760px);overflow:hidden;border:3px solid #17384d;border-radius:3px;background:#fff;box-shadow:0 3px 10px rgba(11,33,71,.08)}
+.angle-sum-builder-row{display:grid;min-height:92px}.angle-sum-builder-row+.angle-sum-builder-row{border-top:3px solid #17384d}.angle-sum-builder-row.is-segmented .angle-sum-builder-slot+.angle-sum-builder-slot{border-left:2px solid #17384d}
+.angle-sum-builder-slot{display:grid;place-items:center;min-width:0;min-height:92px;padding:7px 4px;border:0;background:#fff;color:#17384d;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.85rem,3.5vw,2.65rem);font-weight:950;line-height:1;cursor:pointer;touch-action:manipulation}
+.angle-sum-builder-slot:hover{background:#f6f9fd}.angle-sum-builder-slot.is-selected{background:#fff1e7;color:#9a4100}.angle-sum-builder-slot.is-filled{background:#eef6ff;color:#073a75}
+.angle-sum-builder-palette{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;width:min(100%,760px);padding:7px 9px;border:1px solid #d7e3f3;border-radius:13px;background:#fff}
+.angle-sum-builder-token,.angle-sum-builder-reset{min-height:48px;padding:8px 15px;border:2px solid #1170bc;border-radius:11px;background:#eaf4ff;color:#0b4f86;font-size:clamp(1.2rem,2.1vw,1.55rem);font-weight:950;cursor:grab;touch-action:none;box-shadow:0 2px 0 rgba(11,53,112,.1)}
+.angle-sum-builder-token.is-selected{outline:3px solid #ff7a1a;outline-offset:2px;border-color:#e86100;background:#fff1e7;color:#9a4100}.angle-sum-builder-token.is-used{visibility:hidden;pointer-events:none}.angle-sum-builder-token.is-dragging{position:relative;z-index:30;opacity:.9;cursor:grabbing;box-shadow:0 8px 18px rgba(11,33,71,.22)}
+.angle-sum-builder-reset{border-width:1px;border-color:#9fb9d8;background:#fff;color:#35526e;font-size:1rem;cursor:pointer;touch-action:manipulation;box-shadow:none}
+.angle-sum-builder-calculation{margin:2px auto 0;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:900}.angle-sum-builder-calculation strong{color:#087a55}.angle-sum-builder-calculation [data-angle-sum-answer-slot]{display:inline-grid;place-items:center;min-width:2.2em;min-height:1.35em;border:2px dashed #91aac8;border-radius:9px;color:#60708c}
+.angle-sum-builder-feedback{min-height:1.15em;margin:0;color:#60708c;font-size:.9rem;font-weight:800}.angle-sum-builder-feedback.is-error{color:#b42318}.angle-sum-builder-feedback.is-success{color:#087a55}
+.angle-sum-builder.is-calculation .angle-sum-builder-slot{cursor:default}.angle-sum-builder.is-calculation .angle-sum-builder-palette{display:none}
 .diapo.evolution-mode .stage{align-items:center;padding:10px 20px 16px;overflow:auto}
 .diapo.evolution-mode .slide{max-width:1220px}
 .evolution-prompt{font-size:clamp(1.7rem,2.55vw,2.85rem);font-weight:850;line-height:1.15;margin:0 auto 5px}
@@ -667,7 +681,8 @@ svg{display:block;max-width:100%;height:auto}
 @media(max-width:800px){.diapo.multiple-forms-mode .stage{padding:5px 6px 10px}.multiple-forms-prompt{font-size:clamp(1.34rem,5.9vw,1.72rem);line-height:1.15;margin-bottom:2px}.multiple-forms-help{height:clamp(230px,38vh,315px);margin:0 auto}.multiple-forms-help.multiple-forms-tenths{height:clamp(230px,38vh,315px)}.multiple-forms-help.multiple-forms-line{height:clamp(160px,27vh,210px)}.multiple-forms-caption{font-size:clamp(.94rem,4.05vw,1.15rem);margin-top:0}.multiple-forms-answer{font-size:clamp(1.95rem,8.6vw,2.55rem);margin-top:2px}.multiple-forms-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:5px}.multiple-forms-options .opt{font-size:clamp(1.02rem,4.45vw,1.25rem);padding:10px 10px}}
 @media(max-width:800px){.diapo.place-value-mode .stage{padding:5px 4px 8px}.place-value-prompt{font-size:clamp(1.62rem,6.8vw,2rem);margin-bottom:3px}.place-value-prompt.is-context,.place-value-prompt.is-reasoning{font-size:clamp(1.08rem,4.7vw,1.36rem);line-height:1.12;margin-bottom:2px}.place-value-equation{font-size:clamp(2.15rem,9.3vw,2.9rem);margin:0 auto 11px}.place-value-tool{width:100%;margin-top:0}.place-value-grid{border-width:2px;border-radius:10px}.place-value-head{height:36px;padding:0 1px;font-size:clamp(.55rem,2.45vw,.64rem);line-height:1;writing-mode:horizontal-tb;transform:none}.place-value-preview-row,.place-value-fixed-row{height:56px}.place-value-drag-bar{left:-13px;right:-13px;top:7px;height:42px}.place-value-strip-digit,.place-value-fixed-digit{font-size:clamp(2rem,8.8vw,2.4rem)}.place-value-comma{left:calc(57.142857% - 3px);bottom:2px;font-size:2.2rem}.place-value-tool-note{height:34px;min-height:34px;margin-top:3px;padding:0 4px;font-size:clamp(.84rem,3.55vw,1rem);text-align:center}.place-value-tool-instruction{font-size:clamp(.7rem,2.95vw,.82rem)}.place-value-tool-note strong{font-size:1.16em}.place-value-correction{height:22px;font-size:clamp(.9rem,3.8vw,1.08rem);margin:3px auto;line-height:1.05}.place-value-options{gap:7px;margin-top:5px}.place-value-options.options-compact{grid-template-columns:repeat(2,minmax(0,1fr))}.place-value-options:not(.options-compact){grid-template-columns:1fr}.place-value-options .opt{min-height:54px;font-size:clamp(1rem,4.25vw,1.2rem);padding:10px 11px}.place-value-options.is-reasoning .opt{min-height:48px;font-size:clamp(.82rem,3.45vw,.96rem);line-height:1.16;padding:8px 9px}.place-value-placeholder{width:100%;height:185px;min-height:185px;margin:0 auto}.course-place-value-example .place-value-head{height:31px;font-size:.42rem;letter-spacing:-.08em}.course-place-value-example .place-value-preview-row,.course-place-value-example .place-value-fixed-row{height:42px}.course-place-value-example .place-value-strip-digit,.course-place-value-example .place-value-fixed-digit{font-size:1.55rem}.course-place-value-example .place-value-tool-note{height:28px;min-height:28px;font-size:.78rem}}
 @media(max-width:800px){.diapo.conversion-mode .stage{padding:5px 4px 8px}.conversion-context{font-size:.86rem}.conversion-prompt{font-size:clamp(1.32rem,5.7vw,1.75rem);margin-bottom:3px}.conversion-tool{width:100%;margin:25px auto 8px;overflow-x:auto;overscroll-behavior-x:contain}.conversion-family-area .conversion-grid-wrap{width:540px}.conversion-family-volume .conversion-grid-wrap{width:735px}.conversion-grid{gap:3px}.conversion-unit{min-height:43px;padding:2px 1px;border-width:2px;font-size:.62rem}.conversion-unit small{font-size:.72em}.conversion-slot{min-height:62px;border-width:2px;font-size:1.22rem;overflow:hidden}.conversion-cursor{border-width:3px;border-radius:7px}.conversion-cursor-label,.conversion-cursor-digit-label{display:none}.conversion-cursor-comma{right:-9px;bottom:21px;font-size:2.35rem;text-shadow:1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff}.conversion-method{font-size:clamp(.84rem,3.55vw,1.02rem);margin:3px auto}.duration-conversion-tool{width:100%;margin-top:1px}.duration-disc{width:70px;border-width:3px;font-size:.78rem}.duration-instance{min-height:172px;gap:3px;padding:5px 7px;border-radius:13px}.duration-instance-row{gap:6px}.duration-disc-group{gap:4px}.duration-instance-row .duration-disc{width:58px;font-size:.67rem}.duration-plus{font-size:1.18rem}.duration-down{font-size:1.5rem}.duration-second-step{margin-top:5px}.duration-second-step .duration-disc{width:58px}.duration-second-step .duration-equivalence-pair{gap:6px}.duration-correction-line{gap:5px 8px;margin-top:6px;font-size:.88rem}}
-@media(max-width:800px){.diapo.angle-sum-mode .stage{padding:5px 5px 9px}.angle-sum-prompt{font-size:clamp(1.3rem,5.8vw,1.7rem);margin-bottom:3px}.angle-sum-prompt svg{width:min(100%,350px);max-height:270px;margin-top:3px}.angle-triangle-help{height:clamp(160px,26vh,210px);margin:0 auto}.angle-bar-help{height:clamp(145px,24vh,195px);margin:0 auto}.angle-bar-svg{width:min(100%,780px)}.angle-sum-answer{font-size:clamp(1.82rem,8.1vw,2.4rem);margin-top:2px}.angle-sum-options{gap:7px;margin-top:5px}.angle-sum-options .opt{min-height:50px;font-size:clamp(1rem,4.3vw,1.2rem);padding:10px 11px}}
+@media(max-width:800px){.diapo.angle-sum-mode .stage{padding:5px 5px 9px}.angle-sum-prompt{font-size:clamp(1.3rem,5.8vw,1.7rem);margin-bottom:3px}.angle-sum-prompt svg{width:min(100%,350px);max-height:270px;margin-top:3px}.angle-triangle-help{height:clamp(160px,26vh,210px);margin:0 auto}.angle-bar-help{height:clamp(155px,25vh,215px);margin:0 auto}.angle-bar-svg{width:min(100%,780px)}.angle-sum-answer{font-size:clamp(1.82rem,8.1vw,2.4rem);margin-top:2px}.angle-sum-options{gap:7px;margin-top:5px}.angle-sum-options .opt{min-height:50px;font-size:clamp(1rem,4.3vw,1.2rem);padding:10px 11px}}
+@media(max-width:800px){.diapo.angle-sum-mode.angle-sum-builder-mode .stage{padding:3px 4px 5px}.angle-sum-builder{gap:5px}.angle-sum-builder-prompt{font-size:clamp(1.02rem,4.6vw,1.25rem)}.angle-sum-builder-triangle,.angle-sum-builder-triangle .angle-triangle-help{height:118px}.angle-sum-builder-triangle .angle-triangle-svg{width:min(100%,430px)}.angle-sum-builder-table{width:calc(100% - 4px)}.angle-sum-builder-row,.angle-sum-builder-slot{min-height:72px}.angle-sum-builder-slot{padding:4px 2px;font-size:clamp(1.55rem,7.6vw,2.05rem)}.angle-sum-builder-palette{gap:5px;padding:5px}.angle-sum-builder-token,.angle-sum-builder-reset{min-height:44px;padding:6px 10px;border-radius:9px;font-size:clamp(1.05rem,5vw,1.3rem)}.angle-sum-builder-reset{font-size:.86rem}.angle-sum-builder-calculation{font-size:clamp(1.9rem,9vw,2.55rem)}.angle-sum-builder-feedback{font-size:.76rem}}
 @media(max-width:800px){.diapo.angle-sum-mode.angle-figure-mode .angle-sum-prompt{font-size:clamp(1.1rem,4.8vw,1.38rem)}.diapo.angle-sum-mode.angle-figure-mode .angle-sum-prompt svg{max-height:175px}.diapo.angle-sum-mode.angle-figure-mode .angle-triangle-help{height:155px}.diapo.angle-sum-mode.angle-figure-mode .angle-bar-help{height:125px}.diapo.angle-sum-mode.angle-figure-mode .angle-sum-answer{font-size:clamp(1.55rem,7vw,2rem)}}
 @media(max-width:800px){.diapo.evolution-mode .stage{padding:7px 7px 12px}.evolution-prompt{font-size:clamp(1.28rem,5.55vw,1.65rem);line-height:1.15;margin-bottom:3px}.evolution-prompt table{font-size:clamp(.94rem,4vw,1.1rem)!important;margin-top:10px!important;margin-bottom:10px!important}.evolution-prompt table td,.evolution-prompt table th{padding-top:13px!important;padding-bottom:13px!important}.evolution-help{height:clamp(145px,24vh,190px);margin:0 auto}.evolution-help-scroll{justify-content:flex-start;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}.evolution-help-scroll .evolution-svg{width:720px;max-width:none;flex:none}.evolution-answer{font-size:clamp(1.72rem,7.6vw,2.25rem);margin-top:2px}.evolution-options{grid-template-columns:1fr;gap:7px;margin-top:4px}.evolution-options .opt{font-size:clamp(.92rem,3.9vw,1.08rem);padding:9px 10px}}
 @media(max-width:800px){.diapo.perimeter-mode .stage{padding:5px 7px 10px}.perimeter-prompt{font-size:clamp(1.3rem,5.7vw,1.7rem);line-height:1.13}.perimeter-prompt svg{width:min(100%,365px);height:clamp(220px,36vh,300px);max-height:300px;margin:1px auto}.perimeter-correction-flow{gap:1px;margin-top:1px}.perimeter-formula,.perimeter-calculation{font-size:clamp(1.05rem,4.55vw,1.34rem)}.perimeter-answer{font-size:clamp(1.8rem,8vw,2.35rem)}}
@@ -750,8 +765,11 @@ let interactiveTouched=[];
 let relativeBoardState=null;
 let relativeBoardKey='';
 let pythagorasSelectedToken=null;
+let angleSumSelectedToken=null;
+let angleSumPlacementValidated=false;
 let decimalSelectedCard=null,decimalSuppressClickUntil=0;
 let pythagorasSuppressClickUntil=0;
+let angleSumSuppressClickUntil=0;
 let activeSlotIndex=0;
 let selectedOptions=new Set();
 let interactiveLocked=false;
@@ -1330,6 +1348,7 @@ function render(){
  setModuleClasses(diapo,current.moduleId);
  diapo.classList.toggle('right-angle-mode',current.moduleId==='dnb_17'&&[3,4].includes(Number(current.questionNumber)));
  diapo.classList.toggle('angle-figure-mode',current.moduleId==='dnb_18'&&Number(current.questionNumber)===9);
+ diapo.classList.toggle('angle-sum-builder-mode',current.moduleId==='dnb_18'&&Number(current.questionNumber)===11);
  diapo.classList.toggle('area-formula-mode',current.moduleId==='dnb_22'&&Number(current.questionNumber)===18);
  diapo.classList.toggle('divisibility-sharing-mode',current.moduleId==='dnb_08'&&Number(current.questionNumber)===10);
  diapo.classList.toggle('proportion-table-mode',current.moduleId==='dnb_34'&&[2,5,11].includes(Number(current.questionNumber)));
@@ -1375,8 +1394,9 @@ function setupInteractiveSlide(current){
  const dock=document.getElementById('answerDock');
  const spec=current.interactiveSpec;
  const decimalCards=spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity';
+ const anglePlacement=spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated;
  dock.hidden=false;
- dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='coordinate-points'||spec.kind==='numberline-point'||decimalCards);
+ dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='coordinate-points'||spec.kind==='numberline-point'||decimalCards||anglePlacement);
  dock.classList.toggle('relative-tokens-dock',spec.kind==='relative-tokens');
  dock.classList.toggle('locked',interactiveLocked);
  const kind=document.getElementById('answerKind');
@@ -1387,6 +1407,7 @@ function setupInteractiveSlide(current){
    else if(spec.kind==='numberline-point') kind.textContent='Déplace puis valide';
    else if(spec.kind==='relative-tokens') kind.textContent='Manipule les jetons puis valide';
    else if(spec.kind==='pythagoras-tactile') kind.textContent='Place toutes les étiquettes';
+   else if(spec.kind==='angle-sum-tactile') kind.textContent=angleSumPlacementValidated?'Calcule 𝑥':'Place les quatre cartes';
    else if(spec.kind==='decimal-order') kind.textContent='Place les trois nombres';
    else if(spec.kind==='decimal-frame') kind.textContent='Place les deux entiers';
    else if(spec.kind==='decimal-distributivity') kind.textContent='Place les deux produits';
@@ -1417,6 +1438,8 @@ function setupInteractiveSlide(current){
    ensureInteractiveEntryState(spec);setupRelativeTokensInteraction(spec);
  }else if(spec.kind==='pythagoras-tactile'){
    ensureInteractiveEntryState(spec);setupPythagorasTactileInteraction(spec);
+ }else if(spec.kind==='angle-sum-tactile'){
+   ensureInteractiveEntryState(spec);setupAngleSumTactileInteraction(spec);
  }else if(decimalCards){
    ensureInteractiveEntryState(spec);setupDecimalCardInteraction(spec);
  }else if(!interactiveLocked){
@@ -1661,6 +1684,60 @@ function setupPythagorasTactileInteraction(spec){
    };
  });
 }
+function angleSumBuilderFeedback(message,kind=''){
+ const node=document.querySelector('#slide [data-angle-sum-feedback]');if(!node)return;
+ node.textContent=message;node.classList.toggle('is-error',kind==='error');node.classList.toggle('is-success',kind==='success');
+}
+function placeAngleSumBuilderToken(spec,value,index){
+ if(interactiveLocked||angleSumPlacementValidated)return;
+ const count=Number(spec.placementCount)||4;
+ if(!Number.isInteger(index)||index<0||index>=count)return;
+ interactiveValues.forEach((current,currentIndex)=>{if(currentIndex<count&&current===value){interactiveValues[currentIndex]='';interactiveTouched[currentIndex]=false;}});
+ interactiveValues[index]=value;interactiveTouched[index]=true;angleSumSelectedToken=null;
+ angleSumBuilderFeedback('Carte placée. Choisis-en une autre.','success');
+ setupAngleSumTactileInteraction(spec);updateInteractiveControls();
+}
+function setupAngleSumTactileInteraction(spec){
+ const root=document.querySelector('#slide [data-angle-sum-builder]');if(!root)return;
+ const count=Number(spec.placementCount)||4;
+ const displayedValues=interactiveLocked?(spec.expectedPlacement||[]):interactiveValues.slice(0,count);
+ const calculation=root.querySelector('[data-angle-sum-calculation]');
+ const prompt=root.querySelector('[data-angle-sum-builder-prompt]');
+ root.classList.toggle('is-calculation',angleSumPlacementValidated||interactiveLocked);
+ if(prompt&&angleSumPlacementValidated&&!interactiveLocked)prompt.textContent='Placement validé. Calcule maintenant 𝑥.';
+ if(calculation){calculation.hidden=!(angleSumPlacementValidated||interactiveLocked);}
+ root.querySelectorAll('[data-angle-sum-slot]').forEach(node=>{
+   const index=Number(node.dataset.angleSumSlot),value=displayedValues[index]||'';
+   node.textContent=value||'…';node.classList.toggle('is-filled',!!value);node.classList.toggle('is-selected',!!angleSumSelectedToken&&!angleSumPlacementValidated);
+   node.disabled=interactiveLocked||angleSumPlacementValidated;
+   node.onclick=()=>{
+     if(interactiveLocked||angleSumPlacementValidated)return;
+     if(angleSumSelectedToken)placeAngleSumBuilderToken(spec,angleSumSelectedToken,index);
+     else if(value){interactiveValues[index]='';interactiveTouched[index]=false;angleSumBuilderFeedback('Carte retirée.');setupAngleSumTactileInteraction(spec);updateInteractiveControls();}
+   };
+ });
+ root.querySelectorAll('[data-angle-sum-token]').forEach(node=>{
+   const value=node.dataset.angleSumToken||'',used=interactiveValues.slice(0,count).includes(value);
+   node.classList.toggle('is-used',used);node.classList.toggle('is-selected',angleSumSelectedToken===value);node.disabled=interactiveLocked||angleSumPlacementValidated||used;
+   node.onclick=()=>{if(interactiveLocked||angleSumPlacementValidated||used||Date.now()<angleSumSuppressClickUntil)return;angleSumSelectedToken=angleSumSelectedToken===value?null:value;angleSumBuilderFeedback(angleSumSelectedToken?'Touche maintenant une case.':'Sélection annulée.');setupAngleSumTactileInteraction(spec);};
+   node.onpointerdown=event=>{
+     if(interactiveLocked||angleSumPlacementValidated||used||event.button>0)return;
+     const startX=event.clientX,startY=event.clientY;let moved=false;
+     node.setPointerCapture?.(event.pointerId);
+     const move=moveEvent=>{const dx=moveEvent.clientX-startX,dy=moveEvent.clientY-startY;if(Math.hypot(dx,dy)>7)moved=true;if(moved){moveEvent.preventDefault();node.classList.add('is-dragging');node.style.transform='translate('+dx+'px,'+dy+'px)';}};
+     const finish=(endEvent,cancelled=false)=>{node.releasePointerCapture?.(endEvent.pointerId);node.removeEventListener('pointermove',move);node.removeEventListener('pointerup',end);node.removeEventListener('pointercancel',cancel);node.classList.remove('is-dragging');node.style.transform='';if(!moved||cancelled)return;angleSumSuppressClickUntil=Date.now()+300;const target=document.elementsFromPoint(endEvent.clientX,endEvent.clientY).map(item=>item.closest?.('[data-angle-sum-slot]')).find(Boolean);if(target)placeAngleSumBuilderToken(spec,value,Number(target.dataset.angleSumSlot));};
+     const end=endEvent=>finish(endEvent,false),cancel=endEvent=>finish(endEvent,true);
+     node.addEventListener('pointermove',move);node.addEventListener('pointerup',end);node.addEventListener('pointercancel',cancel);
+   };
+ });
+ const reset=root.querySelector('[data-angle-sum-reset]');
+ if(reset)reset.onclick=()=>{for(let index=0;index<count;index++){interactiveValues[index]='';interactiveTouched[index]=false;}interactiveValues[count]='';interactiveTouched[count]=false;angleSumSelectedToken=null;angleSumPlacementValidated=false;activeSlotIndex=0;angleSumBuilderFeedback('Schéma vidé. Recommence le placement.');setupAngleSumTactileInteraction(spec);updateInteractiveControls();};
+ if(angleSumPlacementValidated&&!interactiveLocked&&calculation){
+   const target=calculation.querySelector('[data-angle-sum-answer-slot]');
+   if(target&&!target.matches('.interactive-input-slot'))target.replaceWith(makeInteractiveSlot(count));
+   activeSlotIndex=count;updateInteractiveSlots();angleSumBuilderFeedback('Le placement est correct. Calcule maintenant 𝑥.','success');
+ }
+}
 function relativeClientTokenLabel(sign){return sign>0?'+1':'−1';}
 function relativeClientDisplayNumber(value){const text=String(value);return text.startsWith('-')?'−'+text.slice(1):text;}
 function relativeClientInitialState(spec){return {tokens:(spec.relative.initialTokens||[]).map(token=>({...token})),nextPair:1};}
@@ -1792,6 +1869,8 @@ function setupFractionProductTools(){
 }
 function resetInteractiveEntryState(spec){
  pythagorasSelectedToken=null;
+ angleSumSelectedToken=null;
+ angleSumPlacementValidated=false;
  decimalSelectedCard=null;
  if(spec&&spec.kind==='relative-tokens'){
    relativeBoardKey=spec.relative.instanceKey;relativeBoardState=relativeClientInitialState(spec);interactiveValues=[relativeClientStateKey(relativeBoardState)];interactiveTouched=[false];activeSlotIndex=0;return;
@@ -1908,7 +1987,7 @@ function renderInteractiveKeypad(spec){
  if(!keypad) return;
  keypad.innerHTML='';
  const body=keypad.closest('.answer-body');
- if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='coordinate-points'||spec.kind==='numberline-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'||spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity'){
+ if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='coordinate-points'||spec.kind==='numberline-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'||(spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated)||spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity'){
    if(body){body.style.setProperty('--keypad-max','940px');body.style.setProperty('--keypad-height-desktop','64px');body.style.setProperty('--keypad-height-mobile','62px');}
    return;
  }
@@ -1932,7 +2011,8 @@ function renderInteractiveKeypad(spec){
 function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
- const available=interactiveMode&&!interactiveFinished&&spec&&!['qcm','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
+ const placementOnly=spec&&spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated;
+ const available=interactiveMode&&!interactiveFinished&&spec&&!placementOnly&&!['qcm','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -1952,13 +2032,21 @@ function hasInteractiveAnswer(){
  if(spec.kind==='coordinate-points') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
  if(spec.kind==='relative-tokens') return interactiveTouched.some(Boolean);
  if(spec.kind==='pythagoras-tactile') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
+ if(spec.kind==='angle-sum-tactile'){
+   const count=Number(spec.placementCount)||4;
+   return angleSumPlacementValidated?!!interactiveTouched[count]:interactiveTouched.slice(0,count).length===count&&interactiveTouched.slice(0,count).every(Boolean);
+ }
  if(spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
  return interactiveTouched.some(Boolean);
 }
 function updateInteractiveControls(){
  const dock=document.getElementById('answerDock'),action=document.getElementById('interactiveAction');
  const hasAnswer=hasInteractiveAnswer();
- if(action){action.textContent=interactiveLocked?'Suivant':(hasAnswer?'Valider':'Suivant');action.disabled=false;}
+ const spec=slides[idx]&&slides[idx].interactiveSpec;
+ if(action){
+   action.textContent=interactiveLocked?'Suivant':(spec?.kind==='angle-sum-tactile'?(angleSumPlacementValidated?'Valider 𝑥':'Valider le placement'):(hasAnswer?'Valider':'Suivant'));
+   action.disabled=spec?.kind==='angle-sum-tactile'&&!hasAnswer;
+ }
  if(dock) dock.classList.toggle('answer-ready',!interactiveLocked&&hasAnswer);
 }
 function toggleInteractiveOption(index){
@@ -1977,7 +2065,7 @@ function clearInteractiveAnswer(){
  setupInteractiveSlide(slides[idx]);
 }
 function appendInteractiveValue(value){
- if(interactiveLocked||slides[idx].interactiveSpec.kind==='qcm') return;
+ if(interactiveLocked||slides[idx].interactiveSpec.kind==='qcm'||(slides[idx].interactiveSpec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated)) return;
  if(!interactiveValues.length) return;
  let current=interactiveValues[activeSlotIndex]||'';
  if(current.length>=24) return;
@@ -1992,7 +2080,7 @@ function appendInteractiveValue(value){
  updateInteractiveSlots();updateInteractiveControls();
 }
 function backspaceInteractive(){
- if(interactiveLocked||slides[idx].interactiveSpec.kind==='qcm') return;
+ if(interactiveLocked||slides[idx].interactiveSpec.kind==='qcm'||(slides[idx].interactiveSpec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated)) return;
  if(!interactiveValues.length) return;
  const slot=slides[idx].interactiveSpec.slots[activeSlotIndex]||{};
  const current=interactiveValues[activeSlotIndex]||'';
@@ -2069,7 +2157,7 @@ function recordInteractiveAttempt(result){
  const session=ensureQuestionSession();pauseQuestionTimer();session.validations++;
  attemptRecorder.record({
    schemaVersion:contract.schemaVersion||1,
-   generatorVersion:contract.generatorVersion||'1.14.0',
+   generatorVersion:contract.generatorVersion||'1.15.0',
    questionInstanceId:contract.questionInstanceId,
    seriesId:contract.seriesId,
    generatedSeriesId:contract.generatedSeriesId,
@@ -2108,6 +2196,13 @@ function submitInteractive(){
  if(!interactiveMode||interactiveFinished) return;
  if(interactiveLocked){clearTimeout(advanceTimer);advanceInteractive();return;}
  const spec=slides[idx].interactiveSpec;
+ if(spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated){
+   const count=Number(spec.placementCount)||4;
+   if(!hasInteractiveAnswer())return;
+   const placementCorrect=spec.expectedPlacement.length===count&&spec.expectedPlacement.every((expected,index)=>normalizeInteractiveAnswer(expected)===normalizeInteractiveAnswer(interactiveValues[index]));
+   if(!placementCorrect){angleSumBuilderFeedback('Ce placement ne traduit pas encore la somme des trois angles. Essaie à nouveau.','error');return;}
+   angleSumPlacementValidated=true;angleSumSelectedToken=null;activeSlotIndex=count;interactiveValues[count]='';interactiveTouched[count]=false;setInteractiveFeedback('','');render();return;
+ }
  const validation=evaluateInteractiveAnswer(spec);
  const correct=validation.isCorrect;
  interactiveLocked=true;corr=true;answeredCount++;
@@ -2155,13 +2250,13 @@ document.addEventListener('keydown',event=>{
  const spec=slides[idx].interactiveSpec;
  if(event.key==='ArrowRight'){event.preventDefault();submitInteractive();return;}
  if(event.key==='Enter'){event.preventDefault();submitInteractive();return;}
- if(event.key==='Backspace'){event.preventDefault();backspaceInteractive();return;}
+ if(event.key==='Backspace'){if(spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated)return;event.preventDefault();backspaceInteractive();return;}
  if(spec.kind==='qcm'&&/^[a-z]$/i.test(event.key)){
    const optionIndex=event.key.toUpperCase().charCodeAt(0)-65;
    if(optionIndex>=0&&optionIndex<document.querySelectorAll('#slide .opt').length)toggleInteractiveOption(optionIndex);
    return;
  }
- if(spec.kind!=='qcm'){
+ if(spec.kind!=='qcm'&&!(spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated)){
    const allowed=new Set((spec.keys||[]).map(key=>typeof key==='string'?key:key.value));
    let value=event.key;
    if(value==='.') value=',';
@@ -2239,6 +2334,15 @@ function interactiveSpecForInstance(inst,correctionHtml){
      expectedDisplay:data.letter+' = '+display,
      keys:[],
      numberLine:{letter:data.letter,step:data.step,zeroIndex:data.zeroIndex,startIndex:data.startIndex,targetIndex:data.targetIndex,instanceKey:data.instanceKey}
+   };
+ }
+ if(inst.angleSumTactile){
+   const data=inst.angleSumTactile,placement=data.expected.map(String),answer=String(data.missing);
+   return {
+     kind:'angle-sum-tactile',layout:'two-stage',placementCount:placement.length,
+     slots:[...placement.map((value,index)=>({label:'Position '+(index+1)})),{label:'Valeur de 𝑥'}],
+     expectedPlacement:placement,acceptedCombinations:[[...placement,answer]],
+     expectedDisplay:'𝑥 = '+answer+'°',keys:interactiveKeysFor([[answer]])
    };
  }
  if(inst.pythagorasTactile){

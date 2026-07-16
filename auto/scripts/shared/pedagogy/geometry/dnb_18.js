@@ -19,12 +19,14 @@ MATHSGO_PEDAGOGY.registerModule('dnb_18',{
     ],
     representations:[
       {id:'triangle-arcs',label:'Triangle avec arcs et mesures d’angles'},
-      {id:'bar-180',label:'Barre de 180° partagée en trois angles'}
+      {id:'bar-180',label:'Barre de 180° partagée en trois angles'},
+      {id:'bar-180-tactile',label:'Barre tactile à compléter avant le calcul'}
     ],
     visualRules:[
       'La figure est explicitement annoncée comme non nécessairement à l’échelle.',
       'L’angle inconnu est repéré par une lettre mathématique ou un x, jamais par une valeur inventée.',
       'Le modèle en barres place 180° sur la barre entière et les trois angles sur la barre partagée.',
+      'La manipulation tactile valide d’abord le placement de 180°, des deux angles connus et de 𝑥, puis demande la valeur de 𝑥.',
       'Un angle droit est codé par un carré ; les autres angles utilisent un arc fin.'
     ],
     cautions:[
@@ -42,6 +44,7 @@ MATHSGO_PEDAGOGY.registerModule('dnb_18',{
     {id:'triangle-equilateral',label:'Connaître les angles d’un triangle équilatéral',questions:[7],response:'numeric',visual:{policy:'optional',component:'geometry.triangle-angle-sum'},helpSections:['equilateral','bar-model']},
     {id:'verifier-trois-angles',label:'Vérifier trois mesures d’angles',questions:[8],response:'qcm-one',visual:{policy:'optional',component:'geometry.triangle-angle-sum'},helpSections:['coherence','bar-model']},
     {id:'lire-figure',label:'Lire une figure et calculer l’angle manquant',questions:[9],response:'numeric',visual:{policy:'essential',component:'geometry.triangle-angle-sum'},helpSections:['sum-180','bar-model']},
-    {id:'detecter-impossibilite',label:'Détecter deux angles incompatibles',questions:[10],response:'qcm-one',visual:{policy:'optional',component:'geometry.triangle-angle-sum'},helpSections:['coherence','bar-model']}
+    {id:'detecter-impossibilite',label:'Détecter deux angles incompatibles',questions:[10],response:'qcm-one',visual:{policy:'optional',component:'geometry.triangle-angle-sum'},helpSections:['coherence','bar-model']},
+    {id:'placer-puis-calculer',label:'Placer les angles puis calculer 𝑥',questions:[11],response:'angle-sum-builder',visual:{policy:'essential',component:'geometry.triangle-angle-sum'},helpSections:['sum-180','bar-model']}
   ]
 });

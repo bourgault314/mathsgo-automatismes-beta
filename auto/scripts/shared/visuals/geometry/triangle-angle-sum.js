@@ -70,7 +70,7 @@
         arcs+=`<path d="${angle.path}" fill="none" stroke="${colors[index]}" stroke-width="2.4"/>`;
       }
       const hidden=unknown.has(index)&&!correction;
-      labels+=`<text x="${angle.label.x.toFixed(2)}" y="${angle.label.y.toFixed(2)}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="850" fill="${colors[index]}">${hidden?'𝑥':esc(fmt(values[index])+'°')}</text>`;
+      labels+=`<text x="${angle.label.x.toFixed(2)}" y="${angle.label.y.toFixed(2)}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="850" fill="${colors[index]}">${hidden?'𝑥':esc(fmt(values[index])+'°')}</text>`;
       const centroid=point((vertices[0].x+vertices[1].x+vertices[2].x)/3,(vertices[0].y+vertices[1].y+vertices[2].y)/3);
       const dx=vertex.x-centroid.x,dy=vertex.y-centroid.y,length=Math.hypot(dx,dy)||1;
       labels+=`<text x="${(vertex.x+dx/length*22).toFixed(2)}" y="${(vertex.y+dy/length*22).toFixed(2)}" text-anchor="middle" dominant-baseline="middle" font-family="Cambria Math,Times New Roman,serif" font-size="21" font-style="italic" fill="#111">${esc(names[index])}</text>`;
@@ -83,7 +83,7 @@
     // Le cadre reprend la largeur de référence validée pour
     // arithmetic.fraction-percent-bar : 700 unités utiles dans un SVG de 760.
     // Les deux rangées gardent aussi exactement la même hauteur.
-    const W=760,H=230,referenceBarW=700,comparisonMaxW=640,topY=18,barH=96,bottomY=114;
+    const W=760,H=250,referenceBarW=700,comparisonMaxW=640,topY=18,barH=104,bottomY=122;
     const values=(data.values||[]).map(Number);
     const unknown=new Set((data.unknown||[]).map(Number));
     const total=values.reduce((sum,value)=>sum+value,0);
@@ -99,17 +99,64 @@
     const label=(cx,cy,value,size=21,mathVariable=false)=>`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="${mathVariable?'Cambria Math, STIX Two Math, Times New Roman, serif':'Arial,Helvetica,sans-serif'}" font-size="${size}" font-weight="800" fill="#111">${esc(value)}</text>`;
     let fills=`<rect x="${x}" y="${topY}" width="${topW}" height="${barH}" fill="#fff"/><rect x="${x}" y="${bottomY}" width="${bottomW}" height="${barH}" fill="#fff"/>`;
     let grid=`<rect x="${x}" y="${topY}" width="${topW}" height="${barH}" fill="none" stroke="#111" stroke-width="2.2"/><rect x="${x}" y="${bottomY}" width="${bottomW}" height="${barH}" fill="none" stroke="#111" stroke-width="2.2"/>`;
-    let labels=label(x+topW/2,topY+barH/2,'180°',23);
+    let labels=label(x+topW/2,topY+barH/2,'180°',34);
     let cursor=x;
     values.forEach((value,index)=>{
       const cellW=topW*value/180;
       if(index>0) grid+=`<line x1="${cursor}" y1="${bottomY}" x2="${cursor}" y2="${bottomY+barH}" stroke="#111" stroke-width="1.7"/>`;
       const hidden=!correction&&unknown.has(index);
-      labels+=label(cursor+cellW/2,bottomY+barH/2,hidden?'𝑥':fmt(value)+'°',Math.max(15,Math.min(21,cellW*.24)),hidden);
+      labels+=label(cursor+cellW/2,bottomY+barH/2,hidden?'𝑥':fmt(value)+'°',Math.max(20,Math.min(34,cellW*.3)),hidden);
       cursor+=cellW;
     });
     if(data.comparison) labels+=`<line x1="${x+topW}" y1="${topY-4}" x2="${x+topW}" y2="${bottomY+barH+4}" stroke="#111" stroke-width="1.5" stroke-dasharray="6 5"/>`;
     return `<div class="angle-bar-help"><svg class="angle-bar-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Schéma en barres de la somme des angles">${fills}${grid}${labels}</svg></div>`;
+  }
+
+  function builderModel(data={}){
+    const known=(Array.isArray(data.known)?data.known:[58,67]).slice(0,2).map(Number);
+    const first=Number.isFinite(known[0])?known[0]:58;
+    const second=Number.isFinite(known[1])?known[1]:67;
+    const missing=180-first-second;
+    const totalFirst=data.totalFirst!==false;
+    const angleCards=[fmt(first)+'°',fmt(second)+'°','𝑥'];
+    const expected=totalFirst?['180°',...angleCards]:[...angleCards,'180°'];
+    const cards=(Array.isArray(data.cards)&&data.cards.length===4?data.cards:['𝑥','180°',angleCards[1],angleCards[0]]).map(String);
+    return {known:[first,second],missing,totalFirst,angleCards,expected,cards};
+  }
+
+  function builderSlot(index,value=''){
+    return `<button class="angle-sum-builder-slot${value?' is-filled':''}" type="button" data-angle-sum-slot="${index}" aria-label="Case ${index+1}">${value?esc(value):'…'}</button>`;
+  }
+
+  function builderRow(indices,weights,values){
+    const columns=weights.length>1?` style="grid-template-columns:${weights.map(weight=>Math.max(1,Number(weight)||1)+'fr').join(' ')}"`:'';
+    return `<div class="angle-sum-builder-row${weights.length>1?' is-segmented':' is-total'}"${columns}>${indices.map(index=>builderSlot(index,values[index]||'')).join('')}</div>`;
+  }
+
+  function renderBuilder(data={},correction=false){
+    const current=builderModel(data);
+    const values=correction?current.expected:['','','',''];
+    const topIndices=current.totalFirst?[0]:[0,1,2];
+    const bottomIndices=current.totalFirst?[1,2,3]:[3];
+    const segmentWeights=[...current.known,current.missing];
+    const topWeights=current.totalFirst?[180]:segmentWeights;
+    const bottomWeights=current.totalFirst?segmentWeights:[180];
+    const prompt=correction
+      ?'Le schéma est complété : les trois angles forment 180°.'
+      :'Place 180°, les deux angles connus et 𝑥 dans le schéma.';
+    const palette=correction?'':`<div class="angle-sum-builder-palette" aria-label="Cartes à placer">${current.cards.map((token,index)=>`<button class="angle-sum-builder-token" type="button" data-angle-sum-token="${esc(token)}" data-token-id="angle-${index}" aria-label="Placer ${esc(token)}">${esc(token)}</button>`).join('')}<button class="angle-sum-builder-reset" type="button" data-angle-sum-reset="1">Recommencer</button></div>`;
+    const feedback=correction
+      ?'<p class="angle-sum-builder-feedback is-success">Les trois angles du triangle ont une somme égale à 180°.</p>'
+      :'<p class="angle-sum-builder-feedback" data-angle-sum-feedback>Touche une carte, puis la case où tu veux la placer.</p>';
+    const calculation=correction
+      ?`<p class="angle-sum-builder-calculation">𝑥 = <strong>${esc(fmt(current.missing))}</strong>°</p>`
+      :'<p class="angle-sum-builder-calculation" data-angle-sum-calculation hidden>𝑥 = <span data-angle-sum-answer-slot>…</span>°</p>';
+    return `<div class="angle-sum-builder${correction?' is-correction':''}" data-angle-sum-builder>
+      <p class="angle-sum-builder-prompt" data-angle-sum-builder-prompt>${prompt}</p>
+      <div class="angle-sum-builder-triangle">${triangleSvg({values:[...current.known,current.missing],unknown:[2]},correction)}</div>
+      <div class="angle-sum-builder-table" data-total-first="${current.totalFirst?'1':'0'}">${builderRow(topIndices,topWeights,values)}${builderRow(bottomIndices,bottomWeights,values)}</div>
+      ${palette}${calculation}${feedback}
+    </div>`;
   }
 
   function render(data,correction=false){
@@ -120,7 +167,7 @@
   }
 
   const component=registry.register('geometry.triangle-angle-sum',{
-    version:'1.1.0',
+    version:'1.2.0',
     label:'Somme des angles d’un triangle',
     supports:['phone','computer','projection','print'],
     presets:[
@@ -131,8 +178,12 @@
       {id:'barre-seule',label:'Modèle en barres seul',data:{view:'bar',values:[58,71,51],unknown:[2]},supports:['phone','computer','projection','print']},
       {id:'triangle-impossible',label:'Contrôle de cohérence',data:{view:'bar',values:[103,87],unknown:[],comparison:true},supports:['phone','computer','projection','print']}
     ],
+    modelBuilder:builderModel,
+    renderBuilder,
     render
   });
 
   global.triangleAngleSumVisual=component.render;
+  global.triangleAngleSumBuilder=component.renderBuilder;
+  global.triangleAngleSumBuilderModel=component.modelBuilder;
 })(globalThis);

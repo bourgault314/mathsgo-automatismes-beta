@@ -772,10 +772,10 @@ for(const questionNumber of tactileBankNumbers){
 const angles=registry?.getModule('dnb_18');
 if(!angles) fail('Le classement pédagogique de dnb_18 est absent.');
 if(angles&&angles.topic!=='Somme des angles d’un triangle') fail('La notion principale de dnb_18 doit être la somme des angles d’un triangle.');
-if(angles&&angles.questionTypes.length!==9) fail('Les types de questions Angles doivent être explicitement classés.');
+if(angles&&angles.questionTypes.length!==10) fail('Les dix types de questions Angles doivent être explicitement classés.');
 const angleBankNumbers=[...(context.__angleQuestionNumbers||[])].sort((a,b)=>a-b);
 const angleClassifiedNumbers=(angles?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
-if(JSON.stringify(angleClassifiedNumbers)!==JSON.stringify(angleBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Angles exactement une fois.');
+if(JSON.stringify(angleClassifiedNumbers)!==JSON.stringify([...angleBankNumbers,11])) fail('Le catalogue pédagogique doit couvrir les dix gabarits historiques et le format tactile des Angles exactement une fois.');
 const expectedAngles={
   1:['connaitre-somme','numeric','none',['sum-180']],
   2:['calculer-angle','numeric','optional',['sum-180','bar-model']],
@@ -786,7 +786,8 @@ const expectedAngles={
   7:['triangle-equilateral','numeric','optional',['equilateral','bar-model']],
   8:['verifier-trois-angles','qcm-one','optional',['coherence','bar-model']],
   9:['lire-figure','numeric','essential',['sum-180','bar-model']],
-  10:['detecter-impossibilite','qcm-one','optional',['coherence','bar-model']]
+  10:['detecter-impossibilite','qcm-one','optional',['coherence','bar-model']],
+  11:['placer-puis-calculer','angle-sum-builder','essential',['sum-180','bar-model']]
 };
 for(const [questionNumber,[id,response,policy,helpSections]] of Object.entries(expectedAngles)){
   const type=registry?.getQuestionType('dnb_18',Number(questionNumber));

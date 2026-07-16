@@ -1,6 +1,6 @@
 const MATHSGO_SCHEMA_VERSION=1;
-const MATHSGO_GENERATOR_VERSION='1.14.0';
-const MATHSGO_APP_VERSION='1.17';
+const MATHSGO_GENERATOR_VERSION='1.15.0';
+const MATHSGO_APP_VERSION='1.18';
 const MATHSGO_SERIES_PREFIX='MG1-';
 const MATHSGO_CANONICAL_URL='https://bourgault314.github.io/mathsgo-automatismes-beta/auto/';
 const MATHSGO_ALLOWED_LEVELS=new Set(['5e','4e','3e','DNB']);
@@ -208,13 +208,13 @@ function mathsgoParametersForInstance(instance){
   const result={};
   const scope=mathsgoSanitizeParameters(instance.scope||{});
   if(scope&&Object.keys(scope).length) result.generated=scope;
-  const modelKeys=['module01','placeValue','fractionOps','fractionPercent','multipleForms','relation','reduction','substitution','equationData','angleSum','conversion','area','trig','average','evolution','pythagorasTactile'];
+  const modelKeys=['module01','placeValue','fractionOps','fractionPercent','multipleForms','relation','reduction','substitution','equationData','angleSum','angleSumTactile','conversion','area','trig','average','evolution','pythagorasTactile'];
   modelKeys.forEach(key=>{if(instance[key]!==undefined){const cleaned=mathsgoSanitizeParameters(instance[key],key);if(cleaned!==undefined)result[key]=cleaned;}});
   return result;
 }
 
 function mathsgoResponseTypeForSpec(spec){
-  if(spec.kind==='pythagoras-tactile') return 'drag-and-drop';
+  if(spec.kind==='pythagoras-tactile'||spec.kind==='angle-sum-tactile') return 'drag-and-drop';
   if(spec.kind==='qcm') return spec.multiple?'multiple-choice':'qcm';
   if(spec.kind==='grid-point') return 'coordinates';
   if(spec.layout==='fraction') return 'fraction';

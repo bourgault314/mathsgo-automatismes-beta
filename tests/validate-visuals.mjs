@@ -417,21 +417,25 @@ if (thales) {
 
 const triangleAngleSum=registry?.get('geometry.triangle-angle-sum');
 if(!triangleAngleSum) fail('Le composant geometry.triangle-angle-sum est absent.');
-if(triangleAngleSum&&triangleAngleSum.version!=='1.1.0') fail('Version 1.1.0 attendue pour le composant somme des angles.');
+if(triangleAngleSum&&triangleAngleSum.version!=='1.2.0') fail('Version 1.2.0 attendue pour le composant somme des angles.');
 if(triangleAngleSum&&triangleAngleSum.presets.length!==6) fail('Six références sont attendues pour la somme des angles.');
 if(triangleAngleSum&&context.triangleAngleSumVisual!==triangleAngleSum.render) fail('Le moteur doit utiliser le composant partagé de somme des angles.');
 const angleReferenceBar=triangleAngleSum?.render({view:'bar',values:[60,60,60],unknown:[]},false)||'';
-if(!angleReferenceBar.includes('viewBox="0 0 760 230"')||!angleReferenceBar.includes('x="30" y="18" width="700" height="96"')||!angleReferenceBar.includes('x="30" y="114" width="700" height="96"')) fail('La barre des angles doit reprendre la largeur et la hauteur de référence du tableau fraction–pourcentage.');
+if(!angleReferenceBar.includes('viewBox="0 0 760 250"')||!angleReferenceBar.includes('x="30" y="18" width="700" height="104"')||!angleReferenceBar.includes('x="30" y="122" width="700" height="104"')) fail('La barre des angles doit garder la largeur de référence et augmenter uniformément la hauteur de ses deux rangées.');
 const angleOverflowBar=triangleAngleSum?.render({view:'bar',values:[114,94],unknown:[],comparison:true},false)||'';
-const angleOverflowWidths=[...angleOverflowBar.matchAll(/<rect x="60" y="(?:18|114)" width="([\d.]+)" height="96" fill="#fff"/g)].map(match=>Number(match[1]));
+const angleOverflowWidths=[...angleOverflowBar.matchAll(/<rect x="60" y="(?:18|122)" width="([\d.]+)" height="104" fill="#fff"/g)].map(match=>Number(match[1]));
 if(angleOverflowWidths.length!==2||!(angleOverflowWidths[0]<angleOverflowWidths[1])||angleOverflowWidths[1]!==640) fail('La comparaison supérieure à 180° doit rester plus courte que les tableaux ordinaires et ne pas dépasser son cadre centré.');
+const angleBuilder=triangleAngleSum?.renderBuilder({known:[58,67],totalFirst:true,cards:['𝑥','180°','67°','58°']},false)||'';
+const angleBuilderCorrection=triangleAngleSum?.renderBuilder({known:[58,67],totalFirst:true,cards:['𝑥','180°','67°','58°']},true)||'';
+if((angleBuilder.match(/data-angle-sum-slot=/g)||[]).length!==4||(angleBuilder.match(/data-angle-sum-token=/g)||[]).length!==4||!angleBuilder.includes('data-angle-sum-reset="1"')) fail('Le composant Angles tactile doit fournir quatre cases, quatre cartes et une remise à zéro.');
+if(!angleBuilder.includes('angle-triangle-svg')||!angleBuilderCorrection.includes('𝑥 = <strong>55</strong>°')) fail('La manipulation Angles doit garder le triangle et révéler le calcul de 𝑥 dans la correction.');
 const angleHashes=new Map([
-  ['fiche-exemple',['f3e772c5c2f6a2d8c7d7d2fb577f9fcc81a5c3728403cbc220a30dce650e661e','cc4b0c3871931197756421f430bc58cccc1037fc6370ea183278485429c7066a']],
-  ['triangle-rectangle',['ae79303afb3be6db6d61911c46db9922808e2661654a5b3a54eaf9975a7e46f0','e866f6c418ade20012acc751ea12f33b1854e2040a0ef18bf7e8a08b34e1fb21']],
-  ['triangle-isoscele',['cfefcd0c0e3ba555f35451a93a142b0d5f1a3e20f3cf2d82f3e4dd69b62d7588','75e81041532ad03155657fab82dfff02de2a9d375b4513fba32c20f6ab65523b']],
-  ['triangle-seul',['a6dbb3edd38b416438ecced2c787b32e26ee8b5cddd55dcf7c0a63abfa085390','225a4a97eee258e7e35bee80c0d91800fb80761835ca79384c79d359d2791bc6']],
-  ['barre-seule',['9f8be0591403b3b92e95425aa13f8c20135cf4a3a8bf3dadefa727ab8439d839','9035d33bf186b820920503044194edb356895fd4b14a784f6ced3688f87dda0f']],
-  ['triangle-impossible',['99b7c7094e7820045996173a6a14f614fdc4316b056b5d21ee7de23e29848f81','99b7c7094e7820045996173a6a14f614fdc4316b056b5d21ee7de23e29848f81']]
+  ['fiche-exemple',['e16bfb651fafaacd78245529a0cd343519c6897a2301fb4e476201e846b4ce0d','3edf94fcd9f1e9123873779a59f9359ae2abab28ac65c87431955b37bad6a855']],
+  ['triangle-rectangle',['346a8e9f3b98f8d4147554b930e9c7c34103d51fe56616a93dcbf7e6fadbb0d6','ab58eb5087c134fdd632af19cb19bda897124b0696a99b91d01beb1ddb67c0cc']],
+  ['triangle-isoscele',['db664f14722585037e52235db0a2a39f7757cae0361996a7e8e909073f23cf54','30839b5613fed80dc68358a34b1d932eb70853baf387af7a21185df4f25abb60']],
+  ['triangle-seul',['ad47d7092d948d481431c0176470d1e6c870782a09be4644f289997e98afbec2','7f66f5344593fc7919b97a12251cde913b7320e8457f5303609617c5ec24a106']],
+  ['barre-seule',['dab040ff0c3078de9e7d3cf3ef313a784a0bfb5400a4d8254374b08e1959123e','82b31363f95f87a54382df4bce791d9ef25e9b9ad463d21087a458485e1a38ca']],
+  ['triangle-impossible',['521741622b2a833bdf7aeadcc6e798591e2d3fcb9c3c6b05f6e76e708052ad07','521741622b2a833bdf7aeadcc6e798591e2d3fcb9c3c6b05f6e76e708052ad07']]
 ]);
 for(const preset of triangleAngleSum?.presets||[]){
   for(const correction of [false,true]){
