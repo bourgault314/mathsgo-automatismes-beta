@@ -442,7 +442,7 @@ if (fractionPercent && context.fractionPercentBarSvg !== fractionPercent.render)
 
 const equalSharing=registry?.get('arithmetic.equal-sharing-board');
 if(!equalSharing) fail('Le composant arithmetic.equal-sharing-board est absent.');
-if(equalSharing&&equalSharing.version!=='1.0.0') fail('Version 1.0.0 attendue pour le partage équitable.');
+if(equalSharing&&equalSharing.version!=='1.1.0') fail('Version 1.1.0 attendue pour le partage équitable.');
 if(equalSharing&&equalSharing.presets.length!==4) fail('Quatre gabarits de partage équitable sont attendus.');
 if(equalSharing&&context.equalSharingBoard!==equalSharing.render) fail('Le point d’entrée equalSharingBoard doit utiliser le composant enregistré.');
 const equalSharingHashes=new Map([
@@ -461,6 +461,8 @@ for(const preset of equalSharing?.presets||[]){
     if(actual!==equalSharingHashes.get(preset.id)?.[correctionState?1:0]) fail(`Le partage ${preset.id} a changé (${actual}).`);
   }
 }
+const equalSharingKnownTotal=equalSharing?.render({shares:3,total:303,share:101,showTotal:true},false)||'';
+if(!equalSharingKnownTotal.includes('>303<')||equalSharingKnownTotal.includes('>101<')) fail('Le partage doit pouvoir montrer le total connu sans révéler la valeur d’une part.');
 
 const inquiryBar=registry?.get('algebra.inquiry-bar');
 if(!inquiryBar) fail('Le composant algebra.inquiry-bar est absent.');

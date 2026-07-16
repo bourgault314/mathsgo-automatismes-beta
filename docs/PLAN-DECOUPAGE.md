@@ -78,10 +78,11 @@ Les éléments réellement partagés restent dans :
 
 ### 1. Pilote fonctionnel complet
 
-Le socle structurel de `dnb_08` est extrait : génération, cycle de sélection et
-point d’entrée de rendu sont locaux au module. La prochaine petite étape active
-l’aide de partage déjà déclarée pour le gabarit 10, puis vérifie le résultat sur
-téléphone et ordinateur. Les gabarits et leur empreinte restent inchangés.
+Le pilote `dnb_08` est complet : génération, cycle de sélection et rendu sont
+locaux au module ; le gabarit 10 appelle l’aide de partage commune, avec total
+visible dans la question et parts révélées dans la correction. Les gabarits et
+leur empreinte restent inchangés. Le contrat doit maintenant être observé avant
+de choisir le pilote pédagogique visuel suivant.
 
 ### 2. Données et Algorithmique
 
