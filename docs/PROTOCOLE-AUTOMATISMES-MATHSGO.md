@@ -171,6 +171,11 @@ choisir une représentation, manipuler ou rappeler la règle utile.
 - Aucun contenu ne doit imposer un zoom, un défilement horizontal ou une
   réduction illisible. Les droites, tableaux et schémas utilisent seulement les
   graduations, colonnes et annotations nécessaires.
+- Pour les tableaux et schémas en barres, la largeur mobile validée de
+  `arithmetic.fraction-percent-bar` sert de référence : le dessin occupe presque
+  toute la largeur disponible, avec des cases réellement hautes et de hauteur
+  uniforme. Une comparaison plus longue est redimensionnée dans ce cadre au
+  lieu de déborder ou d'imposer un défilement horizontal.
 - Les zones tactiles sont suffisamment grandes et espacées. Une proposition
   courte occupe une cible d'au moins environ 52 px de haut lorsque l'espace le
   permet. Quatre réponses courtes peuvent former une grille 2 × 2 centrée ; des
@@ -254,6 +259,13 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-16 — Largeur mobile des tableaux et schémas en barres.** Le rendu
+  de « Fraction d’un nombre et pourcentage » devient la référence commune :
+  700 unités utiles dans un cadre de 760, cases hautes et hauteur uniforme. Le
+  composant `geometry.triangle-angle-sum` applique cette règle ; son cas
+  impossible reste volontairement plus court, avec 640 unités utiles, et réduit
+  proportionnellement les deux rangées afin de garder la plus longue entièrement
+  visible.
 - **2026-07-16 — Droite graduée `dnb_14`.** Les 18 gabarits de la banque V1.18
   restent inchangés. Trois formats fonctionnels limités sont ajoutés hors de la
   banque figée : placer un point, déterminer le pas et choisir la droite

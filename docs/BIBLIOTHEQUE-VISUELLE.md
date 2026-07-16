@@ -290,6 +290,14 @@ seule API :
 - le contrôle d’une configuration impossible lorsque les mesures dépassent
   180°.
 
+Sur téléphone, la largeur de référence de cette barre est celle du composant
+`arithmetic.fraction-percent-bar` : 700 unités utiles dans un cadre de 760,
+avec deux rangées de 96 unités de haut. Toutes les cellules d’une rangée ont la
+même hauteur. Dans le cas impossible, les deux rangées sont réduites ensemble
+dans un cadre utile de 640 unités : ce cas reste volontairement plus court que
+les tableaux ordinaires, et la plus longue rangée demeure entièrement visible
+sans fausser la comparaison.
+
 Le module `dnb_18` utilise ce composant. Son ancien SVG calculé directement
 dans la banque a été supprimé : la géométrie et le modèle en barres peuvent
 donc être repris dans une diapositive, une aide, un exerciseur ou une fiche

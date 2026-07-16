@@ -388,16 +388,21 @@ if (thales) {
 
 const triangleAngleSum=registry?.get('geometry.triangle-angle-sum');
 if(!triangleAngleSum) fail('Le composant geometry.triangle-angle-sum est absent.');
-if(triangleAngleSum&&triangleAngleSum.version!=='1.0.0') fail('Version 1.0.0 attendue pour le composant somme des angles.');
+if(triangleAngleSum&&triangleAngleSum.version!=='1.1.0') fail('Version 1.1.0 attendue pour le composant somme des angles.');
 if(triangleAngleSum&&triangleAngleSum.presets.length!==6) fail('Six références sont attendues pour la somme des angles.');
 if(triangleAngleSum&&context.triangleAngleSumVisual!==triangleAngleSum.render) fail('Le moteur doit utiliser le composant partagé de somme des angles.');
+const angleReferenceBar=triangleAngleSum?.render({view:'bar',values:[60,60,60],unknown:[]},false)||'';
+if(!angleReferenceBar.includes('viewBox="0 0 760 230"')||!angleReferenceBar.includes('x="30" y="18" width="700" height="96"')||!angleReferenceBar.includes('x="30" y="114" width="700" height="96"')) fail('La barre des angles doit reprendre la largeur et la hauteur de référence du tableau fraction–pourcentage.');
+const angleOverflowBar=triangleAngleSum?.render({view:'bar',values:[114,94],unknown:[],comparison:true},false)||'';
+const angleOverflowWidths=[...angleOverflowBar.matchAll(/<rect x="60" y="(?:18|114)" width="([\d.]+)" height="96" fill="#fff"/g)].map(match=>Number(match[1]));
+if(angleOverflowWidths.length!==2||!(angleOverflowWidths[0]<angleOverflowWidths[1])||angleOverflowWidths[1]!==640) fail('La comparaison supérieure à 180° doit rester plus courte que les tableaux ordinaires et ne pas dépasser son cadre centré.');
 const angleHashes=new Map([
-  ['fiche-exemple',['da243f641d4ccd17d833097537ac6e63b2cfd087b764c290138b0a2170291ece','feb0ad91ba5969fc4631535eb8b3ca00a7edc7c8793767ed5bfe119a740dddae']],
-  ['triangle-rectangle',['7df5b2d976d3e1f840acd503ae5b4a74c82f674f2d50fd75a6e9b237d00982c2','98e43c821a5c511b78e3109b0c415310346e08bd758410e43d6103933cd79735']],
-  ['triangle-isoscele',['f0d3e9b486e1edf39751f64fcb26d752e1cfc8f132e1cc4bf5bf564e8b491346','7ed5a1c98b9e5ea49116580046fdb3f57dd1d5e477b18637c4a980d0c17deb7d']],
+  ['fiche-exemple',['f3e772c5c2f6a2d8c7d7d2fb577f9fcc81a5c3728403cbc220a30dce650e661e','cc4b0c3871931197756421f430bc58cccc1037fc6370ea183278485429c7066a']],
+  ['triangle-rectangle',['ae79303afb3be6db6d61911c46db9922808e2661654a5b3a54eaf9975a7e46f0','e866f6c418ade20012acc751ea12f33b1854e2040a0ef18bf7e8a08b34e1fb21']],
+  ['triangle-isoscele',['cfefcd0c0e3ba555f35451a93a142b0d5f1a3e20f3cf2d82f3e4dd69b62d7588','75e81041532ad03155657fab82dfff02de2a9d375b4513fba32c20f6ab65523b']],
   ['triangle-seul',['a6dbb3edd38b416438ecced2c787b32e26ee8b5cddd55dcf7c0a63abfa085390','225a4a97eee258e7e35bee80c0d91800fb80761835ca79384c79d359d2791bc6']],
-  ['barre-seule',['cd5e0efc60d986baae93b7904bc6e170354c35037450ece248f8efb71ccc7530','3f51f93fca765cedeacd90335067e46beef43fc7509d0c2421e47b2d99e10836']],
-  ['triangle-impossible',['73f9833914f19851e8e12d52f6565181b6038026190cac4db5ee4a12d99be7a5','73f9833914f19851e8e12d52f6565181b6038026190cac4db5ee4a12d99be7a5']]
+  ['barre-seule',['9f8be0591403b3b92e95425aa13f8c20135cf4a3a8bf3dadefa727ab8439d839','9035d33bf186b820920503044194edb356895fd4b14a784f6ced3688f87dda0f']],
+  ['triangle-impossible',['99b7c7094e7820045996173a6a14f614fdc4316b056b5d21ee7de23e29848f81','99b7c7094e7820045996173a6a14f614fdc4316b056b5d21ee7de23e29848f81']]
 ]);
 for(const preset of triangleAngleSum?.presets||[]){
   for(const correction of [false,true]){
