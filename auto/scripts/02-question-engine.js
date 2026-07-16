@@ -4026,7 +4026,7 @@ function renderModuleList(){
     group.open=theme.id===openTheme;
     const summary=document.createElement('summary');
     summary.className='theme-summary';
-    summary.innerHTML='<span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">'+theme.title+'</span><span class="theme-count"></span>';
+    summary.innerHTML='<span class="theme-icon" aria-hidden="true"></span><span class="theme-name">'+theme.title+'</span><span class="theme-count"></span><span class="theme-chevron" aria-hidden="true"></span>';
     const items=document.createElement('div');
     items.className='theme-items';
     const itemsToolbar=document.createElement('div');

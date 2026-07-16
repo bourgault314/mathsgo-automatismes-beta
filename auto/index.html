@@ -9,7 +9,7 @@
   <title>Bêta Automatismes maths cycle 4 et DNB — version 1.18 | maths&amp;go</title>
 <meta name="description" content="Outil d’automatismes de mathématiques pour le cycle 4 et le DNB : entraînez vos élèves en vidéoprojection ou sur téléphone, avec aides et corrections.">
 <link rel="canonical" href="https://mathsgo.re/auto/">
-<link rel="stylesheet" href="styles/setup.css?v=20260717-1">
+<link rel="stylesheet" href="styles/setup.css?v=20260717-2">
 </head>
 <body>
 <div class="app">
@@ -23,8 +23,13 @@
     </div>
   </div>
 
-  <div class="panel">
-    <div class="controls-row">
+  <main class="panel">
+    <section class="settings-card" aria-labelledby="settingsTitle">
+      <div class="section-heading">
+        <span class="section-step section-step-settings" aria-hidden="true">1</span>
+        <h2 id="settingsTitle">Préparer la série</h2>
+      </div>
+      <div class="controls-row">
       <div class="field field-level">
         <label id="levelLabel">Niveau</label>
         <input type="hidden" id="level" value="3e">
@@ -61,34 +66,41 @@
           <button type="button" class="segment-btn" data-value="20" aria-pressed="false">20</button>
         </div>
       </div>
-    </div>
-    <input type="hidden" id="seed" value="">
-    <div class="setup-tools">
-      <button class="setup-tool-button" id="openSeriesButton" type="button" aria-expanded="false" aria-controls="openSeriesOverlay" onclick="setOpenSeriesPanel(true)">Ouvrir une série</button>
-    </div>
-    <div class="modules-toolbar">
-      <h2>Choisir les automatismes</h2>
-      <div class="bulk-actions" role="group" aria-label="Sélection des automatismes">
-        <button class="secondary" type="button" aria-label="Tout sélectionner" onclick="globalThis.selectVisible?.(true)">Tous</button>
-        <button class="secondary" type="button" aria-label="Tout désélectionner" onclick="globalThis.selectVisible?.(false)">Aucun</button>
       </div>
-    </div>
-    <div class="series-message" id="seriesMessage" role="status" aria-live="polite" hidden></div>
-    <div id="modules" class="modules" aria-label="Domaines d’automatismes">
-      <details class="theme-group" open>
-        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Nombres et calculs</span><span class="theme-count">0 / 17 sélectionnés</span></summary>
-      </details>
-      <details class="theme-group">
-        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Espace et géométrie</span><span class="theme-count">0 / 14 sélectionnés</span></summary>
-      </details>
-      <details class="theme-group">
-        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Données, statistiques et probabilités</span><span class="theme-count">0 / 9 sélectionnés</span></summary>
-      </details>
-      <details class="theme-group">
-        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Pensée informatique</span><span class="theme-count">0 / 1 sélectionné</span></summary>
-      </details>
-    </div>
-  </div>
+      <input type="hidden" id="seed" value="">
+      <div class="setup-tools">
+        <button class="setup-tool-button" id="openSeriesButton" type="button" aria-expanded="false" aria-controls="openSeriesOverlay" onclick="setOpenSeriesPanel(true)">Ouvrir une série</button>
+      </div>
+    </section>
+
+    <section class="modules-card" aria-labelledby="modulesTitle">
+      <div class="modules-toolbar">
+        <div class="section-heading">
+          <span class="section-step section-step-modules" aria-hidden="true">2</span>
+          <h2 id="modulesTitle">Choisir les automatismes</h2>
+        </div>
+        <div class="bulk-actions" role="group" aria-label="Sélection des automatismes">
+          <button class="secondary" type="button" aria-label="Tout sélectionner" onclick="globalThis.selectVisible?.(true)">Tous</button>
+          <button class="secondary" type="button" aria-label="Tout désélectionner" onclick="globalThis.selectVisible?.(false)">Aucun</button>
+        </div>
+      </div>
+      <div class="series-message" id="seriesMessage" role="status" aria-live="polite" hidden></div>
+      <div id="modules" class="modules" aria-label="Domaines d’automatismes">
+        <details class="theme-group" data-theme="numbers">
+          <summary class="theme-summary"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Nombres et calculs</span><span class="theme-count">0 / 18 sélectionnés</span><span class="theme-chevron" aria-hidden="true"></span></summary>
+        </details>
+        <details class="theme-group" data-theme="geometry">
+          <summary class="theme-summary"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Espace et géométrie</span><span class="theme-count">0 / 15 sélectionnés</span><span class="theme-chevron" aria-hidden="true"></span></summary>
+        </details>
+        <details class="theme-group" data-theme="data">
+          <summary class="theme-summary"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Données, statistiques et probabilités</span><span class="theme-count">0 / 9 sélectionnés</span><span class="theme-chevron" aria-hidden="true"></span></summary>
+        </details>
+        <details class="theme-group" data-theme="algorithm">
+          <summary class="theme-summary"><span class="theme-icon" aria-hidden="true"></span><span class="theme-name">Pensée informatique</span><span class="theme-count">0 / 1 sélectionné</span><span class="theme-chevron" aria-hidden="true"></span></summary>
+        </details>
+      </div>
+    </section>
+  </main>
   <details class="credit">
     <summary>Crédits et remerciements</summary>
     <p>Remerciements à Eric Hakenholz, créateur de <a href="https://doctools.org/dnb/automatismes_dnb.html" target="_blank" rel="noopener noreferrer">DocTools</a>, pour le partage du fichier, et à Claire Lagarde, pour son aide précieuse.</p>
@@ -205,7 +217,7 @@
 <script defer src="scripts/shared/visuals/geometry/pythagoras-reasoning.js?v=20260716-1"></script>
 <script defer src="scripts/shared/visuals/geometry/pythagoras-builder.js?v=20260716-2"></script>
 <script defer src="scripts/shared/visuals/geometry/solid.js?v=20260716-1"></script>
-<script defer src="scripts/02-question-engine.js?v=20260717-1"></script>
+<script defer src="scripts/02-question-engine.js?v=20260717-2"></script>
 <script defer src="scripts/core/01-series-contracts.js?v=20260716-9"></script>
 <script defer src="scripts/03-slideshow.js?v=20260716-13"></script>
 <script defer src="scripts/04-app.js?v=20260716-13"></script>
