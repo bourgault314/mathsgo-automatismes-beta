@@ -304,7 +304,9 @@ La fiche PythaBarre v34 fournit désormais trois constructions séparées :
 - `geometry.pythagoras-bar` construit la barre du carré de l’hypoténuse et les
   deux carrés qui la composent. Les trois rectangles sont réellement accolés,
   les couleurs sont reprises dans l’égalité et la largeur des deux parties
-  peut être proportionnelle aux carrés calculés ;
+  peut être proportionnelle aux carrés calculés. Dans le cours, la variante
+  validée utilise des angles droits sans arrondi, aucun signe entre les barres
+  et l’égalité colorée `a² = b² + c²` sous le schéma ;
 - `geometry.pythagoras-reasoning` produit la rédaction guidée, de la
   justification à la vérification. Il encode explicitement les deux chemins :
   regrouper les carrés connus pour chercher l’hypoténuse, ou soustraire le
