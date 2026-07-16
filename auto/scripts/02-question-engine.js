@@ -2509,6 +2509,17 @@ function makeRelativeAdditionInstance(mod,q){
       :'Quelle méthode décrit correctement '+relativeExpression(a,b)+' ?';
   return {module:mod,q,scope:{},answers:[correctIndex],rawStatement:prompt+relativeStaticBoardMarkup(relativeTokens)+'&&'+choices.join('&&')+'&&',rawFooter:'',hasSvg:true,relativeTokens};
 }
+function makePythagorasTactileInstance(mod,q){
+  const options=q.options||{};
+  const data={
+    task:String(options.pythagoras_tactile_kind||'complete'),
+    rightAngle:String(options.right_angle||'A'),
+    lengths:{legA:Number(options.leg_a),legB:Number(options.leg_b),hypotenuse:Number(options.hypotenuse)},
+    prompt:String(options.prompt||'Complète la relation de Pythagore.')
+  };
+  const model=globalThis.pythagorasBuilderModel(data);
+  return {module:mod,q,scope:{},answers:model.expected,answerChoices:model.expected.map(value=>[value]),rawStatement:'',rawFooter:'',hasSvg:true,pythagorasTactile:{...data,...model}};
+}
 function makeInstance(mod,q){
   if(mod&&mod.id==='dnb_01') return makeModule01Instance(mod,q);
   if(mod&&mod.id==='dnb_02b') return makePlaceValueInstance(mod,q);
@@ -2527,6 +2538,7 @@ function makeInstance(mod,q){
   if(mod&&mod.id==='dnb_30') return makeAverageInstance(mod,q);
   if(mod&&mod.id==='dnb_35') return makeEvolutionInstance(mod,q);
   if(mod&&mod.id==='dnb_38') return makeRelativeAdditionInstance(mod,q);
+  if(mod&&mod.id==='dnb_24b') return makePythagorasTactileInstance(mod,q);
   let scope={};
   if(q.options&&q.options.formula_code) scope=runCode(q.options.formula_code);
   let answerChoices=parseAnswerChoices(q,scope);
@@ -4217,6 +4229,7 @@ function renderQuestion(inst, correction=false, mode=null){
   if(inst && inst.module && inst.module.id==='dnb_22') return renderAreaModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_23') return renderVolumeModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_24') return renderPythagorasModule(inst, correction, mode);
+  if(inst && inst.module && inst.module.id==='dnb_24b') return globalThis.pythagorasBuilder(inst.pythagorasTactile,correction);
   if(inst && inst.module && inst.module.id==='dnb_25') return renderThalesModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_30') return renderAverageModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_34') return renderProportionModule(inst, correction, mode);
@@ -4278,8 +4291,10 @@ function questionEligibleForLevel(m,q,level){
 }
 function visibleModules(){
   const level=document.getElementById('level').value;
-  if(level==='5e') return RAW_MODULES.filter(m=>Object.prototype.hasOwnProperty.call(LEVEL_5E_QUESTIONS,m.id));
-  return RAW_MODULES.filter(m=> level==='all' || m.level_tags.includes(level) || (level==='3e' && m.level_tags.includes('DNB')) );
+  const interactive=document.getElementById('experienceMode').value==='interactive';
+  const supportFilter=module=>!module.interactive_only||interactive;
+  if(level==='5e') return RAW_MODULES.filter(m=>supportFilter(m)&&Object.prototype.hasOwnProperty.call(LEVEL_5E_QUESTIONS,m.id));
+  return RAW_MODULES.filter(m=>supportFilter(m)&&(level==='all' || m.level_tags.includes(level) || (level==='3e' && m.level_tags.includes('DNB'))) );
 }
 const MODULE_DOMAINS=[
   {id:'numbers',title:'Nombres et calculs'},
@@ -4301,6 +4316,7 @@ const MODULE_MENU_GROUPS={
     {id:'transformations',title:'Transformations',moduleIds:['dnb_27']},
     {id:'angles-triangles',title:'Angles et triangles',moduleIds:['dnb_16','dnb_17','dnb_18']},
     {id:'theoremes-trigonometrie',title:'Pythagore, Thalès et trigonométrie',moduleIds:['dnb_24','dnb_25','dnb_26','dnb_26b']},
+    {id:'manipuler-telephone',title:'Manipuler sur téléphone',moduleIds:['dnb_24b']},
     {id:'mesures',title:'Conversions, aires et périmètres',moduleIds:['dnb_19','dnb_21','dnb_22']},
     {id:'espace',title:'Espace, solides et patrons',moduleIds:['dnb_20','dnb_23']}
   ],

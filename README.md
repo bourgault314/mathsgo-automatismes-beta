@@ -16,10 +16,10 @@ d’audience du site public.
 
 ## Point de départ
 
-- Application : **V1.16 bêta**
+- Application : **V1.17 bêta**
 - Source : `bourgault314/maths`, dossier `auto/`
 - Révision copiée : `cd8c2b0407f10be7f272dbb7a42d7af2f682a0f8`
-- Banque chargée : **41 modules et 468 gabarits de questions**
+- Banque chargée : **42 modules et 473 gabarits de questions**
 
 ## Organisation actuelle
 
@@ -37,8 +37,8 @@ d’audience du site public.
 | `auto/dev/visual-library.html` | Catalogue visuel de développement |
 | `tests/` | Vérifications structurelles de la banque |
 
-Les 41 modules sont maintenant isolés sans changement des identifiants stables
-ni du résultat des séries reproductibles.
+Les 42 modules sont maintenant isolés avec des identifiants stables et des
+tests de reproductibilité.
 
 ### Découpage en cours
 
@@ -58,6 +58,9 @@ ni du résultat des séries reproductibles.
   tactiles +1/−1, paires nulles, questions de manipulation et QCM. Les choix
   de contenu, d’aide et d’ergonomie sont consignés dans
   [`docs/RELATIFS-AUTOMATISMES.md`](docs/RELATIFS-AUTOMATISMES.md).
+- `dnb_24b` — Pythagore tactile : cinq questions manipulables, visibles
+  uniquement en mode interactif dans « Manipuler sur téléphone ». Le plateau
+  partagé permet aussi une intégration future dans une fiche ou une page élève.
 
 Le contrat suivi par tous les fichiers isolés est décrit dans
 [`docs/CONTRAT-MODULE.md`](docs/CONTRAT-MODULE.md).

@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 const root = new URL('../', import.meta.url);
 const isolatedModulesByDomain = {
   numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14', 'dnb_38'],
-  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27'],
+  geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_24b', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27'],
   data: ['dnb_28', 'dnb_29', 'dnb_30', 'dnb_31', 'dnb_32', 'dnb_33', 'dnb_34', 'dnb_35', 'dnb_36'],
   algorithm: ['dnb_37']
 };
@@ -31,6 +31,7 @@ const sources = [
   'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
   'auto/scripts/02-question-engine.js'
 ];
 
@@ -47,6 +48,7 @@ globalThis.__renderThalesModule = renderThalesModule;
 globalThis.__renderPythagorasModule = renderPythagorasModule;
 globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
+globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__makeInstance = makeInstance;
 globalThis.__renderQuestion = renderQuestion;`;
 
@@ -57,7 +59,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'c72350e1567a79e1a671cc3d126c90e05bc665971ed8b27c38b7523fbae45094';
+const expectedBankHash = 'db0eaa3c6c321ed1b04488d1fc3533209c43f35b6fa42970a2b19d4b30f34c81';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -65,7 +67,7 @@ const fail = message => {
 
 const requiredModuleFields = ['id', 'num', 'title', 'level_tags', 'source', 'has_svg', 'questions'];
 
-if (bank.length !== 41) fail(`41 modules attendus, ${bank.length} trouvés.`);
+if (bank.length !== 42) fail(`42 modules attendus, ${bank.length} trouvés.`);
 
 const moduleIds = bank.map(module => module.id);
 if (new Set(moduleIds).size !== moduleIds.length) fail('Un identifiant de module est utilisé plusieurs fois.');
@@ -94,9 +96,9 @@ for (const id of isolatedModuleIds) {
 }
 
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
-if (questionCount !== 468) fail(`468 gabarits attendus, ${questionCount} trouvés.`);
+if (questionCount !== 473) fail(`473 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
-  fail(`Le contenu ou l’ordre de la banque V1.16 a changé (${bankHash}).`);
+  fail(`Le contenu ou l’ordre de la banque V1.17 a changé (${bankHash}).`);
 }
 
 const angleInstance={
@@ -143,6 +145,16 @@ for (const [index, question] of context.__relativeModule.questions.entries()) {
   if(index%2===1&&!correctionHtml.includes('relative-token')) fail(`La correction visuelle manque pour l’addition relative ${question.n}.`);
 }
 
+for(const question of context.__pythagorasTactileModule.questions){
+  const instance=context.__makeInstance(context.__pythagorasTactileModule,question);
+  const questionHtml=context.__renderQuestion(instance,false,'with');
+  const correctionHtml=context.__renderQuestion(instance,true,'with');
+  if(!questionHtml.includes('data-pythagoras-builder')) fail(`Le plateau Pythagore tactile manque pour la question ${question.n}.`);
+  if(!questionHtml.includes('data-pythagoras-token')) fail(`Les étiquettes manipulables manquent pour la question ${question.n}.`);
+  if(!correctionHtml.includes('pythagoras-builder-feedback is-success')) fail(`La solution Pythagore tactile manque pour la question ${question.n}.`);
+  if(instance.answers.length!==instance.pythagorasTactile.expected.length) fail(`La réponse tactile ${question.n} ne correspond pas au nombre de cases.`);
+}
+
 const pythagorasInstance={
   module:{id:'dnb_24'},q:{n:7},scope:{a:3,b:4,c:5},answers:['4'],
   rawStatement:'Dans un triangle rectangle, l’hypoténuse mesure 5 cm et un côté mesure 3 cm. Calcule l’autre côté.',
@@ -157,7 +169,7 @@ if(pythagorasWithoutAid.includes('pythagoras-bar-svg')||pythagorasWithoutAid.inc
 
 const contracts = fs.readFileSync(new URL('auto/scripts/core/01-series-contracts.js', root), 'utf8');
 const registeredLegacyIds = [...contracts.matchAll(/\['[^']+','(dnb_[^']+)',\d+\]/g)].map(match => match[1]);
-if (registeredLegacyIds.length !== 41) fail(`41 entrées MG1 attendues, ${registeredLegacyIds.length} trouvées.`);
+if (registeredLegacyIds.length !== 42) fail(`42 entrées MG1 attendues, ${registeredLegacyIds.length} trouvées.`);
 
 const missingFromRegistry = moduleIds.filter(id => !registeredLegacyIds.includes(id));
 const missingFromBank = registeredLegacyIds.filter(id => !moduleIds.includes(id));
@@ -177,5 +189,5 @@ for (const domain of Object.keys(isolatedModulesByDomain)) {
 if ((indexHtml.match(/<script defer src=/g)||[]).length < 30) fail('Les scripts de démarrage doivent rester non bloquants pour le premier affichage.');
 
 if (!process.exitCode) {
-  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.16 figée, registre MG1 cohérent.`);
+  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.17 figée, registre MG1 cohérent.`);
 }

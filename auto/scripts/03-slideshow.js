@@ -47,6 +47,22 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .frac{display:inline-flex;flex-direction:column;vertical-align:middle;align-items:center;line-height:1;margin:0 .08em}.frac .frac-num{border-bottom:2px solid currentColor;padding:0 .16em .06em}.frac .frac-den{padding:.06em .16em 0}
 .math-inline,.math-display{display:inline-block;white-space:nowrap}.aligned-math{display:inline-block;text-align:left;line-height:1.35}.quad{display:inline-block;width:1.2em}.qquad{display:inline-block;width:2.4em}.widehat{display:inline-block;position:relative;padding-top:.24em;text-decoration:none;line-height:1}.widehat::before,.widehat::after{content:"";position:absolute;top:.08em;width:52%;border-top:1.8px solid currentColor;pointer-events:none}.widehat::before{left:-1%;transform:rotate(-11deg);transform-origin:100% 50%}.widehat::after{right:-1%;transform:rotate(11deg);transform-origin:0 50%}.mathcal{font-family:Georgia,serif;font-style:italic}.answer-slot{display:inline-flex;align-items:baseline;justify-content:center;width:var(--answer-width,1.05em);margin:0 .08em;white-space:nowrap;vertical-align:baseline}.frac .answer-slot-small{margin:0 .02em}.answer-dots{display:inline-block;letter-spacing:.06em}sup .answer-slot{align-items:center;line-height:1;margin-left:.02em;margin-right:.02em}sup .answer-slot-filled{width:auto!important;min-width:0;margin-left:-.04em;margin-right:0}sup .answer-dots{line-height:1;letter-spacing:0;transform:translateY(-.16em)}
 .visual-note{font-size:1.4rem;color:var(--muted);border:1px dashed var(--border);border-radius:12px;padding:12px;margin:12px auto;max-width:620px}
+.pythagoras-builder{width:min(100%,780px);margin:0 auto;padding:10px 14px 11px;border:1px solid #cddcf0;border-radius:18px;background:linear-gradient(180deg,#fff,#f7fbff);color:#0b2147;user-select:none}
+.pythagoras-builder-prompt{margin:0 auto 2px;font-size:clamp(1.12rem,2vw,1.48rem);font-weight:850;line-height:1.18}
+.pythagoras-builder-triangle{display:block;width:min(100%,365px);max-height:205px;margin:0 auto}
+.pythagoras-builder-work{display:grid;gap:7px;justify-items:center}
+.pythagoras-builder-equation,.pythagoras-builder-areas{display:flex;align-items:center;justify-content:center;gap:7px;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.55rem,2.8vw,2.35rem);font-weight:850;line-height:1}
+.pythagoras-builder-equation.is-given strong{display:inline-grid;place-items:center;min-width:2.8em;min-height:1.55em;padding:5px 10px;border:2px solid #9fc9c9;border-radius:11px;background:#eaf8f4;color:#0b3570}
+.pythagoras-builder-areas{font-size:clamp(1.28rem,2.3vw,1.9rem)}
+.pythagoras-builder-caption{font:800 .76rem/1.1 Arial,sans-serif;color:#60708c;letter-spacing:.045em;text-transform:uppercase}
+.pythagoras-builder-areas>.pythagoras-builder-caption{margin-right:4px}
+.pythagoras-builder-slot{display:inline-grid;place-items:center;min-width:2.9em;min-height:1.58em;padding:5px 9px;border:2px dashed #91aac8;border-radius:11px;background:#fff;color:#0b3570;font:inherit;font-weight:900;cursor:pointer;touch-action:manipulation}
+.pythagoras-builder-slot.filled{border-style:solid;border-color:#78a3d1;background:#edf5ff}.pythagoras-builder-slot.is-selected{border-color:#ff7a1a;background:#fff1e7}
+.pythagoras-builder-palette{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;width:min(100%,680px);padding:6px 8px;border:1px solid #d7e3f3;border-radius:12px;background:#fff}
+.pythagoras-builder-palette>.pythagoras-builder-caption{flex:0 0 100%}
+.pythagoras-builder-token{min-width:60px;min-height:43px;padding:7px 11px;border:2px solid #1170bc;border-radius:11px;background:#eaf4ff;color:#0b4f86;font-size:1.08rem;font-weight:900;cursor:grab;touch-action:none;box-shadow:0 2px 0 rgba(11,53,112,.1)}
+.pythagoras-builder-token.values-token{border-color:#e17a08;background:#fff3e3;color:#9a4b00}.pythagoras-builder-token.is-selected{outline:3px solid #ff7a1a;outline-offset:2px}.pythagoras-builder-token.is-used{visibility:hidden;pointer-events:none}.pythagoras-builder-token.is-dragging{position:relative;z-index:30;opacity:.9;cursor:grabbing;box-shadow:0 8px 18px rgba(11,33,71,.22)}
+.pythagoras-builder-feedback{min-height:1.2em;margin:6px auto 0;color:#60708c;font-size:.86rem;font-weight:750}.pythagoras-builder-feedback.is-error{color:#b42318}.pythagoras-builder-feedback.is-success{color:#087a55}
 .diapo.scientific-mode .stage{align-items:center;padding:12px 20px 18px}
 .diapo.scientific-mode .slide{max-width:1120px}
 .scientific-prompt{font-size:clamp(1.9rem,3.1vw,3.25rem);font-weight:850;line-height:1.13;margin:0 auto 5px}
@@ -524,6 +540,7 @@ svg{display:block;max-width:100%;height:auto}
 @media(max-width:800px){.diapo{--stage-top:24px;--stage-x:24px;--stage-bottom:24px}.top{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);height:76px;text-align:center;padding:9px max(9px,env(safe-area-inset-right)) 9px max(9px,env(safe-area-inset-left));gap:6px}.left{justify-content:flex-start}.right{justify-content:flex-end}.top .btn{min-height:52px;font-size:.92rem;padding:11px 10px;border-radius:12px;white-space:nowrap}.top .btn.primary{min-width:0}.navnums{display:none}.mobile-counter{display:block;white-space:nowrap;font-size:1.08rem}.stage{padding:var(--stage-top) var(--stage-x) var(--stage-bottom)}.diapo .stage>.slide{margin-top:auto;margin-bottom:auto}.options.options-4{grid-template-columns:1fr}.options.options-4.options-compact{grid-template-columns:repeat(2,minmax(0,1fr))}.diapo.scientific-mode .stage{padding:8px 8px 13px}.scientific-prompt{font-size:clamp(1.25rem,5.8vw,1.65rem)}.scientific-footer{font-size:clamp(1.7rem,7.7vw,2.25rem);margin-top:3px}.scientific-place-help{min-height:62px;margin-top:14px}.scientific-place-equation{font-size:clamp(1.45rem,6.4vw,2rem)}.scientific-glide-help{height:clamp(160px,24vh,195px);margin-top:-3px}.scientific-condition-help{min-height:64px;margin-top:8px}.scientific-condition{font-size:clamp(1.7rem,7.4vw,2.25rem)}.scientific-options{gap:7px;margin-top:6px}.scientific-options .opt{font-size:clamp(.86rem,3.75vw,1.05rem);padding:8px 9px}.diapo.numberline-mode .footer{font-size:clamp(1.65rem,7.5vw,2rem)}.diapo.numberline-mode .answer-slot{width:2.2em!important}.diapo.numberline-mode .footer .qquad{width:.7em}.diapo.numberline-mode .footer .math-display{transform:none}.diapo.solids-mode .stage{padding:10px 10px 16px}.solid-prompt{font-size:clamp(1.25rem,5.6vw,1.65rem)}.solid-visual{width:230px;height:clamp(155px,27vh,215px)}.solid-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.solid-options .opt{font-size:clamp(.88rem,3.7vw,1.08rem);padding:8px 9px}}
 @media(max-width:800px){.diapo.relation-mode .stage{padding:7px 7px 11px}.relation-prompt{font-size:clamp(1.34rem,5.95vw,1.72rem);margin-bottom:3px}.relation-bar-help{height:clamp(155px,26vh,205px);margin:0 auto}.relation-answer{font-size:clamp(1.8rem,8vw,2.35rem);margin-top:2px}.relation-options{gap:7px;margin-top:5px}.relation-options .opt{min-height:99px;padding:7px 8px;font-size:clamp(.98rem,4.4vw,1.2rem)}.relation-option-label{min-height:29px}.relation-tile-help{min-height:44px;margin-top:4px;gap:3px}.relation-summary-grid{grid-template-columns:1fr;gap:7px;margin-top:5px}.relation-summary-card{min-height:99px;padding:7px 12px}.relation-summary-line{font-size:clamp(1.05rem,4.8vw,1.3rem)}.relation-summary-card .relation-tile-help{min-height:31px}}
 @media(max-width:800px){.diapo.pythagoras-mode .stage{padding:4px 6px 8px}.diapo.pythagoras-mode .pythagoras-prompt{margin-bottom:2px;font-size:clamp(1.02rem,4.45vw,1.3rem);line-height:1.1}.pythagoras-aid-visual{height:clamp(145px,24vh,195px);margin:0 auto}.diapo.pythagoras-mode .pythagoras-options{gap:5px;margin-top:3px}.diapo.pythagoras-mode .pythagoras-options .opt{min-height:44px;padding:7px 8px;font-size:clamp(.8rem,3.5vw,1rem)}.diapo.pythagoras-mode .pythagoras-answer{margin-top:3px;font-size:clamp(1.45rem,6.3vw,1.95rem)}}
+@media(max-width:800px){.diapo.pythagoras-builder-mode .stage{padding:3px 4px 5px}.diapo.pythagoras-builder-mode .slide{margin-top:0;margin-bottom:auto}.pythagoras-builder{width:100%;padding:6px 5px 7px;border-radius:13px}.pythagoras-builder-prompt{font-size:clamp(.94rem,4.2vw,1.14rem);margin-bottom:0}.pythagoras-builder-triangle{width:min(100%,300px);max-height:158px;margin-top:-2px}.pythagoras-builder-work{gap:5px}.pythagoras-builder-equation{gap:3px;font-size:clamp(1.25rem,6.3vw,1.72rem)}.pythagoras-builder-areas{gap:3px;font-size:clamp(1.06rem,5.2vw,1.42rem)}.pythagoras-builder-equation.is-given strong{min-width:2.55em;min-height:1.45em;padding:3px 5px;border-radius:8px}.pythagoras-builder-areas>.pythagoras-builder-caption{display:none}.pythagoras-builder-slot{min-width:2.55em;min-height:1.52em;padding:3px 5px;border-radius:8px}.pythagoras-builder-palette{gap:5px;padding:4px 5px;border-radius:10px}.pythagoras-builder-palette>.pythagoras-builder-caption{display:none}.pythagoras-builder-token{min-width:54px;min-height:42px;padding:5px 8px;border-radius:9px;font-size:1rem}.pythagoras-builder-feedback{margin-top:4px;font-size:.76rem}}
 @media(max-width:800px){.diapo.fraction-percent-mode .stage{padding:5px 5px 9px}.fraction-percent-prompt{font-size:clamp(1.44rem,6.25vw,1.84rem);margin-bottom:3px}.fraction-percent-help{height:clamp(210px,35vh,282px);margin:0 auto}.fraction-percent-svg{width:min(100%,780px)}.fraction-percent-answer{font-size:clamp(1.95rem,8.6vw,2.55rem);margin-top:2px}}
 @media(max-width:800px){.diapo.fraction-ops-mode .stage{padding:5px 4px 10px}.fraction-ops-prompt{font-size:clamp(1.28rem,5.65vw,1.62rem);margin-bottom:2px}.fraction-ops-pair,.fraction-ops-operation,.fraction-ops-conversion{flex-direction:column;gap:0;margin:0 auto}.fraction-ops-card{width:min(100%,364px)}.fraction-ops-stack>.fraction-ops-arrow+.fraction-ops-card{margin-top:6px}.fraction-ops-label{min-height:26px;font-size:clamp(1.02rem,4.45vw,1.25rem)}.fraction-ops-band{width:min(100%,348px)}.fraction-ops-wall,.fraction-ops-compare-wall{width:min(100%,364px);flex-basis:auto}.fraction-ops-wall .fraction-ops-band,.fraction-ops-compare-wall .fraction-ops-band{width:min(100%,348px)}.fraction-ops-wall-label{min-height:25px;font-size:clamp(.98rem,4.25vw,1.2rem)}.fraction-ops-sign{font-size:1.65rem;line-height:.75}.fraction-ops-sign-bottom{align-self:center;margin-bottom:0}.fraction-ops-arrow{font-size:1.25rem}.fraction-ops-result-visual{font-size:1.6rem;margin-top:0}.fraction-ops-product{flex-direction:column;gap:1px}.fraction-ops-area{width:min(100%,336px);max-height:270px}.fraction-ops-result-text{font-size:clamp(1.25rem,5.35vw,1.62rem)}.fraction-ops-answer{font-size:clamp(1.7rem,7.55vw,2.2rem);margin-top:1px}.fraction-ops-options{grid-template-columns:1fr;gap:6px;margin-top:4px}.fraction-ops-options .opt{font-size:clamp(.96rem,4.05vw,1.15rem);padding:9px 10px}.diapo.substitution-mode .stage{padding:9px 9px 14px}.substitution-prompt{font-size:clamp(1.2rem,5.3vw,1.55rem);margin-bottom:3px}.substitution-expression{font-size:clamp(1.8rem,8vw,2.35rem);margin:2px auto 5px}.substitution-help{flex-direction:column;min-height:57px;font-size:clamp(1.8rem,8vw,2.35rem);margin:2px auto}.substitution-answer{font-size:clamp(1.75rem,7.7vw,2.3rem)}.substitution-options,.substitution-options.options-3{grid-template-columns:1fr;gap:7px;margin-top:5px}.substitution-options .opt{font-size:clamp(.95rem,4.1vw,1.15rem);padding:8px 9px}}
 @media(max-width:800px){.fraction-product-manipulator{display:none}.fraction-product-static{display:block!important;width:min(96%,430px);max-height:clamp(235px,42vh,330px);margin:0 auto}.fraction-ops-product{width:100%}}
@@ -606,6 +623,8 @@ let interactiveValues=[];
 let interactiveTouched=[];
 let relativeBoardState=null;
 let relativeBoardKey='';
+let pythagorasSelectedToken=null;
+let pythagorasSuppressClickUntil=0;
 let activeSlotIndex=0;
 let selectedOptions=new Set();
 let interactiveLocked=false;
@@ -1072,7 +1091,7 @@ function setModuleClasses(diapo,moduleId){
    'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angle-sum-mode':['dnb_18'],
    'conversion-mode':['dnb_19'],'solids-mode':['dnb_20'],'perimeter-mode':['dnb_21'],'area-mode':['dnb_22'],'volume-mode':['dnb_23'],'average-mode':['dnb_30'],
    'median-mode':['dnb_31'],'proportion-mode':['dnb_34'],'evolution-mode':['dnb_35'],'data-mode':['dnb_28','dnb_29'],
-   'algorithm-mode':['dnb_37'],'coordinate-mode':['dnb_15'],'transformations-mode':['dnb_27'],'pythagoras-mode':['dnb_24'],'trigonometry-mode':['dnb_26','dnb_26b'],'thales-mode':['dnb_25'],'relative-tokens-mode':['dnb_38']
+   'algorithm-mode':['dnb_37'],'coordinate-mode':['dnb_15'],'transformations-mode':['dnb_27'],'pythagoras-mode':['dnb_24'],'pythagoras-builder-mode':['dnb_24b'],'trigonometry-mode':['dnb_26','dnb_26b'],'thales-mode':['dnb_25'],'relative-tokens-mode':['dnb_38']
  };
  Object.entries(map).forEach(entry=>diapo.classList.toggle(entry[0],entry[1].includes(moduleId)));
  diapo.classList.toggle('dense-mode',['dnb_15','dnb_24','dnb_26','dnb_26b','dnb_32','dnb_33','dnb_36','dnb_37'].includes(moduleId));
@@ -1159,6 +1178,7 @@ function setupInteractiveSlide(current){
    if(spec.kind==='qcm') kind.textContent=spec.multiple?'Plusieurs réponses':'Une seule réponse';
    else if(spec.kind==='grid-point') kind.textContent='Clique sur le quadrillage';
    else if(spec.kind==='relative-tokens') kind.textContent='Manipule les jetons puis valide';
+   else if(spec.kind==='pythagoras-tactile') kind.textContent='Place toutes les étiquettes';
    else if(spec.layout==='fraction') kind.textContent='Numérateur / dénominateur';
    else if(spec.layout==='polynomial') kind.textContent='Coefficients';
    else kind.textContent=(spec.slots&&spec.slots.length>1)?spec.slots.length+' cases':'Réponse';
@@ -1180,6 +1200,8 @@ function setupInteractiveSlide(current){
    ensureInteractiveEntryState(spec);setupGridPointInteraction(spec);
  }else if(spec.kind==='relative-tokens'){
    ensureInteractiveEntryState(spec);setupRelativeTokensInteraction(spec);
+ }else if(spec.kind==='pythagoras-tactile'){
+   ensureInteractiveEntryState(spec);setupPythagorasTactileInteraction(spec);
  }else if(!interactiveLocked){
    ensureInteractiveEntryState(spec);
    injectInteractiveResponse(spec);
@@ -1199,6 +1221,48 @@ function setupGridPointInteraction(spec){
  }
  if(interactiveLocked)return;
  svg.querySelectorAll('.transformation-grid-hit').forEach(hit=>{hit.setAttribute('tabindex','0');hit.setAttribute('role','button');const choose=()=>{interactiveValues=[hit.dataset.gridX,hit.dataset.gridY];interactiveTouched=[true,true];setupGridPointInteraction(spec);updateInteractiveControls();};hit.onclick=choose;hit.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};});
+}
+function pythagorasBuilderFeedback(message,kind=''){
+ const node=document.querySelector('#slide [data-pythagoras-feedback]');if(!node)return;
+ node.textContent=message;node.classList.toggle('is-error',kind==='error');node.classList.toggle('is-success',kind==='success');
+}
+function placePythagorasBuilderToken(spec,value,group,index){
+ if(interactiveLocked)return;
+ const slot=spec.slots[index];
+ if(!slot||slot.group!==group){pythagorasBuilderFeedback(group==='label'?'Cette case attend une aire.':'Cette case attend un côté au carré.','error');return;}
+ interactiveValues.forEach((current,currentIndex)=>{if(current===value&&spec.slots[currentIndex]?.group===group){interactiveValues[currentIndex]='';interactiveTouched[currentIndex]=false;}});
+ interactiveValues[index]=value;interactiveTouched[index]=true;pythagorasSelectedToken=null;
+ pythagorasBuilderFeedback('Étiquette placée. Choisis-en une autre.','success');
+ setupPythagorasTactileInteraction(spec);updateInteractiveControls();
+}
+function setupPythagorasTactileInteraction(spec){
+ const root=document.querySelector('#slide [data-pythagoras-builder]');if(!root)return;
+ const displayedValues=interactiveLocked?((spec.acceptedCombinations&&spec.acceptedCombinations[0])||interactiveValues):interactiveValues;
+ const slots=[...root.querySelectorAll('[data-pythagoras-slot]')];
+ slots.forEach(node=>{
+   const index=Number(node.dataset.pythagorasSlot),value=displayedValues[index]||'';
+   node.textContent=value||'…';node.classList.toggle('filled',!!value);node.classList.toggle('is-selected',!!pythagorasSelectedToken&&spec.slots[index]?.group===pythagorasSelectedToken.group);
+   node.disabled=interactiveLocked;
+   node.onclick=()=>{
+     if(interactiveLocked)return;
+     if(pythagorasSelectedToken) placePythagorasBuilderToken(spec,pythagorasSelectedToken.value,pythagorasSelectedToken.group,index);
+     else if(value){interactiveValues[index]='';interactiveTouched[index]=false;pythagorasBuilderFeedback('Étiquette retirée.');setupPythagorasTactileInteraction(spec);updateInteractiveControls();}
+   };
+ });
+ root.querySelectorAll('[data-pythagoras-token]').forEach(node=>{
+   const value=node.dataset.pythagorasToken||'',group=node.dataset.tokenGroup||'';
+   const used=interactiveValues.some((current,index)=>current===value&&spec.slots[index]?.group===group);
+   node.classList.toggle('is-used',used);node.classList.toggle('is-selected',!!pythagorasSelectedToken&&pythagorasSelectedToken.value===value&&pythagorasSelectedToken.group===group);node.disabled=interactiveLocked||used;
+   node.onclick=()=>{if(interactiveLocked||used||Date.now()<pythagorasSuppressClickUntil)return;pythagorasSelectedToken=pythagorasSelectedToken&&pythagorasSelectedToken.value===value&&pythagorasSelectedToken.group===group?null:{value,group};pythagorasBuilderFeedback(pythagorasSelectedToken?'Touche maintenant une case.':'Sélection annulée.');setupPythagorasTactileInteraction(spec);};
+   node.onpointerdown=event=>{
+     if(interactiveLocked||used)return;
+     const startX=event.clientX,startY=event.clientY;let moved=false;
+     node.setPointerCapture?.(event.pointerId);
+     const move=moveEvent=>{const dx=moveEvent.clientX-startX,dy=moveEvent.clientY-startY;if(Math.hypot(dx,dy)>7)moved=true;if(moved){moveEvent.preventDefault();node.classList.add('is-dragging');node.style.transform='translate('+dx+'px,'+dy+'px)';}};
+     const end=endEvent=>{node.releasePointerCapture?.(endEvent.pointerId);node.removeEventListener('pointermove',move);node.removeEventListener('pointerup',end);node.removeEventListener('pointercancel',end);node.classList.remove('is-dragging');node.style.transform='';if(!moved)return;pythagorasSuppressClickUntil=Date.now()+250;const target=document.elementFromPoint(endEvent.clientX,endEvent.clientY)?.closest?.('[data-pythagoras-slot]');if(target)placePythagorasBuilderToken(spec,value,group,Number(target.dataset.pythagorasSlot));};
+     node.addEventListener('pointermove',move);node.addEventListener('pointerup',end);node.addEventListener('pointercancel',end);
+   };
+ });
 }
 function relativeClientTokenLabel(sign){return sign>0?'+1':'−1';}
 function relativeClientDisplayNumber(value){const text=String(value);return text.startsWith('-')?'−'+text.slice(1):text;}
@@ -1330,6 +1394,7 @@ function setupFractionProductTools(){
  });
 }
 function resetInteractiveEntryState(spec){
+ pythagorasSelectedToken=null;
  if(spec&&spec.kind==='relative-tokens'){
    relativeBoardKey=spec.relative.instanceKey;relativeBoardState=relativeClientInitialState(spec);interactiveValues=[relativeClientStateKey(relativeBoardState)];interactiveTouched=[false];activeSlotIndex=0;return;
  }
@@ -1445,7 +1510,7 @@ function renderInteractiveKeypad(spec){
  if(!keypad) return;
  keypad.innerHTML='';
  const body=keypad.closest('.answer-body');
- if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='relative-tokens'){
+ if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'){
    if(body){body.style.setProperty('--keypad-max','940px');body.style.setProperty('--keypad-height-desktop','64px');body.style.setProperty('--keypad-height-mobile','62px');}
    return;
  }
@@ -1469,7 +1534,7 @@ function renderInteractiveKeypad(spec){
 function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
- const available=interactiveMode&&!interactiveFinished&&spec&&spec.kind!=='qcm'&&spec.kind!=='grid-point'&&spec.kind!=='relative-tokens';
+ const available=interactiveMode&&!interactiveFinished&&spec&&spec.kind!=='qcm'&&spec.kind!=='grid-point'&&spec.kind!=='relative-tokens'&&spec.kind!=='pythagoras-tactile';
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -1487,6 +1552,7 @@ function hasInteractiveAnswer(){
  const spec=slides[idx].interactiveSpec;
  if(spec.kind==='qcm') return selectedOptions.size>0;
  if(spec.kind==='relative-tokens') return interactiveTouched.some(Boolean);
+ if(spec.kind==='pythagoras-tactile') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
  return interactiveTouched.some(Boolean);
 }
 function updateInteractiveControls(){
@@ -1754,6 +1820,11 @@ function interactiveKeysFor(combinations,options={}){
   return keys;
 }
 function interactiveSpecForInstance(inst,correctionHtml){
+ if(inst.pythagorasTactile){
+   const task=inst.pythagorasTactile.task;
+   const groups=task==='relation'?['label','label','label']:task==='areas'?['value','value','value']:['label','label','label','value','value','value'];
+   return {kind:'pythagoras-tactile',layout:'drag',slots:groups.map((group,index)=>({group,label:(group==='label'?'Côté au carré ':'Aire ')+(index%3+1)})),acceptedCombinations:[inst.pythagorasTactile.expected.map(String)],expectedDisplay:inst.pythagorasTactile.relation.join(' = ').replace(' = ',' = ').replace(/ = ([^=]+) = /,' = $1 + ')+' ; '+inst.pythagorasTactile.areas.join(' ; '),keys:[]};
+ }
  if(inst.relativeTokens&&inst.relativeTokens.interactive){
    const result=String(inst.relativeTokens.result);
    return {kind:'relative-tokens',relative:inst.relativeTokens,expectedDisplay:'réponse : '+(result.startsWith('-')?'−'+result.slice(1):result)};

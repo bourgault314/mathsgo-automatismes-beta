@@ -34,6 +34,7 @@ const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_22',title:'Aires : rectangle, carré, triangle et disque',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_22',file:'scripts/modules/geometry/dnb_22.js'},
   {id:'dnb_23',title:'Volumes : cube, pavé droit, prisme et cylindre',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_23',file:'scripts/modules/geometry/dnb_23.js'},
   {id:'dnb_24',title:'Théorème de Pythagore : égalité et situations',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_24',file:'scripts/modules/geometry/dnb_24.js'},
+  {id:'dnb_24b',title:'Pythagore — manipuler sur téléphone',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_24_TACTILE',file:'scripts/modules/geometry/dnb_24b.js',interactive_only:true},
   {id:'dnb_25',title:'Théorème de Thalès : triangles emboîtés',level_tags:['3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_25',file:'scripts/modules/geometry/dnb_25.js'},
   {id:'dnb_26',title:'Trigonométrie sans calculatrice',level_tags:['3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_26',file:'scripts/modules/geometry/dnb_26.js'},
   {id:'dnb_26b',title:'Trigonométrie avec calculatrice',level_tags:['3e'],domain:'geometry',globalName:'MODULE_DNB_26B',file:'scripts/modules/geometry/dnb_26b.js'},
@@ -58,7 +59,7 @@ function loadModuleScript(src){
   if(MATHSGO_LOADED_MODULE_SCRIPTS.has(src)) return MATHSGO_LOADED_MODULE_SCRIPTS.get(src);
   const promise=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
-    script.src=src+'?v=20260716-2';
+    script.src=src+'?v=20260716-3';
     script.onload=resolve;
     script.onerror=()=>reject(new Error('Impossible de charger un module d’automatismes.'));
     document.head.appendChild(script);

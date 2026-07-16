@@ -529,6 +529,7 @@ function updateGenerateButtonLabel(){
   updateSetupActions();
 }
 document.getElementById('experienceMode').addEventListener('change',updateGenerateButtonLabel);
+document.getElementById('experienceMode').addEventListener('change',renderModuleList);
 document.getElementById('visualMode').addEventListener('change',updateSetupActions);
 document.getElementById('count').addEventListener('change',updateSetupActions);
 document.getElementById('level').addEventListener('change',updateSetupActions);

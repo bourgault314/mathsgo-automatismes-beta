@@ -23,7 +23,8 @@ const visualSources = [
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
-  'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js'
+  'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-builder.js'
 ];
 const code = visualSources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
@@ -43,7 +44,16 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 19) fail(`19 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 20) fail(`20 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const pythagorasBuilder=registry?.get('geometry.pythagoras-builder');
+if(!pythagorasBuilder) fail('Le composant geometry.pythagoras-builder est absent.');
+if(pythagorasBuilder&&!pythagorasBuilder.supports.includes('phone')) fail('Le constructeur Pythagore doit être compatible téléphone.');
+if(pythagorasBuilder&&pythagorasBuilder.supports.includes('projection')) fail('Le constructeur tactile ne doit pas être proposé comme visuel de projection.');
+const builderQuestion=pythagorasBuilder?.render({task:'complete',rightAngle:'C',lengths:{legA:6,legB:8,hypotenuse:10}},false)||'';
+const builderCorrection=pythagorasBuilder?.render({task:'complete',rightAngle:'C',lengths:{legA:6,legB:8,hypotenuse:10}},true)||'';
+if(!builderQuestion.includes('data-pythagoras-token')||!builderQuestion.includes('AB²')) fail('Le constructeur tactile doit fournir les étiquettes du triangle rectangle en C.');
+if(!builderCorrection.includes('100')||!builderCorrection.includes('36')||!builderCorrection.includes('64')) fail('La correction tactile doit afficher les trois aires exactes.');
 
 const relativeTokens = registry?.get('numbers.relative-tokens');
 if (!relativeTokens) fail('Le composant numbers.relative-tokens est absent.');
@@ -522,8 +532,7 @@ const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.j
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
-const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_14.js');
-const coordinateModulePosition = indexHtml.indexOf('scripts/modules/geometry/dnb_15.js');
+const manifestPosition = indexHtml.indexOf('scripts/00-module-manifest.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const equalSharingPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/equal-sharing-board.js');
@@ -538,8 +547,9 @@ const triangleAnglePosition = indexHtml.indexOf('scripts/shared/visuals/geometry
 const pythagorasMillPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-mill.js');
 const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-bar.js');
 const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
+const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 

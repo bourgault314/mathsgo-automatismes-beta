@@ -13,7 +13,7 @@ données, visuels et le générateur de QR code sont intégrés au fichier.
 - **Interactif** : saisie intégrée, clavier mathématique, QCM, validation,
   correction et score. Dix séries sont préparées à partir de la même seed.
 - **Diaporama** : navigation question/correction, progression et plein écran.
-- **Avec aide** : schémas, manipulations et micro-cours pour les 40 modules.
+- **Avec aide** : schémas, manipulations et micro-cours pour les modules.
 - **Sans aide** : les données et figures indispensables restent visibles, mais
   les aides et formules de cours sont masquées.
 - **Partager** : ouvre une fenêtre dédiée qui produit un lien, un code `MG1-…`
@@ -33,6 +33,12 @@ maths&go : fractions et nombres rationnels, puissances, calcul littéral,
 repérage, statistiques, proportionnalité, etc. Il n’existe donc aucun niveau de
 menu supplémentaire : les cases restent directement accessibles. Le classement
 ne modifie ni les identifiants des modules ni les codes de séries partagées.
+
+Le complément `dnb_24b`, « Pythagore — manipuler sur téléphone », est séparé
+du module classique `dnb_24`. Il apparaît seulement en mode interactif et
+propose cinq tâches : placer les côtés au carré, placer les aires, ou construire
+les deux lignes. Son composant `geometry.pythagoras-builder` est réutilisable
+dans une autre page élève.
 
 ## Trigonométrie
 

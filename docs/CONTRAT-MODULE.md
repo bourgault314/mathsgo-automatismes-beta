@@ -49,8 +49,8 @@ usuels sont `statement`, `answer`, `options` et `footer`.
    interface avec le moteur.
 5. `npm test` doit réussir avant toute publication sur la bêta.
 
-Le test fige actuellement les 41 modules, les 468 gabarits, le registre MG1 et
-l’empreinte complète de la banque V1.15. Une extraction pure doit donc laisser
+Le test fige actuellement les 42 modules, les 473 gabarits, le registre MG1 et
+l’empreinte complète de la banque V1.17. Une extraction pure doit donc laisser
 cette empreinte inchangée.
 
 ## Registre pédagogique associé

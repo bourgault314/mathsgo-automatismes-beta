@@ -200,6 +200,10 @@ La fiche PythaBarre v34 fournit désormais trois constructions séparées :
   justification à la vérification. Il encode explicitement les deux chemins :
   regrouper les carrés connus pour chercher l’hypoténuse, ou soustraire le
   carré connu pour chercher un côté de l’angle droit.
+- `geometry.pythagoras-builder` fournit la manipulation autonome : l’élève
+  place les côtés au carré et les aires dans l’égalité. Le composant accepte
+  l’angle droit, les trois longueurs, le type de tâche et la consigne ; une
+  page d’exercice peut donc le réutiliser sans reprendre tout Automatismes.
 
 Chaque composant reçoit les sommets, les noms de côtés, les longueurs, le côté
 cherché, l’unité et l’étape à afficher. Les aperçus du catalogue sont donc
@@ -212,6 +216,10 @@ rédaction guidée avec le bon chemin, addition pour l’hypoténuse ou soustrac
 pour un côté. Le cours appelle les mêmes composants et filtre ses rubriques en
 fonction de la tâche : condition, égalité, calcul, racine, réciproque ou
 vérification.
+
+Le constructeur tactile est déclaré pour le téléphone et l’ordinateur, mais
+pas pour la projection. Dans Automatismes, le module `dnb_24b` l’expose sous
+« Manipuler sur téléphone » uniquement lorsque le mode interactif est choisi.
 
 L’audit complet du lot reçu est conservé dans
 `docs/AUDIT-RESSOURCES-2026-07-16.md`.

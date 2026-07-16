@@ -10,16 +10,19 @@ const sources=[
   'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/algebra/relation-tiles.js',
   'auto/scripts/shared/pedagogy/00-registry.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_09.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_18.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_24.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_24b.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_25.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/geometry/dnb_18.js',
   'auto/scripts/modules/geometry/dnb_24.js',
+  'auto/scripts/modules/geometry/dnb_24b.js',
   'auto/scripts/modules/geometry/dnb_25.js',
   'auto/scripts/modules/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_09.js'
@@ -29,6 +32,7 @@ globalThis.__angleQuestionNumbers=MODULE_DNB_18.questions.map(question=>Number(q
 globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(question.n));
 globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
 globalThis.__pythagorasQuestionNumbers=MODULE_DNB_24.questions.map(question=>Number(question.n));
+globalThis.__pythagorasTactileQuestionNumbers=MODULE_DNB_24_TACTILE.questions.map(question=>Number(question.n));
 globalThis.__relationQuestionNumbers=MODULE_DNB_09.questions.map(question=>Number(question.n));`;
 const context={};context.globalThis=context;vm.createContext(context);vm.runInContext(code,context,{timeout:5000});
 
@@ -36,7 +40,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==5) fail(`Cinq modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==6) fail(`Six modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
 
 const relations=registry?.getModule('dnb_09');
 if(!relations) fail('Le classement pédagogique de dnb_09 est absent.');
@@ -86,6 +90,17 @@ for(const [questionNumber,[id,response,policy,component]] of Object.entries(expe
   if(type&&type.visual.policy!==policy) fail(`Rôle visuel incorrect pour la question Pythagore ${questionNumber}.`);
   if(type&&type.visual.component!==component) fail(`Composant incorrect pour la question Pythagore ${questionNumber}.`);
   if(component&&!context.MATHSGO_VISUALS.get(component)) fail(`Composant visuel absent pour la question Pythagore ${questionNumber}.`);
+}
+
+const pythagorasTactile=registry?.getModule('dnb_24b');
+if(!pythagorasTactile) fail('Le classement pédagogique de dnb_24b est absent.');
+if(pythagorasTactile&&pythagorasTactile.generatorContract.representation!=='pythagoras-builder') fail('Le module tactile doit déclarer son composant de manipulation.');
+const tactileBankNumbers=[...(context.__pythagorasTactileQuestionNumbers||[])].sort((a,b)=>a-b);
+const tactileClassifiedNumbers=(pythagorasTactile?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(tactileClassifiedNumbers)!==JSON.stringify(tactileBankNumbers)) fail('Le catalogue pédagogique doit couvrir les cinq gabarits Pythagore tactiles.');
+for(const questionNumber of tactileBankNumbers){
+  const type=registry?.getQuestionType('dnb_24b',questionNumber);
+  if(!type||type.response!=='pythagoras-builder'||type.visual.component!=='geometry.pythagoras-builder'||type.visual.policy!=='essential') fail(`Classement incorrect pour la question Pythagore tactile ${questionNumber}.`);
 }
 
 const angles=registry?.getModule('dnb_18');

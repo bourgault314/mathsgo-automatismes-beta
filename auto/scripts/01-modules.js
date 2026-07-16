@@ -31,6 +31,7 @@ function moduleFromLoadedGlobal(module){
     case 'MODULE_DNB_22': return typeof MODULE_DNB_22==='undefined'?null:MODULE_DNB_22;
     case 'MODULE_DNB_23': return typeof MODULE_DNB_23==='undefined'?null:MODULE_DNB_23;
     case 'MODULE_DNB_24': return typeof MODULE_DNB_24==='undefined'?null:MODULE_DNB_24;
+    case 'MODULE_DNB_24_TACTILE': return typeof MODULE_DNB_24_TACTILE==='undefined'?null:MODULE_DNB_24_TACTILE;
     case 'MODULE_DNB_25': return typeof MODULE_DNB_25==='undefined'?null:MODULE_DNB_25;
     case 'MODULE_DNB_26': return typeof MODULE_DNB_26==='undefined'?null:MODULE_DNB_26;
     case 'MODULE_DNB_26B': return typeof MODULE_DNB_26B==='undefined'?null:MODULE_DNB_26B;
