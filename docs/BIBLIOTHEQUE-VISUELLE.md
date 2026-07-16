@@ -304,5 +304,19 @@ observable, et non une image de substitution. L’extraction suivante peut ainsi
 partir du contrat mathématique déjà écrit et produire un composant paramétrable
 adapté au téléphone, à l’ordinateur, à la projection et à l’impression.
 
+## Référence Trigonométrie
+
+`geometry.trigonometry-triangle` construit les figures des deux modules de
+trigonométrie et du cours. Les données ne décrivent pas des coordonnées figées,
+mais les rôles mathématiques : sommet de l’angle étudié, sommet de l’angle
+droit, troisième sommet, côté adjacent, côté opposé et hypoténuse.
+
+Le composant calcule ensuite la mise en page à partir d’une proportion et de
+huit transformations possibles. Les étiquettes restent à l’extérieur, lisibles
+et dans le bon sens quelle que soit l’orientation. Il peut afficher des noms de
+côtés, des longueurs ou une inconnue, produire un triangle sans angle droit
+codé, et comparer deux triangles semblables. Les onze cas du catalogue sont
+générés par ce même code et couverts par des empreintes de non-régression.
+
 L’audit complet du lot reçu est conservé dans
 `docs/AUDIT-RESSOURCES-2026-07-16.md`.

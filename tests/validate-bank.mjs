@@ -33,6 +33,7 @@ const sources = [
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
+  'auto/scripts/shared/visuals/geometry/trigonometry-triangle.js',
   'auto/scripts/02-question-engine.js'
 ];
 
@@ -50,6 +51,8 @@ globalThis.__renderPythagorasModule = renderPythagorasModule;
 globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
+globalThis.__trigonometryReasoningModule = MODULE_DNB_26;
+globalThis.__trigonometryCalculationModule = MODULE_DNB_26B;
 globalThis.__makeInstance = makeInstance;
 globalThis.__renderQuestion = renderQuestion;`;
 
@@ -154,6 +157,15 @@ for(const question of context.__pythagorasTactileModule.questions){
   if(!questionHtml.includes('data-pythagoras-token')) fail(`Les étiquettes manipulables manquent pour la question ${question.n}.`);
   if(!correctionHtml.includes('pythagoras-builder-feedback is-success')) fail(`La solution Pythagore tactile manque pour la question ${question.n}.`);
   if(instance.answers.length!==instance.pythagorasTactile.expected.length) fail(`La réponse tactile ${question.n} ne correspond pas au nombre de cases.`);
+}
+
+for(const module of [context.__trigonometryReasoningModule,context.__trigonometryCalculationModule]){
+  for(const question of module.questions){
+    const instance=context.__makeInstance(module,question);
+    const expectsFigure=module.id==='dnb_26b'||![1,11].includes(Number(question.n));
+    if(expectsFigure&&!instance.rawStatement.includes('trig-question-svg')) fail(`Le triangle partagé manque pour ${module.id}, question ${question.n}.`);
+    if(!instance.answers?.length) fail(`La réponse générée manque pour ${module.id}, question ${question.n}.`);
+  }
 }
 
 const pythagorasInstance={

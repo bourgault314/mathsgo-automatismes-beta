@@ -35,11 +35,11 @@ MATHSGO_PEDAGOGY.registerModule('dnb_26b',{
     ]
   },
   questionTypes:[
-    {id:'calculer-rapport-decimal',label:'Calculer la valeur décimale d’un rapport',questions:[1],response:'numeric',visual:{policy:'essential',component:null},helpSections:['identify-data','choose-ratio','round-check']},
-    {id:'cote-avec-cosinus',label:'Calculer un côté avec le cosinus',questions:[2,3],response:'numeric',visual:{policy:'essential',component:null},helpSections:['identify-data','choose-ratio','isolate','round-check']},
-    {id:'cote-avec-sinus',label:'Calculer un côté avec le sinus',questions:[4,9],response:'numeric',visual:{policy:'essential',component:null},helpSections:['identify-data','choose-ratio','isolate','round-check']},
-    {id:'cote-avec-tangente',label:'Calculer un côté avec la tangente',questions:[5,10],response:'numeric',visual:{policy:'essential',component:null},helpSections:['identify-data','choose-ratio','isolate','round-check']},
-    {id:'calculer-angle',label:'Calculer un angle avec une fonction réciproque',questions:[6,7,8],response:'numeric',visual:{policy:'essential',component:null},helpSections:['identify-data','choose-ratio','inverse-function','round-check']},
-    {id:'application-aire-perimetre',label:'Utiliser la trigonométrie dans une aire ou un périmètre',questions:[11,12],response:'numeric',visual:{policy:'essential',component:null},helpSections:['identify-data','choose-ratio','isolate','round-check']}
+    {id:'calculer-rapport-decimal',label:'Calculer la valeur décimale d’un rapport',questions:[1],response:'numeric',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['identify-data','choose-ratio','round-check']},
+    {id:'cote-avec-cosinus',label:'Calculer un côté avec le cosinus',questions:[2,3],response:'numeric',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['identify-data','choose-ratio','isolate','round-check']},
+    {id:'cote-avec-sinus',label:'Calculer un côté avec le sinus',questions:[4,9],response:'numeric',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['identify-data','choose-ratio','isolate','round-check']},
+    {id:'cote-avec-tangente',label:'Calculer un côté avec la tangente',questions:[5,10],response:'numeric',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['identify-data','choose-ratio','isolate','round-check']},
+    {id:'calculer-angle',label:'Calculer un angle avec une fonction réciproque',questions:[6,7,8],response:'numeric',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['identify-data','choose-ratio','inverse-function','round-check']},
+    {id:'application-aire-perimetre',label:'Utiliser la trigonométrie dans une aire ou un périmètre',questions:[11,12],response:'numeric',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['identify-data','choose-ratio','isolate','round-check']}
   ]
 });

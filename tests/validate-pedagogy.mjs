@@ -16,6 +16,7 @@ const sources=[
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
+  'auto/scripts/shared/visuals/geometry/trigonometry-triangle.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/arithmetic/equal-sharing-board.js',
@@ -260,24 +261,24 @@ assertClassifiedModule('dnb_23',context.__volumeQuestionNumbers,'volume',expecte
 
 assertClassifiedModule('dnb_26',context.__trigonometryReasoningQuestionNumbers,'trigonometry_reasoning',expectedQuestions(
   [[1],'condition-utilisation','qcm-one','none',null],
-  [[2],'nommer-cote','qcm-one','essential',null],
-  [[3,4],'definir-rapport','qcm-one','essential',null],
-  [[5],'rapport-longueurs','qcm-one','essential',null],
-  [[6],'choisir-formule','qcm-one','essential',null],
-  [[7],'analyser-formules','qcm-variable','essential',null],
-  [[8],'invariance-rapport','qcm-one','essential',null],
-  [[9,10],'choisir-methode','qcm-one','essential',null],
+  [[2],'nommer-cote','qcm-one','essential','geometry.trigonometry-triangle'],
+  [[3,4],'definir-rapport','qcm-one','essential','geometry.trigonometry-triangle'],
+  [[5],'rapport-longueurs','qcm-one','essential','geometry.trigonometry-triangle'],
+  [[6],'choisir-formule','qcm-one','essential','geometry.trigonometry-triangle'],
+  [[7],'analyser-formules','qcm-variable','essential','geometry.trigonometry-triangle'],
+  [[8],'invariance-rapport','qcm-one','essential','geometry.trigonometry-triangle'],
+  [[9,10],'choisir-methode','qcm-one','essential','geometry.trigonometry-triangle'],
   [[11],'controler-coherence','qcm-one','none',null],
-  [[12],'premiere-etape','qcm-one','essential',null]
+  [[12],'premiere-etape','qcm-one','essential','geometry.trigonometry-triangle']
 ));
 
 assertClassifiedModule('dnb_26b',context.__trigonometryCalculationQuestionNumbers,'trigonometry_calculation',expectedQuestions(
-  [[1],'calculer-rapport-decimal','numeric','essential',null],
-  [[2,3],'cote-avec-cosinus','numeric','essential',null],
-  [[4,9],'cote-avec-sinus','numeric','essential',null],
-  [[5,10],'cote-avec-tangente','numeric','essential',null],
-  [[6,7,8],'calculer-angle','numeric','essential',null],
-  [[11,12],'application-aire-perimetre','numeric','essential',null]
+  [[1],'calculer-rapport-decimal','numeric','essential','geometry.trigonometry-triangle'],
+  [[2,3],'cote-avec-cosinus','numeric','essential','geometry.trigonometry-triangle'],
+  [[4,9],'cote-avec-sinus','numeric','essential','geometry.trigonometry-triangle'],
+  [[5,10],'cote-avec-tangente','numeric','essential','geometry.trigonometry-triangle'],
+  [[6,7,8],'calculer-angle','numeric','essential','geometry.trigonometry-triangle'],
+  [[11,12],'application-aire-perimetre','numeric','essential','geometry.trigonometry-triangle']
 ));
 
 assertClassifiedModule('dnb_27',context.__transformationQuestionNumbers,'transformations',expectedQuestions(

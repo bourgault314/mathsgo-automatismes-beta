@@ -227,6 +227,24 @@ réutilisables par Automatismes.
    Avec Nombres et calculs, le registre couvre 32 modules sur 42 sans changer
    les 473 gabarits ni leurs tirages reproductibles.
 
+## Seizième lot préparé
+
+1. Les constructeurs de triangles trigonométriques quittent le gros moteur et
+   deviennent `geometry.trigonometry-triangle`.
+2. Le composant reçoit les trois sommets, l’angle étudié, la proportion du
+   triangle, huit orientations possibles et les libellés des côtés. Il sait
+   aussi construire un triangle non rectangle et une paire de triangles
+   semblables pour les questions de choix de méthode et d’invariance.
+3. Onze références sont visibles dans le catalogue et figées par empreinte :
+   huit orientations, un cas avec longueurs, un triangle général et deux
+   triangles semblables. Les dix premiers restent adaptés au téléphone.
+4. Les modules `dnb_26` et `dnb_26b`, ainsi que le cours de trigonométrie,
+   consomment la même construction. Les rôles adjacent, opposé et hypoténuse
+   ne dépendent donc plus de la position du triangle sur l’écran.
+5. Les 42 modules et 473 gabarits restent inchangés ; 118 lignes de dessin ont
+   été retirées de `02-question-engine.js` et conservées sous forme de composant
+   paramétrable, jamais sous forme de capture.
+
 ## Ordre de reprise
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

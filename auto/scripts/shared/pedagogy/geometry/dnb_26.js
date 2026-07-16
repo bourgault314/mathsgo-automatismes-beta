@@ -37,14 +37,14 @@ MATHSGO_PEDAGOGY.registerModule('dnb_26',{
   },
   questionTypes:[
     {id:'condition-utilisation',label:'Reconnaître la condition d’utilisation',questions:[1],response:'qcm-one',visual:{policy:'none',component:null},helpSections:['right-triangle']},
-    {id:'nommer-cote',label:'Identifier hypoténuse, adjacent ou opposé',questions:[2],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['right-triangle','side-role']},
-    {id:'definir-rapport',label:'Choisir la définition d’un rapport',questions:[3,4],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['side-role','choose-ratio']},
-    {id:'rapport-longueurs',label:'Déduire une valeur exacte des longueurs',questions:[5],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['side-role','choose-ratio','coherence']},
-    {id:'choisir-formule',label:'Choisir l’égalité utile',questions:[6],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['side-role','choose-ratio']},
-    {id:'analyser-formules',label:'Analyser une ou plusieurs égalités trigonométriques',questions:[7],response:'qcm-variable',visual:{policy:'essential',component:null},helpSections:['side-role','choose-ratio','coherence']},
-    {id:'invariance-rapport',label:'Reconnaître l’invariance dans des triangles semblables',questions:[8],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['choose-ratio','coherence']},
-    {id:'choisir-methode',label:'Choisir entre trigonométrie et Pythagore',questions:[9,10],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['right-triangle','choose-method','coherence']},
+    {id:'nommer-cote',label:'Identifier hypoténuse, adjacent ou opposé',questions:[2],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['right-triangle','side-role']},
+    {id:'definir-rapport',label:'Choisir la définition d’un rapport',questions:[3,4],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['side-role','choose-ratio']},
+    {id:'rapport-longueurs',label:'Déduire une valeur exacte des longueurs',questions:[5],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['side-role','choose-ratio','coherence']},
+    {id:'choisir-formule',label:'Choisir l’égalité utile',questions:[6],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['side-role','choose-ratio']},
+    {id:'analyser-formules',label:'Analyser une ou plusieurs égalités trigonométriques',questions:[7],response:'qcm-variable',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['side-role','choose-ratio','coherence']},
+    {id:'invariance-rapport',label:'Reconnaître l’invariance dans des triangles semblables',questions:[8],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['choose-ratio','coherence']},
+    {id:'choisir-methode',label:'Choisir entre trigonométrie et Pythagore',questions:[9,10],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['right-triangle','choose-method','coherence']},
     {id:'controler-coherence',label:'Détecter un résultat impossible',questions:[11],response:'qcm-one',visual:{policy:'none',component:null},helpSections:['coherence']},
-    {id:'premiere-etape',label:'Choisir la première étape d’une application',questions:[12],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['side-role','choose-ratio','choose-method']}
+    {id:'premiere-etape',label:'Choisir la première étape d’une application',questions:[12],response:'qcm-one',visual:{policy:'essential',component:'geometry.trigonometry-triangle'},helpSections:['side-role','choose-ratio','choose-method']}
   ]
 });

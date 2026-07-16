@@ -27,7 +27,8 @@ const visualSources = [
   'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
-  'auto/scripts/shared/visuals/geometry/pythagoras-builder.js'
+  'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
+  'auto/scripts/shared/visuals/geometry/trigonometry-triangle.js'
 ];
 const code = visualSources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
@@ -47,7 +48,31 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 23) fail(`23 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 24) fail(`24 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const trigonometryTriangle=registry?.get('geometry.trigonometry-triangle');
+if(!trigonometryTriangle) fail('Le composant geometry.trigonometry-triangle est absent.');
+if(trigonometryTriangle&&trigonometryTriangle.version!=='1.0.0') fail('Version 1.0.0 attendue pour le triangle de trigonométrie.');
+if(trigonometryTriangle&&trigonometryTriangle.presets.length!==11) fail('Onze constructions de référence sont attendues pour la trigonométrie.');
+if(typeof context.trigTriangleSvg!=='function'||typeof context.trigGeneralTriangleSvg!=='function'||typeof context.trigSimilaritySvg!=='function') fail('Les trois points d’entrée historiques de trigonométrie doivent appartenir au composant partagé.');
+const trigonometryHashes=new Map([
+  ['orientation-0','b66606282f40c45a0112b7e6452ff38821d589518644c196c2e4102f3d75f5e0'],
+  ['orientation-1','8a90b9444387ca9fc2b8a7943eef9e2ab4007e984682ab723414bdee5a3bf926'],
+  ['orientation-2','763fe13ae9941ef1ff42945dd26157a6394734a8e006af23162c97e55433cc0f'],
+  ['orientation-3','effb2dd399f79635bb69fb47cc58e94edd806407bdf10ebac7d5af0edba8141b'],
+  ['orientation-4','39928fc610f4b5e32aeb1c2937ae854f9e5111dbd37feadc8882383f2062317d'],
+  ['orientation-5','a6b4cb55d55f5066e38ee1396f599793ea0ce302854773b6aea7e98a689f0da9'],
+  ['orientation-6','463e8897da57d2d7daf7816fa49bd09c3dcca8e1295b1ee131a075e7417a47fc'],
+  ['orientation-7','c540ad5b040e9e6063fb6a2522620b33600658d9e1dfeb4768188599fac639f6'],
+  ['longueurs','6936dff1ba4237931b4477071594d48ddfe9854efa01c0600a2c4a549baff4c8'],
+  ['triangle-general','487c41d33aa0260ee672b21c113c83bc1ad920bfd093b4210725a41c3e791970'],
+  ['triangles-semblables','d878b44fe70630a156dcae469ddfe85e15d4a7cb79bd4bf585f18e4d12a7ce2d']
+]);
+for(const preset of trigonometryTriangle?.presets||[]){
+  const actual=hash(trigonometryTriangle.render(preset.data));
+  if(actual!==trigonometryHashes.get(preset.id)) fail(`Le triangle de trigonométrie ${preset.id} a changé (${actual}).`);
+  if(preset.id!=='triangles-semblables'&&!preset.supports.includes('phone')) fail(`Le triangle ${preset.id} doit rester compatible téléphone.`);
+}
 
 const squareArea=registry?.get('numbers.square-area');
 if(!squareArea) fail('Le composant numbers.square-area est absent.');
@@ -217,6 +242,8 @@ if(questionEngine.includes('function fractionOpsBandSvg')||questionEngine.includ
   fail('Les constructions visuelles de fractions ne doivent plus être définies dans le gros moteur.');
 }
 if(!questionEngine.includes("MATHSGO_VISUALS.get('arithmetic.fraction-operations')")) fail('Les modules de fractions doivent appeler le composant partagé.');
+if(questionEngine.includes('function trigTriangleSvg')||questionEngine.includes('function trigGeneralTriangleSvg')||questionEngine.includes('function trigSimilaritySvg')||questionEngine.includes('function trigFitLayout')) fail('Les constructeurs de trigonométrie ne doivent plus être définis dans le gros moteur.');
+if(!questionEngine.includes('trigTriangleSvg(triangle)')||!questionEngine.includes('trigGeneralTriangleSvg(')||!questionEngine.includes('trigSimilaritySvg(')) fail('Les questions de trigonométrie doivent appeler le composant partagé.');
 if (questionEngine.includes('function conversionTableHtml') || questionEngine.includes('function conversionTheme')) {
   fail('Le générateur de tableau de conversion ne doit plus être défini dans le gros moteur.');
 }
@@ -608,6 +635,7 @@ if (slideshow.includes('.answer-dock.qcm-mode .dock-actions{grid-template-column
 if(!slideshow.includes('thales-structured-mode')||!slideshow.includes('courseThalesTemplateVisual')||!slideshow.includes('thales-course-table')) fail('Les diapositives structurées et le gabarit progressif de cours Thalès doivent être présents.');
 if (/function setupPlaceValueTools\s*\(/.test(slideshow)) fail('Le contrôleur du glisse-nombre ne doit plus être défini dans le diaporama.');
 if (!slideshow.includes('${setupPlaceValueTools.toString()}')) fail('La fenêtre d’entraînement doit recevoir le contrôleur partagé du glisse-nombre.');
+if(!slideshow.includes("MATHSGO_VISUALS.get('geometry.trigonometry-triangle')")||slideshow.includes('function courseTrigVisual(){return \'<svg')) fail('Le cours de trigonométrie doit consommer le triangle partagé.');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
@@ -631,11 +659,12 @@ const pythagorasMillPosition = indexHtml.indexOf('scripts/shared/visuals/geometr
 const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-bar.js');
 const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
 const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
+const trigonometryTrianglePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/trigonometry-triangle.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || trigonometryTrianglePosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < trigonometryTrianglePosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 5 carrés, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 40 schémas en barres, 14 jetons de relations, 8 partages équitables, 30 étapes d’enquêtes, 12 murs de fractions, 14 compositions de tuiles algébriques, 12 modèles d’aire, 5 configurations de Thalès, 12 états Angles, 8 moulins, 12 PythaBarres et 24 étapes Pythagore figés.');
+  console.log('OK — registre cohérent, dont 11 triangles de trigonométrie, 5 carrés, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 40 schémas en barres, 14 jetons de relations, 8 partages équitables, 30 étapes d’enquêtes, 12 murs de fractions, 14 compositions de tuiles algébriques, 12 modèles d’aire, 5 configurations de Thalès, 12 états Angles, 8 moulins, 12 PythaBarres et 24 étapes Pythagore figés.');
 }
