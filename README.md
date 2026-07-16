@@ -33,7 +33,7 @@ d’audience du site public.
 |---|---|
 | `auto/index.html` | Interface de sélection et de lancement |
 | `auto/scripts/modules/` | Un fichier par module pédagogique |
-| `auto/scripts/data/` | Assemblage des modules par domaine |
+| `auto/scripts/shared/pedagogy/` | Contrats et configurations pédagogiques partagés |
 | `auto/scripts/01-modules.js` | Assemblage de la banque complète |
 | `auto/scripts/02-question-engine.js` | Génération et rendu des questions |
 | `auto/scripts/03-slideshow.js` | Diaporama et mode interactif |

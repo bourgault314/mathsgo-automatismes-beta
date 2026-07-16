@@ -89,7 +89,7 @@ Dernier `main` contrôlé et servi par GitHub Pages :
 - banque V1.17 figée ;
 - 42 modules ;
 - 473 gabarits ;
-- 24 composants visuels ;
+- 25 composants visuels ;
 - 32 modules classés pédagogiquement sur 42 ;
 - Nombres et calculs : 17/17 ;
 - Espace et géométrie : 15/15 ;
@@ -108,7 +108,7 @@ Résultat de référence :
 
 ```text
 OK — 42 modules, 473 gabarits, banque V1.17 figée, registre MG1 cohérent.
-OK — registre cohérent, 24 composants visuels dont 7 familles de solides.
+OK — registre cohérent, 25 composants visuels dont 7 familles de solides.
 OK — 32 modules classés : Nombres et calculs 17/17,
      Espace et géométrie 15/15.
 ```
@@ -145,7 +145,7 @@ de la figure, rubriques d’aide, composant, familles de nombres, paramètres
 aléatoires, erreurs classiques et étapes de correction. Le but est de séparer
 contenu mathématique, tirage, dessin, aide, correction et interface.
 
-## Les 24 composants déjà présents
+## Les 25 composants déjà présents
 
 ### Nombres
 
