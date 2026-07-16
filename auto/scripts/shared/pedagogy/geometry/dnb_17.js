@@ -9,7 +9,12 @@ MATHSGO_PEDAGOGY.registerModule('dnb_17',{
       {id:'nature-figure',label:'Reconnaître la nature sur une figure'},
       {id:'benchmark',label:'Connaître 90° et 180°'},
       {id:'relations',label:'Angles opposés ou adjacents'},
-      {id:'complementary-supplementary',label:'Angles complémentaires ou supplémentaires'}
+      {id:'complementary-supplementary',label:'Angles complémentaires ou supplémentaires'},
+      {id:'naming',label:'Nommer un angle avec trois lettres'},
+      {id:'comparison',label:'Comparer des ouvertures indépendamment des longueurs'},
+      {id:'bisector',label:'Reconnaître une bissectrice'},
+      {id:'parallel-relations',label:'Reconnaître des angles alternes-internes'},
+      {id:'set-square',label:'Connaître les angles de l’équerre'}
     ],
     reasoning:[
       {id:'angle-range',label:'Comparer à 90° et 180°',rule:'Aigu : entre 0° et 90° ; obtus : entre 90° et 180°.'},
@@ -28,6 +33,13 @@ MATHSGO_PEDAGOGY.registerModule('dnb_17',{
       'Les noms d’angles conservent le sommet en lettre centrale.',
       'Les figures ne sont pas dessinées pour suggérer une mesure exacte non codée.'
     ],
+    diagnosticErrors:[
+      {id:'compare-first-side-length',label:'Comparer AB et DE au lieu des ouvertures',source:'Eduscol, évaluation 6e 2025, question 22'},
+      {id:'compare-second-side-length',label:'Comparer BC et EF au lieu des ouvertures',source:'Eduscol, évaluation 6e 2025, question 22'},
+      {id:'requires-measure',label:'Penser qu’une comparaison est impossible sans mesure',source:'Eduscol, évaluation 6e 2025, question 22'},
+      {id:'vertex-first',label:'Placer le sommet en première position dans le nom'},
+      {id:'vertex-last',label:'Placer le sommet en dernière position dans le nom'}
+    ],
     cautions:[
       'Un angle obtus est strictement inférieur à 180°.',
       'Deux angles adjacents ne sont pas forcément complémentaires.',
@@ -35,10 +47,13 @@ MATHSGO_PEDAGOGY.registerModule('dnb_17',{
     ]
   },
   questionTypes:[
-    {id:'reconnaitre-nature-figure',label:'Reconnaître un angle aigu ou obtus sur une figure',questions:[1,2],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['angle-range']},
-    {id:'connaitre-angles-reperes',label:'Connaître les mesures d’un angle droit et plat',questions:[3,4],response:'numeric',visual:{policy:'none',component:null},helpSections:['angle-range']},
-    {id:'reconnaitre-relation',label:'Reconnaître des angles opposés ou adjacents',questions:[5,6],response:'qcm-one',visual:{policy:'essential',component:null},helpSections:['opposite-angles','adjacent-angles']},
-    {id:'calculer-complement-supplement',label:'Calculer un angle complémentaire ou supplémentaire',questions:[7,8,10],response:'numeric',visual:{policy:'none',component:null},helpSections:['complementary','supplementary']},
+    {id:'reconnaitre-nature-figure',label:'Reconnaître un angle aigu ou obtus sur une figure',questions:[1,2],response:'qcm-one',visual:{policy:'essential',component:'geometry.angle-vocabulary'},helpSections:['angle-range']},
+    {id:'connaitre-angle-droit',label:'Connaître la mesure d’un angle droit',questions:[3],response:'numeric',visual:{policy:'none',component:null},helpSections:['right-angle']},
+    {id:'connaitre-angle-plat',label:'Connaître la mesure d’un angle plat',questions:[4],response:'numeric',visual:{policy:'none',component:null},helpSections:['flat-angle']},
+    {id:'reconnaitre-opposes',label:'Reconnaître des angles opposés par le sommet',questions:[5],response:'qcm-one',visual:{policy:'essential',component:'geometry.angle-vocabulary'},helpSections:['opposite-angles']},
+    {id:'reconnaitre-adjacents',label:'Reconnaître des angles adjacents',questions:[6],response:'qcm-one',visual:{policy:'essential',component:'geometry.angle-vocabulary'},helpSections:['adjacent-angles']},
+    {id:'calculer-supplement',label:'Calculer un angle supplémentaire',questions:[7,10],response:'numeric',visual:{policy:'none',component:null},helpSections:['supplementary']},
+    {id:'calculer-complement',label:'Calculer un angle complémentaire',questions:[8],response:'numeric',visual:{policy:'none',component:null},helpSections:['complementary']},
     {id:'reconnaitre-nature-mesure',label:'Reconnaître la nature à partir de la mesure',questions:[9],response:'qcm-one',visual:{policy:'none',component:null},helpSections:['angle-range']}
   ]
 });

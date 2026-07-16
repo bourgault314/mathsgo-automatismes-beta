@@ -484,6 +484,23 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .diapo.geometry-choice-mode .question svg{display:block;width:min(100%,470px)!important;max-width:470px!important;max-height:350px!important;margin:3px auto!important}
 .diapo.geometry-choice-mode .options{gap:10px 14px;margin-top:6px;max-width:1060px}
 .diapo.geometry-choice-mode .opt{min-height:64px;display:flex;align-items:center;padding:14px 17px;font-size:clamp(1.18rem,1.75vw,1.72rem);border-radius:15px}
+.diapo.angles-mode .stage{align-items:center;padding:7px 18px 12px}
+.diapo.angles-mode .slide{max-width:1180px}
+.diapo.angles-mode .question{font-size:clamp(2.15rem,3.55vw,3.85rem);line-height:1.12;margin:0 auto 12px;text-align:center}
+.diapo.angles-mode .question svg{width:min(100%,540px)!important;max-width:540px!important;max-height:345px!important;margin:5px auto!important}
+.diapo.angles-mode .options{max-width:1080px;margin-top:11px}
+.diapo.angles-mode .opt{min-height:68px;padding:15px 18px;font-size:clamp(1.25rem,1.85vw,1.8rem)}
+.diapo.angles-mode .footer{margin-top:10px;font-size:clamp(2.45rem,4.35vw,4.65rem)}
+.angle-prompt{font-size:clamp(2rem,3.2vw,3.45rem)!important;margin-bottom:7px!important}
+.angle-question-visual{display:flex;align-items:center;justify-content:center;width:min(100%,800px);margin:0 auto 4px}
+.angle-question-visual .angle-vocabulary-svg{display:block;width:100%;height:auto;max-height:300px}
+.angle-options.options-compact{grid-template-columns:repeat(2,minmax(0,1fr))}
+.angle-options-long .opt{justify-content:flex-start;text-align:left;font-size:clamp(1.02rem,1.45vw,1.36rem)}
+.angle-figure-options{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px!important;max-width:980px!important}
+.angle-figure-option{display:flex!important;flex-direction:column;align-items:stretch!important;min-height:0!important;padding:8px!important}
+.angle-figure-option>strong{align-self:flex-start}
+.angle-figure-option .angle-vocabulary-svg{display:block;width:100%;height:auto;max-height:175px}
+.angle-answer{font-size:clamp(2.5rem,4.6vw,4.8rem)!important}
 .diapo.dense-mode .stage{padding:8px 16px 12px}
 .diapo.dense-mode .stage>.slide{margin-top:0;margin-bottom:0}
 .diapo.dense-mode .question{margin-bottom:9px;font-size:clamp(1.35rem,2.25vw,2.45rem);line-height:1.1}
@@ -596,6 +613,9 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .course-card{position:relative;width:min(680px,100%);max-height:min(720px,calc(100dvh - 36px));overflow:auto;padding:26px;border:2px solid var(--border);border-radius:22px;background:white;box-shadow:0 24px 70px rgba(11,33,71,.28)}
 .course-card.thales-course-card{width:min(900px,100%)}
 .course-card.read-data-course-card{width:min(940px,100%)}
+.course-card.angles-course-card{width:min(820px,100%)}
+.course-angle-visual{display:flex;align-items:center;justify-content:center;width:100%;margin:0 auto}
+.course-angle-visual .angle-vocabulary-svg{display:block;width:100%;height:auto;max-height:min(52vh,430px)}
 .course-close{position:absolute;top:10px;right:12px;width:42px;height:42px;border:0;border-radius:50%;background:#eef4fc;color:#073a75;font-size:1.55rem;font-weight:900;cursor:pointer}
 .course-title{margin:0 48px 20px;color:#073a75;font-size:clamp(1.65rem,3.4vw,2.4rem);line-height:1.1;text-align:center}
 .course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -659,6 +679,7 @@ svg{display:block;max-width:100%;height:auto}
 @media(max-width:800px){.diapo.proportion-mode .stage{padding:7px 7px 12px}.proportion-prompt{font-size:clamp(1.3rem,5.7vw,1.68rem);line-height:1.17;margin-bottom:3px}.proportion-line-desktop{display:none}.proportion-line-mobile{display:block;width:min(100%,400px)}.proportion-help{margin:1px auto 2px}.proportion-answer{font-size:clamp(1.75rem,7.8vw,2.3rem);margin-top:2px}.proportion-options{gap:7px;margin-top:6px}.proportion-options .opt{font-size:clamp(.96rem,4.1vw,1.14rem);padding:9px 10px}.proportion-table-wrap{gap:7px;margin:11px auto;justify-content:flex-start}.proportion-table{font-size:clamp(.92rem,3.9vw,1.1rem)}.proportion-table td{padding:12px 9px;border-width:1.5px}.proportion-table-methods{gap:4px;font-size:.78rem}.proportion-table-method{gap:3px;padding:5px 6px;border-radius:8px}.proportion-bare-table{font-size:clamp(1.42rem,6.2vw,1.78rem)}.proportion-bare-table td{min-width:105px;padding:16px 22px}}
 @media(max-width:800px){.fraction-ops-method-card{padding:11px 10px;margin:3px auto;border-radius:14px}.fraction-ops-method-label{margin-bottom:7px;font-size:.92rem}.fraction-ops-method-line{flex-wrap:wrap;gap:6px 9px;font-size:clamp(1.15rem,5.1vw,1.5rem)}.fraction-ops-share{flex-direction:column;gap:2px}.fraction-ops-share-sign{font-size:1.35rem}.fraction-ops-counting .fraction-ops-card{max-width:330px}.fraction-ops-counting .fraction-ops-units{flex-direction:column;gap:2px}.fraction-ops-counting .fraction-ops-band{width:min(100%,285px);flex:none}.fraction-ops-count-result{padding:7px 10px;font-size:.95rem}.diapo.module01-mode .module01-options.options-4{grid-template-columns:repeat(2,minmax(0,1fr))}.diapo.dense-mode .stage{padding:5px 6px 9px}.diapo.dense-mode .question{margin-bottom:5px;font-size:clamp(1.02rem,4.5vw,1.3rem);line-height:1.08}.diapo.dense-mode .question svg{max-height:215px;margin:2px auto}.diapo.dense-mode .footer{margin-top:5px;font-size:clamp(1.25rem,5.8vw,1.75rem)}.diapo.dense-mode .options{gap:5px;margin-top:5px}.diapo.dense-mode .opt{padding:7px 8px;font-size:clamp(.78rem,3.45vw,.98rem);border-width:1.5px;border-radius:10px}.diapo.algorithm-mode .question{font-size:clamp(.92rem,4vw,1.08rem)}.diapo.algorithm-mode .question svg{max-height:135px!important}.diapo.algorithm-mode .question div+br+div svg{max-height:82px!important}}
 @media(max-width:800px){.diapo.geometry-choice-mode .stage{padding:5px 7px 9px}.diapo.geometry-choice-mode .question{margin-bottom:2px;font-size:clamp(1.24rem,5.45vw,1.6rem);line-height:1.08}.diapo.geometry-choice-mode .question svg{width:min(100%,375px)!important;max-width:375px!important;max-height:min(39vh,305px)!important;margin:2px auto!important}.diapo.geometry-choice-mode .options{gap:7px;margin-top:4px}.diapo.geometry-choice-mode .opt{min-height:56px;padding:11px 12px;font-size:clamp(1rem,4.3vw,1.2rem);border-width:1.75px;border-radius:13px}}
+@media(max-width:800px){.diapo.angles-mode .stage{padding:4px 7px 8px}.diapo.angles-mode .question{font-size:clamp(1.52rem,6.8vw,2.02rem);line-height:1.12;margin-bottom:6px}.diapo.angles-mode .question svg{max-height:min(34vh,270px)!important}.diapo.angles-mode .options{gap:7px;margin-top:5px}.diapo.angles-mode .opt{min-height:55px;padding:10px 11px;font-size:clamp(1rem,4.35vw,1.2rem)}.diapo.angles-mode .footer{font-size:clamp(2.05rem,9.5vw,3rem);margin-top:5px}.angle-question-visual{margin-bottom:2px}.angle-question-visual .angle-vocabulary-svg{max-height:min(35vh,280px)}.angle-options-long.options-compact{grid-template-columns:1fr}.angle-options-long .opt{font-size:clamp(.92rem,3.85vw,1.07rem)}.angle-figure-options{gap:5px!important}.angle-figure-option{padding:5px!important}.angle-figure-option .angle-vocabulary-svg{max-height:125px}.course-card.angles-course-card{padding:18px 11px 15px}.course-angle-visual .angle-vocabulary-svg{max-height:min(60vh,440px)}}
 @media(max-width:800px){.diapo.geometry-long-prompt-mode .question{font-size:clamp(1.08rem,4.7vw,1.36rem)}.diapo.geometry-long-prompt-mode .question svg{max-height:220px!important}.diapo.geometry-long-prompt-mode .opt{min-height:52px;padding:9px 11px}}
 @media(max-width:800px){.diapo.thales-mode .stage{padding:4px 6px 8px}.diapo.thales-mode .question{margin-bottom:3px;font-size:clamp(1.02rem,4.45vw,1.28rem);line-height:1.09}.diapo.thales-mode .thales-question-figure{width:min(100%,390px);margin:1px auto 3px}.diapo.thales-mode .thales-question-figure svg{max-height:min(31vh,205px)}.diapo.thales-mode .options{gap:5px;margin-top:3px}.diapo.thales-mode .opt{min-height:45px;padding:7px 8px;font-size:clamp(.79rem,3.45vw,.98rem);border-width:1.5px;border-radius:10px}.diapo.thales-mode .footer{margin-top:3px;font-size:clamp(1.3rem,5.8vw,1.75rem)}.diapo.thales-structured-mode .stage>.slide{margin-top:8px;margin-bottom:auto}.diapo.thales-structured-mode .question{font-size:clamp(1rem,4.3vw,1.23rem)}.thales-task-card{gap:5px;padding:9px 8px 8px;border-radius:13px}.thales-task-kicker{padding:4px 9px;font-size:.64em}.thales-task-condition{font-size:.72em}.thales-task-target{font-size:.77em}.thales-task-question{font-size:.9em}.thales-facts{gap:4px}.thales-fact{min-width:0;flex:1 1 92px;gap:.18em;padding:5px 6px;border-radius:8px;font-size:.68em}.thales-result-comparison{gap:5px;font-size:.98em}.thales-result-comparison .thales-fact{flex:0 1 135px;font-size:.76em}.diapo.thales-structured-mode .thales-question-figure{width:min(100%,295px);margin:0 auto}.diapo.thales-structured-mode .thales-question-figure svg{max-height:min(20vh,142px)}.diapo.thales-structured-mode .options{margin-top:5px;gap:5px}.diapo.thales-structured-mode .opt{padding:7px 8px;font-size:clamp(.82rem,3.55vw,1rem)}.diapo.thales-coherence-mode .options{grid-template-columns:1fr}.diapo.thales-coherence-mode .opt{min-height:0;padding:9px 10px;font-size:clamp(.86rem,3.7vw,1.03rem)}.thales-course-template{grid-template-columns:1fr;gap:7px}.thales-course-figure svg{max-height:180px}.thales-course-method{gap:6px}.thales-course-cell{min-height:35px;padding:4px 5px;font-size:.88rem}.thales-course-head{font-size:.7rem}.thales-course-ratios{padding:8px 5px;font-size:.94rem}.thales-course-reminder{font-size:.76rem}}
 @media(prefers-reduced-motion:reduce){.thales-course-figure,.thales-course-row-small,.thales-course-row-large,.thales-course-ratios,.thales-course-reminder{opacity:1;animation:none}}
@@ -1194,6 +1215,31 @@ function contextualVolumeCourse(context){
    ['Exemple','<span class="course-equation">'+item.example+'</span>'+(kind==='cylinder'?'<span class="course-example">Si le diamètre est donné, calcule d’abord r = d ÷ 2.</span>':'')]
  ]};
 }
+function courseAngleVisual(data){
+ const component=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get('geometry.angle-vocabulary');
+ return component?'<div class="course-angle-visual">'+component.render(data)+'</div>':'';
+}
+function angleVocabularyCourse(context){
+ const sections=Array.isArray(context&&context.helpSections)&&context.helpSections.length?context.helpSections:['angle-range'];
+ const section=sections[0],value=Number(context&&context.value),known=Number(context&&context.known);
+ const courses={
+   'angle-range':{title:'Reconnaître la nature d’un angle',label:'Comparer à 90° et 180°',visual:{kind:'gallery'}},
+   'angle-range-extended':{title:'Les six natures d’angles',label:'De l’angle nul à l’angle plein',visual:{kind:'gallery',extended:true}},
+   'right-angle':{title:'L’angle droit',label:'Le petit carré code 90°',visual:{kind:'single',angleKind:'right',showMeasure:true}},
+   'flat-angle':{title:'L’angle plat',label:'Une ligne droite forme 180°',visual:{kind:'single',angleKind:'flat',showMeasure:true}},
+   'opposite-angles':{title:'Angles opposés par le sommet',label:'Ils ont la même mesure',visual:{kind:'opposite',value:Number.isFinite(value)?value:58,reveal:true}},
+   'adjacent-angles':{title:'Angles adjacents',label:'Même sommet et un côté commun',visual:{kind:'adjacent',showValues:false}},
+   complementary:{title:'Angles complémentaires',label:'On complète jusqu’à 90°',visual:{kind:'complementary',value:Number.isFinite(value)?value:34,reveal:true}},
+   supplementary:{title:'Angles supplémentaires',label:'On complète jusqu’à 180°',visual:{kind:'supplementary',value:Number.isFinite(value)?value:62,reveal:true}},
+   'angle-name':{title:'Nommer un angle',label:'Trois lettres, sommet au milieu',visual:{kind:'named',letters:context&&context.letters}},
+   'compare-opening':{title:'Comparer deux angles',label:'Observer l’ouverture',visual:{kind:'compare'}},
+   bisector:{title:'La bissectrice d’un angle',label:'Deux angles de même mesure',visual:{kind:'bisector'}},
+   'parallel-relations':{title:'Angles et droites parallèles',label:'Angles alternes-internes',visual:{kind:'parallel'}},
+   'set-square':{title:'Les angles de l’équerre',label:'Deux modèles à connaître',visual:{kind:'set-square',known:Number.isFinite(known)?known:30,reveal:true}}
+ };
+ const chosen=courses[section]||courses['angle-range'];
+ return {title:chosen.title,layout:'angles',rules:[[chosen.label,courseAngleVisual(chosen.visual),true,section]]};
+}
 function courseForSlide(slide){
  if(!slide||!slide.courseKind) return null;
  if(slide.courseKind==='fraction_quantity_percent') return fractionQuantityCourse(slide.courseContext||{});
@@ -1203,6 +1249,7 @@ function courseForSlide(slide){
  if(slide.courseKind==='trigonometry_calculator') return trigonometryCourse(slide.courseContext||{},true);
  if(slide.courseKind==='area_formulas') return contextualAreaCourse(slide.courseContext||{});
  if(slide.courseKind==='volume_formulas') return contextualVolumeCourse(slide.courseContext||{});
+ if(slide.courseKind==='angle_vocabulary') return angleVocabularyCourse(slide.courseContext||{});
  if(slide.courseKind==='thales'){
    const course=courseCatalog.thales,sections=Array.isArray(slide.courseContext&&slide.courseContext.helpSections)?slide.courseContext.helpSections:[];
    const rules=course.rules.filter(rule=>sections.includes(rule[3]));
@@ -1244,7 +1291,7 @@ function setModuleClasses(diapo,moduleId){
    'module01-mode':['dnb_01'],'decimal-mode':['dnb_02','dnb_39'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
    'multiple-forms-mode':['dnb_05'],'scientific-mode':['dnb_06'],'squares-mode':['dnb_07'],
    'relation-mode':['dnb_09'],'reduction-mode':['dnb_10'],'substitution-mode':['dnb_11'],
-   'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angle-sum-mode':['dnb_18'],
+   'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angles-mode':['dnb_17'],'angle-sum-mode':['dnb_18'],
    'conversion-mode':['dnb_19'],'solids-mode':['dnb_20'],'perimeter-mode':['dnb_21'],'area-mode':['dnb_22'],'volume-mode':['dnb_23'],'average-mode':['dnb_30'],
    'median-mode':['dnb_31'],'read-data-mode':['dnb_32'],'proportion-mode':['dnb_34'],'evolution-mode':['dnb_35'],'data-mode':['dnb_28','dnb_29'],
    'algorithm-mode':['dnb_37'],'coordinate-mode':['dnb_15'],'transformations-mode':['dnb_27'],'pythagoras-mode':['dnb_24'],'pythagoras-builder-mode':['dnb_24b'],'trigonometry-mode':['dnb_26','dnb_26b'],'thales-mode':['dnb_25'],'relative-tokens-mode':['dnb_38']
@@ -2089,7 +2136,7 @@ function startNextSeries(){
  slides=seriesBank[seriesIndex];
  restartInteractive();
 }
-function openCourse(){const modal=document.getElementById('courseModal'),course=courseForSlide(slides[idx]);if(modal&&course){markQuestionHelp('course');const card=modal.querySelector('.course-card');if(card){card.classList.toggle('thales-course-card',course.layout==='thales');card.classList.toggle('place-value-course-card',course.layout==='place-value');card.classList.toggle('read-data-course-card',slides[idx].courseKind==='read_data');}document.getElementById('courseTitle').textContent=course.title;document.getElementById('courseGrid').innerHTML=course.rules.map(rule=>'<div class="course-rule'+(rule[2]?' course-rule-wide':'')+'"><strong>'+rule[0]+'</strong>'+rule[1]+'</div>').join('');modal.hidden=false;setupPlaceValueTools(modal);const close=modal.querySelector('.course-close');if(close)close.focus();}}
+function openCourse(){const modal=document.getElementById('courseModal'),course=courseForSlide(slides[idx]);if(modal&&course){markQuestionHelp('course');const card=modal.querySelector('.course-card');if(card){card.classList.toggle('thales-course-card',course.layout==='thales');card.classList.toggle('place-value-course-card',course.layout==='place-value');card.classList.toggle('read-data-course-card',slides[idx].courseKind==='read_data');card.classList.toggle('angles-course-card',course.layout==='angles');}document.getElementById('courseTitle').textContent=course.title;document.getElementById('courseGrid').innerHTML=course.rules.map(rule=>'<div class="course-rule'+(rule[2]?' course-rule-wide':'')+'"><strong>'+rule[0]+'</strong>'+rule[1]+'</div>').join('');modal.hidden=false;setupPlaceValueTools(modal);const close=modal.querySelector('.course-close');if(close)close.focus();}}
 function closeCourse(){const modal=document.getElementById('courseModal');if(modal)modal.hidden=true;}
 function openEquationDetail(){const modal=document.getElementById('equationDetailModal'),body=document.getElementById('equationDetailBody'),detail=slides[idx].equationDetailHtml;if(modal&&body&&detail){markQuestionHelp('equation-detail');body.innerHTML=detail;modal.hidden=false;const close=modal.querySelector('.equation-detail-close');if(close)close.focus();}}
 function closeEquationDetail(){const modal=document.getElementById('equationDetailModal');if(modal)modal.hidden=true;}
@@ -2327,6 +2374,11 @@ function courseContextForInstance(inst){
   if(inst.module.id==='dnb_23') return {questionNumber:Number(inst.q.n)};
   if(['dnb_26','dnb_26b'].includes(inst.module.id)&&inst.trig) return {kind:inst.trig.kind};
   const pedagogyType=globalThis.MATHSGO_PEDAGOGY&&globalThis.MATHSGO_PEDAGOGY.getQuestionType(inst.module.id,inst.q.n);
+  if(inst.module.id==='dnb_17'){
+    const helpSections=inst.angleData?.courseSections||pedagogyType?.helpSections||['angle-range'];
+    const sourceValue=inst.angleData?.value??inst.scope?.a;
+    return {questionTypeId:pedagogyType?.id||inst.angleData?.kind||'angle',helpSections:[...helpSections],value:Number(sourceValue),known:Number(inst.angleData?.known),letters:Array.isArray(inst.angleData?.letters)?[...inst.angleData.letters]:undefined};
+  }
   if(pedagogyType) return {questionTypeId:pedagogyType.id,helpSections:[...pedagogyType.helpSections]};
   return null;
 }

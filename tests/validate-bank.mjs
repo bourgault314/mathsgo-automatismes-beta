@@ -17,6 +17,7 @@ const sources = [
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/shared/visuals/geometry/angle-vocabulary.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-decimal-grid.js',
   'auto/scripts/shared/visuals/algebra/area-model.js',
   'auto/scripts/modules/00-runtime-registry.js',
@@ -38,6 +39,9 @@ const sources = [
   'auto/scripts/modules/geometry/dnb_15/generate.js',
   'auto/scripts/modules/geometry/dnb_15/selection.js',
   'auto/scripts/modules/geometry/dnb_15/render.js',
+  'auto/scripts/modules/geometry/dnb_17/generate.js',
+  'auto/scripts/modules/geometry/dnb_17/selection.js',
+  'auto/scripts/modules/geometry/dnb_17/render.js',
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
   'auto/scripts/01-modules.js',
@@ -78,6 +82,7 @@ globalThis.__divisibilityModule = MODULE_DNB_08;
 globalThis.__placeValueModule = MODULE_DNB_02B;
 globalThis.__numberLineModule = MODULE_DNB_14;
 globalThis.__coordinateModule = MODULE_DNB_15;
+globalThis.__angleVocabularyModule = MODULE_DNB_17;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -223,9 +228,14 @@ const coordinateManifest=context.__moduleManifest.find(module=>module.id==='dnb_
 if(!coordinateRuntime?.generator||!coordinateRuntime?.selection||!coordinateRuntime?.renderer) fail('Les trois extensions fonctionnelles de dnb_15 doivent être enregistrées.');
 if(!coordinateManifest||coordinateManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_15.');
 if(context.__moduleFiles.get('dnb_15')?.length!==4) fail('Le chargeur doit préparer dnb_15 et ses trois extensions fonctionnelles.');
+const angleVocabularyRuntime=context.MATHSGO_MODULE_RUNTIME.get('dnb_17');
+const angleVocabularyManifest=context.__moduleManifest.find(module=>module.id==='dnb_17');
+if(!angleVocabularyRuntime?.generator||!angleVocabularyRuntime?.selection||!angleVocabularyRuntime?.renderer) fail('Les trois extensions fonctionnelles de dnb_17 doivent être enregistrées.');
+if(!angleVocabularyManifest||angleVocabularyManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_17.');
+if(context.__moduleFiles.get('dnb_17')?.length!==4) fail('Le chargeur doit préparer dnb_17 et ses trois extensions fonctionnelles.');
 
 for(let seed=0;seed<1000;seed++){
-  for(const count of [5,10,15,20]){
+  for(const count of [5,10,15,18,20]){
     context.__setSeed(seed);
     context.__beginQuizBank([context.__placeValueModule]);
     const selected=context.__drawRuntimeModuleQuestions(context.__placeValueModule,context.__placeValueModule.questions,count);
@@ -344,6 +354,41 @@ context.__setSeed(14);
 const legacyNumberLine=context.__makeInstance(context.__numberLineModule,context.__numberLineModule.questions[0]);
 const legacyNumberLineHtml=context.__renderQuestion(legacyNumberLine,false,'with');
 if(!legacyNumberLineHtml.includes('A&nbsp;:')) fail('La lettre et les deux-points doivent rester insécables dans le libellé de dnb_14.');
+
+for(let seed=0;seed<1000;seed++){
+  for(const count of [5,10,15,20]){
+    context.__setSeed(seed);context.__beginQuizBank([context.__angleVocabularyModule]);
+    const selected=context.__drawRuntimeModuleQuestions(context.__angleVocabularyModule,context.__angleVocabularyModule.questions,count);
+    const fresh=selected.filter(question=>Number(question.n)>=11),expected=count===5?1:(count===10?3:(count===15?5:8));
+    if(selected.length!==count||fresh.length!==expected) fail(`Répartition incorrecte des nouveaux formats dnb_17 (${count} questions, seed ${seed}).`);
+    const families=selected.map(question=>angleVocabularyRuntime.selection.familyForQuestion(question));
+    if(families.some((family,index)=>index>2&&family===families[index-1]&&family===families[index-2]&&family===families[index-3])) fail(`Quatre familles d’angles identiques se suivent dans dnb_17 (${count} questions, seed ${seed}) : ${families.join(', ')}.`);
+    if(count>=18&&new Set(fresh.map(question=>Number(question.n))).size!==8) fail(`Une série dnb_17 de ${count} questions doit parcourir huit nouveaux formats distincts (seed ${seed}).`);
+  }
+}
+
+for(let seed=0;seed<500;seed++){
+  context.__setSeed(seed);
+  for(const template of angleVocabularyRuntime.selection.virtualTemplates){
+    const instance=context.__makeInstance(context.__angleVocabularyModule,template),data=instance.angleData;
+    if(!data||data.kind!==template.options.angle_kind) fail(`Le gabarit fonctionnel dnb_17 ${template.n} n’a pas produit son modèle.`);
+    const html=context.__renderQuestion(instance,false,'with'),correction=context.__renderQuestion(instance,true,'with');
+    if(!html.includes('angle-')||!correction.includes('angle-')) fail(`Le format dnb_17 ${template.n} doit produire une question et une correction visuelles.`);
+    if(data.qcm){
+      const details=data.qcm.optionDetails;
+      if(details.length<3||details.length>4||details.filter(detail=>detail.errorCode==='correct').length!==1) fail(`Le QCM dnb_17 ${template.n} doit avoir une seule réponse correcte.`);
+      if(details.some(detail=>!detail.errorCode)||!html.includes('data-error-code=')) fail(`Chaque distracteur dnb_17 ${template.n} doit porter un code diagnostique.`);
+    }
+  }
+}
+
+context.__setSeed(22);
+const comparisonTemplate=angleVocabularyRuntime.selection.virtualTemplates.find(template=>template.options.angle_kind==='compare-opening');
+const comparisonInstance=context.__makeInstance(context.__angleVocabularyModule,comparisonTemplate);
+const comparisonCodes=comparisonInstance.angleData.qcm.optionDetails.map(detail=>detail.errorCode);
+if(!comparisonCodes.includes('compare-first-side-length')||!comparisonCodes.includes('compare-second-side-length')||!comparisonCodes.includes('requires-measure')) fail('La comparaison d’angles doit reprendre les trois erreurs diagnostiques Eduscol.');
+const legacySupplement=context.__makeInstance(context.__angleVocabularyModule,context.__angleVocabularyModule.questions.find(question=>Number(question.n)===7));
+if(context.__renderQuestion(legacySupplement,false,'with').includes('dont supplémentaires')) fail('La coquille de la question historique sur les angles supplémentaires doit être corrigée au rendu.');
 
 const decimalManifest=context.__moduleManifest.find(module=>module.id==='dnb_02');
 if(!decimalManifest||decimalManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_02.');

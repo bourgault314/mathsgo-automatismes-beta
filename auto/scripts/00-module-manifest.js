@@ -27,7 +27,7 @@ const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_39',title:'Comparer et calculer avec des nombres décimaux relatifs',level_tags:['5e','4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_39',file:'scripts/modules/numbers/dnb_39.js',runtimeFiles:['scripts/modules/numbers/dnb_02/generate.js','scripts/modules/numbers/dnb_02/selection.js','scripts/modules/numbers/dnb_02/render.js']},
   {id:'dnb_15',title:'Lire des coordonnées dans un repère',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_15',file:'scripts/modules/geometry/dnb_15.js',runtimeFiles:['scripts/modules/geometry/dnb_15/generate.js','scripts/modules/geometry/dnb_15/selection.js','scripts/modules/geometry/dnb_15/render.js']},
   {id:'dnb_16',title:"Codage d'une figure — triangles, quadrilatères, médiatrice",level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_16',file:'scripts/modules/geometry/dnb_16.js'},
-  {id:'dnb_17',title:'Angles : reconnaître, nommer et mesurer',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_17',file:'scripts/modules/geometry/dnb_17.js'},
+  {id:'dnb_17',title:'Angles : reconnaître, nommer et mesurer',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_17',file:'scripts/modules/geometry/dnb_17.js',runtimeFiles:['scripts/modules/geometry/dnb_17/generate.js','scripts/modules/geometry/dnb_17/selection.js','scripts/modules/geometry/dnb_17/render.js']},
   {id:'dnb_18',title:"Somme des angles d'un triangle",level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_18',file:'scripts/modules/geometry/dnb_18.js'},
   {id:'dnb_19',title:"Conversions d'unités",level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_19',file:'scripts/modules/geometry/dnb_19.js'},
   {id:'dnb_20',title:'Reconnaître des solides',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_20',file:'scripts/modules/geometry/dnb_20.js'},
@@ -63,7 +63,7 @@ function loadModuleScript(src){
   if(MATHSGO_LOADED_MODULE_SCRIPTS.has(src)) return MATHSGO_LOADED_MODULE_SCRIPTS.get(src);
   const promise=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
-    script.src=src+'?v=20260716-9';
+    script.src=src+'?v=20260716-12';
     script.onload=resolve;
     script.onerror=()=>reject(new Error('Impossible de charger un module d’automatismes.'));
     document.head.appendChild(script);

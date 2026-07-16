@@ -10,6 +10,7 @@ const sources=[
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/shared/visuals/geometry/angle-vocabulary.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
@@ -350,10 +351,13 @@ assertClassifiedModule('dnb_16',context.__figureCodingQuestionNumbers,'figure_co
 ));
 
 assertClassifiedModule('dnb_17',context.__angleVocabularyQuestionNumbers,'angle_vocabulary',expectedQuestions(
-  [[1,2],'reconnaitre-nature-figure','qcm-one','essential',null],
-  [[3,4],'connaitre-angles-reperes','numeric','none',null],
-  [[5,6],'reconnaitre-relation','qcm-one','essential',null],
-  [[7,8,10],'calculer-complement-supplement','numeric','none',null],
+  [[1,2],'reconnaitre-nature-figure','qcm-one','essential','geometry.angle-vocabulary'],
+  [[3],'connaitre-angle-droit','numeric','none',null],
+  [[4],'connaitre-angle-plat','numeric','none',null],
+  [[5],'reconnaitre-opposes','qcm-one','essential','geometry.angle-vocabulary'],
+  [[6],'reconnaitre-adjacents','qcm-one','essential','geometry.angle-vocabulary'],
+  [[7,10],'calculer-supplement','numeric','none',null],
+  [[8],'calculer-complement','numeric','none',null],
   [[9],'reconnaitre-nature-mesure','qcm-one','none',null]
 ));
 
@@ -903,6 +907,7 @@ if(JSON.stringify(actualReadDataFamilies)!==JSON.stringify(expectedReadDataFamil
 if(!readDataRendererSource.includes("renderGenericQuestion(instance,correction,'with')")||!readDataRendererSource.includes("mode==='without-essential'")) fail('Le support de données essentiel doit rester visible quand l’aide est masquée.');
 if(!readDataRendererSource.includes('completeTemperatureScale(question,number)')||!readDataRendererSource.includes('[30,35,40].forEach')) fail('L’échelle des températures doit rester complète jusqu’à la valeur maximale générée.');
 if(!slideshow.includes("const readDataAid=mode==='without'&&inst.module.id==='dnb_32'")||!slideshow.includes("const hiddenMode=readDataAid?'without-essential'")) fail('Le mode sans aide doit permettre de révéler le chemin de lecture sans masquer le support.');
+if(!slideshow.includes("slide.courseKind==='angle_vocabulary'")||!slideshow.includes("MATHSGO_VISUALS.get('geometry.angle-vocabulary')")) fail('Le cours Angles doit être contextuel et appeler le composant partagé.');
 
 context.courseCatalog={thales:{title:'Thalès',rules:[
   ['Conditions','',false,'conditions'],['Rapports','',false,'ratios'],['Calcul','',false,'calculation'],
@@ -912,6 +917,8 @@ context.courseCatalog={thales:{title:'Thalès',rules:[
 ]}};
 vm.runInContext(
   thalesTemplateBlock+
+  functionBlock(slideshow,'courseAngleVisual','angleVocabularyCourse')+
+  functionBlock(slideshow,'angleVocabularyCourse','courseForSlide')+
   functionBlock(slideshow,'courseForSlide','fitNavNumbers')+
   functionBlock(slideshow,'courseKindForModule','courseContextForInstance')+
   functionBlock(slideshow,'courseContextForInstance','slidesDataForQuiz')+
@@ -926,6 +933,18 @@ const q3Course=context.courseForSlide({courseKind:'thales',courseContext:q3Conte
 if(q3Course.rules[0]?.[0]!=='La méthode'||q3Course.rules.slice(1).map(rule=>rule[3]).join(',')!=='ratios,calculation,coherence') fail('La question 3 doit proposer le gabarit puis seulement rapports, calcul et cohérence.');
 if(context.visualPolicyForQuestion({id:'dnb_25'},{n:1})!=='essential'||context.visualPolicyForQuestion({id:'dnb_25'},{n:6})!=='aid-only') fail('La politique visuelle Thalès n’est pas appliquée par l’application.');
 if(context.courseKindForModule('dnb_02b','without')!=='place_value_shift') fail('Le cours du glisse-nombre doit rester accessible sans aide.');
+const rightAngleContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:3},scope:{}});
+const rightAngleCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:rightAngleContext});
+if(rightAngleCourse.title!=="L’angle droit"||!rightAngleCourse.rules[0][1].includes('90°')||rightAngleCourse.rules.length!==1) fail('La question sur l’angle droit doit ouvrir uniquement son cours visuel à 90°.');
+const supplementaryContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:7},scope:{a:73}});
+const supplementaryCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:supplementaryContext});
+if(supplementaryCourse.title!=='Angles supplémentaires'||!supplementaryCourse.rules[0][1].includes('73°')||!supplementaryCourse.rules[0][1].includes('107°')) fail('La question sur les angles supplémentaires doit ouvrir le schéma calculé de sa question.');
+const compareContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:13},angleData:{kind:'compare-opening',courseSections:['compare-opening']}});
+const compareCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:compareContext});
+if(compareCourse.title!=='Comparer deux angles'||!compareCourse.rules[0][1].includes('pas la longueur des côtés')) fail('La comparaison doit ouvrir uniquement le cours sur l’ouverture des angles.');
+const namedContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:12},angleData:{kind:'name-angle',letters:['C','E','D'],courseSections:['angle-name']}});
+const namedCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:namedContext});
+if(namedCourse.title!=='Nommer un angle'||!namedCourse.rules[0][1].includes('CED')||!namedCourse.rules[0][1].includes('sommet E')) fail('Le cours sur le nom doit reprendre les lettres et le sommet de la question.');
 
 const relative=registry?.getModule('dnb_38');
 if(!relative) fail('Le classement pédagogique de dnb_38 est absent.');

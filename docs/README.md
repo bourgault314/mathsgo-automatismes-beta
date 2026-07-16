@@ -27,6 +27,8 @@ de vérification et de publication communes à toutes les catégories.
 | [`RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md`](RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md) | décisions propres à la lecture et au placement sur une droite graduée |
 | [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md) | décisions propres à la lecture et au placement de points dans un repère |
 | [`CORPUS-EDUSCOL-DROITES-GRADUEES.md`](CORPUS-EDUSCOL-DROITES-GRADUEES.md) | sources institutionnelles et erreurs diagnostiques pour `dnb_14` |
+| [`ANGLES-AUTOMATISMES.md`](ANGLES-AUTOMATISMES.md) | contrat pédagogique, cours contextuel et couverture de `dnb_17` |
+| [`CORPUS-EDUSCOL-ANGLES.md`](CORPUS-EDUSCOL-ANGLES.md) | sources institutionnelles et distracteurs diagnostiques pour les angles |
 | [`DECIMAUX-RELATIFS-AUTOMATISMES.md`](DECIMAUX-RELATIFS-AUTOMATISMES.md) | provenance et décisions propres aux décimaux relatifs |
 | [`LECTURE-DONNEES-AUTOMATISMES.md`](LECTURE-DONNEES-AUTOMATISMES.md) | décisions propres à la lecture de tableaux, diagrammes et graphiques |
 
