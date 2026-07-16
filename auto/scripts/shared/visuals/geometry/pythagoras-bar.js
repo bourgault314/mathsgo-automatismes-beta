@@ -18,6 +18,7 @@
   const side=(a,b)=>`${esc(a)}${esc(b)}`;
   const squared=value=>`${esc(value)}²`;
   const label=(x,y,value,size=28)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="850" fill="${COLORS.navy}">${value}</text>`;
+  const coloredLabel=(x,y,value,color,size=28)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="900" fill="${color}">${value}</text>`;
   const term=(x,y,width,value,fill,stroke)=>`<rect x="${x}" y="${y}" width="${width}" height="58" rx="9" fill="${fill}" stroke="${stroke}" stroke-width="2"/>${label(x+width/2,y+30,value,25)}`;
 
   function normalized(data={}){
@@ -52,21 +53,29 @@
       :Number.isFinite(requestedRatio)?Math.min(.78,Math.max(.22,requestedRatio)):.5;
     const x=55,y=42,width=650,height=72,split=x+width*ratio;
     const equationY=225,boxWidth=178,gap=42,equationX=50;
+    const radius=data.sharpCorners?0:3;
+    const equation=data.plainEquation
+      ?`${coloredLabel(145,255,labels.top,COLORS.teal,32)}
+        ${label(265,255,'=',31)}
+        ${coloredLabel(375,255,labels.left,'#1170bc',32)}
+        ${label(485,255,'+',31)}
+        ${coloredLabel(610,255,labels.right,COLORS.orange,32)}`
+      :`${term(equationX,equationY,boxWidth,labels.top,COLORS.green,COLORS.teal)}
+        ${label(equationX+boxWidth+gap/2,equationY+30,'=',28)}
+        ${term(equationX+boxWidth+gap,equationY,boxWidth,labels.left,COLORS.blue,'#1170bc')}
+        ${label(equationX+boxWidth*2+gap*1.5,equationY+30,'+',28)}
+        ${term(equationX+boxWidth*2+gap*2,equationY,boxWidth,labels.right,COLORS.softOrange,COLORS.orange)}`;
     return `<svg class="pythagoras-bar-svg" viewBox="0 0 760 315" role="img" aria-label="PythaBarre : le carré de l’hypoténuse est égal à la somme des carrés des deux autres côtés">
-      <g class="pythagoras-bar-model" stroke-linejoin="round">
-        <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="3" fill="${COLORS.green}" stroke="${COLORS.navy}" stroke-width="2.5"/>
-        <rect x="${x}" y="${y+height}" width="${split-x}" height="${height}" rx="3" fill="${COLORS.blue}" stroke="${COLORS.navy}" stroke-width="2.5"/>
-        <rect x="${split}" y="${y+height}" width="${x+width-split}" height="${height}" rx="3" fill="${COLORS.softOrange}" stroke="${COLORS.navy}" stroke-width="2.5"/>
+      <g class="pythagoras-bar-model" stroke-linejoin="${data.sharpCorners?'miter':'round'}">
+        <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${radius}" fill="${COLORS.green}" stroke="${COLORS.navy}" stroke-width="2.5"/>
+        <rect x="${x}" y="${y+height}" width="${split-x}" height="${height}" rx="${radius}" fill="${COLORS.blue}" stroke="${COLORS.navy}" stroke-width="2.5"/>
+        <rect x="${split}" y="${y+height}" width="${x+width-split}" height="${height}" rx="${radius}" fill="${COLORS.softOrange}" stroke="${COLORS.navy}" stroke-width="2.5"/>
         ${label(x+width/2,y+height/2,labels.top)}
         ${label(x+(split-x)/2,y+height*1.5,labels.left)}
         ${label(split+(x+width-split)/2,y+height*1.5,labels.right)}
       </g>
       <g class="pythagoras-bar-equation">
-        ${term(equationX,equationY,boxWidth,labels.top,COLORS.green,COLORS.teal)}
-        ${label(equationX+boxWidth+gap/2,equationY+30,'=',28)}
-        ${term(equationX+boxWidth+gap,equationY,boxWidth,labels.left,COLORS.blue,'#1170bc')}
-        ${label(equationX+boxWidth*2+gap*1.5,equationY+30,'+',28)}
-        ${term(equationX+boxWidth*2+gap*2,equationY,boxWidth,labels.right,COLORS.softOrange,COLORS.orange)}
+        ${equation}
       </g>
     </svg>`;
   }
@@ -83,7 +92,7 @@
   ]);
 
   const component=registry.register('geometry.pythagoras-bar',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'PythaBarre · relation entre les carrés',
     family:'Géométrie',
     description:'Construit deux barres strictement accolées et relie leurs trois couleurs aux termes de l’égalité de Pythagore.',

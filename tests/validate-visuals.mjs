@@ -427,7 +427,7 @@ for(const preset of pythagorasMill?.presets||[]){
 
 const pythagorasBar=registry?.get('geometry.pythagoras-bar');
 if(!pythagorasBar) fail('Le composant geometry.pythagoras-bar est absent.');
-if(pythagorasBar&&pythagorasBar.version!=='1.0.0') fail('Version 1.0.0 attendue pour PythaBarre.');
+if(pythagorasBar&&pythagorasBar.version!=='1.1.0') fail('Version 1.1.0 attendue pour PythaBarre.');
 if(pythagorasBar&&pythagorasBar.presets.length!==6) fail('Six états de référence sont attendus pour PythaBarre.');
 if(pythagorasBar&&context.pythagorasBar!==pythagorasBar.render) fail('Le point d’entrée pythagorasBar doit utiliser le composant enregistré.');
 const pythagorasBarHashes=new Map([
@@ -447,6 +447,9 @@ for(const preset of pythagorasBar?.presets||[]){
 }
 const touchingBar=pythagorasBar?.render({phase:'squares',target:'hypotenuse',values:{legA:3,legB:4,hypotenuse:5},proportional:true},false)||'';
 if(!touchingBar.includes('y="114"')||!touchingBar.includes('x="289"')) fail('Les trois rectangles de PythaBarre doivent rester accolés et proportionnels aux carrés 9 et 16.');
+const courseBar=pythagorasBar?.render({phase:'relation',sideNames:{hypotenuse:'a',legA:'b',legB:'c'},sharpCorners:true,plainEquation:true},true)||'';
+if(!courseBar.includes('rx="0"')||!courseBar.includes('>a²</text>')||!courseBar.includes('>b²</text>')||!courseBar.includes('>c²</text>')) fail('Le cours de Pythagore doit utiliser des rectangles sans arrondi et l’égalité colorée a² = b² + c².');
+if(courseBar.match(/<rect/g)?.length!==3) fail('Le schéma de cours ne doit pas ajouter de boîtes autour des termes de l’égalité.');
 
 const pythagorasReasoning=registry?.get('geometry.pythagoras-reasoning');
 if(!pythagorasReasoning) fail('Le composant geometry.pythagoras-reasoning est absent.');

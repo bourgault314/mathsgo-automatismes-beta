@@ -2589,15 +2589,16 @@ function renderPythagorasModule(inst,correction=false,mode=null){
   }
   const visual=usesAid?(mode==='with'?pythagorasAidVisual(inst,correction):(mode==='without-reveal'?visualPlaceholder(mode):'')):'';
   const qcm=splitQCM(statement);
+  const promptClass='question pythagoras-prompt '+(/<svg\b/i.test(qcm?qcm.prompt:statement)?'has-statement-figure':(visual?'has-aid':'is-text-only'));
   let html='';
   if(qcm){
-    html+='<div class="question pythagoras-prompt">'+renderMathSegments(qcm.prompt)+'</div>'+visual;
+    html+='<div class="'+promptClass+'">'+renderMathSegments(qcm.prompt)+'</div>'+visual;
     const corrects=new Set(inst.answers.map(value=>String(value)));
     html+='<div class="options pythagoras-options options-'+qcm.opts.length+compactQcmClass(qcm.opts)+'">';
     qcm.opts.forEach((option,index)=>{const isCorrect=correction&&corrects.has(String(index+1));html+='<div class="opt '+(isCorrect?'correct':'')+'"><strong>'+String.fromCharCode(65+index)+'.</strong> '+renderMathSegments(option)+'</div>';});
     html+='</div>';
   }else{
-    html+='<div class="question pythagoras-prompt">'+renderMathSegments(statement)+'</div>'+visual;
+    html+='<div class="'+promptClass+'">'+renderMathSegments(statement)+'</div>'+visual;
   }
   if(footer) html+='<div class="footer pythagoras-answer">'+renderPlaceholders(footer,inst.answers,correction?'correction':'question')+'</div>';
   return html;
