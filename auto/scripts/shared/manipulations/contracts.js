@@ -25,6 +25,33 @@
     serialization:{version:'MG-MANIP-1',fields:['base-digits','shift','target-shift']}
   });
 
+  registry.register('numbers.number-line-point',{
+    version:'1.0.0',label:'Point sur droite graduée',status:'active',moduleId:'dnb_14',componentId:'numbers.number-line',
+    description:'Déplacer horizontalement un point, aimanté aux graduations, jusqu’à une abscisse donnée.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'references',label:'Graduations chiffrées qui définissent l’échelle',serializable:true},
+      {id:'step',label:'Pas de la graduation',serializable:true},
+      {id:'start-index',label:'Graduation de départ du point',serializable:true},
+      {id:'current-index',label:'Graduation actuellement choisie',serializable:true},
+      {id:'target-index',label:'Graduation attendue',serializable:true},
+      {id:'instance-key',label:'Instance reproductible de la question',serializable:true}
+    ],
+    actions:[
+      {id:'drag-point',label:'Faire glisser horizontalement le point'},
+      {id:'select-point',label:'Toucher ou sélectionner le point'},
+      {id:'select-tick',label:'Toucher la graduation d’arrivée'},
+      {id:'move-left',label:'Déplacer d’une graduation vers la gauche'},
+      {id:'move-right',label:'Déplacer d’une graduation vers la droite'},
+      {id:'reset',label:'Revenir à la position de départ'},
+      {id:'validate',label:'Valider la position aimantée'}
+    ],
+    reset:{mode:'initial-state',preserves:['references','step','start-index','target-index','instance-key']},
+    validation:{mode:'state-equivalence',trigger:'explicit',expected:'current-index = target-index'},
+    correction:{mode:'target-state',shows:['position choisie si elle est fausse','position cible','valeur attendue']},
+    serialization:{version:'MG-MANIP-1',fields:['references','step','start-index','current-index','target-index','instance-key']}
+  });
+
   registry.register('numbers.relative-tokens',{
     version:'1.0.0',label:'Jetons relatifs',status:'active',moduleId:'dnb_38',componentId:'numbers.relative-tokens',
     description:'Rassembler des jetons +1 et −1, repérer les paires nulles et obtenir une somme.',

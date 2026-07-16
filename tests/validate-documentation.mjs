@@ -13,6 +13,8 @@ const agents = read('AGENTS.md');
 const docsIndex = read('docs/README.md');
 const rootReadme = read('README.md');
 const decimalDecisions = read('docs/DECIMAUX-AUTOMATISMES.md');
+const numberLineDecisions = read('docs/RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md');
+const numberLineCorpus = JSON.parse(read('docs/data/eduscol-droites-graduees.json'));
 
 const requiredHeadings = [
   '## Méthode permanente',
@@ -65,6 +67,31 @@ if (!docsIndex.includes('PROTOCOLE-AUTOMATISMES-MATHSGO.md')) {
 if (!docsIndex.includes('DECIMAUX-AUTOMATISMES.md') ||
     !protocol.includes('DECIMAUX-AUTOMATISMES.md')) {
   fail('Les décisions propres aux décimaux doivent être reliées depuis l’index et le protocole.');
+}
+
+if (!docsIndex.includes('RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md') ||
+    !docsIndex.includes('CORPUS-EDUSCOL-DROITES-GRADUEES.md') ||
+    !protocol.includes('eduscol-droites-graduees.json')) {
+  fail('Les décisions et le corpus de dnb_14 doivent rester reliés depuis la documentation canonique.');
+}
+
+for (const decision of ['Placer un point à une valeur donnée', 'Déterminer explicitement le pas', 'Glisser des étiquettes de valeurs sous des points']) {
+  if (!numberLineDecisions.includes(decision)) {
+    fail(`La décision de droite graduée « ${decision} » a disparu de la fiche dédiée.`);
+  }
+}
+
+if (numberLineCorpus.archive?.pdfCount !== 7 || numberLineCorpus.archive?.textExtractCount !== 7 || numberLineCorpus.sources?.length !== 7) {
+  fail('Le manifeste matériel Éduscol doit conserver sept PDF et sept extractions texte.');
+}
+for (const source of numberLineCorpus.sources || []) {
+  if (!source.file?.endsWith('.pdf') || !source.textExtract?.endsWith('.txt') || !/^[a-f0-9]{64}$/.test(source.sha256 || '')) {
+    fail(`La source Éduscol ${source.id || 'sans identifiant'} doit conserver PDF, extraction et SHA-256.`);
+  }
+}
+if (new Set((numberLineCorpus.sources || []).map(source => source.file)).size !== 7 ||
+    new Set((numberLineCorpus.sources || []).map(source => source.textExtract)).size !== 7) {
+  fail('Les noms de fichiers du corpus Éduscol doivent rester uniques.');
 }
 
 for (const decision of ['douze familles', '2 + 2 + 3 + 3', 'toucher une carte, puis toucher une case', 'Somme de nombres décimaux relatifs']) {

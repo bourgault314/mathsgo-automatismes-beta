@@ -155,6 +155,14 @@ Chaque préréglage déclare ses supports : une droite dense ou longue peut vise
 l'ordinateur, la projection et l'impression sans être proposée telle quelle
 sur téléphone. Le générateur doit alors choisir une variante courte compatible.
 
+La version 1.2 ajoute un rendu de placement sans modifier le mode historique.
+Le point visible reste un petit trait bleu conforme aux exercices de lecture ;
+une cible transparente de 58 × 96 unités SVG et une poignée de 26 × 11 servent
+au toucher. Le point suit seulement l’axe horizontal, s’aimante aux dix
+graduations et se soulève pendant le geste pour ne pas être masqué par le doigt.
+Chaque graduation possède aussi une cible tactile : toucher le point puis la
+graduation, ou utiliser les flèches, remplace le glissement.
+
 `numbers.order-cards` porte les rangements sans saisie : valeurs proposées,
 ordre cible et emplacements sont des données sémantiques. Sur téléphone et sur
 ordinateur, le geste principal est « toucher une carte, puis toucher une

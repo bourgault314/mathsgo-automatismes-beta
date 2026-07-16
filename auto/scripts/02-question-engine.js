@@ -2481,7 +2481,8 @@ function makeGenericInstance(mod,q,generatedScope=null){
 }
 function makeInstance(mod,q){
   const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(mod&&mod.id);
-  if(runtime&&runtime.generator&&typeof runtime.generator.createInstance==='function'){
+  if(runtime&&runtime.generator&&typeof runtime.generator.createInstance==='function'
+    &&(!runtime.generator.supports||runtime.generator.supports({module:mod,question:q}))){
     const instance=runtime.generator.createInstance({
       module:mod,question:q,randomInt:RD,pick,cut:CUT,format:fmt,shuffle:shuffledCopy
     });
@@ -2530,6 +2531,7 @@ function renderGenericQuestion(inst, correction=false, mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
   let statement=inst.rawStatement;
   let footer=inst.rawFooter;
+  if(inst.module&&inst.module.id==='dnb_14') statement=statement.replace(/([A-Z])\s+:/g,'$1&nbsp;:').replace(/\sheight="auto"/g,'');
   if(isWithoutVisuals(mode)){
     const keepPlaceholder=mode==='without-reveal';
     statement=stripVisuals(statement,keepPlaceholder);
@@ -3837,7 +3839,8 @@ function renderRelativeTokensModule(inst,correction=false,mode=null){
 function renderQuestion(inst, correction=false, mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
   const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(inst&&inst.module&&inst.module.id);
-  if(runtime&&runtime.renderer&&typeof runtime.renderer.renderQuestion==='function'){
+  if(runtime&&runtime.renderer&&typeof runtime.renderer.renderQuestion==='function'
+    &&(!runtime.renderer.supports||runtime.renderer.supports({instance:inst,correction,mode}))){
     return runtime.renderer.renderQuestion({
       instance:inst,correction,mode,renderGenericQuestion,format:fmt,escapeHtml,
       renderPlaceholders,renderMathSegments,compactQcmClass,isWithoutVisuals,

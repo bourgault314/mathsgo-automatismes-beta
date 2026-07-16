@@ -179,7 +179,7 @@ if (relativeTokens && !relativeTokens.render({positive:2,negative:1}).includes('
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
-if (numberLine && numberLine.version !== '1.1.0') fail('Version 1.1.0 attendue pour le composant droite graduée.');
+if (numberLine && numberLine.version !== '1.2.0') fail('Version 1.2.0 attendue pour le composant droite graduée.');
 if (numberLine && numberLine.presets.length !== 9) fail('Neuf familles de droites graduées sont attendues.');
 if (numberLine && context.numberLineSvg !== numberLine.render) {
   fail('Le module dnb_14 doit utiliser le composant droite graduée enregistré.');
@@ -201,6 +201,12 @@ for (const preset of numberLine?.presets || []) {
 }
 if (!numberLine?.presets.find(preset=>preset.id==='courte-parametree')?.supports.includes('phone')) fail('La droite courte doit être déclarée compatible téléphone.');
 if (numberLine?.presets.find(preset=>preset.id==='longue-decimale')?.supports.includes('phone')) fail('La droite longue ne doit pas être proposée telle quelle sur téléphone.');
+const placementLine=numberLine?.renderPlacement({tickCount:10,step:1,zeroIndex:4,startIndex:1,targetIndex:6,currentIndex:1,letter:'C',references:[{index:4,label:'0'},{index:5,label:'1'}]},false)||'';
+const placementCorrection=numberLine?.renderPlacement({tickCount:10,step:1,zeroIndex:4,startIndex:1,targetIndex:6,currentIndex:6,letter:'C',references:[{index:4,label:'0'},{index:5,label:'1'}]},true)||'';
+if(!placementLine.includes('data-number-line-placement="1"')||!placementLine.includes('number-line-point-hit')||!placementLine.includes('number-line-point-grip')) fail('La droite tactile doit fournir une zone de saisie agrandie et une poignée discrète.');
+if((placementLine.match(/number-line-tick-hit/g)||[]).length!==10) fail('Chaque graduation tactile doit proposer une cible de secours.');
+if(placementLine.includes('<circle')&&!placementLine.includes('number-line-point-grip')) fail('Le point tactile ne doit pas devenir une grosse pastille.');
+if(!placementCorrection.includes('#087a55')||placementCorrection.includes('number-line-point-hit')) fail('La correction tactile doit montrer la cible en vert sans rester manipulable.');
 const numberLineModule = fs.readFileSync(new URL('auto/scripts/modules/numbers/dnb_14.js', root), 'utf8');
 const numberLineCalls = [...numberLineModule.matchAll(/numberLineSvg\(/g)].length;
 if (numberLineCalls !== 18) fail(`Les 18 gabarits de dnb_14 doivent utiliser la droite graduée commune (${numberLineCalls} appel(s)).`);

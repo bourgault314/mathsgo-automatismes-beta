@@ -20,7 +20,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_MANIPULATIONS;
 if(!registry) fail('Le registre de manipulations est absent.');
 const contracts=registry?.list()||[];
-if(contracts.length!==7) fail(`Sept contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
+if(contracts.length!==8) fail(`Huit contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
 
 for(const contract of contracts){
   if(contract.status==='active'&&!context.MATHSGO_VISUALS.get(contract.componentId)) fail(`Le composant actif ${contract.id} est absent.`);
@@ -37,6 +37,10 @@ for(const contract of contracts){
 const glisse=registry?.get('numbers.glisse-nombre');
 if(glisse?.validation.mode!=='derived-value'||glisse?.correction.mode!=='target-state') fail('Le Glisse-nombre doit valider une valeur dérivée et montrer l’état cible.');
 if(!glisse?.actions.some(action=>action.id==='select-units-digit')||!glisse?.actions.some(action=>action.id==='select-target-column')) fail('Le Glisse-nombre doit déclarer son alternative tactile sans glissement.');
+const numberLine=registry?.get('numbers.number-line-point');
+if(numberLine?.validation.mode!=='state-equivalence'||numberLine?.correction.mode!=='target-state') fail('Le point sur droite doit valider une position aimantée et montrer l’état cible.');
+if(!numberLine?.actions.some(action=>action.id==='select-point')||!numberLine?.actions.some(action=>action.id==='select-tick')) fail('La droite tactile doit déclarer son alternative sans glissement.');
+if(!numberLine?.actions.some(action=>action.id==='move-left')||!numberLine?.actions.some(action=>action.id==='move-right')) fail('La droite tactile doit déclarer son déplacement clavier.');
 const relative=registry?.get('numbers.relative-tokens');
 if(relative?.reset.mode!=='initial-state'||relative?.actions.some(action=>action.id==='validate')!==true) fail('Les jetons relatifs doivent être réinitialisables et validables.');
 const pythagoras=registry?.get('geometry.pythagoras-builder');
@@ -58,4 +62,4 @@ for(const section of ['État sémantique','Gestes et accessibilité','Réinitial
   if(!documentation.includes(section)) fail(`La documentation des manipulations doit contenir « ${section} ».`);
 }
 
-if(!process.exitCode) console.log('OK — 7 contrats de manipulation : 6 actifs et 1 planifié, état MG-MANIP-1 cohérent.');
+if(!process.exitCode) console.log('OK — 8 contrats de manipulation : 7 actifs et 1 planifié, état MG-MANIP-1 cohérent.');

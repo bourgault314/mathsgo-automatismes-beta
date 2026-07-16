@@ -17,6 +17,8 @@ l'application et du livret A5, pas un deuxième exerciseur.
 - 475 gabarits ;
 - 26 composants visuels ;
 - 42 modules classés pédagogiquement sur 42 ;
+- 3 formats fonctionnels supplémentaires pour `dnb_14`, sans modifier ses 18
+  gabarits historiques dans la banque figée ;
 - partage reproductible par seed, lien, code MG1 et QR code.
 
 Le fichier autonome historique `automatismes_mathsgo.html` n'est plus une
