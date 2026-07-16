@@ -456,27 +456,36 @@ function buildBalancedQuiz(mods,count){
 
 let currentSeriesDefinition=null;
 
-function generateFromDefinition(definition,{sameTab=false}={}){
+function generateFromDefinition(definition,{sameTab=false,targetWindow=null}={}){
   const normalized=normalizeSeriesDefinition(definition);
   const mods=modulesForSeriesDefinition(normalized);
   setSeed(normalized.seed);
   beginQuizBank(mods);
   quiz=buildBalancedQuiz(mods,normalized.questionCount);
-  if(!quiz.length){ alert('Aucune question compatible avec les options choisies.'); return; }
+  if(!quiz.length){ alert('Aucune question compatible avec les options choisies.'); return false; }
   currentSeriesDefinition=normalized;
-  openDiapoWindow(normalized,{sameTab});
+  openDiapoWindow(normalized,{sameTab,targetWindow});
+  return true;
 }
 
 async function generate(){
   if(modulePreparationInProgress) return;
+  const targetWindow=window.open('', '_blank');
+  if(!targetWindow){
+    alert('La nouvelle fenêtre a été bloquée. Autorise les popups pour cette page.');
+    return;
+  }
+  writePreparationWindow(targetWindow);
   modulePreparationInProgress=true;
   updateSetupActions();
   try{
     const definition=readSeriesDefinitionFromUi();
     await loadModulesForIds(definition.moduleIds.map(mathsgoLegacyModuleId));
-    generateFromDefinition(definition);
+    if(generateFromDefinition(definition,{targetWindow})===false&&!targetWindow.closed) targetWindow.close();
   }catch(error){
-    alert(error&&error.message?error.message:'Impossible de préparer cette série.');
+    const message=error&&error.message?error.message:'Impossible de préparer cette série.';
+    writePreparationError(targetWindow,message);
+    alert(message);
   }finally{
     modulePreparationInProgress=false;
     updateGenerateButtonLabel();
