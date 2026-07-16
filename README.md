@@ -16,10 +16,10 @@ d’audience du site public.
 
 ## Point de départ
 
-- Application : **V1.15**
+- Application : **V1.16 bêta**
 - Source : `bourgault314/maths`, dossier `auto/`
 - Révision copiée : `cd8c2b0407f10be7f272dbb7a42d7af2f682a0f8`
-- Banque chargée : **40 modules et 460 gabarits de questions**
+- Banque chargée : **41 modules et 468 gabarits de questions**
 
 ## Organisation actuelle
 
@@ -37,7 +37,7 @@ d’audience du site public.
 | `auto/dev/visual-library.html` | Catalogue visuel de développement |
 | `tests/` | Vérifications structurelles de la banque |
 
-Les 40 modules sont maintenant isolés sans changement des identifiants stables
+Les 41 modules sont maintenant isolés sans changement des identifiants stables
 ni du résultat des séries reproductibles.
 
 ### Découpage en cours
@@ -54,6 +54,10 @@ ni du résultat des séries reproductibles.
 - `dnb_07` — Carrés des entiers de 1 à 12 : pilote visuel isolé avec ses
   gabarits et sa configuration pédagogique finalisée dans
   `auto/scripts/modules/numbers/dnb_07.js`.
+- `dnb_38` — Addition de nombres entiers relatifs : pilote bêta avec jetons
+  tactiles +1/−1, paires nulles, questions de manipulation et QCM. Les choix
+  de contenu, d’aide et d’ergonomie sont consignés dans
+  [`docs/RELATIFS-AUTOMATISMES.md`](docs/RELATIFS-AUTOMATISMES.md).
 
 Le contrat suivi par tous les fichiers isolés est décrit dans
 [`docs/CONTRAT-MODULE.md`](docs/CONTRAT-MODULE.md).
@@ -75,6 +79,10 @@ de chiffres déplaçable, est isolé dans `numbers.glisse-nombre`. Son contrôle
 de glissement fait partie du composant et sert aussi dans le catalogue.
 Les neuf gabarits de repères du plan de `dnb_15`, y compris les demi-unités et
 les lectures à deux points, utilisent un générateur commun.
+
+Le module `dnb_38` est le premier module de calcul mental avec jetons
+manipulables. Son plateau est prévu pour 390 × 844 px et 1280 × 720 px ; les
+contrôles tactiles et le rendu de correction sont testés avec la banque.
 
 ## Vérifier la banque
 

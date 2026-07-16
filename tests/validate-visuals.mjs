@@ -7,6 +7,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
+  'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
@@ -34,7 +35,12 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 10) fail(`10 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 11) fail(`11 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const relativeTokens = registry?.get('numbers.relative-tokens');
+if (!relativeTokens) fail('Le composant numbers.relative-tokens est absent.');
+if (relativeTokens && !relativeTokens.supports.includes('phone')) fail('Les jetons relatifs doivent être déclarés compatibles téléphone.');
+if (relativeTokens && !relativeTokens.render({positive:2,negative:1}).includes('relative-token-visual')) fail('Le composant jetons relatifs doit produire un visuel exploitable.');
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');

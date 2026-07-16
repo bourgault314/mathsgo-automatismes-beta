@@ -457,6 +457,8 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .interactive-polynomial-response{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px 14px;margin:10px auto 0;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(2.25rem,4.4vw,4.7rem);font-weight:850}
 .interactive-polynomial-response.term-count-1{font-size:clamp(3rem,5.6vw,5.8rem)}.interactive-polynomial-response.term-count-2{font-size:clamp(2.55rem,5vw,5.2rem)}
 .interactive-polynomial-term{display:inline-flex;align-items:center;gap:.12em;white-space:nowrap}.interactive-polynomial-separator{margin:0 -.08em;font-family:Arial,Helvetica,sans-serif;font-weight:750}
+.relative-token-prompt{font-size:clamp(1.75rem,3.7vw,3.55rem);line-height:1.14;margin:0 auto 16px}.relative-token-board,.relative-token-static-board{width:min(100%,1040px);margin:0 auto;text-align:center}.relative-token-zone{min-height:112px;margin:10px auto;padding:10px 12px;border:1px dashed #b7cbe3;border-radius:14px;background:#fbfdff}.relative-token-zone h3{margin:0 0 8px;color:#073a75;font-size:clamp(1rem,1.75vw,1.3rem);font-weight:900}.relative-token-zone-a,.relative-token-zone-b{display:inline-flex;width:calc(50% - 8px);vertical-align:top;flex-direction:column}.relative-token-zone-result{min-height:122px;border-color:#86a8cf;background:#f4f8fe}.relative-token-list{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;min-height:58px}.relative-token{display:inline-grid;place-items:center;width:54px;height:54px;min-width:54px;border:2px solid #111;border-radius:50%;color:#111;font-size:1.18rem;font-weight:900;line-height:1;box-shadow:0 2px 0 rgba(11,33,71,.12)}.relative-token-positive{background:#31a98e}.relative-token-negative{background:#ef5142}button.relative-token{cursor:pointer;touch-action:manipulation}.relative-token:active{transform:translateY(1px);box-shadow:none}.relative-token.is-null-pair{box-shadow:0 0 0 4px #f59e0b,0 2px 0 rgba(11,33,71,.12)}.relative-token-empty{display:inline-grid;place-items:center;min-width:54px;height:54px;color:#60708c;font-size:1.5rem}.relative-token-instruction{margin:12px auto 8px;color:#405875;font-size:clamp(1rem,1.8vw,1.28rem);font-weight:750;line-height:1.25}.relative-token-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:8px auto 0}.relative-token-action{min-height:46px;padding:9px 14px;border:1px solid #9fb9d8;border-radius:11px;background:#fff;color:#073a75;font-size:1rem;font-weight:850;cursor:pointer;touch-action:manipulation}.relative-token-result{margin:14px auto 0;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.7rem,3.2vw,3.1rem);font-weight:800}.relative-token-result strong{color:var(--answer)}.relative-token-placeholder{min-height:86px}.answer-dock.relative-tokens-dock .answer-main{min-height:58px}
+@media(max-width:800px){.relative-token-prompt{font-size:clamp(1.45rem,7vw,2.15rem);margin-bottom:8px}.relative-token-zone{min-height:96px;margin:7px auto;padding:8px 7px;border-radius:12px}.relative-token-zone-a,.relative-token-zone-b{width:calc(50% - 4px)}.relative-token-zone h3{font-size:.92rem;margin-bottom:5px}.relative-token-list{gap:5px;min-height:50px}.relative-token{width:46px;height:46px;min-width:46px;font-size:1.02rem}.relative-token-empty{min-width:46px;height:46px}.relative-token.is-null-pair{box-shadow:0 0 0 3px #f59e0b,0 2px 0 rgba(11,33,71,.12)}.relative-token-instruction{margin:8px auto 5px;font-size:.95rem}.relative-token-actions{margin-top:5px}.relative-token-action{min-height:44px;padding:8px 10px;font-size:.92rem}.relative-token-result{margin-top:9px;font-size:clamp(1.45rem,7vw,2.1rem)}.answer-dock.relative-tokens-dock .answer-body{grid-template-columns:minmax(0,1fr) 154px}.answer-dock.relative-tokens-dock .answer-main{height:62px}}
 @media(min-width:801px){.diapo.interactive-mode .stage{padding:6px 18px 10px}.diapo.interactive-mode .question svg{max-height:255px;width:auto;margin-left:auto;margin-right:auto}}
 @media(min-width:1200px){.answer-dock .answer-body{display:block;position:relative;padding:0 195px}.answer-dock .answer-main{width:100%;max-width:var(--keypad-max);margin:0 auto}.answer-dock .dock-actions{position:absolute;right:14px;top:0;bottom:0}}
 @media(min-width:801px) and (max-height:760px){.diapo.interactive-mode.module01-mode .module01-prompt{font-size:clamp(2rem,3vw,2.7rem);margin-bottom:4px}.diapo.interactive-mode.module01-mode .module01-source{font-size:clamp(2.45rem,4vw,3.75rem);margin:1px auto 3px}.diapo.interactive-mode.module01-mode .module01-visual{margin:3px auto 2px}.diapo.interactive-mode.module01-mode .module01-visual svg{width:auto;max-width:100%;max-height:220px}.diapo.interactive-mode.module01-mode .module01-options .opt{padding:9px 14px}.diapo.interactive-mode.median-mode .question{font-size:clamp(1.9rem,3.3vw,2.85rem);line-height:1.12;margin-bottom:10px}.diapo.interactive-mode.median-mode .options{gap:10px 14px;margin-top:10px}.diapo.interactive-mode.median-mode .opt{padding:13px 16px;font-size:clamp(1.15rem,1.7vw,1.55rem)}.diapo.interactive-mode.angle-sum-mode .angle-sum-prompt{font-size:clamp(1.65rem,2.4vw,2.15rem);margin-bottom:2px}.diapo.interactive-mode.angle-sum-mode .angle-sum-prompt svg{max-height:158px;margin-top:3px}.diapo.interactive-mode.angle-sum-mode .angle-bar-help{height:138px;margin-top:0}.diapo.interactive-mode.geometry-long-prompt-mode .question svg{max-height:285px!important}.diapo.interactive-mode.geometry-long-prompt-mode .opt{min-height:54px;padding:11px 14px}.diapo.interactive-mode.proportion-table-mode .proportion-line-desktop{width:min(100%,760px)}}
@@ -599,6 +601,8 @@ let idx=0;
 let corr=false;
 let interactiveValues=[];
 let interactiveTouched=[];
+let relativeBoardState=null;
+let relativeBoardKey='';
 let activeSlotIndex=0;
 let selectedOptions=new Set();
 let interactiveLocked=false;
@@ -722,6 +726,12 @@ const courseCatalog={
   ]}
 };
 Object.assign(courseCatalog,{
+  relative_addition:{title:'Additionner des nombres entiers relatifs',rules:[
+    ['Les jetons','Un jeton vert vaut +1 ; un jeton rouge vaut −1. Le signe et la valeur sont écrits dans chaque jeton.'],
+    ['Rassembler','Pour additionner, on rassemble les deux groupes de jetons dans le même plateau.'],
+    ['Paire nulle','Un jeton +1 et un jeton −1 forment une paire nulle : leur somme vaut 0. On peut les repérer, puis lire les jetons restants.'],
+    ['Méthode','Avec des signes différents, on peut annuler les paires opposées. Le signe du résultat est celui des jetons qui restent en plus grand nombre.']
+  ]},
   place_value_shift:{title:'Multiplier ou diviser par 10, 100 et 1 000',rules:[
     ['Idée essentielle','La virgule reste fixe dans le tableau de numération : ce sont les chiffres qui changent de colonne.'],
     ['Multiplier','× 10 : un rang vers la gauche ; × 100 : deux rangs ; × 1 000 : trois rangs.<span class="course-example">Exemple : 3,47 × 100 = 347.</span>'],
@@ -1044,7 +1054,7 @@ function setModuleClasses(diapo,moduleId){
    'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angle-sum-mode':['dnb_18'],
    'conversion-mode':['dnb_19'],'solids-mode':['dnb_20'],'perimeter-mode':['dnb_21'],'area-mode':['dnb_22'],'volume-mode':['dnb_23'],'average-mode':['dnb_30'],
    'median-mode':['dnb_31'],'proportion-mode':['dnb_34'],'evolution-mode':['dnb_35'],'data-mode':['dnb_28','dnb_29'],
-   'algorithm-mode':['dnb_37'],'coordinate-mode':['dnb_15'],'transformations-mode':['dnb_27'],'trigonometry-mode':['dnb_26','dnb_26b'],'thales-mode':['dnb_25']
+   'algorithm-mode':['dnb_37'],'coordinate-mode':['dnb_15'],'transformations-mode':['dnb_27'],'trigonometry-mode':['dnb_26','dnb_26b'],'thales-mode':['dnb_25'],'relative-tokens-mode':['dnb_38']
  };
  Object.entries(map).forEach(entry=>diapo.classList.toggle(entry[0],entry[1].includes(moduleId)));
  diapo.classList.toggle('dense-mode',['dnb_15','dnb_24','dnb_26','dnb_26b','dnb_32','dnb_33','dnb_36','dnb_37'].includes(moduleId));
@@ -1124,11 +1134,13 @@ function setupInteractiveSlide(current){
  const spec=current.interactiveSpec;
  dock.hidden=false;
  dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point');
+ dock.classList.toggle('relative-tokens-dock',spec.kind==='relative-tokens');
  dock.classList.toggle('locked',interactiveLocked);
  const kind=document.getElementById('answerKind');
  if(kind){
    if(spec.kind==='qcm') kind.textContent=spec.multiple?'Plusieurs réponses':'Une seule réponse';
    else if(spec.kind==='grid-point') kind.textContent='Clique sur le quadrillage';
+   else if(spec.kind==='relative-tokens') kind.textContent='Manipule les jetons puis valide';
    else if(spec.layout==='fraction') kind.textContent='Numérateur / dénominateur';
    else if(spec.layout==='polynomial') kind.textContent='Coefficients';
    else kind.textContent=(spec.slots&&spec.slots.length>1)?spec.slots.length+' cases':'Réponse';
@@ -1148,6 +1160,8 @@ function setupInteractiveSlide(current){
    });
  }else if(spec.kind==='grid-point'){
    ensureInteractiveEntryState(spec);setupGridPointInteraction(spec);
+ }else if(spec.kind==='relative-tokens'){
+   ensureInteractiveEntryState(spec);setupRelativeTokensInteraction(spec);
  }else if(!interactiveLocked){
    ensureInteractiveEntryState(spec);
    injectInteractiveResponse(spec);
@@ -1167,6 +1181,45 @@ function setupGridPointInteraction(spec){
  }
  if(interactiveLocked)return;
  svg.querySelectorAll('.transformation-grid-hit').forEach(hit=>{hit.setAttribute('tabindex','0');hit.setAttribute('role','button');const choose=()=>{interactiveValues=[hit.dataset.gridX,hit.dataset.gridY];interactiveTouched=[true,true];setupGridPointInteraction(spec);updateInteractiveControls();};hit.onclick=choose;hit.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};});
+}
+function relativeClientTokenLabel(sign){return sign>0?'+1':'−1';}
+function relativeClientDisplayNumber(value){const text=String(value);return text.startsWith('-')?'−'+text.slice(1):text;}
+function relativeClientInitialState(spec){return {tokens:(spec.relative.initialTokens||[]).map(token=>({...token})),nextPair:1};}
+function relativeClientStateKey(state){return JSON.stringify({tokens:state.tokens.map(token=>({id:token.id,sign:token.sign,zone:token.zone})).sort((a,b)=>a.id.localeCompare(b.id)),nextPair:state.nextPair});}
+function relativeClientPairedIds(tokens,zone){
+ const positive=[],negative=[];
+ tokens.forEach(token=>{if(token.zone!==zone)return;(token.sign>0?positive:negative).push(token.id);});
+ const count=Math.min(positive.length,negative.length);
+ return new Set([...positive.slice(0,count),...negative.slice(0,count)]);
+}
+function relativeClientZoneHtml(label,zone,state){
+ const tokens=state.tokens.filter(token=>token.zone===zone),paired=relativeClientPairedIds(state.tokens,zone);
+ const tokenHtml=tokens.map(token=>'<button type="button" class="relative-token '+(token.sign>0?'relative-token-positive':'relative-token-negative')+(paired.has(token.id)?' is-null-pair':'')+'" data-relative-token-id="'+token.id+'" aria-label="Jeton '+relativeClientTokenLabel(token.sign)+'">'+relativeClientTokenLabel(token.sign)+'</button>').join('');
+ return '<section class="relative-token-zone relative-token-zone-'+zone+'" data-relative-zone="'+zone+'"><h3>'+label+'</h3><div class="relative-token-list">'+(tokenHtml||'<span class="relative-token-empty">—</span>')+'</div></section>';
+}
+function relativeClientBoardHtml(spec,state){
+ return relativeClientZoneHtml('Premier nombre','a',state)+relativeClientZoneHtml('Deuxième nombre','b',state)+relativeClientZoneHtml('Résultat','result',state)+'<p class="relative-token-instruction">Touchez un jeton pour le déplacer dans la zone résultat. Les paires +1/−1 valent zéro.</p><div class="relative-token-actions"><button type="button" class="relative-token-action" data-relative-action="reset">Recommencer</button></div>';
+}
+function relativeClientRenderBoard(spec){const board=document.querySelector('#slide [data-relative-board]');if(board)board.innerHTML=relativeClientBoardHtml(spec,relativeBoardState);}
+function relativeClientSetState(spec,state){
+ relativeBoardState=state;interactiveValues=[relativeClientStateKey(state)];
+ const initialKey=relativeClientStateKey(relativeClientInitialState(spec));
+ interactiveTouched=[interactiveValues[0]!==initialKey];
+ relativeClientRenderBoard(spec);updateInteractiveControls();relativeClientBindBoard(spec);
+}
+function relativeClientBindBoard(spec){
+ const board=document.querySelector('#slide [data-relative-board]');if(!board||interactiveLocked)return;
+ board.querySelectorAll('[data-relative-token-id]').forEach(button=>button.addEventListener('click',()=>{
+   const token=relativeBoardState.tokens.find(item=>item.id===button.dataset.relativeTokenId);if(!token)return;
+   token.zone=token.zone==='result'?token.origin:'result';setInteractiveFeedback('','');relativeClientSetState(spec,relativeBoardState);
+ }));
+ const reset=board.querySelector('[data-relative-action="reset"]');
+ if(reset)reset.addEventListener('click',()=>{setInteractiveFeedback('','');relativeClientSetState(spec,relativeClientInitialState(spec));});
+}
+function setupRelativeTokensInteraction(spec){
+ if(!spec||!spec.relative)return;
+ if(relativeBoardKey!==spec.relative.instanceKey){relativeBoardKey=spec.relative.instanceKey;relativeBoardState=relativeClientInitialState(spec);interactiveValues=[relativeClientStateKey(relativeBoardState)];interactiveTouched=[false];}
+ relativeClientRenderBoard(spec);relativeClientBindBoard(spec);updateInteractiveControls();
 }
 function setupConversionTools(){
  document.querySelectorAll('.conversion-tool').forEach(tool=>{
@@ -1259,12 +1312,19 @@ function setupFractionProductTools(){
  });
 }
 function resetInteractiveEntryState(spec){
+ if(spec&&spec.kind==='relative-tokens'){
+   relativeBoardKey=spec.relative.instanceKey;relativeBoardState=relativeClientInitialState(spec);interactiveValues=[relativeClientStateKey(relativeBoardState)];interactiveTouched=[false];activeSlotIndex=0;return;
+ }
  const slots=spec&&Array.isArray(spec.slots)?spec.slots:[];
  interactiveValues=slots.map(slot=>String(slot.initialValue===undefined?'':slot.initialValue));
  interactiveTouched=slots.map(()=>false);
  activeSlotIndex=0;
 }
 function ensureInteractiveEntryState(spec){
+ if(spec&&spec.kind==='relative-tokens'){
+   if(!relativeBoardState||relativeBoardKey!==spec.relative.instanceKey)resetInteractiveEntryState(spec);
+   return;
+ }
  const count=Array.isArray(spec.slots)?spec.slots.length:0;
  if(interactiveValues.length!==count||interactiveTouched.length!==count) resetInteractiveEntryState(spec);
  if(activeSlotIndex>=count) activeSlotIndex=Math.max(0,count-1);
@@ -1367,7 +1427,7 @@ function renderInteractiveKeypad(spec){
  if(!keypad) return;
  keypad.innerHTML='';
  const body=keypad.closest('.answer-body');
- if(spec.kind==='qcm'||spec.kind==='grid-point'){
+ if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='relative-tokens'){
    if(body){body.style.setProperty('--keypad-max','940px');body.style.setProperty('--keypad-height-desktop','64px');body.style.setProperty('--keypad-height-mobile','62px');}
    return;
  }
@@ -1391,7 +1451,7 @@ function renderInteractiveKeypad(spec){
 function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
- const available=interactiveMode&&!interactiveFinished&&spec&&spec.kind!=='qcm'&&spec.kind!=='grid-point';
+ const available=interactiveMode&&!interactiveFinished&&spec&&spec.kind!=='qcm'&&spec.kind!=='grid-point'&&spec.kind!=='relative-tokens';
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -1408,6 +1468,7 @@ function toggleKeypad(){
 function hasInteractiveAnswer(){
  const spec=slides[idx].interactiveSpec;
  if(spec.kind==='qcm') return selectedOptions.size>0;
+ if(spec.kind==='relative-tokens') return interactiveTouched.some(Boolean);
  return interactiveTouched.some(Boolean);
 }
 function updateInteractiveControls(){
@@ -1481,6 +1542,10 @@ function interactiveAnswerIsCorrect(spec){
    const expected=[...spec.correctIndices].sort((a,b)=>a-b);
    return selected.length===expected.length&&selected.every((value,index)=>value===expected[index]);
  }
+ if(spec.kind==='relative-tokens'){
+   const state=relativeBoardState;
+   return !!state&&state.tokens.every(token=>token.zone==='result')&&state.tokens.reduce((sum,token)=>sum+token.sign,0)===spec.relative.result;
+ }
  if(spec.layout==='fraction'&&spec.fractionPolicy==='equivalent'){
    return equivalentInteractiveFraction(interactiveValues,spec.acceptedCombinations);
  }
@@ -1497,13 +1562,14 @@ function rawInteractiveResponse(spec){
    const options=slides[idx].questionInstance&&slides[idx].questionInstance.response.options;
    return [...selectedOptions].sort((a,b)=>a-b).map(index=>options&&options[index]?options[index].optionId:index);
  }
+ if(spec.kind==='relative-tokens') return [{...relativeBoardState,tokens:relativeBoardState.tokens.map(token=>({...token}))}];
  return interactiveValues.slice();
 }
 function evaluateInteractiveAnswer(spec){
  const skipped=!hasInteractiveAnswer();
  const correct=!skipped&&interactiveAnswerIsCorrect(spec);
  const raw=rawInteractiveResponse(spec);
- const normalized=spec.kind==='qcm'?raw:raw.map(normalizeInteractiveAnswer);
+ const normalized=spec.kind==='qcm'?raw:(spec.kind==='relative-tokens'?[relativeClientStateKey(relativeBoardState)]:raw.map(normalizeInteractiveAnswer));
  return Object.freeze({
    isCorrect:correct,
    outcome:skipped?'skipped':(correct?'correct':'incorrect'),
@@ -1670,7 +1736,11 @@ function interactiveKeysFor(combinations,options={}){
   return keys;
 }
 function interactiveSpecForInstance(inst,correctionHtml){
-  if(inst.q&&inst.q.options&&inst.q.options.transformation_place_kind){
+ if(inst.relativeTokens&&inst.relativeTokens.interactive){
+   const result=String(inst.relativeTokens.result);
+   return {kind:'relative-tokens',relative:inst.relativeTokens,expectedDisplay:'réponse : '+(result.startsWith('-')?'−'+result.slice(1):result)};
+ }
+ if(inst.q&&inst.q.options&&inst.q.options.transformation_place_kind){
     const combinations=interactiveAnswerCombinations(inst,(inst.answers||[]).map(value=>String(value)));
     return {kind:'grid-point',slots:[{label:'Abscisse'},{label:'Ordonnée'}],acceptedCombinations:combinations,expectedDisplay:'réponse : '+(inst.answers||[]).join(' ; '),keys:[]};
   }
