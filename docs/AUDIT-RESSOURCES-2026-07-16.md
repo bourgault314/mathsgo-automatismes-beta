@@ -18,15 +18,15 @@ réutilisables par Automatismes.
 
 | Ressource | Comparaison avec le site | Décision | Brique réutilisable |
 |---|---|---|---|
-| Dossier maître Calcul littéral, quatre palettes | Les quatre livrets finaux sont identiques octet pour octet aux PDF publiés | Ne pas recopier les PDF. Conserver le ZIP comme source maître ; préparer plus tard un dépôt de sources distinct du site public | Tuiles algébriques, palettes, règles de mise en page, séquences réduction/distributivité/factorisation |
+| Dossier maître Calcul littéral, quatre palettes | Les quatre livrets finaux sont identiques octet pour octet aux PDF publiés. Le ZIP reçu est aussi tronqué pendant le quatrième livret, mais 56 entrées antérieures, dont tous les modules Python et activités, sont complètes | Ne pas recopier les PDF. Conserver les sources récupérées ; demander une archive complète avant archivage définitif | `algebra.algebra-tiles`, puis modèles d’aire pour distributivité et factorisation |
 | Fiche « Angles dans les triangles » v11 | Absente du site | Ajouter le PDF et le `.tex` dans la collection Angles | `geometry.triangle-angle-sum` : triangle, arcs, angle droit et barre de 180° |
-| Sources du mur de fractions | Le générateur HTML existe déjà sur le site, mais les quatre fiches PDF et leurs sources Python n’y sont pas | Ne pas remplacer le générateur existant. Examiner puis publier séparément le pack de fiches | Mur gradué, comparaison, équivalences et addition de fractions |
-| PythaBarre recto-verso v34 | L’outil interactif PythaBarre existe ; le gabarit PDF reçu n’était pas publié | Publier le PDF et sa source avec un chemin de logo portable, puis le relier à l’outil interactif | `geometry.pythagoras-mill` ; futures barres et étapes de rédaction |
+| Sources du mur de fractions | Le générateur HTML existe déjà sur le site. Le ZIP reçu est tronqué dès le logo : seuls le README et le lanceur Python sont complets ; les scripts et quatre PDF manquent | Ne pas remplacer le générateur. Extraire son moteur visuel maintenant ; demander plus tard une archive complète pour les fiches | `arithmetic.fraction-wall` : mur gradué, équivalences, décimaux et pourcentages |
+| PythaBarre recto-verso v34 | L’outil interactif PythaBarre existe ; le gabarit PDF reçu n’était pas publié | Publier le PDF et sa source avec un chemin de logo portable, puis le relier à l’outil interactif | `geometry.pythagoras-mill`, `geometry.pythagoras-bar`, `geometry.pythagoras-reasoning` |
 | Enquêtes additives | Le PDF est déjà publié. Le `.tex` reçu est plus récent que la source du dépôt et ajoute le pied de page actuel | Réconcilier la source et régénérer avant tout remplacement | Enquête à deux ou trois inconnues, alignement, égalisation, surplus |
 | Enquêtes multiplicatives | Les cinq premières pages ont un rendu identique ; les deux dernières ne diffèrent que par quelques détails de ponctuation | Ne pas créer de second PDF. Réconcilier seulement la source | Partage en parts, coefficient multiplicatif, contrôle somme/rapport |
 | Gabarit de fractions v11 | PDF strictement identique au fichier publié | Doublon confirmé : ne rien recopier | Déjà couvert en partie par `arithmetic.fraction-percent-bar` |
 | Gabarit de fractions v4 | Version plus ancienne et moins marquée que la v11 | Classer comme remplacé par la v11 | Aucune nouvelle brique |
-| Gabarits de partage équitable reçus | 5 pages, alors que le site publie une version plus riche de 7 pages | Conserver la version du site | Futur `arithmetic.equal-sharing-bar` pour les partages simples et emboîtés |
+| Gabarits de partage équitable reçus | 5 pages, alors que le site publie une version plus riche de 7 pages | Conserver la version du site | `arithmetic.equal-sharing-board` pour les partages en 2, 3, 4 ou 5, dont le partage de deux morceaux |
 | Multiples et fractions d’une quantité reçus | Le site publie une version plus explicite avec flèches, prolongements et étapes | Conserver la version du site | Étendre `arithmetic.relation-bar` aux multiples et fractions de quantité |
 | Fichiers `.aux`, `.log`, `.synctex.gz` | Fichiers temporaires de compilation | Ignorer | Aucune |
 
@@ -44,11 +44,76 @@ réutilisables par Automatismes.
    reliés à l’outil interactif ; son branchement dans `dnb_24` viendra après la
    validation visuelle du catalogue.
 
+## Deuxième lot branché
+
+1. Les gabarits de partage simple et de deux morceaux sont générés par
+   `arithmetic.equal-sharing-board` avec leurs boîtes bleu marine et leurs
+   flèches turquoise.
+2. Les enquêtes additives à deux ou trois inconnues et les enquêtes
+   multiplicatives ×2, ×3, ×4 et ×n utilisent `algebra.inquiry-bar`.
+3. Les étapes ne sont pas stockées comme des images : leurs barres, accolades,
+   hachures, coupes et divisions sont calculées par le composant et peuvent
+   recevoir d’autres nombres.
+4. Les 38 états question/correction de ce lot sont figés par empreinte et tous
+   les préréglages déclarent les supports téléphone, ordinateur, projection et
+   impression.
+5. Le générateur public du mur de fractions reste intact ; son moteur de dessin
+   est maintenant disponible séparément comme `arithmetic.fraction-wall`.
+6. Les tuiles du dossier maître Calcul littéral sont générées par
+   `algebra.algebra-tiles` dans les quatre palettes prévues par les sources.
+7. Les grilles de double distributivité et de factorisation utilisent
+   `algebra.area-model`, avec produits partiels révélables en correction.
+
+## Troisième lot branché
+
+1. `geometry.pythagoras-bar` reconstruit le modèle PythaBarre à partir de
+   paramètres : sommets, longueurs, côté cherché, phase lettres/longueurs/
+   carrés et partage proportionnel.
+2. Les trois rectangles restent accolés et leurs couleurs sont reliées aux
+   trois termes de l’égalité ; aucun aperçu n’est utilisé comme source.
+3. `geometry.pythagoras-reasoning` sépare la rédaction en étapes réutilisables
+   et conserve les deux raisonnements différents, regroupement pour
+   l’hypoténuse et soustraction pour un côté.
+4. Les 36 états question/correction de ce lot sont figés par empreinte et
+   déclarés compatibles téléphone, ordinateur, projection et impression.
+
+## Quatrième lot branché
+
+1. La version publiée de « Multiples et fractions d’une quantité » a été
+   préférée au PDF reçu, car elle contient les flèches ×n/÷n et les
+   prolongements pointillés absents de l’ancienne version.
+2. `arithmetic.relation-bar` sait maintenant construire les familles 2, 3, 4,
+   5 et 10, dans le sens direct et dans le sens inverse.
+3. Les parts restent strictement accolées. Leur orientation change selon le
+   raisonnement : au-dessus du tout pour un multiple, en dessous pour une
+   fraction unitaire.
+4. Les formes à dix parts sont conservées pour l’impression et la projection,
+   mais ne sont pas annoncées comme compatibles téléphone.
+
+## Cinquième lot branché
+
+1. Les jetons `n`, `n²`, `1`, `−1` et `n/q` du module Relations ne sont plus
+   définis dans le gros moteur de questions : ils appartiennent au composant
+   `algebra.relation-tiles`.
+2. Les sept compositions existantes gardent la même géométrie, et leurs
+   quatorze états de catalogue sont figés par empreinte.
+3. Les 18 gabarits de `dnb_09` sont classés en huit types pédagogiques avec
+   leur réponse, leur composant visuel et leurs rubriques d’aide.
+
+## Sixième lot branché
+
+1. Les dix gabarits de `dnb_24` sont classés : conditions, hypoténuse,
+   égalité, deux chemins de calcul, réciproque et cohérence.
+2. Les questions 3 à 7 peuvent appeler le moulin, PythaBarre ou la rédaction
+   guidée avec les nombres effectivement tirés par le générateur.
+3. Sans aide, ces constructions sont absentes ; en correction, les questions
+   de calcul affichent l’étape de raisonnement adaptée.
+4. Le cours Pythagore consomme les composants de la bibliothèque et ne montre
+   que les rubriques liées à la question courante.
+
 ## Ordre de reprise
 
-1. valider Angles et le moulin de Pythagore sur ordinateur et téléphone ;
-2. extraire les barres de partage équitable et les enquêtes ;
-3. intégrer les fiches du mur de fractions sans remplacer le générateur ;
-4. extraire les tuiles et palettes du dossier maître Calcul littéral ;
-5. seulement ensuite créer le dépôt de sources/studio pour sortir ces maîtres
+1. récupérer une archive complète des quatre fiches du mur de fractions ;
+2. récupérer une archive complète du dossier maître Calcul littéral ;
+3. seulement ensuite créer le dépôt de sources/studio pour sortir ces maîtres
    du site public sans perdre leur historique.

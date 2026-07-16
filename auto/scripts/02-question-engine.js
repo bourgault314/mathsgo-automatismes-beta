@@ -2581,6 +2581,56 @@ function renderGenericQuestion(inst, correction=false, mode=null){
   return html;
 }
 
+function pythagorasAidVisual(inst,correction=false){
+  const number=Number(inst.q.n),scope=inst.scope||{};
+  const bar=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get('geometry.pythagoras-bar');
+  const reasoning=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get('geometry.pythagoras-reasoning');
+  const mill=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get('geometry.pythagoras-mill');
+  let visual='';
+  if(number===3&&bar){
+    visual=bar.render({phase:'relation',vertices:['B','A','C'],sideNames:{legA:'AB',legB:'BC',hypotenuse:'AC'}},correction);
+  }else if(number===4&&mill){
+    visual=mill.render({mode:'relation',vertices:['T','R','S'],sideNames:{legA:'RT',legB:'ST',hypotenuse:'RS'}},correction);
+  }else if([5,6,7].includes(number)){
+    const a=Number(scope.a),b=Number(scope.b),hypotenuse=Number.isFinite(Number(scope.c))?Number(scope.c):Math.sqrt(a*a+b*b);
+    const target=number===7?'legB':'hypotenuse';
+    const values={legA:a,legB:b,hypotenuse};
+    const sideNames={legA:'a',legB:'b',hypotenuse:number===5||number===6?'h':'c'};
+    if(correction&&reasoning){
+      const step=number===5?'isolate':'root';
+      visual=reasoning.render({step,target,values,sideNames,unit:'cm'},true);
+    }else if(bar){
+      visual=bar.render({phase:number===5?'squares':'lengths',target,values,sideNames,proportional:true},false);
+    }
+  }
+  return visual?'<div class="pythagoras-aid-visual">'+visual+'</div>':'';
+}
+
+function renderPythagorasModule(inst,correction=false,mode=null){
+  if(mode===null) mode=document.getElementById('visualMode').value;
+  const number=Number(inst.q.n),usesAid=[3,4,5,6,7].includes(number);
+  let statement=inst.rawStatement,footer=inst.rawFooter;
+  if(isWithoutVisuals(mode)){
+    const keepPlaceholder=mode==='without-reveal';
+    statement=stripVisuals(statement,keepPlaceholder);
+    footer=stripVisuals(footer,keepPlaceholder);
+  }
+  const visual=usesAid?(mode==='with'?pythagorasAidVisual(inst,correction):(mode==='without-reveal'?visualPlaceholder(mode):'')):'';
+  const qcm=splitQCM(statement);
+  let html='';
+  if(qcm){
+    html+='<div class="question pythagoras-prompt">'+renderMathSegments(qcm.prompt)+'</div>'+visual;
+    const corrects=new Set(inst.answers.map(value=>String(value)));
+    html+='<div class="options pythagoras-options options-'+qcm.opts.length+compactQcmClass(qcm.opts)+'">';
+    qcm.opts.forEach((option,index)=>{const isCorrect=correction&&corrects.has(String(index+1));html+='<div class="opt '+(isCorrect?'correct':'')+'"><strong>'+String.fromCharCode(65+index)+'.</strong> '+renderMathSegments(option)+'</div>';});
+    html+='</div>';
+  }else{
+    html+='<div class="question pythagoras-prompt">'+renderMathSegments(statement)+'</div>'+visual;
+  }
+  if(footer) html+='<div class="footer pythagoras-answer">'+renderPlaceholders(footer,inst.answers,correction?'correction':'question')+'</div>';
+  return html;
+}
+
 function thalesLengthLabels(inst){
   const scope=inst.scope||{},number=Number(inst.q.n),value=name=>scope[name]===undefined?'':fmt(scope[name])+' cm';
   if(number===3) return {AM:value('AD'),AB:value('AB'),AC:value('AC')};
@@ -3137,34 +3187,6 @@ function renderEvolutionModule(inst,correction=false,mode=null){
     html+='<div class="footer evolution-answer">'+renderPlaceholders(inst.rawFooter,inst.answers,correction?'correction':'question')+'</div>';
   }
   return html;
-}
-
-function relationTileUnit(type,sign=1){
-  const positive=sign>0,fill=positive?'#31a98e':'#ef5142';
-  const label=type==='n2'?(positive?'𝑛²':'−𝑛²'):(type==='n'?(positive?'𝑛':'−𝑛'):(positive?'1':'−1'));
-  // Même géométrie que dans le module Réduction : l'unité mesure un tiers
-  // de la longueur de n, et le côté de n² est égal à cette longueur.
-  const viewW=type==='u'?32:96,viewH=type==='n2'?96:32;
-  const scale=.85,w=Math.round(viewW*scale),h=Math.round(viewH*scale);
-  const fs=type==='n2'?27:(type==='n'?24:18),baseline=type==='n2'?50:17;
-  return `<svg class="relation-algebra-tile relation-algebra-tile-${type}" viewBox="0 0 ${viewW} ${viewH}" width="${w}" height="${h}" aria-hidden="true"><rect x="1" y="1" width="${viewW-2}" height="${viewH-2}" fill="${fill}" stroke="#171717" stroke-width="1.7"/><text x="${viewW/2}" y="${baseline}" dominant-baseline="middle" text-anchor="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="${fs}" font-weight="700" fill="#111">${label}</text></svg>`;
-}
-
-function relationTilesHtml(visual){
-  if(!visual) return '';
-  if(visual.kind==='fraction'){
-    // Une fraction de n garde exactement la géométrie 96 × 32 de la tuile n.
-    // Seule la subdivision interne change.
-    const width=96,height=32,scale=.85,cellW=width/visual.divisor;
-    let cells='';
-    for(let i=0;i<visual.divisor;i++) cells+=`<rect x="${i*cellW}" y="0" width="${cellW}" height="${height}" fill="${i===0?'#31a98e':'#fff'}" stroke="#171717" stroke-width="1.5"/>`;
-    const cx=cellW/2,fractionSize=visual.divisor===4?9.5:11;
-    const fraction=`<text x="${cx}" y="17" text-anchor="middle" dominant-baseline="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="${fractionSize}" font-style="italic" font-weight="700">n/${visual.divisor}</text>`;
-    return `<div class="relation-tile-help"><svg class="relation-algebra-tile relation-algebra-tile-fraction" viewBox="0 0 ${width} ${height}" width="${Math.round(width*scale)}" height="${Math.round(height*scale)}" aria-hidden="true">${cells}${fraction}</svg></div>`;
-  }
-  let tiles='';
-  visual.items.forEach(item=>{for(let i=0;i<item.count;i++) tiles+=relationTileUnit(item.type,item.sign);});
-  return `<div class="relation-tile-help">${tiles}</div>`;
 }
 
 function relationSummaryItems(value){
@@ -4194,6 +4216,7 @@ function renderQuestion(inst, correction=false, mode=null){
   if(inst && inst.module && inst.module.id==='dnb_21') return renderPerimeterModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_22') return renderAreaModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_23') return renderVolumeModule(inst, correction, mode);
+  if(inst && inst.module && inst.module.id==='dnb_24') return renderPythagorasModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_25') return renderThalesModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_30') return renderAverageModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_34') return renderProportionModule(inst, correction, mode);

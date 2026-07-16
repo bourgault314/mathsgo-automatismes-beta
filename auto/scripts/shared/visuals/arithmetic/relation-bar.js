@@ -11,57 +11,66 @@
     return String(value).replace('.',',');
   }
 
-  function relationPalette(kind,size){
-    if(kind==='multiple'&&size===2) return {fill:'#fff7d6',stroke:'#8a7420'};
-    if(kind==='multiple'&&size===3) return {fill:'#fde5eb',stroke:'#9b455f'};
-    if(kind==='multiple'&&size===4) return {fill:'#e6f5e4',stroke:'#477a45'};
-    if(kind==='fraction'&&size===2) return {fill:'#fff7d6',stroke:'#8a7420'};
-    if(kind==='fraction'&&size===4) return {fill:'#e6f5e4',stroke:'#477a45'};
-    return {fill:'#e7f1fb',stroke:'#35658c'};
+  function relationPalette(size){
+    const palettes={
+      2:{fill:'#fff7d6',strong:'#ffef9b'},
+      3:{fill:'#fde5eb',strong:'#f7c3d1'},
+      4:{fill:'#e6f5e4',strong:'#c8eac5'},
+      5:{fill:'#e7f1fb',strong:'#cae1f3'},
+      10:{fill:'#fff0df',strong:'#fbd5aa'}
+    };
+    return palettes[size]||{fill:'#e7f1fb',strong:'#cae1f3'};
   }
 
   function relationBarSvg(data,correction=false){
-    const x=60,width=640,topY=28,topH=70,bottomY=98,bottomH=70;
+    const x=92,width=610,topY=28,topH=70,bottomY=98,bottomH=70;
     const text=(x,y,value,size=24,weight=800)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="#17283f">${visualEscapeHtml(value)}</text>`;
+    const arrow=(label,up=false)=>{
+      const path=up?'M70 139 C34 132 34 64 70 56':'M70 55 C34 62 34 130 70 139';
+      const head=up?'M70 56 L59 51 L61 63 Z':'M70 139 L59 134 L61 146 Z';
+      return `<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round"/><path d="${head}" fill="#4b5563"/>${text(27,97,label,19,750)}`;
+    };
     let body='';
 
     if(data.kind==='multiple_direct'||data.kind==='multiple_inverse'){
-      const factor=data.factor;
-      const palette=relationPalette('multiple',factor);
-      const names={2:'LE DOUBLE',3:'LE TRIPLE',4:'LE QUADRUPLE'};
+      const factor=Math.max(2,Math.min(10,Math.round(Number(data.factor)||2)));
+      const palette=relationPalette(factor);
+      const names={2:'LE DOUBLE',3:'LE TRIPLE',4:'LE QUADRUPLE',5:'LE QUINTUPLE',10:'LE DÉCUPLE'};
       const cellW=width/factor;
-      body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
-      body+=text(x+width/2,topY+topH/2,correction?visualFormat(data.result):names[factor],25,850);
-      for(let i=0;i<factor;i++){
-        body+=`<rect x="${x+i*cellW}" y="${bottomY}" width="${cellW}" height="${bottomH}" fill="${i===0?palette.fill:'#fff'}" stroke="#222" stroke-width="2" ${i===0?'':'stroke-dasharray="8 6"'}/>`;
-        if(correction) body+=text(x+(i+.5)*cellW,bottomY+bottomH/2,visualFormat(data.value),21,800);
+      for(let index=0;index<factor;index++){
+        body+=`<rect x="${x+index*cellW}" y="${topY}" width="${cellW}" height="${topH}" fill="${index===0?palette.strong:'#fff'}" stroke="#222" stroke-width="2" ${index===0?'':'stroke-dasharray="8 6"'}/>`;
+        if(correction) body+=text(x+(index+.5)*cellW,topY+topH/2,visualFormat(data.value),factor===10?14:factor===5?17:21,800);
       }
-      if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,'la quantité',Math.min(21,Math.max(15,180/cellW*18)),780);
+      body+=`<rect x="${x}" y="${bottomY}" width="${width}" height="${bottomH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
+      body+=text(x+width/2,bottomY+bottomH/2,correction?visualFormat(data.result):names[factor],factor===10?21:25,850);
+      if(!correction) body+=text(x+cellW/2,topY+topH/2,'une part',factor===10?11:factor===5?15:20,780);
+      body+=arrow(data.kind==='multiple_inverse'?`÷ ${factor}`:`× ${factor}`,data.kind==='multiple_inverse');
     }
 
     if(data.kind==='fraction_direct'){
-      const divisor=data.divisor;
-      const palette=relationPalette('fraction',divisor);
-      const names={2:'la moitié',4:'le quart'};
+      const divisor=Math.max(2,Math.min(10,Math.round(Number(data.divisor)||2)));
+      const palette=relationPalette(divisor);
+      const names={2:'la moitié',3:'le tiers',4:'le quart',5:'le cinquième',10:'le dixième'};
       const cellW=width/divisor;
       body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
       body+=text(x+width/2,topY+topH/2,correction?visualFormat(data.value):'LE TOUT',25,850);
-      for(let i=0;i<divisor;i++){
-        body+=`<rect x="${x+i*cellW}" y="${bottomY}" width="${cellW}" height="${bottomH}" fill="${i===0?palette.fill:'#fff'}" stroke="#222" stroke-width="2"/>`;
-        if(correction) body+=text(x+(i+.5)*cellW,bottomY+bottomH/2,visualFormat(data.result),divisor===4?20:22,800);
+      for(let index=0;index<divisor;index++){
+        body+=`<rect x="${x+index*cellW}" y="${bottomY}" width="${cellW}" height="${bottomH}" fill="${index===0?palette.strong:'#fff'}" stroke="#222" stroke-width="2" ${index===0?'':'stroke-dasharray="8 6"'}/>`;
+        if(correction) body+=text(x+(index+.5)*cellW,bottomY+bottomH/2,visualFormat(data.result),divisor===10?14:divisor===5?17:20,800);
       }
-      if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,names[divisor],divisor===4?18:21,780);
+      if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,names[divisor],divisor===10?11:divisor===5?14:divisor===4?18:20,780);
+      body+=arrow(`÷ ${divisor}`);
     }
 
     if(data.kind==='predecessor'||data.kind==='successor'){
-      const palette=relationPalette('neighbor',1),unitW=82,mainW=width-unitW;
+      const palette=relationPalette(1),unitW=82,mainW=width-unitW;
       const isPredecessor=data.kind==='predecessor';
       const topLabel=correction
-        ? visualFormat(isPredecessor?data.value:data.result)
-        : (isPredecessor?'LE NOMBRE : '+visualFormat(data.value):'LE SUCCESSEUR');
+        ?visualFormat(isPredecessor?data.value:data.result)
+        :(isPredecessor?'LE NOMBRE : '+visualFormat(data.value):'LE SUCCESSEUR');
       const bottomLabel=correction
-        ? visualFormat(isPredecessor?data.result:data.value)
-        : (isPredecessor?'le prédécesseur':'le nombre : '+visualFormat(data.value));
+        ?visualFormat(isPredecessor?data.result:data.value)
+        :(isPredecessor?'le prédécesseur':'le nombre : '+visualFormat(data.value));
       body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
       body+=text(x+width/2,topY+topH/2,topLabel,25,850);
       body+=`<rect x="${x}" y="${bottomY}" width="${mainW}" height="${bottomH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
@@ -73,27 +82,36 @@
     return `<div class="relation-bar-help"><svg class="relation-bar-svg" viewBox="0 0 760 198" role="img" aria-label="Schéma en barres">${body}</svg></div>`;
   }
 
+  const supportsAll=Object.freeze(['phone','computer','projection','print']);
+  const supportsWide=Object.freeze(['computer','projection','print']);
+  const preset=(id,label,data,supports=supportsAll)=>Object.freeze({id,label,supports,data:Object.freeze(data)});
   const presets=Object.freeze([
-    Object.freeze({id:'double',label:'Double',data:Object.freeze({kind:'multiple_direct',factor:2,value:7,result:14})}),
-    Object.freeze({id:'triple-inverse',label:'Retrouver la quantité depuis le triple',data:Object.freeze({kind:'multiple_inverse',factor:3,value:8,result:24})}),
-    Object.freeze({id:'quart',label:'Quart d’une quantité',data:Object.freeze({kind:'fraction_direct',divisor:4,value:20,result:5})}),
-    Object.freeze({id:'predecesseur',label:'Prédécesseur',data:Object.freeze({kind:'predecessor',value:42,result:41})}),
-    Object.freeze({id:'successeur',label:'Successeur',data:Object.freeze({kind:'successor',value:42,result:43})})
+    preset('double','Double',{kind:'multiple_direct',factor:2,value:7,result:14}),
+    preset('triple','Triple',{kind:'multiple_direct',factor:3,value:8,result:24}),
+    preset('quadruple','Quadruple',{kind:'multiple_direct',factor:4,value:6,result:24}),
+    preset('quintuple','Quintuple',{kind:'multiple_direct',factor:5,value:5,result:25}),
+    preset('decuple','Décuple',{kind:'multiple_direct',factor:10,value:3,result:30},supportsWide),
+    preset('triple-inverse','Retrouver la quantité depuis le triple',{kind:'multiple_inverse',factor:3,value:8,result:24}),
+    preset('moitie','Moitié d’une quantité',{kind:'fraction_direct',divisor:2,value:24,result:12}),
+    preset('tiers','Tiers d’une quantité',{kind:'fraction_direct',divisor:3,value:24,result:8}),
+    preset('quart','Quart d’une quantité',{kind:'fraction_direct',divisor:4,value:20,result:5}),
+    preset('cinquieme','Cinquième d’une quantité',{kind:'fraction_direct',divisor:5,value:25,result:5}),
+    preset('dixieme','Dixième d’une quantité',{kind:'fraction_direct',divisor:10,value:30,result:3},supportsWide),
+    preset('predecesseur','Prédécesseur',{kind:'predecessor',value:42,result:41}),
+    preset('successeur','Successeur',{kind:'successor',value:42,result:43})
   ]);
 
-  if(!global.MATHSGO_VISUALS){
-    throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant relation-bar.js.');
-  }
+  if(!global.MATHSGO_VISUALS) throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant relation-bar.js.');
   global.MATHSGO_VISUALS.register('arithmetic.relation-bar',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'Schéma en barres — relations',
     family:'Arithmétique',
-    description:'Représente doubles, triples, fractions d’une quantité et nombres voisins.',
+    description:'Construit les regroupements ×2, ×3, ×4, ×5 et ×10, leurs fractions unitaires inverses et les nombres voisins.',
     viewBox:'0 0 760 198',
+    supports:supportsAll,
     presets,
     render:relationBarSvg
   });
 
-  // Compatibilité avec le moteur historique pendant le découpage progressif.
   global.relationBarSvg=relationBarSvg;
 })(globalThis);

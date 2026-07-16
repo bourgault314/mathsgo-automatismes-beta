@@ -28,9 +28,12 @@ const sources = [
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
+  'auto/scripts/shared/visuals/algebra/relation-tiles.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
   'auto/scripts/02-question-engine.js'
 ];
 
@@ -44,6 +47,7 @@ globalThis.__bank = RAW_MODULES.map(module => ({
 }));
 globalThis.__bankSnapshot = JSON.stringify(RAW_MODULES);
 globalThis.__renderThalesModule = renderThalesModule;
+globalThis.__renderPythagorasModule = renderPythagorasModule;
 globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
 globalThis.__makeInstance = makeInstance;
@@ -141,6 +145,18 @@ for (const [index, question] of context.__relativeModule.questions.entries()) {
   if(index%2===0&&!correctionHtml.includes('relative-token-result')) fail(`La correction du plateau tactile manque pour l’addition relative ${question.n}.`);
   if(index%2===1&&!correctionHtml.includes('relative-token')) fail(`La correction visuelle manque pour l’addition relative ${question.n}.`);
 }
+
+const pythagorasInstance={
+  module:{id:'dnb_24'},q:{n:7},scope:{a:3,b:4,c:5},answers:['4'],
+  rawStatement:'Dans un triangle rectangle, l’hypoténuse mesure 5 cm et un côté mesure 3 cm. Calcule l’autre côté.',
+  rawFooter:'$$[[formula]]\\text{ cm}$$'
+};
+const pythagorasQuestion=context.__renderPythagorasModule(pythagorasInstance,false,'with');
+const pythagorasCorrection=context.__renderPythagorasModule(pythagorasInstance,true,'with');
+const pythagorasWithoutAid=context.__renderPythagorasModule(pythagorasInstance,false,'without');
+if(!pythagorasQuestion.includes('pythagoras-bar-svg')||!pythagorasQuestion.includes('?²')||!pythagorasQuestion.includes('5²')) fail('La question Pythagore 7 doit proposer PythaBarre avec le bon côté inconnu.');
+if(!pythagorasCorrection.includes('pythagoras-reasoning-svg')||!pythagorasCorrection.includes('b = √16 = 4')) fail('La correction Pythagore 7 doit utiliser le chemin guidé avec soustraction puis racine.');
+if(pythagorasWithoutAid.includes('pythagoras-bar-svg')||pythagorasWithoutAid.includes('pythagoras-reasoning-svg')) fail('PythaBarre doit être totalement absente sans aide.');
 
 const contracts = fs.readFileSync(new URL('auto/scripts/core/01-series-contracts.js', root), 'utf8');
 const registeredLegacyIds = [...contracts.matchAll(/\['[^']+','(dnb_[^']+)',\d+\]/g)].map(match => match[1]);
