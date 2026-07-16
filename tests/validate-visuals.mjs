@@ -9,6 +9,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
+  'auto/scripts/shared/visuals/data/cartesian-graph.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
@@ -48,7 +49,23 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 24) fail(`24 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 25) fail(`25 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const cartesianGraph=registry?.get('data.cartesian-graph');
+if(!cartesianGraph) fail('Le composant data.cartesian-graph est absent.');
+if(cartesianGraph&&cartesianGraph.version!=='1.0.0') fail('Version 1.0.0 attendue pour le graphique cartésien.');
+if(cartesianGraph&&cartesianGraph.presets.length!==6) fail('Six graphiques cartésiens de référence sont attendus.');
+for(const preset of cartesianGraph?.presets||[]){
+  const rendered=cartesianGraph.render(preset.data);
+  if(!rendered.startsWith('<svg class="cartesian-graph-svg"')||!rendered.includes('role="img"')) fail(`Le graphique ${preset.id} doit produire un SVG accessible.`);
+}
+const cartesianBars=cartesianGraph?.render(cartesianGraph.presets.find(preset=>preset.id==='batons-ateliers').data)||'';
+if((cartesianBars.match(/class="cartesian-bar"/g)||[]).length!==3) fail('Le diagramme en bâtons doit conserver ses trois catégories.');
+const proportionalLimit=cartesianGraph?.model(cartesianGraph.presets.find(preset=>preset.id==='proportionnalite-limite').data);
+if(proportionalLimit?.yAxis.max!==20) fail('La droite proportionnelle limite doit étendre le domaine vertical jusqu’à 20.');
+const growthLimit=cartesianGraph?.model(cartesianGraph.presets.find(preset=>preset.id==='croissance-limite').data);
+if(growthLimit?.yAxis.max!==25||!growthLimit.yAxis.ticks.some(tick=>tick.value===25)) fail('La croissance limite doit ajouter la graduation 25 sans dépasser l’axe.');
+if(!cartesianGraph?.render(cartesianGraph.presets.find(preset=>preset.id==='billets-points').data).includes('data-point-id="point-5"')) fail('Le nuage de points doit conserver le cinquième billet.');
 
 const solid=registry?.get('geometry.solid');
 if(!solid) fail('Le composant geometry.solid est absent.');
@@ -614,7 +631,13 @@ for (const testCase of fractionPercentCases) {
   }
 }
 
+const catalogueHtml = fs.readFileSync(new URL('auto/dev/visual-library.html', root), 'utf8');
+for(const path of visualSources.filter(path=>!path.endsWith('/00-registry.js'))){
+  const catalogueSource='../'+path.slice('auto/'.length);
+  if(!catalogueHtml.includes(catalogueSource)) fail(`Le catalogue ne charge pas ${catalogueSource}.`);
+}
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
+if(indexHtml.includes('scripts/shared/visuals/data/cartesian-graph.js')) fail('Le graphique cartésien préparé doit rester hors du moteur avant comparaison des gabarits.');
 const moduleManifest = fs.readFileSync(new URL('auto/scripts/00-module-manifest.js', root), 'utf8');
 const slideshow = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
 if (!slideshow.includes('@media(min-width:1200px){.answer-dock .answer-body{display:block;position:relative;padding:0 195px}')) fail('Le bouton Suivant doit utiliser le même ancrage à droite pour tous les modes sur ordinateur.');
@@ -652,5 +675,5 @@ if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePos
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 24 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
+  console.log('OK — registre cohérent, 25 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
 }

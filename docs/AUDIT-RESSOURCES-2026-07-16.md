@@ -297,6 +297,22 @@ réutilisables par Automatismes.
    42 modules pédagogiques ; il manquait jusque-là les onze derniers fichiers
    de classement.
 
+## Vingt-et-unième lot préparé
+
+1. `data.cartesian-graph` fournit une API commune pour bâtons, lignes, droites
+   et points à partir de données sémantiques.
+2. Six préréglages reproduisent les familles observées dans `dnb_32`, `dnb_33`
+   et `dnb_36`, sans remplacer les SVG historiques.
+3. Le domaine vertical s’étend automatiquement quand une donnée dépasse la
+   borne annoncée. Les cas limites 20 et 25 restent dans le repère et possèdent
+   leur graduation.
+4. Le rendu direct des six SVG a été contrôlé sur une planche d’aperçu ; la
+   comparaison en navigateur du même gabarit et de la même seed reste requise
+   avant branchement.
+5. Le catalogue charge maintenant les 25 composants visuels, y compris les
+   jetons relatifs qui avaient été omis de cette page ; un test rend cette
+   liste exhaustive.
+
 ## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

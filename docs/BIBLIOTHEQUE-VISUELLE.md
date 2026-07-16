@@ -321,5 +321,22 @@ observable, et non une image de substitution. L’extraction suivante peut ainsi
 partir du contrat mathématique déjà écrit et produire un composant paramétrable
 adapté au téléphone, à l’ordinateur, à la projection et à l’impression.
 
+## Référence Graphiques de données
+
+`data.cartesian-graph` prépare un repère commun pour les seize graphiques de
+`dnb_32`, `dnb_33` et `dnb_36`. Il sait tracer des bâtons, une ligne brisée, une
+droite et des points isolés à partir de valeurs mathématiques, de graduations
+et de libellés, sans injecter directement des coordonnées SVG dans la banque.
+
+Six préréglages couvrent les cas historiques : catégories, évolution sur cinq
+jours, droite passant ou non par l’origine, série de points et croissance
+affine. Le domaine est étendu si une donnée dépasse la borne annoncée. Les
+valeurs limites 20 de `dnb_33` et 25 de `dnb_36` restent ainsi sous la flèche de
+l’axe et reçoivent leur graduation.
+
+Le composant est seulement observable dans le catalogue. Les SVG historiques
+restent dans les trois modules jusqu’à comparaison du même gabarit et de la
+même seed sur téléphone et ordinateur.
+
 L’audit complet du lot reçu est conservé dans
 `docs/AUDIT-RESSOURCES-2026-07-16.md`.

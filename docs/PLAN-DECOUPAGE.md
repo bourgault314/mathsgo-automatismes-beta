@@ -112,6 +112,9 @@ l’ordre recommandé sont tenus dans
 
 Le composant `geometry.solid` est préparé. Les figures de `dnb_20` restent la
 référence tant que chaque variante utile n'est pas équivalente ou meilleure.
+Le composant `data.cartesian-graph` est également préparé avec six cas de
+référence et une extension automatique des domaines. Les SVG de `dnb_32`,
+`dnb_33` et `dnb_36` ne sont pas encore remplacés.
 
 ### 4. Jeux et manipulations
 
