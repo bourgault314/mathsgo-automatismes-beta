@@ -190,6 +190,22 @@ réutilisables par Automatismes.
 4. Le module consomme le composant commun ; les seize états question/correction
    sont figés et restent strictement identiques à l’ancien moteur.
 
+## Quatorzième lot préparé
+
+1. Les dix questions de décimaux de `dnb_02` sont classées en comparaison,
+   rangement, encadrement, addition-soustraction et changement d’échelle.
+2. Les onze questions de notation scientifique de `dnb_06` distinguent le
+   sens de conversion, le signe de l’exposant et la reconnaissance d’une
+   mantisse correcte.
+3. Les neuf copies du carré de `dnb_07` deviennent le composant paramétrable
+   `numbers.square-area`, sans changement du contenu de la banque ni des
+   tirages reproductibles.
+4. Les dix questions de divisibilité de `dnb_08` distinguent chiffre des
+   unités, somme des chiffres, critères simultanés et partage sans reste.
+5. Avec ce lot, les dix-sept modules du domaine Nombres et calculs disposent
+   tous d’un registre pédagogique ; la séparation peut se poursuivre avec le
+   domaine Espace et géométrie.
+
 ## Ordre de reprise
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

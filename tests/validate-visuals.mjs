@@ -7,6 +7,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
+  'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
@@ -46,7 +47,28 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 22) fail(`22 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 23) fail(`23 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const squareArea=registry?.get('numbers.square-area');
+if(!squareArea) fail('Le composant numbers.square-area est absent.');
+if(squareArea&&squareArea.version!=='1.0.0') fail('Version 1.0.0 attendue pour le carré côté–aire.');
+if(squareArea&&squareArea.presets.length!==5) fail('Cinq constructions de référence sont attendues pour les carrés.');
+if(squareArea&&context.squareAreaSvg!==squareArea.render) fail('Le point d’entrée historique des carrés doit utiliser le composant enregistré.');
+const squareAreaHashes=new Map([
+  ['aire-inconnue','ee8fc77d4b611b4a028fcb1978974189e9a462ead75305e67ad7213b4fae9120'],
+  ['cote-inconnu','21396a0389cfd5fcc697c2d098c1a05d9565a65c76022cd8145b1735cce451c0'],
+  ['produit','3b067df045e7f122415d39189a10806a184e6f8e72b65a2555c1aae753468a50'],
+  ['calcul-voisin','61703ff612b8d057977a2d9451a6488756077e170cd388b528a58fd7093920bb'],
+  ['deux-carres','e5772e034385972fe6821e4b7f92f4b4445e008ae71aacf93efbbf613e09f169']
+]);
+for(const preset of squareArea?.presets||[]){
+  const actual=hash(squareArea.render(preset.data));
+  if(actual!==squareAreaHashes.get(preset.id)) fail(`Le carré ${preset.id} a changé (${actual}).`);
+  if(!preset.supports.includes('print')) fail(`Le carré ${preset.id} doit rester imprimable.`);
+}
+const squareModule=fs.readFileSync(new URL('auto/scripts/modules/numbers/dnb_07.js',root),'utf8');
+if((squareModule.match(/squareAreaSvg\(/g)||[]).length!==9) fail('Les neuf figures de dnb_07 doivent appeler le carré partagé.');
+if(squareModule.includes('<svg')) fail('dnb_07 ne doit plus embarquer de copie du SVG du carré.');
 
 
 const fractionDecimalGrid=registry?.get('arithmetic.fraction-decimal-grid');
@@ -590,6 +612,7 @@ const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.j
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
+const squareAreaPosition = indexHtml.indexOf('scripts/shared/visuals/numbers/square-area.js');
 const numberLineModuleDeclared = moduleManifest.includes("file:'scripts/modules/numbers/dnb_14.js'");
 const coordinateModuleDeclared = moduleManifest.includes("file:'scripts/modules/geometry/dnb_15.js'");
 const manifestPosition = indexHtml.indexOf('scripts/00-module-manifest.js');
@@ -609,10 +632,10 @@ const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry
 const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
 const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 40 schémas en barres, 14 jetons de relations, 8 partages équitables, 30 étapes d’enquêtes, 12 murs de fractions, 14 compositions de tuiles algébriques, 12 modèles d’aire, 5 configurations de Thalès, 12 états Angles, 8 moulins, 12 PythaBarres et 24 étapes Pythagore figés.');
+  console.log('OK — registre cohérent, 5 carrés, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 40 schémas en barres, 14 jetons de relations, 8 partages équitables, 30 étapes d’enquêtes, 12 murs de fractions, 14 compositions de tuiles algébriques, 12 modèles d’aire, 5 configurations de Thalès, 12 états Angles, 8 moulins, 12 PythaBarres et 24 étapes Pythagore figés.');
 }
