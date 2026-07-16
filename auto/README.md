@@ -15,7 +15,7 @@ l'application et du livret A5, pas un deuxième exerciseur.
 - banque : V1.17 ;
 - 42 modules ;
 - 473 gabarits ;
-- 24 composants visuels ;
+- 25 composants visuels ;
 - 42 modules classés pédagogiquement sur 42 ;
 - partage reproductible par seed, lien, code MG1 et QR code.
 

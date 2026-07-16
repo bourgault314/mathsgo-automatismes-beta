@@ -16,7 +16,7 @@ correction tout en conservant le résultat pédagogique attendu.
 - 42 modules et 473 gabarits sont isolés dans `auto/scripts/modules/` ;
 - le manifeste charge les modules sans recopier leurs blocs dans la page ;
 - les 42 modules possèdent un classement pédagogique complet ;
-- 24 composants visuels partagés sont enregistrés ;
+- 25 composants visuels partagés sont enregistrés ;
 - la banque V1.17, les codes MG1 et les rendus de référence sont testés ;
 - génération, fréquences, rendus et corrections restent encore partiellement
   couplés à `02-question-engine.js`, `03-slideshow.js` et `04-app.js`.
@@ -72,7 +72,7 @@ Les éléments réellement partagés restent dans :
 4. Pilotes simples et visuels (`dnb_08`, `dnb_07`).
 5. Classement pédagogique complet de Nombres et calculs.
 6. Classement pédagogique complet d'Espace et géométrie.
-7. Extraction de 24 composants visuels et tactiles.
+7. Extraction de 25 composants visuels et tactiles.
 8. Classement du premier lot Données : probabilités, fréquences, moyennes,
    médiane et étendue (`dnb_28` à `dnb_31`).
 9. Classement complet du domaine Données avec tableaux, graphiques,

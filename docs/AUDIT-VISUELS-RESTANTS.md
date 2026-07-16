@@ -11,7 +11,7 @@ enfermées dans un module ou dans le moteur commun.
 
 - 42 modules et 473 gabarits ;
 - 42 modules sur 42 classés pédagogiquement ;
-- 24 composants visuels enregistrés ;
+- 25 composants visuels enregistrés ;
 - 110 balises SVG historiques dans douze fichiers de banque ;
 - 84 types de tâches, couvrant 186 questions, avec un rôle visuel déclaré mais
   sans composant partagé.
