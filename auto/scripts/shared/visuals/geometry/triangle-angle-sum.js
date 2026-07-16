@@ -80,11 +80,22 @@
   }
 
   function barSvg(data,correction=false){
-    const W=700,H=180,x=45,topY=16,topW=610,barH=66,bottomY=82;
+    // Le cadre reprend la largeur de référence validée pour
+    // arithmetic.fraction-percent-bar : 700 unités utiles dans un SVG de 760.
+    // Les deux rangées gardent aussi exactement la même hauteur.
+    const W=760,H=230,referenceBarW=700,comparisonMaxW=640,topY=18,barH=96,bottomY=114;
     const values=(data.values||[]).map(Number);
     const unknown=new Set((data.unknown||[]).map(Number));
     const total=values.reduce((sum,value)=>sum+value,0);
-    const bottomW=data.comparison?topW*total/180:topW;
+    // Dans le contrôle d'impossibilité, la rangée du bas doit dépasser 180°
+    // sans sortir du cadre. On réduit donc les deux rangées ensemble : la
+    // comparaison reste proportionnelle et la plus longue occupe au plus la
+    // largeur de référence.
+    const maxBarW=data.comparison?comparisonMaxW:referenceBarW;
+    const x=(W-maxBarW)/2;
+    const comparisonScale=data.comparison?Math.max(1,total/180):1;
+    const topW=maxBarW/comparisonScale;
+    const bottomW=data.comparison?(total>=180?maxBarW:topW*total/180):topW;
     const label=(cx,cy,value,size=21,mathVariable=false)=>`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="${mathVariable?'Cambria Math, STIX Two Math, Times New Roman, serif':'Arial,Helvetica,sans-serif'}" font-size="${size}" font-weight="800" fill="#111">${esc(value)}</text>`;
     let fills=`<rect x="${x}" y="${topY}" width="${topW}" height="${barH}" fill="#fff"/><rect x="${x}" y="${bottomY}" width="${bottomW}" height="${barH}" fill="#fff"/>`;
     let grid=`<rect x="${x}" y="${topY}" width="${topW}" height="${barH}" fill="none" stroke="#111" stroke-width="2.2"/><rect x="${x}" y="${bottomY}" width="${bottomW}" height="${barH}" fill="none" stroke="#111" stroke-width="2.2"/>`;
@@ -109,7 +120,7 @@
   }
 
   const component=registry.register('geometry.triangle-angle-sum',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'Somme des angles d’un triangle',
     supports:['phone','computer','projection','print'],
     presets:[
