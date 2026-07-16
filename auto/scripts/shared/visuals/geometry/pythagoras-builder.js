@@ -3,40 +3,61 @@
   if(!registry) throw new Error('Le registre visuel doit être chargé avant geometry.pythagoras-builder.');
 
   const COLORS=Object.freeze({navy:'#0b3570',blue:'#e1eeff',teal:'#1daeae',orange:'#ff9114',softOrange:'#ffeed7',green:'#e0f6e5'});
+  const CANONICAL_VERTICES=Object.freeze(['A','B','C']);
   const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
 
+  function normalizeVertices(value){
+    const vertices=(Array.isArray(value)?value:String(value||'ABC').split(''))
+      .map(letter=>String(letter).trim().toUpperCase());
+    return vertices.length===3&&new Set(vertices).size===3&&vertices.every(letter=>/^[A-Z]$/.test(letter))
+      ?vertices
+      :[...CANONICAL_VERTICES];
+  }
+
   function model(data={}){
-    const rightAngle=['A','B','C'].includes(data.rightAngle)?data.rightAngle:'A';
+    const vertices=normalizeVertices(data.vertices);
+    const requestedRightAngle=String(data.rightAngle||'A').toUpperCase();
+    const rightAnglePosition=CANONICAL_VERTICES.includes(data.rightAnglePosition)
+      ?data.rightAnglePosition
+      :(vertices.includes(requestedRightAngle)
+        ?CANONICAL_VERTICES[vertices.indexOf(requestedRightAngle)]
+        :(CANONICAL_VERTICES.includes(requestedRightAngle)?requestedRightAngle:'A'));
     const geometry={
       A:{points:{A:[70,168],B:[70,42],C:[294,168]},hypotenuse:'BC',legA:'AB',legB:'AC',marker:'M70 145H93V168'},
       B:{points:{A:[70,168],B:[70,42],C:[294,42]},hypotenuse:'AC',legA:'AB',legB:'BC',marker:'M70 66H94V42'},
       C:{points:{A:[70,168],B:[294,168],C:[294,42]},hypotenuse:'AB',legA:'AC',legB:'BC',marker:'M270 168V144H294'}
-    }[rightAngle];
+    }[rightAnglePosition];
+    const letterFor=canonicalLetter=>vertices[CANONICAL_VERTICES.indexOf(canonicalLetter)];
+    const sideFor=canonicalSide=>canonicalSide.split('').map(letterFor).join('');
+    const points=Object.fromEntries(CANONICAL_VERTICES.map((letter,index)=>[vertices[index],geometry.points[letter]]));
+    const rightAngle=letterFor(rightAnglePosition);
+    const hypotenuse=sideFor(geometry.hypotenuse),legA=sideFor(geometry.legA),legB=sideFor(geometry.legB);
     const lengths=Object.assign({legA:3,legB:4,hypotenuse:5},data.lengths||{});
     const sideValues={};
-    sideValues[geometry.legA]=Number(lengths.legA);
-    sideValues[geometry.legB]=Number(lengths.legB);
-    sideValues[geometry.hypotenuse]=Number(lengths.hypotenuse);
-    const relation=[geometry.hypotenuse+'²',geometry.legA+'²',geometry.legB+'²'];
+    sideValues[legA]=Number(lengths.legA);
+    sideValues[legB]=Number(lengths.legB);
+    sideValues[hypotenuse]=Number(lengths.hypotenuse);
+    const relation=[hypotenuse+'²',legA+'²',legB+'²'];
     const areas=relation.map(label=>String(sideValues[label.slice(0,2)]**2));
     const task=['relation','areas','complete'].includes(data.task)?data.task:'complete';
     const expected=task==='relation'?relation:(task==='areas'?areas:[...relation,...areas]);
-    return {...geometry,rightAngle,lengths,sideValues,relation,areas,task,expected,prompt:String(data.prompt||'Complète la relation de Pythagore.')};
+    return {...geometry,points,hypotenuse,legA,legB,vertices,rightAngle,rightAnglePosition,lengths,sideValues,relation,areas,task,expected,prompt:String(data.prompt||'Complète la relation de Pythagore.')};
   }
 
   function triangleMarkup(current){
-    const polygon=['A','B','C'].map(letter=>current.points[letter].join(',')).join(' ');
-    const vertices=['A','B','C'].map(letter=>{
+    const polygon=current.vertices.map(letter=>current.points[letter].join(',')).join(' ');
+    const vertices=current.vertices.map((letter,index)=>{
       const [x,y]=current.points[letter];
-      const dx=letter==='A'?-22:letter==='B'?-20:9;
-      const dy=letter==='B'?-9:23;
+      const position=CANONICAL_VERTICES[index];
+      const dx=position==='A'?-22:position==='B'?-20:9;
+      const dy=position==='B'?-9:23;
       return `<text x="${x+dx}" y="${y+dy}" font-family="Cambria Math,Times New Roman,serif" font-size="22" font-style="italic" font-weight="750" fill="${COLORS.navy}">${letter}</text>`;
     }).join('');
     const sideLabel=(name,color,offsetX,offsetY)=>{
       const first=current.points[name[0]],second=current.points[name[1]];
       return `<text x="${(first[0]+second[0])/2+offsetX}" y="${(first[1]+second[1])/2+offsetY}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="800" fill="${color}">${name} = ${escapeHtml(current.sideValues[name])} cm</text>`;
     };
-    return `<svg class="pythagoras-builder-triangle" viewBox="0 0 365 215" role="img" aria-label="Triangle ABC rectangle en ${current.rightAngle}">
+    return `<svg class="pythagoras-builder-triangle" viewBox="0 0 365 215" role="img" aria-label="Triangle ${current.vertices.join('')} rectangle en ${current.rightAngle}">
       <polygon points="${polygon}" fill="#f8fbff" stroke="${COLORS.navy}" stroke-width="3"/>
       <path d="${current.marker}" fill="none" stroke="${COLORS.navy}" stroke-width="3"/>
       ${vertices}
@@ -84,10 +105,10 @@
   }
 
   const component=registry.register('geometry.pythagoras-builder',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'Pythagore · égalité tactile',
     family:'Géométrie',
-    description:'Fait placer tactilement les côtés au carré et les aires correspondantes dans la relation de Pythagore.',
+    description:'Fait placer tactilement les côtés au carré et les aires correspondantes dans la relation de Pythagore avec des noms de sommets variables.',
     supports:['phone','computer'],
     presets:[
       {id:'relation',label:'Placer les trois côtés au carré',data:{task:'relation',rightAngle:'A',lengths:{legA:3,legB:4,hypotenuse:5}}},

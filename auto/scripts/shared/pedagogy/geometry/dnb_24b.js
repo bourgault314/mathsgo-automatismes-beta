@@ -8,6 +8,7 @@ MATHSGO_PEDAGOGY.registerModule('dnb_24b',{
     family:'pythagoras',
     representation:'pythagoras-builder',
     supports:['phone','computer'],
+    vertexNamingRule:'Les trois sommets varient avec la graine ; l’angle droit, l’hypoténuse et l’égalité utilisent toujours le même triplet.',
     interactionRule:'Après chaque placement, aucune case ni étiquette suivante n’est sélectionnée automatiquement.'
   },
   questionTypes:[

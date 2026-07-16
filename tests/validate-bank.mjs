@@ -421,6 +421,7 @@ for (const [index, question] of context.__relativeModule.questions.entries()) {
   if(index%2===1&&!correctionHtml.includes('relative-token')) fail(`La correction visuelle manque pour l’addition relative ${question.n}.`);
 }
 
+let previousPythagorasTriangleName='';
 for(const question of context.__pythagorasTactileModule.questions){
   const instance=context.__makeInstance(context.__pythagorasTactileModule,question);
   const questionHtml=context.__renderQuestion(instance,false,'with');
@@ -429,7 +430,26 @@ for(const question of context.__pythagorasTactileModule.questions){
   if(!questionHtml.includes('data-pythagoras-token')) fail(`Les étiquettes manipulables manquent pour la question ${question.n}.`);
   if(!correctionHtml.includes('pythagoras-builder-feedback is-success')) fail(`La solution Pythagore tactile manque pour la question ${question.n}.`);
   if(instance.answers.length!==instance.pythagorasTactile.expected.length) fail(`La réponse tactile ${question.n} ne correspond pas au nombre de cases.`);
+  const triangleName=instance.pythagorasTactile.vertices.join('');
+  if(triangleName===previousPythagorasTriangleName) fail('Deux questions Pythagore tactiles consécutives ne doivent pas reprendre le même nom de triangle.');
+  previousPythagorasTriangleName=triangleName;
 }
+
+const pythagorasTriangleNames=new Set();
+for(let seed=0;seed<40;seed++){
+  for(const question of context.__pythagorasTactileModule.questions){
+    context.__setSeed(seed*10+Number(question.n));
+    const instance=context.__makeInstance(context.__pythagorasTactileModule,question).pythagorasTactile;
+    const vertices=instance.vertices||[];
+    pythagorasTriangleNames.add(vertices.join(''));
+    if(vertices.length!==3||new Set(vertices).size!==3) fail(`Le triangle Pythagore tactile ${question.n} doit avoir trois sommets distincts.`);
+    if(!vertices.includes(instance.rightAngle)) fail(`Le sommet de l’angle droit manque dans le triangle Pythagore tactile ${question.n}.`);
+    const expectedHypotenuse=vertices.filter(vertex=>vertex!==instance.rightAngle).join('')+'²';
+    if(instance.relation[0]!==expectedHypotenuse) fail(`L’hypoténuse de la question Pythagore tactile ${question.n} ne correspond pas au sommet de l’angle droit.`);
+    if(Number(question.n)===4&&(!instance.prompt.includes('triangle '+vertices.join(''))||!instance.prompt.includes('rectangle en '+instance.rightAngle))) fail('La consigne Pythagore tactile doit reprendre le nom du triangle et le bon sommet de l’angle droit.');
+  }
+}
+if(pythagorasTriangleNames.size<6) fail('Les noms des triangles Pythagore tactiles ne varient pas assez selon la graine.');
 
 const pythagorasInstance={
   module:{id:'dnb_24'},q:{n:7},scope:{a:3,b:4,c:5},answers:['4'],
