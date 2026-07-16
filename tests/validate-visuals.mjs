@@ -50,6 +50,9 @@ const registry = context.MATHSGO_VISUALS;
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
 if (components.length !== 25) fail(`25 composants visuels attendus, ${components.length} trouvé(s).`);
+for(const component of components){
+  if(!Array.isArray(component.presets)||!component.presets.length) fail(`Le composant ${component.id} doit fournir au moins un préréglage au catalogue.`);
+}
 
 const cartesianGraph=registry?.get('data.cartesian-graph');
 if(!cartesianGraph) fail('Le composant data.cartesian-graph est absent.');
@@ -158,6 +161,7 @@ if(!builderCorrection.includes('100')||!builderCorrection.includes('36')||!build
 const relativeTokens = registry?.get('numbers.relative-tokens');
 if (!relativeTokens) fail('Le composant numbers.relative-tokens est absent.');
 if (relativeTokens && !relativeTokens.supports.includes('phone')) fail('Les jetons relatifs doivent être déclarés compatibles téléphone.');
+if (relativeTokens && relativeTokens.presets.length!==3) fail('Trois situations de référence sont attendues pour les jetons relatifs.');
 if (relativeTokens && !relativeTokens.render({positive:2,negative:1}).includes('relative-token-visual')) fail('Le composant jetons relatifs doit produire un visuel exploitable.');
 
 const numberLine = registry?.get('numbers.number-line');
@@ -672,6 +676,19 @@ const solidPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/solid.j
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
 if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || solidPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < solidPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
+}
+
+for(const component of components){
+  for(const preset of component.presets||[]){
+    for(const correction of [false,true]){
+      try{
+        const rendered=component.render(preset.data,correction);
+        if(typeof rendered!=='string'||!rendered.trim()) fail(`Le préréglage ${component.id}/${preset.id} ne produit aucun rendu.`);
+      }catch(error){
+        fail(`Le catalogue ne peut pas rendre ${component.id}/${preset.id} : ${error.message}`);
+      }
+    }
+  }
 }
 
 if (!process.exitCode) {

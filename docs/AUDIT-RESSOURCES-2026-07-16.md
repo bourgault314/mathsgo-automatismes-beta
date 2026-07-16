@@ -313,6 +313,15 @@ réutilisables par Automatismes.
    jetons relatifs qui avaient été omis de cette page ; un test rend cette
    liste exhaustive.
 
+## Vingt-deuxième lot correctif
+
+1. Le contrôle du catalogue déployé a montré que son rendu s’arrêtait après le
+   troisième composant : les jetons relatifs n’avaient pas de préréglage.
+2. Trois références ont été ajoutées pour les sommes positive, nulle et
+   négative, sans modifier le plateau interactif ni la banque.
+3. Le test visuel exige désormais au moins un préréglage pour chacun des 25
+   composants afin que le catalogue puisse tous les parcourir.
+
 ## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;
