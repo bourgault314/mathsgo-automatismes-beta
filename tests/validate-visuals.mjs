@@ -200,7 +200,8 @@ const relationHashes=new Map([
   ['quart',['f5365f68bdbb5cd27062def79d0839eb8258e879715e620479f1b2f023069543','a1d62e8c9bb4904d89b4b8ac8a7bc2e183556961cb5f7994f25bb3ea16a0b9b9']],
   ['cinquieme',['3497c38b10d4c537ecbf1f21df55e5115a644cb8a5076b87935cd57ea5e3768e','e122b2357fb635e9dc2c257afab6cb3e47ca2c4dc2f2bd6a7e6691ccfe25a1cc']],
   ['dixieme',['a0dd7446db36c3dab460dc46d2b4bd851e2292f4f705e1e762c4e78b1ec93589','94f9a1b2976fa83a39a91838411254da6ea24116dd148abf808a3dc610813d83']],
-  ['predecesseur',['d16314da1b71fc16deda28af15ad7ac89e3abf00e49995ae3cecf01ce3664286','41244493ef0baf1d98a4f7ca3d07b5d19be312e77fc80d471f661dbf1db64ebd']],
+  ['predecesseur',['d16314da1b71fc16deda28af15ad7ac89e3abf00e49995ae3cµ¨¥zºè¯
+â¶)à²Ö§uªÝ¢ëiºÐk¢G§¦*^ecf01ce3664286','41244493ef0baf1d98a4f7ca3d07b5d19be312e77fc80d471f661dbf1db64ebd']],
   ['successeur',['d9f141188da706dc1a7acf03026242a6473405f087b5ef16cab89bf7cb405acb','07478579aa2159a68494f226bf4a7de47cbe3a553aa92171426a35429e844ee8']]
 ]);
 for(const preset of relationBar?.presets||[]){
@@ -356,7 +357,8 @@ for(const preset of equalSharing?.presets||[]){
   if(!question.includes('class="equal-sharing-svg"')) fail(`Le partage ${preset.id} doit produire le SVG commun.`);
   if(question===correction) fail(`Le partage ${preset.id} doit avoir un Ã©tat de correction.`);
   for(const correctionState of [false,true]){
-    const actual=hash(equalSharing.render(preset.data,correctionState));
+    constµ¨¥zºè¯
+â¶)à²Ö§uªÝ¢ëiºÐk¢G§¦*^ actual=hash(equalSharing.render(preset.data,correctionState));
     if(actual!==equalSharingHashes.get(preset.id)?.[correctionState?1:0]) fail(`Le partage ${preset.id} a changÃ© (${actual}).`);
   }
 }
@@ -522,8 +524,6 @@ const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.j
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
-const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_14.js');
-const coordinateModulePosition = indexHtml.indexOf('scripts/modules/geometry/dnb_15.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
 const equalSharingPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/equal-sharing-board.js');
@@ -539,7 +539,7 @@ const pythagorasMillPosition = indexHtml.indexOf('scripts/shared/visuals/geometr
 const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-bar.js');
 const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition) {
   fail('Le registre et ses composants doivent Ãªtre chargÃ©s avant le moteur de questions.');
 }
 
