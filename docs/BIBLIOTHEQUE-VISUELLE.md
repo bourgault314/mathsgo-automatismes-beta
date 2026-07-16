@@ -167,6 +167,19 @@ aux tirages mixtes, aux QCM et aux questions où le facteur ou le nombre de
 départ manque. La règle pédagogique est explicite : la virgule reste fixe et
 ce sont les chiffres qui changent de colonne.
 
+`numbers.square-area` remplace les neuf copies du carré présentes dans
+`dnb_07`. Le côté, l’aire, les valeurs inconnues et le calcul voisin sont
+des paramètres ; le composant sait aussi afficher deux carrés dans une même
+expression. Ses cinq références couvrent le calcul direct, la recherche du
+côté, l’écriture comme produit, un calcul voisin et deux carrés. Elles sont
+figées par empreinte et déclarent explicitement leurs supports.
+
+Les quatre derniers modules de Nombres et calculs sont également classés :
+`dnb_02` pour les décimaux, `dnb_06` pour la notation scientifique,
+`dnb_07` pour les carrés et `dnb_08` pour les critères de divisibilité.
+Le domaine Nombres et calculs dispose donc désormais d’un contrat pédagogique
+complet pour chacun de ses modules.
+
 `geometry.coordinate-plane` produit les repères de `dnb_15`. Son mode historique
 reste inchangé. Le nouveau traceur reçoit les dimensions, les bornes des axes,
 le pas, le sous-pas et plusieurs points en coordonnées mathématiques ; il trace

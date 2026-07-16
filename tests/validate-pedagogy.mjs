@@ -6,6 +6,7 @@ const sources=[
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
+  'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
@@ -17,6 +18,7 @@ const sources=[
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/equal-sharing-board.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-wall.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-decimal-grid.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-operations.js',
@@ -26,11 +28,15 @@ const sources=[
   'auto/scripts/shared/visuals/algebra/relation-tiles.js',
   'auto/scripts/shared/pedagogy/00-registry.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_01.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_02.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_02b.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_03.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_03b.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_04.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_05.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_06.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_07.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_08.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_09.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_10.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_11.js',
@@ -45,11 +51,15 @@ const sources=[
   'auto/scripts/shared/pedagogy/geometry/dnb_25.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_01.js',
+  'auto/scripts/modules/numbers/dnb_02.js',
   'auto/scripts/modules/numbers/dnb_02b.js',
   'auto/scripts/modules/numbers/dnb_03.js',
   'auto/scripts/modules/numbers/dnb_03b.js',
   'auto/scripts/modules/numbers/dnb_04.js',
   'auto/scripts/modules/numbers/dnb_05.js',
+  'auto/scripts/modules/numbers/dnb_06.js',
+  'auto/scripts/modules/numbers/dnb_07.js',
+  'auto/scripts/modules/numbers/dnb_08.js',
   'auto/scripts/modules/numbers/dnb_10.js',
   'auto/scripts/modules/numbers/dnb_11.js',
   'auto/scripts/modules/numbers/dnb_12.js',
@@ -66,11 +76,15 @@ const sources=[
 ];
 const code=sources.map(path=>fs.readFileSync(new URL(path,root),'utf8')).join('\n')+`
 globalThis.__fractionDecimalQuestionNumbers=MODULE_DNB_01.questions.map(question=>Number(question.n));
+globalThis.__decimalQuestionNumbers=MODULE_DNB_02.questions.map(question=>Number(question.n));
 globalThis.__placeValueQuestionNumbers=MODULE_DNB_02B.questions.map(question=>Number(question.n));
 globalThis.__fractionOperationQuestionNumbers=MODULE_DNB_03.questions.map(question=>Number(question.n));
 globalThis.__fractionMultiplyDivideQuestionNumbers=MODULE_DNB_03B.questions.map(question=>Number(question.n));
 globalThis.__fractionPercentQuestionNumbers=MODULE_DNB_04.questions.map(question=>Number(question.n));
 globalThis.__equivalentFormsQuestionNumbers=MODULE_DNB_05.questions.map(question=>Number(question.n));
+globalThis.__scientificQuestionNumbers=MODULE_DNB_06.questions.map(question=>Number(question.n));
+globalThis.__squareQuestionNumbers=MODULE_DNB_07.questions.map(question=>Number(question.n));
+globalThis.__divisibilityQuestionNumbers=MODULE_DNB_08.questions.map(question=>Number(question.n));
 globalThis.__reductionQuestionNumbers=MODULE_DNB_10.questions.map(question=>Number(question.n));
 globalThis.__substitutionQuestionNumbers=MODULE_DNB_11.questions.map(question=>Number(question.n));
 globalThis.__expandFactorQuestionNumbers=MODULE_DNB_12.questions.map(question=>Number(question.n));
@@ -90,7 +104,77 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==19) fail(`Dix-neuf modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==23) fail(`Vingt-trois modules pédagogiques attendus, ${modules.length} trouvé(s).`);
+
+function assertNumberModule(id,bankNumbers,courseKind,expected){
+  const module=registry?.getModule(id);
+  if(!module) return fail(`Le classement pédagogique de ${id} est absent.`);
+  if(module.courseKind!==courseKind) fail(`Cours incorrect pour ${id} (${module.courseKind}).`);
+  const classified=module.questionTypes.flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+  const bank=[...(bankNumbers||[])].sort((a,b)=>a-b);
+  if(JSON.stringify(classified)!==JSON.stringify(bank)) fail(`Le catalogue pédagogique doit couvrir chaque gabarit de ${id} exactement une fois.`);
+  for(const [questionNumber,[typeId,response,policy,component]] of Object.entries(expected)){
+    const type=registry.getQuestionType(id,Number(questionNumber));
+    if(!type||type.id!==typeId) fail(`Type incorrect pour ${id}, question ${questionNumber}.`);
+    if(type&&type.response!==response) fail(`Réponse incorrecte pour ${id}, question ${questionNumber}.`);
+    if(type&&type.visual.policy!==policy) fail(`Politique visuelle incorrecte pour ${id}, question ${questionNumber}.`);
+    if(type&&type.visual.component!==component) fail(`Composant incorrect pour ${id}, question ${questionNumber}.`);
+    if(component&&!context.MATHSGO_VISUALS.get(component)) fail(`Composant visuel absent pour ${id}, question ${questionNumber}.`);
+  }
+}
+
+assertNumberModule('dnb_02',context.__decimalQuestionNumbers,'decimal_numbers',{
+  1:['comparer-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
+  2:['comparer-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
+  3:['ranger-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
+  4:['encadrer-entre-entiers','numeric','optional','numbers.number-line'],
+  5:['encadrer-entre-entiers','numeric','optional','numbers.number-line'],
+  6:['addition-soustraction','numeric','optional','numbers.glisse-nombre'],
+  7:['addition-soustraction','numeric','optional','numbers.glisse-nombre'],
+  8:['addition-signee','numeric','optional','numbers.number-line'],
+  9:['multiplier-diviser','numeric','optional','numbers.glisse-nombre'],
+  10:['multiplier-diviser','numeric','optional','numbers.glisse-nombre']
+});
+
+assertNumberModule('dnb_06',context.__scientificQuestionNumbers,'scientific_notation',{
+  1:['grand-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  2:['grand-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  3:['petit-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  4:['petit-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  5:['grand-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  6:['petit-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  7:['grand-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
+  8:['scientifique-vers-grand','numeric','optional','numbers.glisse-nombre'],
+  9:['choisir-ecriture-scientifique','qcm-one','optional','numbers.glisse-nombre'],
+  10:['reconnaitre-ecriture-scientifique','qcm-one','none',null],
+  11:['scientifique-vers-petit','numeric','optional','numbers.glisse-nombre']
+});
+
+assertNumberModule('dnb_07',context.__squareQuestionNumbers,'integer_squares',{
+  1:['calculer-carre','numeric','essential','numbers.square-area'],
+  2:['calculer-carre','numeric','essential','numbers.square-area'],
+  3:['retrouver-cote','numeric','essential','numbers.square-area'],
+  4:['retrouver-cote','numeric','essential','numbers.square-area'],
+  5:['ecrire-produit','numeric','essential','numbers.square-area'],
+  6:['choisir-valeur-carre','qcm-one','essential','numbers.square-area'],
+  7:['reconnaitre-carres-parfaits','qcm-multiple','optional','numbers.square-area'],
+  8:['encadrer-carre','qcm-one','essential','numbers.square-area'],
+  9:['calculer-expression-avec-carre','numeric','essential','numbers.square-area'],
+  10:['choisir-valeur-carre','qcm-one','essential','numbers.square-area']
+});
+
+assertNumberModule('dnb_08',context.__divisibilityQuestionNumbers,'divisibility_rules',{
+  1:['identifier-critere-simple','qcm-multiple','none',null],
+  2:['identifier-critere-simple','qcm-multiple','none',null],
+  3:['identifier-critere-simple','qcm-multiple','none',null],
+  4:['identifier-plusieurs-criteres','qcm-multiple','none',null],
+  5:['identifier-plusieurs-criteres','qcm-multiple','none',null],
+  6:['identifier-plusieurs-criteres','qcm-multiple','none',null],
+  7:['identifier-plusieurs-criteres','qcm-multiple','none',null],
+  8:['choisir-divisibles-par-cinq','qcm-multiple','none',null],
+  9:['justifier-par-somme-chiffres','qcm-one','none',null],
+  10:['partage-sans-reste','qcm-one','optional','arithmetic.equal-sharing-board']
+});
 
 const fractionDecimal=registry?.getModule('dnb_01');
 if(!fractionDecimal) fail('Le classement pédagogique de dnb_01 est absent.');
@@ -584,4 +668,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — les fractions, le glisse-nombre, les pourcentages, les écritures équivalentes, Relations, le calcul littéral, les équations, les 18 droites graduées, les 9 repères, les conversions, Pythagore, Angles, Thalès et l’Addition de relatifs sont classés et branchés.');
+if(!process.exitCode) console.log('OK — les 17 modules de Nombres et calculs sont classés ; les repères, conversions, Pythagore, Angles et Thalès restent branchés.');
