@@ -886,6 +886,9 @@ for(const script of [...catalogue.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/scr
 if(!app.includes('MATHSGO_PEDAGOGY.getQuestionType(m.id,q.n)')) fail('La politique visuelle doit consulter le registre pédagogique.');
 if(!slideshow.includes('MATHSGO_PEDAGOGY.getModule(moduleId)')||!slideshow.includes('sections.includes(rule[3])')) fail('Les aides doivent être choisies à partir du registre pédagogique.');
 if(!slideshow.includes("coursePythagorasLibraryVisual('bar')")||!slideshow.includes("slide.courseKind==='pythagoras'")) fail('Le cours Pythagore doit utiliser la bibliothèque et filtrer ses rubriques.');
+if(!slideshow.includes("'read-data-mode':['dnb_32']")||!slideshow.includes('.diapo.read-data-mode .stage>.slide{width:100%;max-width:1180px;margin-top:auto;margin-bottom:auto}')) fail('Le module de lecture de données doit disposer de son centrage local.');
+if(!slideshow.includes('courseReadDataTableVisual()')||!slideshow.includes('courseReadDataChartVisual()')||!slideshow.includes('courseReadDataPictogramVisual()')) fail('Le cours de lecture de données doit proposer ses trois exemples explicites.');
+if(!slideshow.includes('variation = valeur finale − valeur initiale')) fail('Le cours de lecture de données doit expliciter le sens de la variation.');
 
 context.courseCatalog={thales:{title:'Thalès',rules:[
   ['Conditions','',false,'conditions'],['Rapports','',false,'ratios'],['Calcul','',false,'calculation'],

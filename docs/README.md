@@ -27,6 +27,7 @@ de vérification et de publication communes à toutes les catégories.
 | [`RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md`](RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md) | décisions propres à la lecture et au placement sur une droite graduée |
 | [`CORPUS-EDUSCOL-DROITES-GRADUEES.md`](CORPUS-EDUSCOL-DROITES-GRADUEES.md) | sources institutionnelles et erreurs diagnostiques pour `dnb_14` |
 | [`DECIMAUX-RELATIFS-AUTOMATISMES.md`](DECIMAUX-RELATIFS-AUTOMATISMES.md) | provenance et décisions propres aux décimaux relatifs |
+| [`LECTURE-DONNEES-AUTOMATISMES.md`](LECTURE-DONNEES-AUTOMATISMES.md) | décisions propres à la lecture de tableaux, diagrammes et graphiques |
 
 Les audits et documents de reprise décrivent un état daté du chantier. Ils
 servent de traces et de feuilles de route, mais ne remplacent jamais le
