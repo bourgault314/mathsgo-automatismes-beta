@@ -3,102 +3,135 @@ const MODULE_DNB_02 = {
   "num": 2,
   "title": "Comparer et calculer avec des nombres décimaux",
   "level_tags": [
+    "5e",
     "4e",
     "3e",
     "DNB"
   ],
-  "source": "import_dnb_zip",
+  "source": "source_dynamique_dnb02",
   "has_svg": false,
   "questions": [
     {
       "n": 1,
-      "statement": "Parmi ces nombres, lequel est le plus grand ?\n\n<div style=\"text-align:center\">$$${a}$$  ;  $$${b}$$  ;  $$${c}$$</div>",
-      "answer": "[\"mx\"]",
+      "statement": "Parmi ces nombres, lequel est le plus grand ?&&$$${mx}$$&&$$${d1}$$&&$$${d2}$$&&",
+      "answer": "[\"1\"]",
       "options": {
-        "formula_code": "setNB(1)\na=RD(10,99)/10\nb=RD(10,99)/10\nc=RD(10,99)/10\nmab=a>b?a:b\nmx=mab>c?mab:c"
+        "decimal_kind": "compare-positive-qcm",
+        "decimal_block": "compare-order",
+        "shuffle_answers": true
       },
-      "footer": "[[formula]]"
+      "footer": "[[formula_qcm1]]"
     },
     {
       "n": 2,
-      "statement": "Parmi ces nombres, lequel est le plus grand ?\n\n<div style=\"text-align:center\">$$${a}$$  ;  $$${b}$$  ;  $$${c}$$</div>",
-      "answer": "[\"mx\"]",
+      "statement": "Parmi ces nombres négatifs, lequel est le plus grand ?&&$$${mx}$$&&$$${d1}$$&&$$${d2}$$&&",
+      "answer": "[\"1\"]",
       "options": {
-        "formula_code": "setNB(1)\na=RD(-99,-10)/10\nb=RD(-99,-10)/10\nc=RD(-99,-10)/10\nmab=a>b?a:b\nmx=mab>c?mab:c"
+        "decimal_kind": "compare-negative-qcm",
+        "decimal_block": "compare-order",
+        "shuffle_answers": true
       },
-      "footer": "$$[[formula]]$$"
+      "footer": "[[formula_qcm1]]"
     },
     {
       "n": 3,
-      "statement": "Range ces trois nombres dans l'ordre croissant :\n\n<div style=\"text-align:center\">$$${a}$$  ;  $$${b}$$  ;  $$${c}$$</div>",
+      "statement": "Range ces trois nombres dans l'ordre croissant.",
       "answer": "[\"mn\",\"md\",\"mx\"]",
       "options": {
-        "formula_code": "setNB(1)\na=RD(100,999)/100\nb=RD(100,999)/100\nc=RD(100,999)/100\nmab=a>b?a:b\nmx=mab>c?mab:c\nnab=a<b?a:b\nmn=nab<c?nab:c\nmd=a+b+c-mn-mx"
+        "decimal_kind": "order-cards",
+        "decimal_block": "compare-order"
       },
-      "footer": "$$[[formula]]<[[formula]]<[[formula]]$$"
+      "footer": ""
     },
     {
       "n": 4,
-      "statement": "Encadre ce nombre entre deux entiers consécutifs :",
-      "answer": "[\"e\",\"e+1\"]",
+      "statement": "Encadre ce nombre entre deux entiers consécutifs.",
+      "answer": "[\"low\",\"high\"]",
       "options": {
-        "formula_code": "setNB(1)\ne=RD(1,9)\nf=RD(1,99)/100\na=e+f"
+        "decimal_kind": "frame-positive",
+        "decimal_block": "frame"
       },
-      "footer": "$$[[formula]]<${a}<[[formula]]$$"
+      "footer": ""
     },
     {
       "n": 5,
-      "statement": "Encadre ce nombre négatif entre deux entiers consécutifs :",
-      "answer": "[\"0-e-1\",\"0-e\"]",
+      "statement": "Encadre ce nombre négatif entre deux entiers consécutifs.",
+      "answer": "[\"low\",\"high\"]",
       "options": {
-        "formula_code": "setNB(1)\ne=RD(1,9)\nf=RD(1,99)/100\na=e+f"
+        "decimal_kind": "frame-negative",
+        "decimal_block": "frame"
       },
-      "footer": "$$[[formula]]<-${a}<[[formula]]$$"
+      "footer": ""
     },
     {
       "n": 6,
-      "statement": "Calculer :",
-      "answer": "[\"a+b\"]",
+      "statement": "Calcule :",
+      "answer": "[\"sum\"]",
       "options": {
-        "formula_code": "setNB(1)\nd1=RD(1,9)/10\nd2=1-d1\na=RD(10,99)+d1\nb=RD(10,99)+d2"
+        "decimal_kind": "add-to-one",
+        "decimal_block": "additive"
       },
       "footer": "$$${a}+${b}=[[formula]]$$"
     },
     {
       "n": 7,
-      "statement": "Calculer :",
-      "answer": "[\"c\"]",
+      "statement": "Calcule :",
+      "answer": "[\"result\"]",
       "options": {
-        "formula_code": "setNB(1)\nb=RD(1,99)/10\nc=RD(10,99)/10\na=b+c"
+        "decimal_kind": "subtract",
+        "decimal_block": "additive"
       },
       "footer": "$$${a}-${b}=[[formula]]$$"
     },
     {
       "n": 8,
-      "statement": "Calculer :",
-      "answer": "[\"a+b\"]",
+      "statement": "Complète pour obtenir une unité entière :",
+      "answer": "[\"missing\"]",
       "options": {
-        "formula_code": "setNB(1)\na=RD(1,99)/10\nb=RD(-99,-1)/10"
+        "decimal_kind": "missing-complement",
+        "decimal_block": "additive"
       },
-      "footer": "$$${a}+(${b})=[[formula]]$$"
+      "footer": "$$${a}+[[formula]]=1$$"
     },
     {
       "n": 9,
-      "statement": "Calculer :",
-      "answer": "[\"a*b\"]",
+      "statement": "Calcule :",
+      "answer": "[\"result\"]",
       "options": {
-        "formula_code": "setNB(1)\na=RD(11,99,[20,30,40,50,60,70,80,90])/10\nb=RD(2,9)"
+        "decimal_kind": "multiply-direct",
+        "decimal_block": "multiplicative"
       },
-      "footer": "$$${a}\\times${b}=[[formula]]$$"
+      "footer": "$$${a}\\times${factor}=[[formula]]$$"
     },
     {
       "n": 10,
-      "statement": "Calculer :",
-      "answer": "[\"a/b\"]",
+      "statement": "Calcule :",
+      "answer": "[\"share\"]",
       "options": {
-        "formula_code": "setNB(1)\nb=RD(2,9)\nc=RD(2,9)/10\na=CUT(b*c,4)"
+        "decimal_kind": "divide-direct",
+        "decimal_block": "multiplicative"
       },
-      "footer": "$$${a}\\div${b}=[[formula]]$$"
+      "footer": "$$${total}\\div${divisor}=[[formula]]$$"
+    },
+    {
+      "n": 11,
+      "statement": "On répartit $$${total}\\text{ L}$$ également dans $$${divisor}$$ bouteilles. Quelle quantité contient chaque bouteille ?",
+      "answer": "[\"share\"]",
+      "options": {
+        "decimal_kind": "division-context",
+        "decimal_block": "multiplicative"
+      },
+      "footer": "$$[[formula]]\\text{ L}$$"
+    },
+    {
+      "n": 12,
+      "statement": "Place les deux produits dans les bonnes cases pour décomposer le calcul.",
+      "answer": "[\"firstProduct\",\"secondProduct\"]",
+      "options": {
+        "decimal_kind": "distributivity-reasoning",
+        "decimal_block": "multiplicative"
+      },
+      "footer": ""
     }
   ]
 };
