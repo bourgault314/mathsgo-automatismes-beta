@@ -120,7 +120,7 @@
     const first=Math.max(0,Math.min(10,Math.round(Number(data.filledA)||0)));
     const second=Math.max(0,Math.min(10-first,Math.round(Number(data.filledB)||0)));
     const showSecond=!!data.showSecond||correction;
-    const cellW=56,x0=22,y=24,height=58;
+    const cellW=56,x0=22,y=35,height=58;
     let cells='';
     for(let index=0;index<10;index++){
       const firstPart=index<first,secondPart=showSecond&&index>=first&&index<first+second;
@@ -128,9 +128,10 @@
       const cellClass=firstPart?' decimal-complement-first':(secondPart?' decimal-complement-second':' decimal-complement-empty');
       cells+=`<rect class="decimal-complement-cell${cellClass}" x="${x0+index*cellW}" y="${y}" width="${cellW}" height="${height}" fill="${fill}" stroke="#18324f" stroke-width="1.7"/>`;
     }
-    const outline=correction?`<rect x="${x0-4}" y="${y-4}" width="${10*cellW+8}" height="${height+8}" rx="8" fill="none" stroke="#0b7c67" stroke-width="4"/><text x="${x0+5*cellW}" y="106" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" fill="#0b6f5d">1 unité</text>`:'';
+    const outline=correction?`<rect x="${x0-4}" y="${y-4}" width="${10*cellW+8}" height="${height+8}" rx="8" fill="none" stroke="#0b7c67" stroke-width="4"/><text x="${x0+5*cellW}" y="121" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" fill="#0b6f5d">1 unité</text>`:'';
+    const unitLabel=`<text x="${x0+5*cellW}" y="21" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="900" fill="#111111">1</text>`;
     const label=showSecond?'Les deux couleurs complètent la bande.':'La partie blanche est à compléter.';
-    return `<div class="decimal-complement-visual"><svg viewBox="0 0 604 118" role="img" aria-label="${label}">${cells}${outline}</svg></div>`;
+    return `<div class="decimal-complement-visual"><svg viewBox="0 0 604 132" role="img" aria-label="${label}">${unitLabel}${cells}${outline}</svg></div>`;
   }
   function render(data,correction=false){
     if(data&&data.kind==='decimal-complement') return decimalComplementVisual(data,correction);
@@ -154,7 +155,7 @@
 
   if(!global.MATHSGO_VISUALS)throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant fraction-decimal-grid.js.');
   global.MATHSGO_VISUALS.register('arithmetic.fraction-decimal-grid',{
-    version:'1.1.0',
+    version:'1.2.0',
     label:'Plateau fraction–décimal',
     family:'Arithmétique',
     description:'Construit les unités partagées, grilles de cent cases, unités complètes et regroupements utilisés pour passer d’une fraction à un décimal.',

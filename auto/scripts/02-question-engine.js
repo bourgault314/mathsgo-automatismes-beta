@@ -3909,7 +3909,8 @@ const LEVEL_5E_QUESTIONS={
   dnb_33:[1,2,3,4,8,9,10],
   dnb_34:'all',
   dnb_37:'all',
-  dnb_38:'all'
+  dnb_38:'all',
+  dnb_39:'all'
 };
 
 // Pendant la transition des programmes, ces contenus sont déjà travaillés
@@ -3941,7 +3942,7 @@ const MODULE_MENU_GROUPS={
     {id:'numeration',title:'Numération',moduleIds:['dnb_02','dnb_02b','dnb_14']},
     {id:'entiers-divisibilite',title:'Nombres entiers et divisibilité',moduleIds:['dnb_08','dnb_09']},
     {id:'fractions',title:'Fractions et nombres rationnels',moduleIds:['dnb_01','dnb_03','dnb_03b','dnb_04','dnb_05']},
-    {id:'relatifs',title:'Nombres relatifs',moduleIds:['dnb_38']},
+    {id:'relatifs',title:'Nombres relatifs',moduleIds:['dnb_38','dnb_39']},
     {id:'puissances',title:'Puissances',moduleIds:['dnb_07','dnb_06']},
     {id:'algebre',title:'Calcul littéral et algèbre',moduleIds:['dnb_10','dnb_11','dnb_12','dnb_13']}
   ],

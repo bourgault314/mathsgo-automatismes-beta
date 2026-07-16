@@ -15,6 +15,7 @@ const rootReadme = read('README.md');
 const decimalDecisions = read('docs/DECIMAUX-AUTOMATISMES.md');
 const numberLineDecisions = read('docs/RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md');
 const numberLineCorpus = JSON.parse(read('docs/data/eduscol-droites-graduees.json'));
+const decimalRelativeDecisions = read('docs/DECIMAUX-RELATIFS-AUTOMATISMES.md');
 
 const requiredHeadings = [
   '## Méthode permanente',
@@ -65,7 +66,9 @@ if (!docsIndex.includes('PROTOCOLE-AUTOMATISMES-MATHSGO.md')) {
 }
 
 if (!docsIndex.includes('DECIMAUX-AUTOMATISMES.md') ||
-    !protocol.includes('DECIMAUX-AUTOMATISMES.md')) {
+    !docsIndex.includes('DECIMAUX-RELATIFS-AUTOMATISMES.md') ||
+    !protocol.includes('DECIMAUX-AUTOMATISMES.md') ||
+    !protocol.includes('DECIMAUX-RELATIFS-AUTOMATISMES.md')) {
   fail('Les décisions propres aux décimaux doivent être reliées depuis l’index et le protocole.');
 }
 
@@ -94,10 +97,13 @@ if (new Set((numberLineCorpus.sources || []).map(source => source.file)).size !=
   fail('Les noms de fichiers du corpus Éduscol doivent rester uniques.');
 }
 
-for (const decision of ['douze familles', '2 + 2 + 3 + 3', 'toucher une carte, puis toucher une case', 'Somme de nombres décimaux relatifs']) {
+for (const decision of ['Dix familles positives', 'glisser réellement', 'decimal-decomposition', 'Un `1` noir']) {
   if (!decimalDecisions.includes(decision)) {
     fail(`La décision décimale « ${decision} » a disparu de la fiche dédiée.`);
   }
+}
+for (const decision of ['dnb_02` question 2', 'dnb_02` question 5', 'ancienne `dnb_02` question 8', 'aucune aide artificielle']) {
+  if (!decimalRelativeDecisions.includes(decision)) fail(`La trace relative « ${decision} » a disparu de la fiche dédiée.`);
 }
 
 if (!rootReadme.includes('docs/README.md') || !rootReadme.includes(protocolPath)) {

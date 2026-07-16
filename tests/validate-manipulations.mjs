@@ -47,7 +47,7 @@ const pythagoras=registry?.get('geometry.pythagoras-builder');
 if(pythagoras?.validation.mode!=='ordered-slots'||pythagoras?.supports.includes('projection')) fail('Le constructeur Pythagore doit valider ses cases et rester une manipulation individuelle.');
 for(const id of ['numbers.order-cards','numbers.frame-integers','numbers.distributivity-cards']){
   const contract=registry?.get(id);
-  if(contract?.status!=='active'||contract?.validation.mode!=='ordered-slots'||!contract?.actions.some(action=>action.id==='select-card')||!contract?.actions.some(action=>action.id==='place-card')) fail(`La manipulation ${id} doit fonctionner par sélection puis placement ordonné.`);
+  if(contract?.status!=='active'||contract?.validation.mode!=='ordered-slots'||!contract?.actions.some(action=>action.id==='drag-card')||!contract?.actions.some(action=>action.id==='select-card')||!contract?.actions.some(action=>action.id==='place-card')) fail(`La manipulation ${id} doit fonctionner par glisser ou par sélection puis placement ordonné.`);
 }
 const algorithm=registry?.get('algorithm.block-sequence');
 if(algorithm?.status!=='planned'||algorithm?.componentId!==null||algorithm?.correction.mode!=='replay') fail('La suite de blocs doit rester planifiée avec une correction rejouée pas à pas.');
@@ -61,5 +61,9 @@ const documentation=fs.readFileSync(new URL('docs/CONTRAT-MANIPULATION.md',root)
 for(const section of ['État sémantique','Gestes et accessibilité','Réinitialisation','Validation','Correction','Sérialisation']){
   if(!documentation.includes(section)) fail(`La documentation des manipulations doit contenir « ${section} ».`);
 }
+
+const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'utf8');
+if(!slideshow.includes('card.onpointerdown=event=>')||!slideshow.includes('document.elementsFromPoint(endEvent.clientX,endEvent.clientY)')) fail('Les cartes décimales doivent réellement gérer un glisser-déposer par pointeur.');
+if(!slideshow.includes('card.onclick=()=>')||!slideshow.includes('place(decimalSelectedCard,index)')) fail('Le toucher carte puis case doit rester disponible avec le glisser-déposer.');
 
 if(!process.exitCode) console.log('OK — 8 contrats de manipulation : 7 actifs et 1 planifié, état MG-MANIP-1 cohérent.');

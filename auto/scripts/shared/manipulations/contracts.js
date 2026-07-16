@@ -96,8 +96,8 @@
   });
 
   registry.register('numbers.order-cards',{
-    version:'1.0.0',label:'Cartes de nombres à ranger',status:'active',moduleId:'dnb_02',componentId:'numbers.order-cards',
-    description:'Sélectionner un nombre puis une position pour construire un ordre sans retaper les valeurs.',
+    version:'1.1.0',label:'Cartes de nombres à ranger',status:'active',moduleId:'dnb_02',componentId:'numbers.order-cards',
+    description:'Glisser un nombre vers une position ou toucher successivement la carte et la case, sans retaper les valeurs.',
     supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
     state:[
       {id:'cards',label:'Valeurs proposées et ordre initial',serializable:true},
@@ -106,6 +106,7 @@
       {id:'selected-card',label:'Carte sélectionnée',serializable:false}
     ],
     actions:[
+      {id:'drag-card',label:'Faire glisser une carte vers une position'},
       {id:'select-card',label:'Sélectionner une carte'},
       {id:'place-card',label:'Placer la carte dans une position'},
       {id:'remove-card',label:'Retirer une carte déjà placée'},
@@ -119,8 +120,8 @@
   });
 
   registry.register('numbers.frame-integers',{
-    version:'1.0.0',label:'Encadrement par entiers',status:'active',moduleId:'dnb_02',componentId:'numbers.number-line',
-    description:'Placer les deux entiers voisins autour d’un décimal déjà positionné sur une droite courte.',
+    version:'1.1.0',label:'Encadrement par entiers',status:'active',moduleId:'dnb_02',componentId:'numbers.number-line',
+    description:'Glisser ou placer par deux touchers les entiers voisins autour d’un décimal déjà positionné sur une droite courte.',
     supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
     state:[
       {id:'decimal',label:'Décimal placé sur la droite',serializable:true},
@@ -129,6 +130,7 @@
       {id:'selected-card',label:'Carte sélectionnée',serializable:false}
     ],
     actions:[
+      {id:'drag-card',label:'Faire glisser un entier vers une position'},
       {id:'select-card',label:'Sélectionner un entier'},
       {id:'place-card',label:'Placer l’entier à gauche ou à droite'},
       {id:'remove-card',label:'Retirer un entier placé'},
@@ -142,8 +144,8 @@
   });
 
   registry.register('numbers.distributivity-cards',{
-    version:'1.0.0',label:'Produits partiels à placer',status:'active',moduleId:'dnb_02',componentId:'algebra.area-model',
-    description:'Placer les deux produits issus de la décomposition d’un décimal dans le tableau de distributivité.',
+    version:'1.1.0',label:'Produits partiels à placer',status:'active',moduleId:'dnb_02',componentId:'algebra.area-model',
+    description:'Placer les deux produits issus de la décomposition d’un décimal dans l’égalité distributive.',
     supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
     state:[
       {id:'factors',label:'Décimal, décomposition et multiplicateur',serializable:true},
@@ -152,6 +154,7 @@
       {id:'selected-card',label:'Produit sélectionné',serializable:false}
     ],
     actions:[
+      {id:'drag-card',label:'Faire glisser un produit partiel vers une case'},
       {id:'select-card',label:'Sélectionner un produit'},
       {id:'place-card',label:'Placer le produit dans la case correspondante'},
       {id:'remove-card',label:'Retirer un produit placé'},

@@ -53,24 +53,28 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .visual-note{font-size:1.4rem;color:var(--muted);border:1px dashed var(--border);border-radius:12px;padding:12px;margin:12px auto;max-width:620px}
 .diapo.decimal-mode .stage{align-items:center;padding:8px 18px 12px}
 .diapo.decimal-mode .slide{max-width:980px}
-.diapo.decimal-mode .question{font-size:clamp(1.55rem,3vw,3rem);line-height:1.14;margin:0 auto 10px}
+.diapo.decimal-mode .question{font-size:clamp(1.8rem,3.35vw,3.3rem);line-height:1.14;margin:0 auto 12px}
+.diapo.decimal-mode .footer{font-size:clamp(2.35rem,4.7vw,4.5rem)}
+.diapo.decimal-mode .options{max-width:920px}.diapo.decimal-mode .opt{text-align:center;font-size:clamp(1.45rem,2.5vw,2.25rem)}
 .decimal-manipulation{width:min(100%,780px);margin:3px auto 0;padding:12px 14px;border:1px solid #cfddee;border-radius:18px;background:linear-gradient(180deg,#fff,#f6faff);user-select:none}
 .decimal-card-tray{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:2px auto 10px}
-.decimal-card,.decimal-drop-slot{display:inline-grid;place-items:center;min-width:92px;min-height:52px;padding:8px 13px;border-radius:13px;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.35rem,2.7vw,2rem);font-weight:850;line-height:1;background:#fff;touch-action:manipulation}
-.decimal-card{border:2px solid #0b79d0;color:#084f87;box-shadow:0 2px 0 rgba(8,79,135,.13);cursor:pointer}
+.decimal-card,.decimal-drop-slot{display:inline-grid;place-items:center;min-width:112px;min-height:60px;padding:10px 16px;border-radius:13px;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.55rem,2.9vw,2.25rem);font-weight:850;line-height:1;background:#fff;touch-action:manipulation}
+.decimal-card{border:2px solid #0b79d0;color:#084f87;box-shadow:0 2px 0 rgba(8,79,135,.13);cursor:grab;touch-action:none;position:relative}
+.decimal-card.is-dragging{z-index:20;cursor:grabbing;opacity:.92;box-shadow:0 12px 28px rgba(8,79,135,.28)}
 .decimal-card.is-selected{outline:3px solid #ff7a1a;outline-offset:2px;background:#fff5ec;border-color:#e86100;color:#9a4100}
 .decimal-card.is-used{visibility:hidden;pointer-events:none}
 .decimal-drop-slot{border:2px dashed #86a8cf;color:#31516e;cursor:pointer}
 .decimal-drop-slot.is-filled{border-style:solid;border-color:#e86100;background:#fff7ef;color:#9a4100}
 .decimal-drop-slot:focus-visible,.decimal-card:focus-visible,.area-model-slot:focus-visible{outline:3px solid #ff7a1a;outline-offset:3px}
-.decimal-order-direction{display:flex;align-items:center;justify-content:space-between;width:min(100%,430px);margin:0 auto 5px;color:#60708c;font-size:.78rem;font-weight:900;letter-spacing:.035em;text-transform:uppercase}
-.decimal-order-slots,.decimal-frame-slots{display:flex;align-items:center;justify-content:center;gap:12px}
+.decimal-order-slots,.decimal-frame-slots{display:flex;align-items:flex-start;justify-content:center;gap:12px}
+.decimal-order-position{display:grid;justify-items:center;gap:7px}.decimal-order-endpoint{color:#42546b;font-size:.84rem;font-weight:900;letter-spacing:.025em;text-transform:uppercase;white-space:nowrap}.decimal-order-endpoint.is-empty{visibility:hidden}.decimal-order-sign{align-self:center;margin-top:18px;color:#17283f;font-family:"Cambria Math","Times New Roman",serif;font-size:2.25rem;font-weight:900}
 .decimal-frame-line{width:min(100%,630px);margin:0 auto}.decimal-frame-line>svg{display:block;width:100%;height:auto;max-height:170px}
 .decimal-frame-slots{justify-content:space-between;width:calc(100% - 86px);margin:-31px auto 8px;position:relative;z-index:3;pointer-events:none}.decimal-frame-slots .decimal-drop-slot{pointer-events:auto}
 .decimal-frame-cards{margin-bottom:0}
 .decimal-complement-visual{display:flex;align-items:center;justify-content:center;width:min(100%,620px);height:clamp(92px,16vh,132px);margin:5px auto 0}.decimal-complement-visual svg{display:block;width:100%;height:auto;max-height:100%}
 .area-model-help{display:flex;align-items:center;justify-content:center;width:min(100%,760px);margin:2px auto}.area-model-svg{display:block;width:100%;height:auto;max-height:310px}
 .area-model-compact .area-model-svg{max-height:245px}.area-model-slot{cursor:pointer;touch-action:manipulation}.area-model-slot rect{transition:fill .15s ease}.area-model-slot.is-filled rect{fill:#fff3e3!important;stroke:#e86100}.area-model-slot.is-selected rect{stroke:#ff7a1a;stroke-width:4}
+.decimal-decomposition{display:grid;gap:7px;width:min(100%,720px);padding:10px 16px;border:1px solid #d3dfed;border-radius:16px;background:#fff;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif}.decimal-decomposition-title{color:#43536a;font:900 1.05rem Arial,sans-serif;text-align:center}.decimal-decomposition-line{display:flex;align-items:center;justify-content:center;gap:10px;font-size:clamp(1.6rem,3.4vw,2.65rem);font-weight:850;white-space:nowrap}.decimal-decomposition-start{font-size:clamp(1.9rem,4vw,3.1rem)}.decimal-decomposition-slot,.decimal-decomposition-term{display:inline-grid;place-items:center;min-width:190px;min-height:56px;padding:8px 12px;border:2px dashed #86a8cf;border-radius:12px;background:#f8fbff;color:#244d70;font:850 clamp(1.25rem,2.6vw,2rem) "Cambria Math","Times New Roman",serif}.decimal-decomposition-slot.is-filled{border-style:solid;border-color:#e86100;background:#fff7ef;color:#8d3b00}.decimal-decomposition-result{padding-top:5px;border-top:1px solid #dce5f0;color:#087a55;font-size:clamp(1.35rem,2.7vw,2.05rem);font-weight:900;text-align:center}
 .decimal-distributivity-board{padding-top:8px}.decimal-distributivity-board .decimal-card-tray{margin:2px auto 0}
 .decimal-manipulation.is-correction .decimal-card-tray{display:none}
 .diapo.divisibility-sharing-mode .stage{align-items:center;padding:8px 20px 12px}
@@ -614,7 +618,7 @@ svg{display:block;max-width:100%;height:auto}
 @media(max-width:800px){.diapo.data-mode .stage{padding:5px 6px 9px}.diapo.data-mode .question{margin-bottom:5px;font-size:clamp(1.16rem,5.05vw,1.48rem);line-height:1.1}.diapo.data-mode .question table{font-size:clamp(.88rem,3.75vw,1.06rem)!important}.diapo.data-mode .question table td,.diapo.data-mode .question table th{padding:12px 10px!important}.diapo.data-mode .footer{margin-top:6px;font-size:clamp(1.55rem,6.8vw,2rem)}}
 @media(max-width:800px){.slide .question table{max-width:100%;font-size:clamp(.92rem,3.9vw,1.08rem)!important}.slide .question table td,.slide .question table th{padding:14px 14px!important;border-width:1.5px!important}.diapo.coordinate-mode .stage{padding:4px 4px 8px}.diapo.coordinate-mode .question{font-size:clamp(1.18rem,5.2vw,1.5rem);line-height:1.1;margin-bottom:3px}.diapo.coordinate-mode .question svg{width:min(100%,380px)!important;max-width:380px!important;max-height:min(52vh,380px)!important;margin:3px auto!important}.diapo.coordinate-mode .footer{font-size:clamp(1.75rem,7.8vw,2.3rem);margin-top:3px}.diapo.right-angle-mode .question{font-size:clamp(2rem,9vw,2.8rem);margin-bottom:20px}.diapo.right-angle-mode .footer{font-size:clamp(2.1rem,9.5vw,3rem)}}
 @media(max-width:800px){.diapo.transformations-mode .stage{padding:4px 4px 8px}.diapo.transformations-mode .question{font-size:clamp(1.12rem,4.9vw,1.42rem);line-height:1.09;margin-bottom:3px}.diapo.transformations-mode .question svg{width:min(100%,390px)!important;max-width:390px!important;max-height:min(49vh,390px)!important;margin:3px auto!important}.diapo.transformations-mode .footer{font-size:clamp(1.6rem,7.2vw,2.15rem);margin-top:3px}.diapo.transformations-mode .options{gap:6px;margin-top:4px}.diapo.transformations-mode .opt{font-size:clamp(.9rem,3.85vw,1.08rem);padding:8px 9px}.course-visual{max-height:175px}.course-rule-wide{grid-column:auto}}
-@media(max-width:800px){.diapo.decimal-mode .stage{padding:4px 6px 7px}.diapo.decimal-mode .question{font-size:clamp(1.2rem,5.25vw,1.55rem);margin-bottom:5px}.diapo.decimal-mode .footer{font-size:clamp(1.65rem,7.4vw,2.2rem);margin-top:5px}.diapo.decimal-mode .options{grid-template-columns:1fr;gap:6px;margin-top:6px}.diapo.decimal-mode .opt{min-height:48px;padding:9px 10px;font-size:clamp(.95rem,4.05vw,1.12rem)}.decimal-manipulation{padding:8px 7px;border-radius:14px}.decimal-card-tray{gap:6px;margin-bottom:7px}.decimal-card,.decimal-drop-slot{min-width:70px;min-height:48px;padding:7px 8px;border-radius:11px;font-size:clamp(1.15rem,5.2vw,1.5rem)}.decimal-order-slots{gap:7px}.decimal-order-direction{width:calc(100% - 14px);font-size:.63rem}.decimal-frame-line>svg{max-height:125px}.decimal-frame-slots{width:calc(100% - 50px);margin:-25px auto 5px}.decimal-frame-slots .decimal-drop-slot{min-width:68px}.decimal-complement-visual{height:clamp(74px,12vh,96px);margin-top:2px}.area-model-compact .area-model-svg{max-height:180px}.decimal-distributivity-board .decimal-card{min-width:112px;font-size:clamp(.98rem,4.25vw,1.2rem)}}
+@media(max-width:800px){.diapo.decimal-mode .stage{padding:5px 7px 8px}.diapo.decimal-mode .question{font-size:clamp(1.48rem,6.25vw,1.9rem);margin-bottom:7px}.diapo.decimal-mode .footer{font-size:clamp(2.05rem,9.1vw,2.8rem);margin-top:7px}.diapo.decimal-mode .options{grid-template-columns:1fr;gap:8px;margin-top:8px}.diapo.decimal-mode .opt{min-height:56px;padding:11px 12px;font-size:clamp(1.18rem,5.05vw,1.45rem)}.decimal-manipulation{padding:10px 8px;border-radius:14px}.decimal-card-tray{gap:7px;margin-bottom:10px}.decimal-card,.decimal-drop-slot{min-width:82px;min-height:56px;padding:8px 9px;border-radius:11px;font-size:clamp(1.34rem,5.8vw,1.7rem)}.decimal-order-slots{gap:5px}.decimal-order-position{gap:5px}.decimal-order-endpoint{font-size:.67rem}.decimal-order-sign{margin-top:14px;font-size:1.75rem}.decimal-frame-line>svg{max-height:143px}.decimal-frame-slots{width:calc(100% - 78px);margin:-30px auto 7px}.decimal-frame-slots .decimal-drop-slot{min-width:78px}.decimal-complement-visual{height:clamp(88px,14vh,112px);margin-top:3px}.area-model-compact .area-model-svg{max-height:190px}.decimal-distributivity-board .decimal-card{min-width:128px;font-size:clamp(1.06rem,4.55vw,1.3rem)}.decimal-decomposition{gap:5px;padding:8px 7px}.decimal-decomposition-title{font-size:.88rem}.decimal-decomposition-line{gap:5px;font-size:clamp(1.28rem,5.55vw,1.62rem)}.decimal-decomposition-start{font-size:clamp(1.6rem,6.8vw,2rem)}.decimal-decomposition-slot,.decimal-decomposition-term{min-width:126px;min-height:50px;padding:6px 5px;font-size:clamp(1.04rem,4.45vw,1.28rem)}.decimal-decomposition-result{font-size:clamp(1.05rem,4.55vw,1.32rem)}}
 @media(max-width:800px){.diapo>.top{order:2;border-top:1px solid var(--border);border-bottom:0}.diapo>.stage{order:1}}
 @media(max-width:800px){.diapo.interactive-mode{--stage-x:7px;--stage-bottom:7px}.diapo.interactive-mode>.top{order:1;height:54px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);border-top:0;border-bottom:1px solid var(--border);padding:7px max(9px,env(safe-area-inset-right)) 7px max(9px,env(safe-area-inset-left))}.diapo.interactive-mode>.stage{order:2;padding-top:5px}.diapo.interactive-mode>.answer-dock{order:3}.diapo.interactive-mode .keyboard-toggle,.diapo.interactive-mode .fullscreen-btn{width:40px;height:40px;min-height:40px;padding:0}.interactive-summary{grid-column:2;justify-content:center;font-size:.86rem}.interactive-score{padding:5px 8px}.answer-dock{padding:6px max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))}.answer-body{grid-template-columns:minmax(0,1fr) 154px;justify-content:stretch;gap:5px}.answer-main{height:var(--keypad-height-mobile);min-height:58px}.keypad{grid-template-columns:repeat(var(--key-columns-mobile,6),minmax(0,1fr));gap:4px}.key{min-height:0;padding:4px 2px;border-radius:9px;font-size:1.04rem}.key.utility{font-size:.78rem}.key.utility svg{width:23px;height:23px}.answer-guidance,.answer-feedback{min-height:58px;padding:8px 8px;border-radius:10px;font-size:1.16rem}.feedback-answer{font-size:1em}.answer-kind{padding:0}.answer-dock.keypad-collapsed .answer-main,.answer-dock.qcm-mode .answer-main{height:62px}.dock-actions{grid-template-columns:1fr;width:154px}.dock-action{min-width:0;min-height:58px;padding:7px 5px;font-size:1.03rem}.answer-dock.qcm-mode .dock-action{font-size:1.1rem}.interactive-input-slot{min-height:1.48em;min-width:2.18em;border-radius:.28em}.interactive-polynomial-response{gap:7px 10px;margin-top:7px;font-size:clamp(1.7rem,7.7vw,2.25rem)}.interactive-polynomial-response.term-count-1{font-size:clamp(2.3rem,10vw,3rem)}.interactive-polynomial-response.term-count-2{font-size:clamp(1.95rem,8.8vw,2.65rem)}.interactive-polynomial-term small{font-size:.42em}.interactive-finish{margin:3vh auto 0;padding:22px 15px}.interactive-finish-mark{width:54px;height:54px}.interactive-finish-score{margin-bottom:14px}.interactive-finish-actions{flex-direction:column;gap:8px}.interactive-finish-actions .btn,.interactive-finish-actions .btn.primary{width:min(100%,260px);min-width:0}}
 @media(max-width:360px){.answer-body{grid-template-columns:minmax(0,1fr) 132px}.dock-actions{width:132px}.dock-action,.answer-dock.qcm-mode .dock-action{font-size:.96rem}.answer-guidance,.answer-feedback{padding:6px 4px;font-size:.92rem;line-height:1.08;overflow-wrap:anywhere}.feedback-answer{font-size:.94em}}
@@ -676,7 +680,7 @@ let interactiveTouched=[];
 let relativeBoardState=null;
 let relativeBoardKey='';
 let pythagorasSelectedToken=null;
-let decimalSelectedCard=null;
+let decimalSelectedCard=null,decimalSuppressClickUntil=0;
 let pythagorasSuppressClickUntil=0;
 let activeSlotIndex=0;
 let selectedOptions=new Set();
@@ -768,15 +772,16 @@ function courseThalesTemplateVisual(){
   +'<div class="thales-course-ratios"><span class="small">AD</span>/<span class="large">AB</span> = <span class="small">AE</span>/<span class="large">AC</span> = <span class="small">DE</span>/<span class="large">BC</span></div><div class="thales-course-reminder">On lit toujours les points dans le même ordre.</div></div></div>';
 }
 function courseDecimalVisual(kind){
- const ids={order:'numbers.order-cards',frame:'numbers.number-line',unit:'arithmetic.fraction-decimal-grid',multiply:'algebra.area-model',divide:'arithmetic.relation-bar'};
+ const ids={order:'numbers.order-cards',frame:'numbers.number-line','relative-frame':'numbers.number-line',unit:'arithmetic.fraction-decimal-grid',multiply:'algebra.area-model',divide:'arithmetic.relation-bar'};
  const component=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get(ids[kind]);
  if(!component)return '';
  let data={},correction=true;
  if(kind==='order')data={values:[4.7,4.09,4.68],solution:[4.09,4.68,4.7]};
- if(kind==='frame')data={mode:'scale',min:9,max:10,step:1,width:520,height:142,autoLabels:true,points:[{value:9.32,label:'9,32',color:'#0b79d0'}]};
+ if(kind==='frame')data={mode:'scale',min:9,max:10,step:1,width:560,height:154,axisPadding:.1,autoLabels:true,tickFontSize:21,pointFontSize:28,points:[{value:9.32,label:'9,32',color:'#0b79d0'}]};
+ if(kind==='relative-frame')data={mode:'scale',min:-3,max:-2,step:1,width:560,height:154,axisPadding:.1,autoLabels:true,tickFontSize:21,pointFontSize:28,points:[{value:-2.4,label:'−2,4',color:'#0b79d0'}]};
  if(kind==='unit')data={kind:'decimal-complement',filledA:9,filledB:1,showSecond:true};
- if(kind==='multiply')data={style:'table',compact:true,title:'Décomposer 4,7 × 4',rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}],answer:'4,7 × 4 = 4 × 4 + 0,7 × 4 = 18,8'};
- if(kind==='divide')data={kind:'fraction_direct',divisor:3,value:2.1,result:.7,showValue:true,questionLabel:'une part'};
+ if(kind==='multiply')data={style:'decimal-decomposition',compact:true,title:'Décomposer 4,7 × 4',rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}],answer:'4,7 × 4 = 4 × 4 + 0,7 × 4 = 18,8'};
+ if(kind==='divide')data={kind:'fraction_direct',divisor:3,value:2.1,result:.7,showValue:true,questionLabel:'une part',balanced:true,arrowStyle:'hand'};
  const html=component.render(data,correction);
  return '<div class="course-visual decimal-course-visual">'+html+'</div>';
 }
@@ -851,13 +856,18 @@ Object.assign(courseCatalog,{
   ]},
   decimal_numbers:{title:'Comparer et calculer avec des décimaux',rules:[
     ['Comparer les rangs','On compare d’abord les parties entières, puis les dixièmes, les centièmes… Ajouter des zéros à droite ne change pas le nombre : 4,7 = 4,70.'+courseDecimalVisual('order'),false,'place-values'],
-    ['Nombres négatifs','Sur une droite graduée, le nombre le plus à droite est le plus grand. Parmi deux nombres négatifs, celui qui est le plus proche de 0 est donc le plus grand.<span class="course-example">−2,4 &gt; −3,1.</span>',false,'sign-order'],
     ['Encadrer','On repère l’entier immédiatement avant le décimal et l’entier immédiatement après. Ils doivent être consécutifs.'+courseDecimalVisual('frame'),false,'consecutive-integers'],
     ['Compléter une unité','Dix dixièmes forment une unité entière. Les deux couleurs complètent la même bande : 0,9 + 0,1 = 1.'+courseDecimalVisual('unit'),false,'complete-unit'],
     ['Additionner ou soustraire','On aligne les virgules pour placer unités sous unités, dixièmes sous dixièmes et centièmes sous centièmes.',false,'align-comma'],
     ['Multiplier par un entier','On peut décomposer le décimal, puis distribuer le même multiplicateur à chaque partie.'+courseDecimalVisual('multiply'),false,'distributivity'],
     ['Partager également','Diviser un total par le nombre de parts donne la valeur d’une part. Le schéma montre le total au-dessus et les parts égales en dessous.'+courseDecimalVisual('divide'),false,'equal-sharing'],
     ['Vérifier','Avant de valider, on estime l’ordre de grandeur : multiplier par un entier supérieur à 1 augmente le nombre ; partager en plusieurs parts le diminue.',false,'estimate']
+  ]},
+  decimal_relative_numbers:{title:'Comparer et calculer avec des décimaux relatifs',rules:[
+    ['Comparer des nombres négatifs','Sur une droite graduée, le nombre le plus à droite est le plus grand. Parmi deux nombres négatifs, le plus grand est donc le plus proche de 0.<span class="course-example">−2,4 &gt; −3,1.</span>',false,'sign-order'],
+    ['Encadrer un nombre négatif','Les deux entiers s’écrivent dans l’ordre de la droite : entier inférieur &lt; nombre &lt; entier supérieur.'+courseDecimalVisual('relative-frame'),false,'consecutive-integers'],
+    ['Additionner des signes contraires','On compare les distances à zéro, on calcule leur différence, puis on garde le signe du nombre qui a la plus grande distance à zéro.<span class="course-example">3,2 + (−4,7) = −1,5.</span>',false,'signed-addition'],
+    ['Vérifier','Le résultat d’une somme de signes contraires se situe entre les deux nombres de départ et son signe est cohérent avec le terme dominant.',false,'estimate']
   ]},
   fraction_ops:{title:'Simplifier, comparer et additionner des fractions',rules:[
     ['Simplifier','On divise le numérateur et le dénominateur par un même nombre non nul.<span class="course-example"><span class="course-equation">'+courseFraction(18,24)+' = '+courseFraction('18 ÷ 6','24 ÷ 6')+' = '+courseFraction(3,4)+'</span></span>'],
@@ -1162,7 +1172,7 @@ function fitNavNumbers(){
 }
 function setModuleClasses(diapo,moduleId){
  const map={
-   'module01-mode':['dnb_01'],'decimal-mode':['dnb_02'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
+   'module01-mode':['dnb_01'],'decimal-mode':['dnb_02','dnb_39'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
    'multiple-forms-mode':['dnb_05'],'scientific-mode':['dnb_06'],'squares-mode':['dnb_07'],
    'relation-mode':['dnb_09'],'reduction-mode':['dnb_10'],'substitution-mode':['dnb_11'],
    'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angle-sum-mode':['dnb_18'],
@@ -1331,12 +1341,43 @@ function setupDecimalCardInteraction(spec){
      if(textNode) textNode.textContent=value?displayDecimalCardValue(value):'…';
    });
  };
+ const place=(value,index)=>{
+   if(!value||!Number.isInteger(index)||index<0||index>=slots.length)return;
+   const previousIndex=interactiveValues.indexOf(value);
+   if(previousIndex>=0){interactiveValues[previousIndex]='';interactiveTouched[previousIndex]=false;}
+   interactiveValues[index]=value;interactiveTouched[index]=true;decimalSelectedCard=null;activeSlotIndex=index;
+   paint();updateInteractiveControls();
+ };
  cards.forEach(card=>{
    card.onclick=()=>{
+     if(Date.now()<decimalSuppressClickUntil)return;
      const value=String(card.dataset.decimalCard||'');
      if(interactiveValues.includes(value))return;
      decimalSelectedCard=decimalSelectedCard===value?null:value;
      paint();
+   };
+   card.onpointerdown=event=>{
+     if(interactiveLocked||event.button>0)return;
+     const value=String(card.dataset.decimalCard||'');
+     if(!value||interactiveValues.includes(value))return;
+     const startX=event.clientX,startY=event.clientY;let moved=false;
+     card.setPointerCapture?.(event.pointerId);
+     const move=moveEvent=>{
+       const dx=moveEvent.clientX-startX,dy=moveEvent.clientY-startY;
+       if(Math.hypot(dx,dy)>7)moved=true;
+       if(!moved)return;
+       moveEvent.preventDefault();card.classList.add('is-dragging');card.style.transform=`translate(${dx}px,${dy}px)`;
+     };
+     const finish=(endEvent,cancelled=false)=>{
+       card.releasePointerCapture?.(endEvent.pointerId);card.removeEventListener('pointermove',move);card.removeEventListener('pointerup',end);card.removeEventListener('pointercancel',cancel);
+       card.classList.remove('is-dragging');card.style.transform='';
+       if(!moved||cancelled)return;
+       decimalSuppressClickUntil=Date.now()+300;
+       const target=document.elementsFromPoint(endEvent.clientX,endEvent.clientY).map(node=>node.closest?.('[data-decimal-slot],[data-distributive-slot]')).find(Boolean);
+       if(target)place(value,Number(target.dataset.decimalSlot??target.dataset.distributiveSlot));
+     };
+     const end=endEvent=>finish(endEvent,false),cancel=endEvent=>finish(endEvent,true);
+     card.addEventListener('pointermove',move);card.addEventListener('pointerup',end);card.addEventListener('pointercancel',cancel);
    };
  });
  slots.forEach(slot=>{
@@ -1344,9 +1385,7 @@ function setupDecimalCardInteraction(spec){
      const index=Number(slot.dataset.decimalSlot??slot.dataset.distributiveSlot);
      activeSlotIndex=index;
      if(decimalSelectedCard){
-       const previousIndex=interactiveValues.indexOf(decimalSelectedCard);
-       if(previousIndex>=0){interactiveValues[previousIndex]='';interactiveTouched[previousIndex]=false;}
-       interactiveValues[index]=decimalSelectedCard;interactiveTouched[index]=true;decimalSelectedCard=null;
+       place(decimalSelectedCard,index);return;
      }else if(interactiveValues[index]){
        interactiveValues[index]='';interactiveTouched[index]=false;
      }
@@ -1870,7 +1909,7 @@ function recordInteractiveAttempt(result){
  const session=ensureQuestionSession();pauseQuestionTimer();session.validations++;
  attemptRecorder.record({
    schemaVersion:contract.schemaVersion||1,
-   generatorVersion:contract.generatorVersion||'1.13.0',
+   generatorVersion:contract.generatorVersion||'1.14.0',
    questionInstanceId:contract.questionInstanceId,
    seriesId:contract.seriesId,
    generatedSeriesId:contract.generatedSeriesId,

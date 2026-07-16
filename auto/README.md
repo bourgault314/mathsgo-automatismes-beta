@@ -1,4 +1,4 @@
-# Automatismes maths&go — bêta V1.18
+# Automatismes maths&go — bêta V1.19
 
 Cette application est la version de développement d'Automatismes cycle 4 et
 DNB. Elle est publiée avec ses fichiers découpés à l'adresse :
@@ -12,11 +12,11 @@ l'application et du livret A5, pas un deuxième exerciseur.
 ## État de référence
 
 - paquet : `1.31.0-beta.0` ;
-- banque : V1.18 ;
-- 42 modules ;
-- 475 gabarits ;
+- banque : V1.19 ;
+- 43 modules ;
+- 476 gabarits ;
 - 26 composants visuels ;
-- 42 modules classés pédagogiquement sur 42 ;
+- 43 modules classés pédagogiquement sur 43 ;
 - 3 formats fonctionnels supplémentaires pour `dnb_14`, sans modifier ses 18
   gabarits historiques dans la banque figée ;
 - partage reproductible par seed, lien, code MG1 et QR code.
@@ -53,7 +53,7 @@ source du site courant. Il ne doit pas être recréé ni republié à côté de
 | `scripts/core/` | contrats de séries, identifiants et partage |
 | `dev/visual-library.html` | catalogue pédagogique et visuel non référencé |
 
-Les 42 banques sont isolées, mais le découpage fonctionnel n'est pas terminé.
+Les 43 banques sont isolées, mais le découpage fonctionnel n'est pas terminé.
 La génération, les fréquences, certains rendus et certaines corrections
 restent encore couplés aux moteurs communs.
 
@@ -73,7 +73,7 @@ catégories.
 6. lancer `npm test` avant et après le lot ;
 7. publier un seul objectif cohérent par PR.
 
-Une extraction pure ne modifie pas l'empreinte de la banque V1.18. Une retouche
+Une extraction pure ne modifie pas l'empreinte de la banque V1.19. Une retouche
 visuelle ne remplace jamais une source plus riche par un dessin générique.
 
 ## Documents canoniques

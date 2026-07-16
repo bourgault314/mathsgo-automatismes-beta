@@ -42,7 +42,26 @@
     return terms.map((term,index)=>signedLabel(term,index)).join(' ').replace(/^\+\s*/,'');
   }
 
+  function decimalDecomposition(data,correction=false){
+    const rows=(Array.isArray(data.rows)?data.rows:[]).map(term=>Number(term.coefficient));
+    const factor=Number(data.columns&&data.columns[0]&&data.columns[0].coefficient);
+    const whole=rows[0]||0,tenths=rows[1]||0,decimal=whole+tenths;
+    const display=value=>String(Number(Number(value).toFixed(6))).replace('.',',').replace('-','−');
+    const productLabels=[`${display(whole)} × ${display(factor)}`,`${display(tenths)} × ${display(factor)}`];
+    const slot=(index)=>{
+      if(correction){
+        const label=Array.isArray(data.cellLabels)&&data.cellLabels[index]?data.cellLabels[index]:productLabels[index];
+        return `<span class="decimal-decomposition-slot is-filled">${escapeHtml(label)}</span>`;
+      }
+      if(data.interactive)return `<button class="decimal-decomposition-slot area-model-slot" type="button" data-distributive-slot="${index}" aria-label="Produit partiel ${index+1}"><span data-distributive-value="${index}">…</span></button>`;
+      return `<span class="decimal-decomposition-term">${escapeHtml(productLabels[index])}</span>`;
+    };
+    const finalLine=correction?`<div class="decimal-decomposition-result">${escapeHtml(data.answer||'')}</div>`:'';
+    return `<div class="area-model-help area-model-compact decimal-decomposition" role="group" aria-label="Décomposition distributive de ${escapeHtml(display(decimal))} multiplié par ${escapeHtml(display(factor))}"><div class="decimal-decomposition-title">${escapeHtml(data.title||'Décomposer le produit')}</div><div class="decimal-decomposition-line decimal-decomposition-start">${escapeHtml(display(decimal))} × ${escapeHtml(display(factor))}</div><div class="decimal-decomposition-line">= (${escapeHtml(display(whole))} + ${escapeHtml(display(tenths))}) × ${escapeHtml(display(factor))}</div><div class="decimal-decomposition-line decimal-decomposition-products"><span>=</span>${slot(0)}<span>+</span>${slot(1)}</div>${finalLine}</div>`;
+  }
+
   function areaModel(data,correction=false){
+    if(data.style==='decimal-decomposition') return decimalDecomposition(data,correction);
     const rows=(Array.isArray(data.rows)&&data.rows.length?data.rows:[{coefficient:1,power:1},{coefficient:3,power:0}]).map(term=>({coefficient:Number(term.coefficient),power:Number(term.power)||0}));
     const columns=(Array.isArray(data.columns)&&data.columns.length?data.columns:[{coefficient:1,power:1},{coefficient:4,power:0}]).map(term=>({coefficient:Number(term.coefficient),power:Number(term.power)||0}));
     const compact=!!data.compact,gridX=compact?142:160,gridY=compact?82:100,gridW=compact?570:560,gridH=compact?104:230,headerW=compact?74:82,headerH=compact?46:54,cellW=gridW/columns.length,cellH=gridH/rows.length,style=data.style==='table'?'table':'tiles',viewHeight=compact?270:410;
@@ -77,12 +96,12 @@
     preset('coefficient-x','Double distributivité · (2 - x)(x + 1)',{rows:[{coefficient:2,power:0},{coefficient:-1,power:1}],columns:[{coefficient:1,power:1},{coefficient:1,power:0}],answer:'(2 - x)(x + 1) = 2x + 2 - x² - x'}),
     preset('factoriser-cinq','Factoriser · 5x + 20',{style:'table',title:'Retrouver le facteur commun',rows:[{coefficient:5,power:0}],columns:[{coefficient:1,power:1},{coefficient:4,power:0}],answer:'5x + 20 = 5(x + 4)'}),
     preset('factoriser-quatre','Factoriser · 32 - 4x',{style:'table',title:'Retrouver le facteur commun',rows:[{coefficient:4,power:0}],columns:[{coefficient:8,power:0},{coefficient:-1,power:1}],answer:'32 - 4x = 4(8 - x)'}),
-    preset('distributivite-decimale','Distributivité numérique · 4,7 × 4',{style:'table',compact:true,title:'Décomposer 4,7 × 4',rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}],answer:'4,7 × 4 = 4 × 4 + 0,7 × 4 = 18,8'})
+    preset('distributivite-decimale','Distributivité numérique · 4,7 × 4',{style:'decimal-decomposition',compact:true,title:'Décomposer 4,7 × 4',rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}],answer:'4,7 × 4 = 4 × 4 + 0,7 × 4 = 18,8'})
   ]);
 
   if(!global.MATHSGO_VISUALS)throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant area-model.js.');
   global.MATHSGO_VISUALS.register('algebra.area-model',{
-    version:'1.1.0',
+    version:'1.2.0',
     label:'Modèle d’aire — distributivité et factorisation',
     family:'Algèbre',
     description:'Génère les facteurs en bordure, les produits partiels et les tuiles ou cases grises des modèles d’aire du livret.',
