@@ -168,7 +168,9 @@ leur propre représentation en base 60 et ne sont pas forcées dans ce tableau.
 `numbers.glisse-nombre` conserve le glisse-nombre de `dnb_02b`. La virgule reste
 fixe entre unités et dixièmes tandis que la bande grise et les chiffres se
 déplacent de une à trois colonnes. Le composant contient son contrôleur complet :
-souris, toucher, flèches du clavier, zéros fantômes et animation de correction.
+souris, toucher, flèches du clavier, geste « chiffre bleu puis colonne
+d’arrivée », zéros fantômes et rejeu animé de la correction. Le suivi du doigt
+reste direct ; seuls l’aimantation et le rejeu sont volontairement ralentis.
 Les cinq références couvrent les deux sens et les facteurs 10, 100 et 1 000.
 
 `numbers.relative-tokens` possède trois références équilibrées autour des
@@ -177,9 +179,10 @@ permettent au catalogue d’exécuter le composant statique sans recopier le
 plateau interactif de `dnb_38`.
 
 Le registre de `dnb_02b` relie maintenant ce composant aux calculs directs,
-aux tirages mixtes, aux QCM et aux questions où le facteur ou le nombre de
-départ manque. La règle pédagogique est explicite : la virgule reste fixe et
-ce sont les chiffres qui changent de colonne.
+aux QCM diagnostiques, à un contexte monétaire, à une analyse d’erreur et aux
+questions où le facteur ou le nombre de départ manque. La règle pédagogique
+est explicite : la virgule reste fixe et ce sont les chiffres qui changent de
+colonne.
 
 `numbers.square-area` remplace les neuf copies du carré présentes dans
 `dnb_07`. Le côté, l’aire, les valeurs inconnues et le calcul voisin sont

@@ -2058,64 +2058,6 @@ function makeRelationInstance(mod,q){
   return {module:mod,q,scope,answers,rawStatement,rawFooter,hasSvg:false,relation};
 }
 
-function placeValueFactorFromKind(kind){
-  if(String(kind).includes('1000')) return 1000;
-  if(String(kind).includes('100')) return 100;
-  return 10;
-}
-function placeValueNumberForShift(shift){
-  const candidates=[0.24,0.37,0.65,0.84,1.25,2.4,3.07,5.09,7.2,12.3,24.6,45.8,72,125,307,540];
-  const valid=candidates.filter(value=>{
-    const result=value*Math.pow(10,shift);
-    return result>=0.001&&result<=9999;
-  });
-  return pick(valid.length?valid:candidates);
-}
-function placeValueDistractors(value,factor,direction){
-  const shift=Math.round(Math.log10(factor))*(direction==='multiply'?1:-1);
-  const candidates=[
-    value*Math.pow(10,-shift),
-    value*Math.pow(10,shift>0?shift-1:shift+1),
-    value+(direction==='multiply'?factor:-factor),
-    value*Math.pow(10,shift+(shift>0?1:-1))
-  ].map(number=>fmt(number));
-  return [...new Set(candidates)];
-}
-function makePlaceValueInstance(mod,q){
-  let kind=q.options.place_value_kind;
-  let direction=String(kind).startsWith('divide')?'divide':'multiply';
-  let factor=placeValueFactorFromKind(kind);
-  if(kind==='mixed'||kind==='qcm_result'||kind==='missing_factor'||kind==='missing_number'){
-    direction=RD(0,1)===0?'multiply':'divide';
-    factor=[10,100,1000][RD(0,2)];
-  }
-  const shift=Math.round(Math.log10(factor))*(direction==='multiply'?1:-1);
-  const value=placeValueNumberForShift(shift);
-  const result=CUT(value*Math.pow(10,shift),6);
-  const symbol=direction==='multiply'?'×':'÷';
-  const data={kind,direction,factor,shift,value,result,symbol};
-  let answers=[fmt(result)],answerChoices=[[fmt(result)]];
-  if(kind==='missing_factor'){
-    answers=[String(factor)];answerChoices=[[String(factor)]];
-    data.prompt='Complète le facteur manquant.';
-    data.equation=fmt(value)+' '+symbol+' … = '+fmt(result);
-  }else if(kind==='missing_number'){
-    answers=[fmt(value)];answerChoices=[[fmt(value)]];
-    data.prompt='Complète le nombre manquant.';
-    data.equation='… '+symbol+' '+factor+' = '+fmt(result);
-  }else{
-    data.prompt='Calcule.';
-    data.equation=fmt(value)+' '+symbol+' '+factor+' = …';
-  }
-  if(kind==='qcm_result'){
-    const options=[fmt(result),...placeValueDistractors(value,factor,direction)].slice(0,4);
-    while(options.length<4) options.push(fmt(result+(options.length+1)*Math.pow(10,-Math.max(0,Math.round(Math.log10(factor))))));
-    const shuffled=shuffledCopy(options);
-    data.qcm={options:shuffled,correctIndex:shuffled.indexOf(fmt(result))+1};
-    answers=[String(data.qcm.correctIndex)];answerChoices=[[String(data.qcm.correctIndex)]];
-  }
-  return {module:mod,q,scope:{},answers,answerChoices,rawStatement:'',rawFooter:'',hasSvg:true,placeValue:data};
-}
 function conversionDataForQuestion(number,scope,answers){
   const metricUnits={length:['km','hm','dam','m','dm','cm','mm'],mass:['kg','hg','dag','g','dg','cg','mg'],capacity:['kL','hL','daL','L','dL','cL','mL']};
   const areaUnits=['km²','hm²','dam²','m²','dm²','cm²','mm²'];
@@ -2539,13 +2481,19 @@ function makeGenericInstance(mod,q,generatedScope=null){
 }
 function makeInstance(mod,q){
   const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(mod&&mod.id);
+  if(runtime&&runtime.generator&&typeof runtime.generator.createInstance==='function'){
+    const instance=runtime.generator.createInstance({
+      module:mod,question:q,randomInt:RD,pick,cut:CUT,format:fmt,shuffle:shuffledCopy
+    });
+    if(!instance||typeof instance!=='object') throw new Error(`Le générateur ${mod.id} doit retourner une instance de question.`);
+    return instance;
+  }
   if(runtime&&runtime.generator&&typeof runtime.generator.createScope==='function'){
     const generatedScope=runtime.generator.createScope({module:mod,question:q,randomInt:RD});
     if(!generatedScope||typeof generatedScope!=='object') throw new Error(`Le générateur ${mod.id} doit retourner un objet de paramètres.`);
     return makeGenericInstance(mod,q,generatedScope);
   }
   if(mod&&mod.id==='dnb_01') return makeModule01Instance(mod,q);
-  if(mod&&mod.id==='dnb_02b') return makePlaceValueInstance(mod,q);
   if(mod&&['dnb_03','dnb_03b'].includes(mod.id)) return makeFractionOpsInstance(mod,q);
   if(mod&&mod.id==='dnb_04') return makeFractionPercentInstance(mod,q);
   if(mod&&mod.id==='dnb_05') return makeMultipleFormsInstance(mod,q);
@@ -2733,33 +2681,6 @@ function renderThalesModule(inst,correction=false,mode=null){
   return html;
 }
 
-function placeValueNumberMarkup(value,highlightUnits=false){
-  const valueText=fmt(value),parts=valueText.split(','),integer=parts[0]||'0';
-  const integerMarkup=Array.from(integer).map((character,index)=>index===integer.length-1&&highlightUnits
-    ? '<span class="place-value-number-units">'+escapeHtml(character)+'</span>'
-    : escapeHtml(character)).join('');
-  return '<span class="place-value-number">'+integerMarkup+(parts.length>1?'<span class="place-value-number-comma">,</span>'+escapeHtml(parts.slice(1).join(',')):'')+'</span>';
-}
-function renderPlaceValueModule(inst,correction=false,mode=null){
-  if(mode===null) mode=document.getElementById('visualMode').value;
-  const data=inst.placeValue;
-  const completed=data.kind==='missing_factor'?data.factor:(data.kind==='missing_number'?data.value:data.result);
-  const answerMarkup=correction?placeValueNumberMarkup(completed,false):renderPlaceholders('[[dots]]',inst.answers,'question');
-  let equationMarkup='';
-  if(data.kind==='missing_factor') equationMarkup=placeValueNumberMarkup(data.value,true)+' <span>'+data.symbol+'</span> '+answerMarkup+' <span>=</span> '+placeValueNumberMarkup(data.result,false);
-  else if(data.kind==='missing_number') equationMarkup=answerMarkup+' <span>'+data.symbol+'</span> <span>'+data.factor+'</span> <span>=</span> '+placeValueNumberMarkup(data.result,false);
-  else equationMarkup=placeValueNumberMarkup(data.value,true)+' <span>'+data.symbol+'</span> <span>'+data.factor+'</span> <span>=</span> '+answerMarkup;
-  let html='<div class="question place-value-prompt">'+data.prompt+'</div>'
-    +'<div class="place-value-equation">'+equationMarkup+'</div>';
-  if(!isWithoutVisuals(mode)) html+=placeValueToolHtml(data,correction);
-  else html+=visualPlaceholder(mode);
-  if(data.qcm){
-    html+='<div class="options place-value-options options-4">';
-    data.qcm.options.forEach((option,index)=>{html+='<div class="opt '+(correction&&index+1===data.qcm.correctIndex?'correct':'')+'"><strong>'+String.fromCharCode(65+index)+'.</strong> '+renderMathSegments('$$'+option+'$$')+'</div>';});
-    html+='</div>';
-  }
-  return html;
-}
 function durationValueDisc(value,kind='hour'){
   const className=kind==='second'?'duration-disc-second':(kind==='minute'?'duration-disc-minute':'duration-disc-hour');
   return '<span class="duration-disc '+className+'">'+value+'</span>';
@@ -3917,10 +3838,13 @@ function renderQuestion(inst, correction=false, mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
   const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(inst&&inst.module&&inst.module.id);
   if(runtime&&runtime.renderer&&typeof runtime.renderer.renderQuestion==='function'){
-    return runtime.renderer.renderQuestion({instance:inst,correction,mode,renderGenericQuestion});
+    return runtime.renderer.renderQuestion({
+      instance:inst,correction,mode,renderGenericQuestion,format:fmt,escapeHtml,
+      renderPlaceholders,renderMathSegments,compactQcmClass,isWithoutVisuals,
+      visualPlaceholder,placeValueToolHtml
+    });
   }
   if(inst && inst.module && inst.module.id==='dnb_01') return renderModule01(inst, correction, mode);
-  if(inst && inst.module && inst.module.id==='dnb_02b') return renderPlaceValueModule(inst, correction, mode);
   if(inst && inst.module && ['dnb_03','dnb_03b'].includes(inst.module.id)) return renderFractionOpsModule(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_04') return renderModule04(inst, correction, mode);
   if(inst && inst.module && inst.module.id==='dnb_05') return renderMultipleFormsModule(inst, correction, mode);

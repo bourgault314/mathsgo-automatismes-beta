@@ -39,6 +39,11 @@ glisser-déposer : toucher puis toucher, boutons, ou clavier. Les couleurs ne
 sont jamais la seule information ; les signes, valeurs et libellés restent
 écrits.
 
+Pour `numbers.glisse-nombre`, l’élève peut faire glisser la bande, utiliser les
+flèches, ou toucher le chiffre bleu des unités puis sa colonne d’arrivée. Le
+suivi pendant le glissement reste immédiat ; l’aimantation et le rejeu de la
+correction utilisent une animation plus lente et lisible.
+
 ## Réinitialisation
 
 `reset` restaure l’état initial de la même instance. Il conserve la seed, les
@@ -83,7 +88,7 @@ promet pas encore un stockage de progression.
 
 | Identifiant | État | Validation | Correction | Statut |
 |---|---|---|---|---|
-| `numbers.glisse-nombre` | chiffres et décalage | valeur dérivée | état cible | actif |
+| `numbers.glisse-nombre` | chiffres et décalage | valeur dérivée | rejeu vers l’état cible | actif |
 | `numbers.relative-tokens` | jetons, signes et zones | état équivalent | rassemblement et paires nulles | actif |
 | `geometry.pythagoras-builder` | tâche, triangle et cases | cases ordonnées | relation et aires exactes | actif |
 | `algorithm.block-sequence` | instruction, variables, position, orientation et trace | résultat sémantique | rejeu pas à pas | planifié |

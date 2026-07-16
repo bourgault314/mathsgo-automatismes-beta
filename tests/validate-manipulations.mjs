@@ -33,6 +33,7 @@ for(const contract of contracts){
 
 const glisse=registry?.get('numbers.glisse-nombre');
 if(glisse?.validation.mode!=='derived-value'||glisse?.correction.mode!=='target-state') fail('Le Glisse-nombre doit valider une valeur dérivée et montrer l’état cible.');
+if(!glisse?.actions.some(action=>action.id==='select-units-digit')||!glisse?.actions.some(action=>action.id==='select-target-column')) fail('Le Glisse-nombre doit déclarer son alternative tactile sans glissement.');
 const relative=registry?.get('numbers.relative-tokens');
 if(relative?.reset.mode!=='initial-state'||relative?.actions.some(action=>action.id==='validate')!==true) fail('Les jetons relatifs doivent être réinitialisables et validables.');
 const pythagoras=registry?.get('geometry.pythagoras-builder');

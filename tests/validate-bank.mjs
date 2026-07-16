@@ -22,6 +22,9 @@ const sources = [
   'auto/scripts/modules/numbers/dnb_08/generate.js',
   'auto/scripts/modules/numbers/dnb_08/selection.js',
   'auto/scripts/modules/numbers/dnb_08/render.js',
+  'auto/scripts/modules/numbers/dnb_02b/generate.js',
+  'auto/scripts/modules/numbers/dnb_02b/selection.js',
+  'auto/scripts/modules/numbers/dnb_02b/render.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
@@ -58,6 +61,7 @@ globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__divisibilityModule = MODULE_DNB_08;
+globalThis.__placeValueModule = MODULE_DNB_02B;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -65,6 +69,7 @@ globalThis.__renderGenericQuestion = renderGenericQuestion;
 globalThis.__setSeed = setSeed;
 globalThis.__beginQuizBank = beginQuizBank;
 globalThis.__drawFromQuestionDeck = drawFromQuestionDeck;
+globalThis.__drawRuntimeModuleQuestions = drawRuntimeModuleQuestions;
 globalThis.__shuffledCopy = shuffledCopy;
 globalThis.__moduleManifest = MATHSGO_MODULE_MANIFEST;
 globalThis.__moduleFiles = MATHSGO_MODULE_FILES;`;
@@ -120,6 +125,8 @@ if (bankHash !== expectedBankHash) {
 
 const runtime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_08');
 if(!runtime?.generator||!runtime?.selection||!runtime?.renderer) fail('Le pilote dnb_08 doit enregistrer génération, sélection et rendu.');
+const placeValueRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02b');
+if(!placeValueRuntime?.generator||!placeValueRuntime?.selection||!placeValueRuntime?.renderer) fail('Le pilote dnb_02b doit enregistrer génération, sélection et rendu.');
 
 function comparableInstance(instance){
   const scope=instance.scope||{};
@@ -180,6 +187,50 @@ for(const seed of [3,17,81,2026]){
 const divisibilityManifest=context.__moduleManifest.find(module=>module.id==='dnb_08');
 if(!divisibilityManifest||divisibilityManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_08.');
 if(context.__moduleFiles.get('dnb_08')?.length!==4) fail('Le chargeur doit préparer la banque et les trois extensions de dnb_08.');
+const placeValueManifest=context.__moduleManifest.find(module=>module.id==='dnb_02b');
+if(!placeValueManifest||placeValueManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_02b.');
+if(context.__moduleFiles.get('dnb_02b')?.length!==4) fail('Le chargeur doit préparer dnb_02b et ses trois extensions fonctionnelles.');
+
+for(let seed=0;seed<1000;seed++){
+  for(const count of [5,10,15,20]){
+    context.__setSeed(seed);
+    context.__beginQuizBank([context.__placeValueModule]);
+    const selected=context.__drawRuntimeModuleQuestions(context.__placeValueModule,context.__placeValueModule.questions,count);
+    const families=selected.map(question=>placeValueRuntime.selection.familyForQuestion(question));
+    const counts=Object.fromEntries(['direct','qcm','inverse','context','reasoning'].map(family=>[family,families.filter(value=>value===family).length]));
+    if(selected.length!==count) fail(`La série dnb_02b de ${count} questions est incomplète avec la seed ${seed}.`);
+    if(families.some((family,index)=>family===families[index-1]&&family===families[index-2])) fail(`Trois questions de la même famille se suivent dans dnb_02b (${count} questions, seed ${seed}) : ${families.join(', ')}.`);
+    if(count===5&&(counts.direct!==3||new Set(families.filter(family=>family!=='direct')).size!==2)) fail(`La série courte dnb_02b doit contenir trois fondamentaux et deux familles variées distinctes (seed ${seed}).`);
+    if(count===10&&JSON.stringify(counts)!==JSON.stringify({direct:5,qcm:2,inverse:1,context:1,reasoning:1})) fail(`Répartition incorrecte de dnb_02b avec la seed ${seed}.`);
+    if(count===15&&(counts.direct!==8||Object.values(counts).reduce((sum,value)=>sum+value,0)!==15)) fail(`Répartition incorrecte de la série dnb_02b de 15 questions avec la seed ${seed}.`);
+    if(count===20&&JSON.stringify(counts)!==JSON.stringify({direct:10,qcm:4,inverse:2,context:2,reasoning:2})) fail(`Répartition incorrecte de la série dnb_02b de 20 questions avec la seed ${seed}.`);
+    if(selected.filter(question=>[7,8].includes(Number(question.n))).some(question=>Number(question.options?.template_version)!==2)) fail('Les nouvelles variantes 7 et 8 de dnb_02b doivent porter la version de gabarit 2.');
+  }
+}
+
+for(let seed=0;seed<300;seed++){
+  context.__setSeed(seed);
+  for(const questionNumber of [9,10]){
+    const question=context.__placeValueModule.questions.find(item=>Number(item.n)===questionNumber);
+    const instance=context.__makeInstance(context.__placeValueModule,question);
+    const details=instance.placeValue.qcm.optionDetails;
+    if(details.length!==4||new Set(details.map(detail=>detail.value)).size!==4) fail(`Les quatre propositions de dnb_02b ${questionNumber} doivent être distinctes.`);
+    if(details.some(detail=>Number(String(detail.value).replace(',','.'))<0)) fail(`Un distracteur négatif subsiste dans dnb_02b ${questionNumber}.`);
+    if(details.filter(detail=>detail.errorCode==='correct').length!==1) fail(`La bonne réponse de dnb_02b ${questionNumber} doit être repérée une seule fois.`);
+    if(details.some(detail=>!detail.errorCode)) fail(`Chaque proposition de dnb_02b ${questionNumber} doit porter un code diagnostique.`);
+  }
+}
+
+context.__setSeed(21);
+const contextQuestion=context.__makeInstance(context.__placeValueModule,context.__placeValueModule.questions.find(question=>Number(question.n)===7));
+const reasoningQuestion=context.__makeInstance(context.__placeValueModule,context.__placeValueModule.questions.find(question=>Number(question.n)===8));
+if(contextQuestion.placeValue.family!=='context'||!contextQuestion.placeValue.prompt.includes('Quel est le prix')) fail('La question 7 de dnb_02b doit proposer un contexte monétaire court.');
+if(reasoningQuestion.placeValue.family!=='reasoning'||reasoningQuestion.placeValue.qcm.numeric!==false||!reasoningQuestion.placeValue.prompt.includes('Lina affirme')) fail('La question 8 de dnb_02b doit faire analyser la fausse règle « ajouter un zéro ».');
+const numericQcm=context.__makeInstance(context.__placeValueModule,context.__placeValueModule.questions.find(question=>Number(question.n)===9));
+const numericQcmHtml=context.__renderQuestion(numericQcm,false,'with');
+const reasoningHtml=context.__renderQuestion(reasoningQuestion,false,'with');
+if(!numericQcmHtml.includes('options-compact')||!numericQcmHtml.includes('data-error-code=')) fail('Le QCM numérique dnb_02b doit réutiliser la grille compacte et exposer ses codes diagnostiques.');
+if(reasoningHtml.includes('options-compact')||!reasoningHtml.includes('place-value-options options-4 is-reasoning')) fail('Le QCM de raisonnement dnb_02b doit conserver des propositions longues sur une colonne.');
 
 const angleInstance={
   module:{id:'dnb_18'},q:{n:9},answers:['51'],

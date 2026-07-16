@@ -256,18 +256,20 @@ if (questionEngine.includes('function conversionTableHtml') || questionEngine.in
 
 const placeValueTable = registry?.get('numbers.glisse-nombre');
 if (!placeValueTable) fail('Le composant numbers.glisse-nombre est absent.');
-if (placeValueTable && placeValueTable.version !== '1.1.0') fail('Version 1.1.0 attendue pour le glisse-nombre.');
+if (placeValueTable && placeValueTable.version !== '1.2.0') fail('Version 1.2.0 attendue pour le glisse-nombre.');
 if (placeValueTable && placeValueTable.presets.length !== 5) fail('Cinq déplacements de référence sont attendus dans le glisse-nombre.');
 if (placeValueTable && context.placeValueToolHtml !== placeValueTable.render) {
   fail('Le moteur doit utiliser le glisse-nombre enregistré.');
 }
 if (placeValueTable && context.setupPlaceValueTools !== placeValueTable.setup) fail('Le contrôleur animé doit appartenir au composant glisse-nombre.');
+if(placeValueTable&&!placeValueTable.render(placeValueTable.presets[0].data,false).includes('data-place-value-source')) fail('Le glisse-nombre doit proposer le geste chiffre bleu puis colonne d’arrivée.');
+if(placeValueTable&&!placeValueTable.render(placeValueTable.presets[0].data,true).includes('data-auto-shift="1"')) fail('La correction du glisse-nombre doit rejouer le déplacement.');
 const placeValueHashes = new Map([
-  ['fois-dix', ['2d39510274d85f99451ab578bc05e40d79dd91e44c1788c00567ac650b217159','6724b8e3baa36f5265222268c465dafa4accfe6e7a5391daf66abd434646005f']],
-  ['fois-mille', ['d18fa815e34c01fd21452f81ba0dd168ba13445a6136409f8e927cad5614b932','9557415f5da75e0b80322df9d26c58bc8c350b3597c6be1d5194be7776d50efb']],
-  ['divise-dix', ['4e2cd998c06fa0a301cb01fde87b9d6d4a21e296825512d193cd763321bd3ae4','163c607570c73dae74abaa72cc48ee5015d00f40e1373bedbb73920e8ba85ea4']],
-  ['divise-cent', ['9dbb8f456404a4f7c689e623fd26d2d6915be98dbbfd19e7f729f1c2b85f7adb','0176296bbf02c9e13f8d61da2566f3bd19799e4eb9e6c23a75152c3e86343494']],
-  ['divise-mille', ['9b3751ff673c70fd10651d60ad90688df8da997215053c1cab823a514d3c5025','eae9a56e3d85c66a61b5cd5c277415cd8de29093efc9f9a14cb32a3e951057fa']]
+  ['fois-dix', ['74eb5a1fe3aa23e33ba75c58757e05438d4c30a8f918ec59a0074d8a6a92bb82','fc277ebe0d8b2d5d3b68cdeba90893bce8bd79dbdf5476da0201628ededd98ca']],
+  ['fois-mille', ['f214ac87bd9a4a6eb544249243557be8f181be4a48ed9bae9d16b53fdf4ac4ba','79fde84f3ad9290184d1d1e80084e786d7c36dd009b1e589e8a712311b4bf850']],
+  ['divise-dix', ['3c5bbc288056868e5103deb8cf226313a0e7c9457469860a36a5e36dedb0808e','5b6be66a4ae893fe1035c1f63b2b01ca37ca8ab8400e64cfc0c261ebd562b821']],
+  ['divise-cent', ['f7121aceaa8bad2f4e446c5bf3dd81893ee8c40001f9917c25c62a45218e599b','c3612e7f15349ddc4e5deda3476caff1f24c7bf7b934c3326f8b0cc28afe3a44']],
+  ['divise-mille', ['d48f6ce142e646b3b61a521dd28e0ca8cb0c4aff9ab34e79c16b1dd72b02e447','db4cd5bd4c59185fef9ffac7eee8df75e30de1975b41d185f41c64bf27490ff5']]
 ]);
 for (const preset of placeValueTable?.presets || []) {
   for (const correction of [false,true]) {

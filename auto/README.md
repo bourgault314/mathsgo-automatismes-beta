@@ -31,7 +31,7 @@ source du site courant. Il ne doit pas être recréé ni republié à côté de
 - **Avec aide** : affiche les représentations et micro-cours associés à la
   tâche.
 - **Sans aide** : masque les étayages facultatifs, jamais les données
-  indispensables.
+  indispensables ; le cours général reste accessible.
 - **Partager** : produit localement une définition reproductible et un QR code,
   sans identité ni réponse d'élève.
 
@@ -55,6 +55,11 @@ Les 42 banques sont isolées, mais le découpage fonctionnel n'est pas terminé.
 La génération, les fréquences, certains rendus et certaines corrections
 restent encore couplés aux moteurs communs.
 
+`dnb_02b` isole sa génération, sa sélection équilibrée et son rendu dans trois
+extensions fonctionnelles. Ses séries alternent calcul direct, QCM, question
+inverse, contexte et analyse d’erreur sans imposer cette répartition aux autres
+catégories.
+
 ## Ajouter ou modifier un automatisme
 
 1. récupérer le dernier `main` distant ;
@@ -71,6 +76,8 @@ visuelle ne remplace jamais une source plus riche par un dessin générique.
 
 ## Documents canoniques
 
+- [`../docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md`](../docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md) :
+  méthode permanente, pédagogie, aides, téléphone et vérification visuelle ;
 - [`../docs/ARCHITECTURE-CANONIQUE.md`](../docs/ARCHITECTURE-CANONIQUE.md) :
   rôles de la production, de la bêta et du Studio ;
 - [`../docs/PLAN-DECOUPAGE.md`](../docs/PLAN-DECOUPAGE.md) : ordre technique ;
