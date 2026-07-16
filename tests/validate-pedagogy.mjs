@@ -67,6 +67,7 @@ const sources=[
   'auto/scripts/shared/pedagogy/data/dnb_34.js',
   'auto/scripts/shared/pedagogy/data/dnb_35.js',
   'auto/scripts/shared/pedagogy/data/dnb_36.js',
+  'auto/scripts/shared/pedagogy/algorithm/dnb_37.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_01.js',
   'auto/scripts/modules/numbers/dnb_02.js',
@@ -107,6 +108,7 @@ const sources=[
   'auto/scripts/modules/data/dnb_34.js',
   'auto/scripts/modules/data/dnb_35.js',
   'auto/scripts/modules/data/dnb_36.js',
+  'auto/scripts/modules/algorithm/dnb_37.js',
   'auto/scripts/modules/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_09.js'
 ];
@@ -148,6 +150,7 @@ globalThis.__recognizeProportionQuestionNumbers=MODULE_DNB_33.questions.map(ques
 globalThis.__solveProportionQuestionNumbers=MODULE_DNB_34.questions.map(question=>Number(question.n));
 globalThis.__percentChangeQuestionNumbers=MODULE_DNB_35.questions.map(question=>Number(question.n));
 globalThis.__readGraphQuestionNumbers=MODULE_DNB_36.questions.map(question=>Number(question.n));
+globalThis.__algorithmQuestionNumbers=MODULE_DNB_37.questions.map(question=>Number(question.n));
 globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
 globalThis.__pythagorasQuestionNumbers=MODULE_DNB_24.questions.map(question=>Number(question.n));
 globalThis.__pythagorasTactileQuestionNumbers=MODULE_DNB_24_TACTILE.questions.map(question=>Number(question.n));
@@ -158,7 +161,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==41) fail(`Quarante et un modules pédagogiques attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==42) fail(`Quarante-deux modules pédagogiques attendus, ${modules.length} trouvé(s).`);
 
 function assertClassifiedModule(id,bankNumbers,courseKind,expected){
   const module=registry?.getModule(id);
@@ -311,6 +314,22 @@ assertClassifiedModule('dnb_36',context.__readGraphQuestionNumbers,'read_graph',
   [[2,4,6,8,9],'lire-antecedent','numeric','essential',null],
   [[10],'interpreter-point','qcm-one','essential',null]
 ));
+
+assertClassifiedModule('dnb_37',context.__algorithmQuestionNumbers,'algorithm',expectedQuestions(
+  [[1,2,3,4],'executer-programme-calcul','numeric','essential',null],
+  [[5,7],'suivre-deplacement','qcm-one','essential',null],
+  [[6],'determiner-orientation','qcm-one','essential',null],
+  [[8],'reconnaitre-trace-boucle','qcm-one','essential',null],
+  [[9],'deduire-propriete-construction','qcm-one','essential',null],
+  [[10],'deduire-nature-triangle','qcm-one','essential',null]
+));
+const algorithmContract=registry?.getModule('dnb_37')?.generatorContract?.interactionContract;
+if(!algorithmContract||algorithmContract.state.length!==5||algorithmContract.actions.length!==4){
+  fail('Le contrat Algorithmique doit décrire l’état et les actions de la future manipulation.');
+}
+if(!algorithmContract?.reset||!algorithmContract?.correction){
+  fail('Le contrat Algorithmique doit définir la réinitialisation et la correction pas à pas.');
+}
 
 assertClassifiedModule('dnb_16',context.__figureCodingQuestionNumbers,'figure_coding',expectedQuestions(
   [[1,2,3],'reconnaitre-triangle-code','qcm-one','essential',null],
@@ -838,9 +857,10 @@ const recognizeProportionMetadataPosition=index.indexOf('scripts/shared/pedagogy
 const solveProportionMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_34.js');
 const percentChangeMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_35.js');
 const readGraphMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_36.js');
+const algorithmMetadataPosition=index.indexOf('scripts/shared/pedagogy/algorithm/dnb_37.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
 const appPosition=index.indexOf('scripts/04-app.js');
-const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition,probabilityMetadataPosition,frequencyMetadataPosition,meanMetadataPosition,medianMetadataPosition,readDataMetadataPosition,recognizeProportionMetadataPosition,solveProportionMetadataPosition,percentChangeMetadataPosition,readGraphMetadataPosition];
+const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition,probabilityMetadataPosition,frequencyMetadataPosition,meanMetadataPosition,medianMetadataPosition,readDataMetadataPosition,recognizeProportionMetadataPosition,solveProportionMetadataPosition,percentChangeMetadataPosition,readGraphMetadataPosition,algorithmMetadataPosition];
 if(registryPosition<0||pedagogyPositions.some(position=>position<registryPosition||slideshowPosition<position||appPosition<position)){
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
@@ -904,4 +924,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — 41 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15, Données 9/9.');
+if(!process.exitCode) console.log('OK — 42 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15, Données 9/9, Algorithmique 1/1.');
