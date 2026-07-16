@@ -4,7 +4,11 @@ import vm from 'node:vm';
 const root=new URL('../',import.meta.url);
 const sources=[
   'auto/scripts/shared/visuals/00-registry.js',
+  'auto/scripts/shared/visuals/numbers/number-line.js',
+  'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
+  'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
@@ -12,15 +16,48 @@ const sources=[
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-wall.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-decimal-grid.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-operations.js',
+  'auto/scripts/shared/visuals/algebra/equation-splat.js',
+  'auto/scripts/shared/visuals/algebra/algebra-tiles.js',
+  'auto/scripts/shared/visuals/algebra/area-model.js',
   'auto/scripts/shared/visuals/algebra/relation-tiles.js',
   'auto/scripts/shared/pedagogy/00-registry.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_01.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_02b.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_03.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_03b.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_04.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_05.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_09.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_10.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_11.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_12.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_13.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_14.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_15.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_18.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_19.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_24.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_24b.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_25.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
+  'auto/scripts/modules/numbers/dnb_01.js',
+  'auto/scripts/modules/numbers/dnb_02b.js',
+  'auto/scripts/modules/numbers/dnb_03.js',
+  'auto/scripts/modules/numbers/dnb_03b.js',
+  'auto/scripts/modules/numbers/dnb_04.js',
+  'auto/scripts/modules/numbers/dnb_05.js',
+  'auto/scripts/modules/numbers/dnb_10.js',
+  'auto/scripts/modules/numbers/dnb_11.js',
+  'auto/scripts/modules/numbers/dnb_12.js',
+  'auto/scripts/modules/numbers/dnb_13.js',
+  'auto/scripts/modules/numbers/dnb_14.js',
+  'auto/scripts/modules/geometry/dnb_15.js',
   'auto/scripts/modules/geometry/dnb_18.js',
+  'auto/scripts/modules/geometry/dnb_19.js',
   'auto/scripts/modules/geometry/dnb_24.js',
   'auto/scripts/modules/geometry/dnb_24b.js',
   'auto/scripts/modules/geometry/dnb_25.js',
@@ -28,6 +65,19 @@ const sources=[
   'auto/scripts/modules/numbers/dnb_09.js'
 ];
 const code=sources.map(path=>fs.readFileSync(new URL(path,root),'utf8')).join('\n')+`
+globalThis.__fractionDecimalQuestionNumbers=MODULE_DNB_01.questions.map(question=>Number(question.n));
+globalThis.__placeValueQuestionNumbers=MODULE_DNB_02B.questions.map(question=>Number(question.n));
+globalThis.__fractionOperationQuestionNumbers=MODULE_DNB_03.questions.map(question=>Number(question.n));
+globalThis.__fractionMultiplyDivideQuestionNumbers=MODULE_DNB_03B.questions.map(question=>Number(question.n));
+globalThis.__fractionPercentQuestionNumbers=MODULE_DNB_04.questions.map(question=>Number(question.n));
+globalThis.__equivalentFormsQuestionNumbers=MODULE_DNB_05.questions.map(question=>Number(question.n));
+globalThis.__reductionQuestionNumbers=MODULE_DNB_10.questions.map(question=>Number(question.n));
+globalThis.__substitutionQuestionNumbers=MODULE_DNB_11.questions.map(question=>Number(question.n));
+globalThis.__expandFactorQuestionNumbers=MODULE_DNB_12.questions.map(question=>Number(question.n));
+globalThis.__equationQuestionNumbers=MODULE_DNB_13.questions.map(question=>Number(question.n));
+globalThis.__numberLineQuestionNumbers=MODULE_DNB_14.questions.map(question=>Number(question.n));
+globalThis.__coordinateQuestionNumbers=MODULE_DNB_15.questions.map(question=>Number(question.n));
+globalThis.__conversionQuestionNumbers=MODULE_DNB_19.questions.map(question=>Number(question.n));
 globalThis.__angleQuestionNumbers=MODULE_DNB_18.questions.map(question=>Number(question.n));
 globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(question.n));
 globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
@@ -40,7 +90,287 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==6) fail(`Six modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==19) fail(`Dix-neuf modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+
+const fractionDecimal=registry?.getModule('dnb_01');
+if(!fractionDecimal) fail('Le classement pédagogique de dnb_01 est absent.');
+if(fractionDecimal&&fractionDecimal.courseKind!=='fraction_decimal') fail('dnb_01 doit appeler le cours Fractions et décimaux.');
+if(fractionDecimal&&fractionDecimal.questionTypes.length!==5) fail('Les cinq types de questions Fractions et décimaux doivent être explicitement classés.');
+const fractionDecimalBankNumbers=[...(context.__fractionDecimalQuestionNumbers||[])].sort((a,b)=>a-b);
+const fractionDecimalClassifiedNumbers=(fractionDecimal?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(fractionDecimalClassifiedNumbers)!==JSON.stringify(fractionDecimalBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Fractions et décimaux exactement une fois.');
+const expectedFractionDecimal={
+  1:'fraction-usuelle-vers-decimal',2:'fraction-usuelle-vers-decimal',3:'fraction-usuelle-vers-decimal',
+  4:'fraction-superieure-un-vers-decimal',5:'fraction-superieure-un-vers-decimal',6:'fraction-superieure-un-vers-decimal',
+  7:'fraction-usuelle-vers-decimal',8:'fraction-variable-vers-decimal',
+  9:'decimal-usuel-vers-fraction',10:'decimal-usuel-vers-fraction',11:'decimal-usuel-vers-fraction',
+  12:'decimal-superieur-un-vers-fraction',13:'decimal-superieur-un-vers-fraction',
+  14:'decimal-usuel-vers-fraction',15:'decimal-usuel-vers-fraction',16:'fraction-variable-vers-decimal'
+};
+for(const [questionNumber,id] of Object.entries(expectedFractionDecimal)){
+  const type=registry?.getQuestionType('dnb_01',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Fractions et décimaux ${questionNumber}.`);
+  if(type&&type.response!=='numeric') fail(`La question Fractions et décimaux ${questionNumber} doit attendre une réponse numérique.`);
+  if(type&&type.visual.policy!=='optional') fail(`Le mur de la question Fractions et décimaux ${questionNumber} doit rester facultatif.`);
+  if(type&&type.visual.component!=='arithmetic.fraction-decimal-grid') fail(`Composant incorrect pour la question Fractions et décimaux ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Fractions et décimaux ${questionNumber}.`);
+}
+
+const placeValue=registry?.getModule('dnb_02b');
+if(!placeValue) fail('Le classement pédagogique de dnb_02b est absent.');
+if(placeValue&&placeValue.courseKind!=='place_value_shift') fail('dnb_02b doit appeler le cours du glisse-nombre.');
+if(placeValue&&placeValue.questionTypes.length!==6) fail('Les six types de questions du glisse-nombre doivent être explicitement classés.');
+const placeValueBankNumbers=[...(context.__placeValueQuestionNumbers||[])].sort((a,b)=>a-b);
+const placeValueClassifiedNumbers=(placeValue?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(placeValueClassifiedNumbers)!==JSON.stringify(placeValueBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit du glisse-nombre exactement une fois.');
+const expectedPlaceValue={
+  1:['multiplier-puissance-dix','numeric'],2:['multiplier-puissance-dix','numeric'],3:['multiplier-puissance-dix','numeric'],
+  4:['diviser-puissance-dix','numeric'],5:['diviser-puissance-dix','numeric'],6:['diviser-puissance-dix','numeric'],
+  7:['calcul-mixte','numeric'],8:['calcul-mixte','numeric'],9:['choisir-resultat','qcm-one'],10:['choisir-resultat','qcm-one'],
+  11:['retrouver-facteur','numeric'],12:['retrouver-nombre','numeric']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedPlaceValue)){
+  const type=registry?.getQuestionType('dnb_02b',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour le glisse-nombre ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour le glisse-nombre ${questionNumber}.`);
+  if(type&&type.visual.policy!=='optional') fail(`Le glisse-nombre ${questionNumber} doit rester une aide facultative.`);
+  if(type&&type.visual.component!=='numbers.glisse-nombre') fail(`Composant incorrect pour le glisse-nombre ${questionNumber}.`);
+}
+
+const fractionOperationsPedagogy=registry?.getModule('dnb_03');
+if(!fractionOperationsPedagogy) fail('Le classement pédagogique de dnb_03 est absent.');
+if(fractionOperationsPedagogy&&fractionOperationsPedagogy.courseKind!=='fraction_ops') fail('dnb_03 doit appeler le cours Opérations sur les fractions.');
+if(fractionOperationsPedagogy&&fractionOperationsPedagogy.questionTypes.length!==7) fail('Les sept types de questions Opérations sur les fractions doivent être explicitement classés.');
+const fractionOperationBankNumbers=[...(context.__fractionOperationQuestionNumbers||[])].sort((a,b)=>a-b);
+const fractionOperationClassifiedNumbers=(fractionOperationsPedagogy?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(fractionOperationClassifiedNumbers)!==JSON.stringify(fractionOperationBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Opérations sur les fractions exactement une fois.');
+const expectedFractionOperations={
+  1:['simplifier-fraction-simple','numeric'],2:['simplifier-fraction','numeric'],
+  3:['comparer-meme-denominateur','qcm-one'],4:['comparer-meme-numerateur','qcm-one'],
+  5:['additionner-meme-denominateur','numeric'],6:['soustraire-meme-denominateur','numeric'],
+  7:['additionner-denominateurs-multiples','numeric']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedFractionOperations)){
+  const type=registry?.getQuestionType('dnb_03',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Opérations sur les fractions ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Opérations sur les fractions ${questionNumber}.`);
+  if(type&&type.visual.policy!=='optional') fail(`La construction de la question Opérations sur les fractions ${questionNumber} doit rester facultative.`);
+  if(type&&type.visual.component!=='arithmetic.fraction-operations') fail(`Composant incorrect pour la question Opérations sur les fractions ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Opérations sur les fractions ${questionNumber}.`);
+}
+
+const fractionMultiplyDivide=registry?.getModule('dnb_03b');
+if(!fractionMultiplyDivide) fail('Le classement pédagogique de dnb_03b est absent.');
+if(fractionMultiplyDivide&&fractionMultiplyDivide.courseKind!=='fraction_mul_div') fail('dnb_03b doit appeler le cours Multiplier et diviser des fractions.');
+if(fractionMultiplyDivide&&fractionMultiplyDivide.questionTypes.length!==5) fail('Les cinq types de questions Produit et quotient de fractions doivent être explicitement classés.');
+const fractionMultiplyDivideBankNumbers=[...(context.__fractionMultiplyDivideQuestionNumbers||[])].sort((a,b)=>a-b);
+const fractionMultiplyDivideClassifiedNumbers=(fractionMultiplyDivide?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(fractionMultiplyDivideClassifiedNumbers)!==JSON.stringify(fractionMultiplyDivideBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Produit et quotient de fractions exactement une fois.');
+const expectedFractionMultiplyDivide={
+  1:'multiplier-fractions',2:'multiplier-en-simplifiant',3:'diviser-fractions',4:'diviser-fractions',5:'diviser-avec-entier',6:'compter-fractions-unitaires'
+};
+for(const [questionNumber,id] of Object.entries(expectedFractionMultiplyDivide)){
+  const type=registry?.getQuestionType('dnb_03b',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Produit et quotient de fractions ${questionNumber}.`);
+  if(type&&type.response!=='numeric') fail(`La question Produit et quotient de fractions ${questionNumber} doit attendre une réponse numérique.`);
+  if(type&&type.visual.policy!=='optional') fail(`La construction de la question Produit et quotient de fractions ${questionNumber} doit rester facultative.`);
+  if(type&&type.visual.component!=='arithmetic.fraction-operations') fail(`Composant incorrect pour la question Produit et quotient de fractions ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Produit et quotient de fractions ${questionNumber}.`);
+}
+
+const fractionPercent=registry?.getModule('dnb_04');
+if(!fractionPercent) fail('Le classement pédagogique de dnb_04 est absent.');
+if(fractionPercent&&fractionPercent.courseKind!=='fraction_quantity_percent') fail('dnb_04 doit appeler le cours Fractions d’une quantité et pourcentages.');
+if(fractionPercent&&fractionPercent.questionTypes.length!==6) fail('Les six types de questions Fractions et pourcentages doivent être explicitement classés.');
+const fractionPercentBankNumbers=[...(context.__fractionPercentQuestionNumbers||[])].sort((a,b)=>a-b);
+const fractionPercentClassifiedNumbers=(fractionPercent?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(fractionPercentClassifiedNumbers)!==JSON.stringify(fractionPercentBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Fractions et pourcentages exactement une fois.');
+const expectedFractionPercent={
+  1:'fraction-unitaire',2:'plusieurs-parts',3:'fraction-variee',
+  4:'pourcentage-repere',5:'pourcentage-repere',6:'pourcentage-repere',7:'pourcentage-repere',8:'pourcentage-repere',
+  9:'pourcentage-variable',10:'pourcentage-contexte',11:'pourcentage-repere'
+};
+for(const [questionNumber,id] of Object.entries(expectedFractionPercent)){
+  const type=registry?.getQuestionType('dnb_04',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Fractions et pourcentages ${questionNumber}.`);
+  if(type&&type.response!=='numeric') fail(`La question Fractions et pourcentages ${questionNumber} doit attendre une réponse numérique.`);
+  if(type&&type.visual.policy!=='optional') fail(`La barre de la question Fractions et pourcentages ${questionNumber} doit rester facultative.`);
+  if(type&&type.visual.component!=='arithmetic.fraction-percent-bar') fail(`Composant incorrect pour la question Fractions et pourcentages ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Fractions et pourcentages ${questionNumber}.`);
+}
+
+const equivalentForms=registry?.getModule('dnb_05');
+if(!equivalentForms) fail('Le classement pédagogique de dnb_05 est absent.');
+if(equivalentForms&&equivalentForms.courseKind!=='equivalent_forms') fail('dnb_05 doit appeler le cours Écritures équivalentes.');
+if(equivalentForms&&equivalentForms.questionTypes.length!==9) fail('Les neuf types de questions Écritures équivalentes doivent être explicitement classés.');
+const equivalentFormsBankNumbers=[...(context.__equivalentFormsQuestionNumbers||[])].sort((a,b)=>a-b);
+const equivalentFormsClassifiedNumbers=(equivalentForms?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(equivalentFormsClassifiedNumbers)!==JSON.stringify(equivalentFormsBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Écritures équivalentes exactement une fois.');
+const expectedEquivalentForms={
+  1:['decimal-vers-fraction','numeric'],2:['decimal-vers-fraction','numeric'],3:['decimal-vers-pourcentage','numeric'],
+  4:['pourcentage-vers-decimal','numeric'],5:['fraction-vers-decimal','numeric'],6:['fraction-vers-pourcentage','numeric'],
+  7:['pourcentage-vers-fraction-cent','numeric'],8:['fraction-equivalente-cent','numeric'],9:['simplifier-fraction-decimale','numeric'],
+  10:['reconnaitre-ecritures-equivalentes','qcm-multiple']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedEquivalentForms)){
+  const type=registry?.getQuestionType('dnb_05',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Écritures équivalentes ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Écritures équivalentes ${questionNumber}.`);
+  if(type&&type.visual.policy!=='optional') fail(`Le mur de la question Écritures équivalentes ${questionNumber} doit rester facultatif.`);
+  if(type&&type.visual.component!=='arithmetic.fraction-wall') fail(`Composant incorrect pour la question Écritures équivalentes ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Écritures équivalentes ${questionNumber}.`);
+}
+
+const reduction=registry?.getModule('dnb_10');
+if(!reduction) fail('Le classement pédagogique de dnb_10 est absent.');
+if(reduction&&reduction.courseKind!=='reduce_expression') fail('dnb_10 doit appeler le cours Réduire une expression.');
+if(reduction&&reduction.questionTypes.length!==6) fail('Les six types de questions Réduction doivent être explicitement classés.');
+const reductionBankNumbers=[...(context.__reductionQuestionNumbers||[])].sort((a,b)=>a-b);
+const reductionClassifiedNumbers=(reduction?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(reductionClassifiedNumbers)!==JSON.stringify(reductionBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Réduction exactement une fois.');
+const expectedReduction={
+  1:['reduire-une-famille','optional'],2:['reduire-une-famille-avec-annulation','optional'],
+  3:['reduire-plusieurs-familles','optional'],4:['reduire-plusieurs-familles-avec-annulation','optional'],
+  5:['lire-tuiles','essential'],6:['reconnaitre-deja-reduite','optional']
+};
+for(const [questionNumber,[id,policy]] of Object.entries(expectedReduction)){
+  const type=registry?.getQuestionType('dnb_10',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Réduction ${questionNumber}.`);
+  if(type&&type.response!=='expression') fail(`La question Réduction ${questionNumber} doit attendre une expression.`);
+  if(type&&type.visual.policy!==policy) fail(`Rôle visuel incorrect pour la question Réduction ${questionNumber}.`);
+  if(type&&type.visual.component!=='algebra.algebra-tiles') fail(`Composant incorrect pour la question Réduction ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Réduction ${questionNumber}.`);
+}
+
+const substitution=registry?.getModule('dnb_11');
+if(!substitution) fail('Le classement pédagogique de dnb_11 est absent.');
+if(substitution&&substitution.courseKind!=='substitution') fail('dnb_11 doit appeler le cours Substitution.');
+if(substitution&&substitution.questionTypes.length!==7) fail('Les sept types de questions Substitution doivent être explicitement classés.');
+const substitutionBankNumbers=[...(context.__substitutionQuestionNumbers||[])].sort((a,b)=>a-b);
+const substitutionClassifiedNumbers=(substitution?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(substitutionClassifiedNumbers)!==JSON.stringify(substitutionBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Substitution exactement une fois.');
+const expectedSubstitution={
+  1:['substituer-expression-affine','numeric'],2:['substituer-polynome','numeric'],3:['substituer-polynome','numeric'],
+  4:['substituer-expression-affine','numeric'],5:['substituer-polynome','numeric'],6:['substituer-deux-variables','numeric'],
+  7:['calculer-puissance','numeric'],8:['substituer-expression-parenthesee','numeric'],
+  9:['distinguer-coefficient-exposant','qcm-one'],10:['calculer-aire-carre','numeric'],11:['substituer-expression-parenthesee','numeric']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedSubstitution)){
+  const type=registry?.getQuestionType('dnb_11',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Substitution ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Substitution ${questionNumber}.`);
+  if(type&&type.visual.policy!=='none') fail(`La question Substitution ${questionNumber} ne doit pas déclarer une figure artificielle.`);
+  if(type&&type.visual.component!==null) fail(`La question Substitution ${questionNumber} ne doit pas appeler un composant visuel.`);
+}
+
+const expandFactor=registry?.getModule('dnb_12');
+if(!expandFactor) fail('Le classement pédagogique de dnb_12 est absent.');
+if(expandFactor&&expandFactor.courseKind!=='expand_factor') fail('dnb_12 doit appeler le cours Développer et factoriser.');
+if(expandFactor&&expandFactor.questionTypes.length!==7) fail('Les sept types de questions Développement et factorisation doivent être explicitement classés.');
+const expandFactorBankNumbers=[...(context.__expandFactorQuestionNumbers||[])].sort((a,b)=>a-b);
+const expandFactorClassifiedNumbers=(expandFactor?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(expandFactorClassifiedNumbers)!==JSON.stringify(expandFactorBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Développement et factorisation exactement une fois.');
+const expectedExpandFactor={
+  1:['developper-forme-simple','expression'],2:['developper-forme-simple','expression'],3:['developper-forme-simple','expression'],
+  4:['developper-coefficient-variable','expression'],5:['choisir-developpement','qcm-one'],
+  6:['factoriser-entier','expression'],7:['factoriser-entier','expression'],8:['factoriser-par-x','expression'],
+  9:['choisir-factorisation','qcm-one'],10:['developper-aire-rectangle','expression']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedExpandFactor)){
+  const type=registry?.getQuestionType('dnb_12',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Développement et factorisation ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Développement et factorisation ${questionNumber}.`);
+  if(type&&type.visual.policy!=='optional') fail(`Le modèle d’aire de la question Développement et factorisation ${questionNumber} doit rester facultatif.`);
+  if(type&&type.visual.component!=='algebra.area-model') fail(`Composant incorrect pour la question Développement et factorisation ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Développement et factorisation ${questionNumber}.`);
+}
+
+const equations=registry?.getModule('dnb_13');
+if(!equations) fail('Le classement pédagogique de dnb_13 est absent.');
+if(equations&&equations.courseKind!=='equations') fail('dnb_13 doit appeler le cours Équations.');
+if(equations&&equations.questionTypes.length!==9) fail('Les neuf types de questions Équations doivent être explicitement classés.');
+const equationBankNumbers=[...(context.__equationQuestionNumbers||[])].sort((a,b)=>a-b);
+const equationClassifiedNumbers=(equations?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(equationClassifiedNumbers)!==JSON.stringify(equationBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Équations exactement une fois.');
+const expectedEquations={
+  1:['resoudre-multiplication-positive','numeric'],2:['resoudre-addition-soustraction','numeric'],3:['resoudre-addition-soustraction','numeric'],
+  4:['resoudre-affine-positive','numeric'],5:['resoudre-signee','numeric'],6:['resoudre-signee','numeric'],
+  7:['resoudre-deux-membres','numeric'],8:['resoudre-deux-membres','numeric'],9:['choisir-solution','qcm-one'],
+  10:['choisir-operation','qcm-one'],11:['probleme-taxi','numeric'],12:['programme-calcul','numeric']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedEquations)){
+  const type=registry?.getQuestionType('dnb_13',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Équations ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Équations ${questionNumber}.`);
+  if(type&&type.visual.policy!=='optional') fail(`Les Splats de la question Équations ${questionNumber} doivent rester facultatifs.`);
+  if(type&&type.visual.component!=='algebra.equation-splat') fail(`Composant incorrect pour la question Équations ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Équations ${questionNumber}.`);
+}
+
+const numberLines=registry?.getModule('dnb_14');
+if(!numberLines) fail('Le classement pédagogique de dnb_14 est absent.');
+if(numberLines&&numberLines.courseKind!=='number_line') fail('dnb_14 doit appeler le cours Droite graduée.');
+if(numberLines&&numberLines.questionTypes.length!==8) fail('Les huit types de questions de droites graduées doivent être explicitement classés.');
+const numberLineBankNumbers=[...(context.__numberLineQuestionNumbers||[])].sort((a,b)=>a-b);
+const numberLineClassifiedNumbers=(numberLines?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(numberLineClassifiedNumbers)!==JSON.stringify(numberLineBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit de droite graduée exactement une fois.');
+const expectedNumberLines={
+  1:['lire-unite','numeric'],2:['lire-unite','numeric'],3:['lire-unite','numeric'],
+  4:['lire-entier-relatif','numeric'],5:['lire-pas-decimal','numeric'],6:['lire-pas-decimal','numeric'],7:['lire-entier-relatif','numeric'],
+  8:['lire-deux-points','numeric'],9:['lire-entier-relatif','numeric'],10:['choisir-abscisse-entiere','qcm-one'],
+  11:['choisir-abscisse-decimale','qcm-one'],12:['choisir-abscisse-decimale','qcm-one'],
+  13:['deduire-pas-variable','numeric'],14:['deduire-pas-variable','numeric'],15:['deduire-pas-variable','numeric'],16:['lire-pas-decimal','numeric'],
+  17:['deduire-pas-variable','numeric'],18:['choisir-pas-variable','qcm-one']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedNumberLines)){
+  const type=registry?.getQuestionType('dnb_14',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la droite graduée ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la droite graduée ${questionNumber}.`);
+  if(type&&type.visual.policy!=='essential') fail(`La droite graduée ${questionNumber} doit appartenir à l’énoncé.`);
+  if(type&&type.visual.component!=='numbers.number-line') fail(`Composant incorrect pour la droite graduée ${questionNumber}.`);
+}
+
+const coordinates=registry?.getModule('dnb_15');
+if(!coordinates) fail('Le classement pédagogique de dnb_15 est absent.');
+if(coordinates&&coordinates.courseKind!=='coordinates') fail('dnb_15 doit appeler le cours Coordonnées.');
+if(coordinates&&coordinates.questionTypes.length!==7) fail('Les sept types de questions de coordonnées doivent être explicitement classés.');
+const coordinateBankNumbers=[...(context.__coordinateQuestionNumbers||[])].sort((a,b)=>a-b);
+const coordinateClassifiedNumbers=(coordinates?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(coordinateClassifiedNumbers)!==JSON.stringify(coordinateBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit de coordonnées exactement une fois.');
+const expectedCoordinates={
+  1:['lire-coordonnees-entieres','numeric'],2:['lire-coordonnees-entieres','numeric'],3:['lire-point-sur-axe','numeric'],
+  4:['lire-coordonnees-entieres','numeric'],5:['lire-deux-points','numeric'],6:['lire-demi-unites','numeric'],
+  7:['lire-abscisse','numeric'],8:['lire-ordonnee','numeric'],9:['choisir-couple','qcm-one']
+};
+for(const [questionNumber,[id,response]] of Object.entries(expectedCoordinates)){
+  const type=registry?.getQuestionType('dnb_15',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour le repère ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour le repère ${questionNumber}.`);
+  if(type&&type.visual.policy!=='essential') fail(`Le repère ${questionNumber} doit appartenir à l’énoncé.`);
+  if(type&&type.visual.component!=='geometry.coordinate-plane') fail(`Composant incorrect pour le repère ${questionNumber}.`);
+}
+
+const conversions=registry?.getModule('dnb_19');
+if(!conversions) fail('Le classement pédagogique de dnb_19 est absent.');
+if(conversions&&conversions.courseKind!=='conversions') fail('dnb_19 doit appeler le cours Conversions.');
+if(conversions&&conversions.questionTypes.length!==6) fail('Les six types de questions de conversion doivent être explicitement classés.');
+const conversionBankNumbers=[...(context.__conversionQuestionNumbers||[])].sort((a,b)=>a-b);
+const conversionClassifiedNumbers=(conversions?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(conversionClassifiedNumbers)!==JSON.stringify(conversionBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit de conversion exactement une fois.');
+const expectedConversions={
+  1:['convertir-longueur','measures.conversion-table'],2:['convertir-longueur','measures.conversion-table'],
+  3:['convertir-aire','measures.conversion-table'],4:['convertir-aire','measures.conversion-table'],
+  5:['relier-volume-capacite','measures.conversion-table'],6:['convertir-masse','measures.conversion-table'],
+  7:['convertir-capacite','measures.conversion-table'],8:['convertir-duree',null],
+  9:['relier-volume-capacite','measures.conversion-table'],10:['convertir-longueur','measures.conversion-table']
+};
+for(const [questionNumber,[id,component]] of Object.entries(expectedConversions)){
+  const type=registry?.getQuestionType('dnb_19',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la conversion ${questionNumber}.`);
+  if(type&&type.response!=='numeric') fail(`La conversion ${questionNumber} doit attendre une réponse numérique.`);
+  if(type&&type.visual.policy!=='optional') fail(`La représentation de conversion ${questionNumber} doit rester facultative.`);
+  if(type&&type.visual.component!==component) fail(`Composant incorrect pour la conversion ${questionNumber}.`);
+}
 
 const relations=registry?.getModule('dnb_09');
 if(!relations) fail('Le classement pédagogique de dnb_09 est absent.');
@@ -171,13 +501,27 @@ const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'ut
 const functionBlock=(source,name,nextName)=>source.slice(source.indexOf(`function ${name}(`),source.indexOf(`function ${nextName}(`));
 const thalesTemplateBlock=slideshow.slice(slideshow.indexOf('function courseThalesTemplateVisual('),slideshow.indexOf('const courseCatalog='));
 const registryPosition=index.indexOf('scripts/shared/pedagogy/00-registry.js');
+const fractionDecimalMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_01.js');
+const placeValueMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_02b.js');
+const fractionOperationsMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_03.js');
+const fractionMultiplyDivideMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_03b.js');
+const fractionPercentMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_04.js');
+const equivalentFormsMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_05.js');
 const relationMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_09.js');
+const reductionMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_10.js');
+const substitutionMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_11.js');
+const expandFactorMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_12.js');
+const equationMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_13.js');
+const numberLineMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_14.js');
+const coordinateMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_15.js');
 const angleMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_18.js');
+const conversionMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_19.js');
 const pythagorasMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_24.js');
 const thalesMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_25.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
 const appPosition=index.indexOf('scripts/04-app.js');
-if(registryPosition<0||relationMetadataPosition<registryPosition||angleMetadataPosition<registryPosition||pythagorasMetadataPosition<registryPosition||thalesMetadataPosition<registryPosition||slideshowPosition<relationMetadataPosition||slideshowPosition<angleMetadataPosition||slideshowPosition<pythagorasMetadataPosition||slideshowPosition<thalesMetadataPosition||appPosition<relationMetadataPosition||appPosition<angleMetadataPosition||appPosition<pythagorasMetadataPosition||appPosition<thalesMetadataPosition){
+const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,angleMetadataPosition,conversionMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition];
+if(registryPosition<0||pedagogyPositions.some(position=>position<registryPosition||slideshowPosition<position||appPosition<position)){
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
 if(!catalogue.includes('id="pedagogyCatalogue"')||!catalogue.includes('MATHSGO_PEDAGOGY.list()')) fail('Le catalogue pédagogique doit être visible dans la bibliothèque.');
@@ -240,4 +584,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — les 18 questions Relations, les 10 questions Pythagore, les questions Angles, les 10 types Thalès et l’Addition de relatifs, leurs réponses, leurs visuels et leurs aides sont classés et branchés.');
+if(!process.exitCode) console.log('OK — les fractions, le glisse-nombre, les pourcentages, les écritures équivalentes, Relations, le calcul littéral, les équations, les 18 droites graduées, les 9 repères, les conversions, Pythagore, Angles, Thalès et l’Addition de relatifs sont classés et branchés.');

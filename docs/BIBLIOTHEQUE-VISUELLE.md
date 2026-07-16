@@ -26,6 +26,12 @@ Splats et des jetons signés. Son extraction depuis le moteur est strictement
 structurelle : les quatre rendus de référence ont le même contenu SVG qu’avant
 le déplacement.
 
+Le registre de `dnb_13` classe les équations à une opération, les formes
+affines, les valeurs signées, l’inconnue dans les deux membres, les QCM et les
+problèmes. Il conserve comme règles communes la même opération dans les deux
+membres, les signes des jetons, la position des Splats et le X arrondi de la
+méthode maths&go.
+
 Le catalogue de développement est disponible à l’adresse relative
 `auto/dev/visual-library.html`. Il est exclu du référencement. Il affiche aussi
 le registre pédagogique : pour chaque notion migrée, on peut y contrôler les
@@ -59,6 +65,11 @@ les couleurs des fractions usuelles, les grilles de 1 %, ainsi que la forme et
 le placement des accolades. Sept cas de référence couvrent les demis, quarts,
 huitièmes et pourcentages usuels ; leurs états question/correction sont testés.
 
+Le registre de `dnb_04` indique maintenant si la tâche demande une fraction
+unitaire, plusieurs parts, un pourcentage repère ou un calcul contextualisé.
+Le même composant peut donc fournir l’aide adaptée sans recopier la barre dans
+chaque question.
+
 `arithmetic.equal-sharing-board` reprend les gabarits imprimables « Partager
 équitablement en 2, 3, 4 ou 5 ». Ce n’est pas une deuxième barre de fractions :
 le composant représente un espace de manipulation, avec une ou deux quantités
@@ -84,7 +95,26 @@ sans le remplacer. Il accepte une liste de dénominateurs entre 1 et 24, les
 couleurs pédagogiques ou pastel, une version noir et blanc et les écritures en
 fraction, décimal ou pourcentage. Les murs compacts et les équivalences sont
 compatibles téléphone ; le mur de base, plus dense, est réservé à
-l’ordinateur, la projection et l’impression.
+l'ordinateur, la projection et l'impression.
+
+Le registre de `dnb_05` relie ce mur aux passages
+fraction–décimal–pourcentage, aux dénominateurs 10 et 100, à la simplification
+et aux QCM à plusieurs écritures. Le mur reste une aide facultative et sa
+variante compacte est choisie sur téléphone.
+
+`arithmetic.fraction-decimal-grid` est le plateau propre à `dnb_01`. Il
+construit une ou plusieurs unités carrées, les découpages en demis, quarts,
+cinquièmes, huitièmes, dixièmes, vingtièmes et centièmes, ainsi que les grilles
+de cent cases utilisées pour rendre les écritures décimales visibles. La
+correction peut renforcer le regroupement d’une fraction simplifiée sans
+changer la quantité coloriée.
+
+`arithmetic.fraction-operations` sort du gros moteur toutes les constructions
+de `dnb_03` et `dnb_03b` : bandes superposées, comparaison à largeur totale
+fixe, addition, retrait hachuré, changement de dénominateur, modèle d’aire
+manipulable, simplification croisée et passage du quotient au produit par
+l’inverse. Les deux modules consomment désormais ce composant commun et leurs
+sorties restent strictement identiques à celles de l’ancien moteur.
 
 `algebra.algebra-tiles` extrait le langage du dossier maître Calcul littéral :
 les carrés `x²`, les rectangles `x` et les unités, chacun en version positive
@@ -98,6 +128,13 @@ facteurs sont placés sur les bords et les produits partiels apparaissent en
 correction. Le style `tiles` sert à développer une double distributivité ; le
 style `table` reprend les cases grises utilisées pour retrouver un facteur
 commun. Les signes et coefficients sont des paramètres, pas des dessins figés.
+
+Les registres de `dnb_10`, `dnb_11` et `dnb_12` classent tout le bloc Calcul
+littéral. La réduction distingue les familles `x²`, `x` et unité, les paires
+nulles et la lecture directe des tuiles. La substitution conserve les
+parenthèses autour des valeurs négatives et l’ordre des priorités. Le
+développement et la factorisation peuvent appeler `algebra.area-model`, avec
+produits partiels ou recherche du facteur commun selon la tâche.
 
 `numbers.number-line` produit la droite graduée utilisée par les dix-huit
 gabarits de `dnb_14`. Le mode historique conserve exactement leurs coordonnées.
@@ -114,17 +151,35 @@ correspondances avec les litres et les alias `a`/`ha` font partie du composant.
 Les conversions de durée, visuellement différentes, restent volontairement
 séparées.
 
+Le registre de `dnb_19` classe aussi les dix questions par famille de mesure.
+Il associe le tableau commun aux longueurs, masses, capacités, aires et
+volumes, avec une, deux ou trois positions par unité. Les durées appellent
+leur propre représentation en base 60 et ne sont pas forcées dans ce tableau.
+
 `numbers.glisse-nombre` conserve le glisse-nombre de `dnb_02b`. La virgule reste
 fixe entre unités et dixièmes tandis que la bande grise et les chiffres se
 déplacent de une à trois colonnes. Le composant contient son contrôleur complet :
 souris, toucher, flèches du clavier, zéros fantômes et animation de correction.
 Les cinq références couvrent les deux sens et les facteurs 10, 100 et 1 000.
 
+Le registre de `dnb_02b` relie maintenant ce composant aux calculs directs,
+aux tirages mixtes, aux QCM et aux questions où le facteur ou le nombre de
+départ manque. La règle pédagogique est explicite : la virgule reste fixe et
+ce sont les chiffres qui changent de colonne.
+
 `geometry.coordinate-plane` produit les repères de `dnb_15`. Son mode historique
 reste inchangé. Le nouveau traceur reçoit les dimensions, les bornes des axes,
 le pas, le sous-pas et plusieurs points en coordonnées mathématiques ; il trace
 explicitement les petits traits de graduation sur les deux axes. Il peut ainsi
 fabriquer un repère compact, grand, rectangulaire ou gradué en demi-unités.
+
+Les registres pédagogiques de `dnb_14` et `dnb_15` décrivent maintenant les
+questions qui consomment ces deux traceurs. Pour une droite, ils distinguent
+le pas de 1, les relatifs, les pas décimaux, deux points, les QCM et les
+échelles variables. Pour un repère, ils distinguent les quadrants, les axes,
+les demi-unités, plusieurs points et la lecture d’une seule coordonnée. Ce
+classement conserve la même construction tout en permettant au générateur de
+choisir une variante adaptée au support.
 
 ## Règles d’évolution
 

@@ -13,6 +13,8 @@ const visualSources = [
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
   'auto/scripts/shared/visuals/arithmetic/equal-sharing-board.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-wall.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-decimal-grid.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-operations.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/shared/visuals/algebra/inquiry-bar.js',
@@ -44,7 +46,54 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 20) fail(`20 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 22) fail(`22 composants visuels attendus, ${components.length} trouvé(s).`);
+
+
+const fractionDecimalGrid=registry?.get('arithmetic.fraction-decimal-grid');
+if(!fractionDecimalGrid) fail('Le composant arithmetic.fraction-decimal-grid est absent.');
+if(fractionDecimalGrid&&fractionDecimalGrid.version!=='1.0.0') fail('Version 1.0.0 attendue pour le plateau fraction–décimal.');
+if(fractionDecimalGrid&&fractionDecimalGrid.presets.length!==8) fail('Huit constructions de référence sont attendues pour le plateau fraction–décimal.');
+if(fractionDecimalGrid&&context.fractionDecimalGrid!==fractionDecimalGrid.render) fail('Le point d’entrée historique du plateau fraction–décimal doit utiliser le composant enregistré.');
+const fractionDecimalHashes=new Map([
+  ['demi',['f892b457ebcddff0997d2682e8f9b3b3abd2115320e919d56724b0bcc44c2f58','f892b457ebcddff0997d2682e8f9b3b3abd2115320e919d56724b0bcc44c2f58']],
+  ['trois-quarts',['6dd30db0795c3dad22efe550c12f3cbc2e36e6fcacb449e2b9d8ad11b52decf4','6dd30db0795c3dad22efe550c12f3cbc2e36e6fcacb449e2b9d8ad11b52decf4']],
+  ['deux-cinquiemes',['5b915a4a1cdb01b0e4c73056ae2d1f527b6bf2d88f0fb16238afd7be41406abc','5b915a4a1cdb01b0e4c73056ae2d1f527b6bf2d88f0fb16238afd7be41406abc']],
+  ['seize-vingtiemes',['692778f8a72cb62924749c993f84aaef8db3cae2504237d16998e9239b55172d','692778f8a72cb62924749c993f84aaef8db3cae2504237d16998e9239b55172d']],
+  ['dix-neuf-vingtiemes',['adc12afa8aec60bcf2182c4b6abc997685fd78ac15d35d0d2cdaa6d294d737c1','adc12afa8aec60bcf2182c4b6abc997685fd78ac15d35d0d2cdaa6d294d737c1']],
+  ['sept-cinquiemes',['550a69f2a054cb1cc9a0ce55bf69f82a14cbe3ffceb3dca6b7c182354060ef67','550a69f2a054cb1cc9a0ce55bf69f82a14cbe3ffceb3dca6b7c182354060ef67']],
+  ['ecriture-decimale',['854fe711e10b2a0a9e80861af5278afb0b1d4bc3bbfeb667621d33e0bb426a8b','854fe711e10b2a0a9e80861af5278afb0b1d4bc3bbfeb667621d33e0bb426a8b']],
+  ['simplification',['948e2c45e30b6e8d3a8a3829fa3b4713f3e536a08710973a97916971052c623d','948e2c45e30b6e8d3a8a3829fa3b4713f3e536a08710973a97916971052c623d']]
+]);
+for(const preset of fractionDecimalGrid?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(fractionDecimalGrid.render(preset.data,correction));
+    if(actual!==fractionDecimalHashes.get(preset.id)?.[correction?1:0]) fail(`Le plateau fraction–décimal ${preset.id} a changé (${actual}).`);
+  }
+}
+
+const fractionOperations=registry?.get('arithmetic.fraction-operations');
+if(!fractionOperations) fail('Le composant arithmetic.fraction-operations est absent.');
+if(fractionOperations&&fractionOperations.version!=='1.0.0') fail('Version 1.0.0 attendue pour les opérations sur les fractions.');
+if(fractionOperations&&fractionOperations.presets.length!==10) fail('Dix constructions de référence sont attendues pour les opérations sur les fractions.');
+if(fractionOperations&&context.fractionOperationsVisual!==fractionOperations.render) fail('Le point d’entrée historique des opérations sur les fractions doit utiliser le composant enregistré.');
+const fractionOperationHashes=new Map([
+  ['simplifier',['9aad8e4ef4bdb2b0913db49e708566d9f8a734c1058955c3c8448678962902d2','7464193debd5587e4c53208fa565e74ae2887d432749584e3cc16ee537ce1f2f']],
+  ['comparer',['540b5f744ea044e607845f18361befa4bf8fa1277228a42650e326b7526c5123','8ca220996549ef3a186175c8e9196f1dd33d63d9ebe671a86e17103163dcc0d9']],
+  ['additionner',['019d1748159d2daf3028f290b8d4ae94941fe13a0cd1873608a296ca3c3ab5a5','54768e28347db4d613b4297e4b4458041f4bf577612ccd0891cca7891c05819b']],
+  ['soustraire',['5a80f7e380eee368a76b4925be03c343fb90ca47cddcb58d51563c5fca033ff2','f1e1eaf69b1d6cd553c6e35901cdf784b9cab8103378080d7a30f91c4795363f']],
+  ['denominateur-commun',['22ed035cbe89cef5f7ffc1b63e38b65a4005830e1103b30790dd9a59ddfb2e79','8094de29f11c1ddccdf97a12147f09a6720e282937302cf8e8b3a661fadee0f5']],
+  ['produit-aire',['4988a3e2ccd8ceae3f79b093a0a1e1e622d1a5917791d006a7a58f9f2a8ecbe2','91e2343aae753ea90863da1ef8fcd2855dfd5ce98c79e8458339394cc7d4712c']],
+  ['simplifier-produit',['293bbeddd15c1f502fb6799ada7f802d8b4d452992ae893fa97771568d2fa881','293bbeddd15c1f502fb6799ada7f802d8b4d452992ae893fa97771568d2fa881']],
+  ['diviser-fractions',['aa8b9c129fc6a068015761a8ec1cef0009d979f9087d4d861dfcb44b195de1fa','aa8b9c129fc6a068015761a8ec1cef0009d979f9087d4d861dfcb44b195de1fa']],
+  ['compter-parts',['9c933c3e423ef85a56f50ef3729ff27d6b7ff505945897525101942a86d6e20a','404702dcdb3174121920a32cb0ce6a77653eba1d5a4e1e7a7ac2efbddb766e23']],
+  ['division-mixte',['8686d56f233580cbf9998f669d737d9004acb7430ea1b182592bf52d31fe2144','8686d56f233580cbf9998f669d737d9004acb7430ea1b182592bf52d31fe2144']]
+]);
+for(const preset of fractionOperations?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(fractionOperations.render(preset.data,correction));
+    if(actual!==fractionOperationHashes.get(preset.id)?.[correction?1:0]) fail(`Le rendu Fractions ${preset.id} a changé (${actual}).`);
+  }
+}
 
 const pythagorasBuilder=registry?.get('geometry.pythagoras-builder');
 if(!pythagorasBuilder) fail('Le composant geometry.pythagoras-builder est absent.');
@@ -138,6 +187,14 @@ for (const preset of conversionTable?.presets || []) {
   }
 }
 const questionEngine = fs.readFileSync(new URL('auto/scripts/02-question-engine.js', root), 'utf8');
+if(questionEngine.includes('function module01PartitionPalette')||questionEngine.includes('function module01HundredGridPart')||questionEngine.includes('function module01BoardSvgPart')){
+  fail('Le plateau fraction–décimal ne doit plus être défini dans le gros moteur.');
+}
+if(!questionEngine.includes("MATHSGO_VISUALS.get('arithmetic.fraction-decimal-grid')")) fail('dnb_01 doit appeler le plateau fraction–décimal partagé.');
+if(questionEngine.includes('function fractionOpsBandSvg')||questionEngine.includes('function fractionOpsComparisonWall')||questionEngine.includes('function fractionOpsAreaSvg')){
+  fail('Les constructions visuelles de fractions ne doivent plus être définies dans le gros moteur.');
+}
+if(!questionEngine.includes("MATHSGO_VISUALS.get('arithmetic.fraction-operations')")) fail('Les modules de fractions doivent appeler le composant partagé.');
 if (questionEngine.includes('function conversionTableHtml') || questionEngine.includes('function conversionTheme')) {
   fail('Le générateur de tableau de conversion ne doit plus être défini dans le gros moteur.');
 }
@@ -522,6 +579,7 @@ for (const testCase of fractionPercentCases) {
 }
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
+const moduleManifest = fs.readFileSync(new URL('auto/scripts/00-module-manifest.js', root), 'utf8');
 const slideshow = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
 if (!slideshow.includes('@media(min-width:1200px){.answer-dock .answer-body{display:block;position:relative;padding:0 195px}')) fail('Le bouton Suivant doit utiliser le même ancrage à droite pour tous les modes sur ordinateur.');
 if (slideshow.includes('.answer-dock.qcm-mode .dock-actions{grid-template-columns:')||slideshow.includes('.answer-dock.qcm-mode .dock-actions{position:absolute')) fail('Le QCM ne doit plus déplacer ni redimensionner le bouton Suivant.');
@@ -532,6 +590,8 @@ const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.j
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
+const numberLineModuleDeclared = moduleManifest.includes("file:'scripts/modules/numbers/dnb_14.js'");
+const coordinateModuleDeclared = moduleManifest.includes("file:'scripts/modules/geometry/dnb_15.js'");
 const manifestPosition = indexHtml.indexOf('scripts/00-module-manifest.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
@@ -549,7 +609,7 @@ const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry
 const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
 const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
