@@ -227,6 +227,16 @@ réutilisables par Automatismes.
    Avec Nombres et calculs, le registre couvre 32 modules sur 42 sans changer
    les 473 gabarits ni leurs tirages reproductibles.
 
+## Seizième lot préparé
+
+1. `geometry.solid` extrait un premier traceur commun du module `dnb_20`.
+2. Il couvre sept familles : cube, pavé droit, prisme droit, cylindre,
+   pyramide, cône et sphère, avec rotation, miroir et arêtes cachées.
+3. Le composant est observable dans le catalogue et testé sur les quatre
+   supports, sans remplacer encore les figures historiques des questions.
+4. Ce lot reste volontairement limité au traceur : le branchement du module
+   fera l’objet d’un prochain petit commit après comparaison visuelle.
+
 ## Ordre de reprise
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

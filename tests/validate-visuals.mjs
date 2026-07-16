@@ -28,6 +28,7 @@ const visualSources = [
   'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js'
+  ,'auto/scripts/shared/visuals/geometry/solid.js'
 ];
 const code = visualSources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
@@ -47,7 +48,18 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 23) fail(`23 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 24) fail(`24 composants visuels attendus, ${components.length} trouvé(s).`);
+
+const solid=registry?.get('geometry.solid');
+if(!solid) fail('Le composant geometry.solid est absent.');
+if(solid&&solid.version!=='1.0.0') fail('Version 1.0.0 attendue pour le traceur de solides.');
+if(solid&&solid.presets.length!==7) fail('Sept familles de solides sont attendues.');
+for(const preset of solid?.presets||[]){
+  const rendered=solid.render(preset.data);
+  if(!rendered.startsWith('<svg class="solid-svg"')) fail(`Le solide ${preset.id} doit rester un SVG autonome.`);
+  if(!rendered.includes('role="img"')) fail(`Le solide ${preset.id} doit rester accessible.`);
+}
+if(solid&&!solid.render({kind:'cylinder'}).includes('stroke-dasharray="6 5"')) fail('Les arêtes cachées des solides doivent rester pointillées.');
 
 const squareArea=registry?.get('numbers.square-area');
 if(!squareArea) fail('Le composant numbers.square-area est absent.');
@@ -631,11 +643,12 @@ const pythagorasMillPosition = indexHtml.indexOf('scripts/shared/visuals/geometr
 const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-bar.js');
 const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
 const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
+const solidPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/solid.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || solidPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < solidPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 5 carrés, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 40 schémas en barres, 14 jetons de relations, 8 partages équitables, 30 étapes d’enquêtes, 12 murs de fractions, 14 compositions de tuiles algébriques, 12 modèles d’aire, 5 configurations de Thalès, 12 états Angles, 8 moulins, 12 PythaBarres et 24 étapes Pythagore figés.');
+  console.log('OK — registre cohérent, 24 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
 }
