@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-07-16",
+  "topic": "lire-et-determiner-une-abscisse",
+  "sources": [
+    {"id":"eva6-2025","title":"Évaluation nationale de début de 6e 2025 — analyse","url":"https://eduscol.education.gouv.fr/sites/default/files/document/25eva6mathematiquesdocpropdf-113202.pdf","sha256":"7fa41cfcd999a6be7995eeaa08204c0e59fd761c35d751b72528424be28c4e3b"},
+    {"id":"eva6-2022","title":"Évaluation nationale de début de 6e 2022 — analyse","url":"https://maths.ac-amiens.fr/IMG/pdf/22eva6_presentation_exercices_ma.pdf","sha256":"54eb72ee5496516f87e5a8de4c97e44417b444119344a17189ce404add08722c"},
+    {"id":"2de-ecriture-decimale","title":"Test de positionnement de seconde — écriture décimale","url":"https://eduscol.education.fr/document/22021/download","sha256":"a3a63252fbf81105a72e60efbd747a7441d693613f65749b7a78391ef16deb15"},
+    {"id":"2de-2022","title":"Test de positionnement de seconde 2022 — équipes pédagogiques","url":"https://eduscol.education.fr/document/41983/download","sha256":"1500887e3ae3461deef67601ae5a0a3da2c07ded3dc42f9c2de849cdd7737164"},
+    {"id":"c4-relatifs","title":"Cycle 4 — nombres relatifs","url":"https://eduscol.education.gouv.fr/sites/default/files/document/ra16c4mathdocmaitrenombresrelatifscomparercalculerresoudrend552028pdf-77613.pdf","sha256":"9b751f3374a6a07be147de3a146393c20cccdc923b2fa043a2bb7c43f6d78044"},
+    {"id":"c4-reperes","title":"Repères annuels de progression du cycle 4","url":"https://eduscol.education.gouv.fr/sites/default/files/document/26-maths-c4-reperes-eduscol1114756pdf-74694.pdf","sha256":"643a239fb6cbe7f69d96e206da0d9aae06321b49789062fd84c770713f5b3426"},
+    {"id":"dnb-zero-2026","title":"DNB 2026 — sujet zéro de mathématiques","url":"https://eduscol.education.gouv.fr/sites/default/files/document/sujet-zero-dnb-serie-generale-mathematiquespdf-123317.pdf","sha256":"f12cacb1c478f3d19db3488ae0653ed3eca7dd5bc6d3442897a222f6f3aa954e"}
+  ],
+  "errorCodes": [
+    {"id":"unit-not-meaningful","evidence":"official","sources":["eva6-2025","eva6-2022"],"formats":["read-coordinate","choose-line"]},
+    {"id":"count-ticks-after-unit","evidence":"official","sources":["eva6-2025","eva6-2022"],"formats":["read-coordinate","determine-step"]},
+    {"id":"subunit-not-propagated","evidence":"official","sources":["eva6-2025","eva6-2022"],"formats":["determine-step","place-point"]},
+    {"id":"place-value-scale","evidence":"official","sources":["eva6-2025","eva6-2022"],"formats":["read-coordinate"]},
+    {"id":"count-ticks-not-intervals","evidence":"diagnostic-inference","sources":["eva6-2025","eva6-2022"],"formats":["determine-step"]},
+    {"id":"assume-step-one","evidence":"diagnostic-inference","sources":[],"formats":["determine-step","read-coordinate"]},
+    {"id":"reverse-direction","evidence":"diagnostic-inference","sources":["c4-relatifs"],"formats":["place-point","choose-line"]},
+    {"id":"off-by-one-tick","evidence":"diagnostic-inference","sources":[],"formats":["place-point","choose-line"]}
+  ],
+  "implementedFormats": [
+    {"template":19,"id":"place-point","touch":true,"maxChoices":null},
+    {"template":20,"id":"determine-step","touch":false,"maxChoices":4},
+    {"template":21,"id":"choose-line","touch":true,"maxChoices":3}
+  ]
+}

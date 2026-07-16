@@ -89,6 +89,7 @@ promet pas encore un stockage de progression.
 | Identifiant | État | Validation | Correction | Statut |
 |---|---|---|---|---|
 | `numbers.glisse-nombre` | chiffres et décalage | valeur dérivée | rejeu vers l’état cible | actif |
+| `numbers.number-line-point` | repères, pas et graduation choisie | état équivalent | position choisie et position cible | actif |
 | `numbers.relative-tokens` | jetons, signes et zones | état équivalent | rassemblement et paires nulles | actif |
 | `geometry.pythagoras-builder` | tâche, triangle et cases | cases ordonnées | relation et aires exactes | actif |
 | `algorithm.block-sequence` | instruction, variables, position, orientation et trace | résultat sémantique | rejeu pas à pas | planifié |

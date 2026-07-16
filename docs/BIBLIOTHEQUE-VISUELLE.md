@@ -153,6 +153,14 @@ Chaque préréglage déclare ses supports : une droite dense ou longue peut vise
 l'ordinateur, la projection et l'impression sans être proposée telle quelle
 sur téléphone. Le générateur doit alors choisir une variante courte compatible.
 
+La version 1.2 ajoute un rendu de placement sans modifier le mode historique.
+Le point visible reste un petit trait bleu conforme aux exercices de lecture ;
+une cible transparente de 58 × 96 unités SVG et une poignée de 26 × 11 servent
+au toucher. Le point suit seulement l’axe horizontal, s’aimante aux dix
+graduations et se soulève pendant le geste pour ne pas être masqué par le doigt.
+Chaque graduation possède aussi une cible tactile : toucher le point puis la
+graduation, ou utiliser les flèches, remplace le glissement.
+
 `measures.conversion-table` conserve le tableau interactif de `dnb_19` :
 repère de l’unité de mesure, chiffre des unités, virgule fixe, couleurs par
 famille, deux positions par unité d’aire et trois par unité de volume. Les

@@ -25,6 +25,9 @@ const sources = [
   'auto/scripts/modules/numbers/dnb_02b/generate.js',
   'auto/scripts/modules/numbers/dnb_02b/selection.js',
   'auto/scripts/modules/numbers/dnb_02b/render.js',
+  'auto/scripts/modules/numbers/dnb_14/generate.js',
+  'auto/scripts/modules/numbers/dnb_14/selection.js',
+  'auto/scripts/modules/numbers/dnb_14/render.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
@@ -62,6 +65,7 @@ globalThis.__relativeModule = MODULE_DNB_38;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__divisibilityModule = MODULE_DNB_08;
 globalThis.__placeValueModule = MODULE_DNB_02B;
+globalThis.__numberLineModule = MODULE_DNB_14;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -190,6 +194,11 @@ if(context.__moduleFiles.get('dnb_08')?.length!==4) fail('Le chargeur doit prép
 const placeValueManifest=context.__moduleManifest.find(module=>module.id==='dnb_02b');
 if(!placeValueManifest||placeValueManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_02b.');
 if(context.__moduleFiles.get('dnb_02b')?.length!==4) fail('Le chargeur doit préparer dnb_02b et ses trois extensions fonctionnelles.');
+const numberLineRuntime=context.MATHSGO_MODULE_RUNTIME.get('dnb_14');
+const numberLineManifest=context.__moduleManifest.find(module=>module.id==='dnb_14');
+if(!numberLineRuntime?.generator||!numberLineRuntime?.selection||!numberLineRuntime?.renderer) fail('Les trois extensions fonctionnelles de dnb_14 doivent être enregistrées.');
+if(!numberLineManifest||numberLineManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_14.');
+if(context.__moduleFiles.get('dnb_14')?.length!==4) fail('Le chargeur doit préparer dnb_14 et ses trois extensions fonctionnelles.');
 
 for(let seed=0;seed<1000;seed++){
   for(const count of [5,10,15,20]){
@@ -231,6 +240,47 @@ const numericQcmHtml=context.__renderQuestion(numericQcm,false,'with');
 const reasoningHtml=context.__renderQuestion(reasoningQuestion,false,'with');
 if(!numericQcmHtml.includes('options-compact')||!numericQcmHtml.includes('data-error-code=')) fail('Le QCM numérique dnb_02b doit réutiliser la grille compacte et exposer ses codes diagnostiques.');
 if(reasoningHtml.includes('options-compact')||!reasoningHtml.includes('place-value-options options-4 is-reasoning')) fail('Le QCM de raisonnement dnb_02b doit conserver des propositions longues sur une colonne.');
+
+for(let seed=0;seed<1000;seed++){
+  for(const count of [5,10,15,20]){
+    context.__setSeed(seed);context.__beginQuizBank([context.__numberLineModule]);
+    const selected=context.__drawRuntimeModuleQuestions(context.__numberLineModule,context.__numberLineModule.questions,count);
+    const fresh=selected.filter(question=>Number(question.n)>=19),expected=count===5?1:(count===10?3:(count===15?4:6));
+    if(selected.length!==count||fresh.length!==expected) fail(`Répartition incorrecte des nouveaux formats dnb_14 (${count} questions, seed ${seed}).`);
+    if(selected.some((question,index)=>index>0&&Number(question.n)>=19&&Number(question.n)===Number(selected[index-1].n))) fail(`Deux nouveaux formats identiques se suivent dans dnb_14 (seed ${seed}).`);
+    if(count===10&&new Set(fresh.map(question=>Number(question.n))).size!==3) fail(`La série dnb_14 de dix questions doit contenir les trois nouveaux formats (seed ${seed}).`);
+  }
+}
+
+for(let seed=0;seed<10000;seed++){
+  context.__setSeed(seed);
+  for(const template of numberLineRuntime.selection.virtualTemplates){
+    const instance=context.__makeInstance(context.__numberLineModule,template),data=instance.numberLineData;
+    if(!data||data.kind!==template.options.numberline_kind) fail(`Le gabarit fonctionnel dnb_14 ${template.n} n’a pas produit son modèle.`);
+    if(data.kind==='place-point'){
+      const labels=new Set(data.references.map(reference=>reference.index));
+      if(labels.has(data.startIndex)||labels.has(data.targetIndex)||data.startIndex===data.targetIndex) fail(`Le point tactile dnb_14 utilise une graduation déjà chiffrée (seed ${seed}).`);
+      if(!context.__renderQuestion(instance,false,'with').includes('data-number-line-placement="1"')) fail('La question tactile dnb_14 doit afficher sa droite manipulable.');
+    }else{
+      const details=data.qcm.optionDetails;
+      if(details.length<3||details.length>4||details.filter(detail=>detail.errorCode==='correct').length!==1) fail(`Le QCM dnb_14 ${template.n} doit avoir une seule réponse correcte.`);
+      const values=details.map(detail=>detail.value??detail.pointIndex);
+      if(new Set(values.map(String)).size!==values.length||details.some(detail=>!detail.errorCode)) fail(`Les distracteurs dnb_14 ${template.n} doivent être distincts et diagnostiques.`);
+      if(data.kind==='choose-line'){
+        const labeled=new Set(data.references.map(reference=>reference.index));
+        if(details.some(detail=>labeled.has(detail.pointIndex))) fail(`Le QCM dnb_14 ${template.n} place un point sur une graduation déjà chiffrée.`);
+      }
+      if(data.kind==='determine-step'&&details.some(detail=>(String(detail.value).split(',')[1]||'').length>3)) fail('Le QCM du pas ne doit pas afficher de décimale inutilement longue.');
+      const html=context.__renderQuestion(instance,false,'with');
+      if(!html.includes('data-error-code=')) fail(`Le rendu dnb_14 ${template.n} doit exposer les erreurs visées.`);
+    }
+  }
+}
+
+context.__setSeed(14);
+const legacyNumberLine=context.__makeInstance(context.__numberLineModule,context.__numberLineModule.questions[0]);
+const legacyNumberLineHtml=context.__renderQuestion(legacyNumberLine,false,'with');
+if(!legacyNumberLineHtml.includes('A&nbsp;:')) fail('La lettre et les deux-points doivent rester insécables dans le libellé de dnb_14.');
 
 const angleInstance={
   module:{id:'dnb_18'},q:{n:9},answers:['51'],

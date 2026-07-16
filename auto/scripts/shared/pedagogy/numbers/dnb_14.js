@@ -10,7 +10,10 @@ MATHSGO_PEDAGOGY.registerModule('dnb_14',{
       {id:'signed',label:'Entiers relatifs autour ou à distance de zéro'},
       {id:'fractional',label:'Demi-unités, quarts et pas décimaux'},
       {id:'scaled',label:'Deux repères quelconques et pas à déduire'},
-      {id:'two-points',label:'Deux points à lire sur la même droite'}
+      {id:'two-points',label:'Deux points à lire sur la même droite'},
+      {id:'place-point',label:'Placer un point par manipulation tactile'},
+      {id:'determine-step',label:'Déterminer explicitement le pas'},
+      {id:'choose-line',label:'Choisir la droite où un point est bien placé'}
     ],
     reasoning:[
       {id:'locate-references',label:'Repérer les valeurs connues',rule:'Lire deux graduations chiffrées et compter les intervalles qui les séparent.'},
@@ -44,6 +47,9 @@ MATHSGO_PEDAGOGY.registerModule('dnb_14',{
     {id:'choisir-abscisse-entiere',label:'Choisir une abscisse entière',questions:[10],response:'qcm-one',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','sign','coherence']},
     {id:'choisir-abscisse-decimale',label:'Choisir une abscisse en demis ou en quarts',questions:[11,12],response:'qcm-one',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','coherence']},
     {id:'deduire-pas-variable',label:'Déduire une échelle variable',questions:[13,14,15,17],response:'numeric',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','direction','coherence']},
-    {id:'choisir-pas-variable',label:'Choisir une abscisse sur une échelle variable',questions:[18],response:'qcm-one',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','coherence']}
+    {id:'choisir-pas-variable',label:'Choisir une abscisse sur une échelle variable',questions:[18],response:'qcm-one',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','coherence']},
+    {id:'placer-point-tactile',label:'Placer un point à une abscisse donnée',questions:[19],response:'manipulation',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','direction']},
+    {id:'determiner-pas-explicite',label:'Déterminer le pas de la graduation',questions:[20],response:'qcm-one',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','coherence']},
+    {id:'choisir-droite-correcte',label:'Choisir le placement correct d’un point',questions:[21],response:'qcm-one',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['references','compute-step','direction','coherence']}
   ]
 });

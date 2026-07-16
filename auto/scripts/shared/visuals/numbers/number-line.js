@@ -91,6 +91,45 @@
     return data.mode==='scale'||Object.hasOwn(data,'min')?scaledNumberLineSvg(data):legacyNumberLineSvg(data);
   }
 
+  function placementNumberLineSvg(data={},correction=false){
+    const tickCount=Math.max(2,Math.min(16,Math.round(Number(data.tickCount)||10)));
+    const width=680,height=data.compact?112:170,left=60,right=582,axisY=data.compact?52:82;
+    const xFor=index=>cleanNumber(left+(Number(index)/(tickCount-1))*(right-left));
+    const references=Array.isArray(data.references)?data.references:[];
+    const pointIndex=Number(correction?data.targetIndex:(data.currentIndex??data.startIndex));
+    const hasPoint=Number.isFinite(pointIndex);
+    const letter=svgEscape(data.letter||'C');
+    const color=correction?'#087a55':'#2563a6';
+    const lines=[
+      `<svg xmlns="http://www.w3.org/2000/svg" class="number-line-placement-svg${data.compact?' is-compact':''}" data-number-line-placement="1" data-instance-key="${svgEscape(data.instanceKey||'')}" data-start-index="${svgEscape(data.startIndex??'')}" data-target-index="${svgEscape(data.targetIndex??'')}" data-current-index="${svgEscape(pointIndex)}" data-tick-count="${tickCount}" viewBox="0 0 ${width} ${height}" role="img" aria-label="Droite graduée${hasPoint?' avec le point '+letter:''}">`,
+      `<line x1="42" y1="${axisY}" x2="640" y2="${axisY}" stroke="#222" stroke-width="1.5"/>`,
+      `<polygon points="640,${axisY} 630,${axisY-5} 630,${axisY+5}" fill="#222"/>`
+    ];
+    for(let index=0;index<tickCount;index++){
+      const x=xFor(index);
+      lines.push(`<line x1="${x}" y1="${axisY-8}" x2="${x}" y2="${axisY+8}" stroke="#222" stroke-width="1.5"/>`);
+      if(!correction&&!data.compact&&!data.readOnly) lines.push(`<rect class="number-line-tick-hit" data-tick-index="${index}" x="${cleanNumber(x-26)}" y="${axisY-30}" width="52" height="76" rx="10" fill="transparent" role="button" aria-label="Graduation ${index+1}"/>`);
+    }
+    references.forEach(reference=>{
+      const index=Number(reference.index);
+      if(!Number.isFinite(index)||index<0||index>=tickCount)return;
+      lines.push(`<text x="${xFor(index)}" y="${axisY+(data.compact?28:36)}" font-family="sans-serif" font-size="${data.compact?17:21}" text-anchor="middle">${svgEscape(reference.label??numberLabel(reference.value))}</text>`);
+    });
+    if(hasPoint){
+      const x=xFor(pointIndex),markerY1=axisY-15,markerY2=axisY+15;
+      lines.push(`<g class="number-line-point" data-point-index="${pointIndex}" data-point-letter="${letter}" transform="translate(${x} 0)">`);
+      lines.push(`<g class="number-line-point-visual">`);
+      lines.push(`<line class="number-line-point-mark" x1="0" y1="${markerY1}" x2="0" y2="${markerY2}" stroke="${color}" stroke-width="5" stroke-linecap="round"/>`);
+      lines.push(`<text class="number-line-point-letter" x="0" y="${axisY-(data.compact?23:30)}" font-family="serif" font-style="italic" font-size="${data.compact?20:24}" text-anchor="middle" fill="${color}">${letter}</text>`);
+      if(!data.compact&&!correction) lines.push(`<rect class="number-line-point-grip" x="-13" y="${axisY+26}" width="26" height="11" rx="5.5" fill="#dcecff" stroke="#2563a6" stroke-width="1.5"/><circle cx="-5" cy="${axisY+31.5}" r="1.3" fill="#2563a6"/><circle cx="0" cy="${axisY+31.5}" r="1.3" fill="#2563a6"/><circle cx="5" cy="${axisY+31.5}" r="1.3" fill="#2563a6"/>`);
+      lines.push('</g>');
+      if(!data.compact&&!correction) lines.push(`<rect class="number-line-point-hit" x="-29" y="${axisY-48}" width="58" height="96" rx="14" fill="transparent" role="slider" tabindex="0" aria-label="Déplacer le point ${letter}" aria-valuemin="0" aria-valuemax="${tickCount-1}" aria-valuenow="${pointIndex}"/>`);
+      lines.push('</g>');
+    }
+    lines.push('</svg>');
+    return lines.join('\n');
+  }
+
   const presets=Object.freeze([
     {id:'unite',label:'Unité entière',supports:['phone','computer','projection','print'],data:{references:[{x:292,label:'0'},{x:350,label:'1'}],points:[{x:176,label:'A'}]}},
     {id:'relatifs',label:'Nombres relatifs',supports:['phone','computer','projection','print'],data:{references:[{x:60,label:'-5'},{x:350,label:'0'}],points:[{x:234,label:'A'}]}},
@@ -104,12 +143,14 @@
   ].map(item=>Object.freeze({id:item.id,label:item.label,supports:Object.freeze(item.supports),data:Object.freeze(Object.fromEntries(Object.entries(item.data).map(([key,value])=>[key,Array.isArray(value)?Object.freeze(value.map(entry=>Object.freeze(entry))):value])))})));
 
   global.MATHSGO_VISUALS.register('numbers.number-line',{
-    version:'1.1.0',
+    version:'1.2.0',
     label:'Droite graduée',
     family:'Nombres',
     description:'Traceur commun : longueur, bornes, pas principal, sous-graduations, étiquettes et points sont paramétrables. Le mode historique reste figé.',
     presets,
-    render:numberLineSvg
+    render:numberLineSvg,
+    renderPlacement:placementNumberLineSvg
   });
   global.numberLineSvg=numberLineSvg;
+  global.placementNumberLineSvg=placementNumberLineSvg;
 })(globalThis);

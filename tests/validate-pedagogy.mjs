@@ -631,8 +631,8 @@ for(const [questionNumber,[id,response]] of Object.entries(expectedEquations)){
 const numberLines=registry?.getModule('dnb_14');
 if(!numberLines) fail('Le classement pédagogique de dnb_14 est absent.');
 if(numberLines&&numberLines.courseKind!=='number_line') fail('dnb_14 doit appeler le cours Droite graduée.');
-if(numberLines&&numberLines.questionTypes.length!==8) fail('Les huit types de questions de droites graduées doivent être explicitement classés.');
-const numberLineBankNumbers=[...(context.__numberLineQuestionNumbers||[])].sort((a,b)=>a-b);
+if(numberLines&&numberLines.questionTypes.length!==11) fail('Les onze types de questions de droites graduées doivent être explicitement classés.');
+const numberLineBankNumbers=[...(context.__numberLineQuestionNumbers||[]),19,20,21].sort((a,b)=>a-b);
 const numberLineClassifiedNumbers=(numberLines?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
 if(JSON.stringify(numberLineClassifiedNumbers)!==JSON.stringify(numberLineBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit de droite graduée exactement une fois.');
 const expectedNumberLines={
@@ -641,7 +641,8 @@ const expectedNumberLines={
   8:['lire-deux-points','numeric'],9:['lire-entier-relatif','numeric'],10:['choisir-abscisse-entiere','qcm-one'],
   11:['choisir-abscisse-decimale','qcm-one'],12:['choisir-abscisse-decimale','qcm-one'],
   13:['deduire-pas-variable','numeric'],14:['deduire-pas-variable','numeric'],15:['deduire-pas-variable','numeric'],16:['lire-pas-decimal','numeric'],
-  17:['deduire-pas-variable','numeric'],18:['choisir-pas-variable','qcm-one']
+  17:['deduire-pas-variable','numeric'],18:['choisir-pas-variable','qcm-one'],
+  19:['placer-point-tactile','manipulation'],20:['determiner-pas-explicite','qcm-one'],21:['choisir-droite-correcte','qcm-one']
 };
 for(const [questionNumber,[id,response]] of Object.entries(expectedNumberLines)){
   const type=registry?.getQuestionType('dnb_14',Number(questionNumber));

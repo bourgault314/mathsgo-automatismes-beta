@@ -232,6 +232,12 @@ Ces points ne sont pas des règles : ils doivent être résolus explicitement.
 
 ## Journal de décision
 
+- **2026-07-16 — Droite graduée `dnb_14`.** Les 18 gabarits de la banque V1.17
+  restent inchangés. Trois formats fonctionnels limités sont ajoutés hors de la
+  banque figée : placer un point, déterminer le pas et choisir la droite
+  correcte. Leurs distracteurs suivent l’index
+  `docs/data/eduscol-droites-graduees.json` ; les étiquettes d’abscisses à
+  déplacer et le problème intermédiaire « 7 et 10 » restent exclus.
 - **2026-07-16 — Cours sans aide.** Le mode « Sans aide » masque l'étayage de la
   question mais laisse le cours général accessible dans toutes les catégories.
 - **2026-07-16 — Variété des séries.** La combinaison direct/QCM/inverse/contexte/
