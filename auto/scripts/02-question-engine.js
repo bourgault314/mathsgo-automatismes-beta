@@ -1,7 +1,8 @@
-let rngSeed=1, quiz=[];
+let rngSeed=1, quiz=[],lastPythagorasVertexSetIndex=-1;
 function setSeed(s){
   const value=Number.isFinite(Number(s))?Math.trunc(Number(s)):1;
   rngSeed=((value%233280)+233280)%233280;
+  lastPythagorasVertexSetIndex=-1;
   return rngSeed;
 }
 function rnd(){ rngSeed=(rngSeed*9301+49297)%233280; return rngSeed/233280; }
@@ -2451,13 +2452,27 @@ function makeRelativeAdditionInstance(mod,q){
       :'Quelle méthode décrit correctement '+relativeExpression(a,b)+' ?';
   return {module:mod,q,scope:{},answers:[correctIndex],rawStatement:prompt+relativeStaticBoardMarkup(relativeTokens)+'&&'+choices.join('&&')+'&&',rawFooter:'',hasSvg:true,relativeTokens};
 }
+const PYTHAGORAS_VERTEX_SETS=Object.freeze(['ABC','DEF','GHI','JKL','MNP','RST','UVW','XYZ']);
 function makePythagorasTactileInstance(mod,q){
   const options=q.options||{};
+  const vertexSetIndex=RD(0,PYTHAGORAS_VERTEX_SETS.length-1,lastPythagorasVertexSetIndex<0?undefined:[lastPythagorasVertexSetIndex]);
+  lastPythagorasVertexSetIndex=vertexSetIndex;
+  const vertices=PYTHAGORAS_VERTEX_SETS[vertexSetIndex].split('');
+  const rightAnglePosition=['A','B','C'].includes(String(options.right_angle))?String(options.right_angle):'A';
+  const rightAngle=vertices[['A','B','C'].indexOf(rightAnglePosition)];
+  let prompt=String(options.prompt||'Complète la relation de Pythagore.')
+    .replaceAll('{triangle}',vertices.join(''))
+    .replaceAll('{rightAngle}',rightAngle);
+  const namedAnglePattern=new RegExp('rectangle en '+rightAnglePosition+'\\b');
+  prompt=prompt.replace(namedAnglePattern,'rectangle en '+rightAngle);
+  if(/^Le triangle est rectangle/.test(prompt)) prompt=prompt.replace(/^Le triangle /,'Le triangle '+vertices.join('')+' ');
   const data={
     task:String(options.pythagoras_tactile_kind||'complete'),
-    rightAngle:String(options.right_angle||'A'),
+    vertices,
+    rightAngle,
+    rightAnglePosition,
     lengths:{legA:Number(options.leg_a),legB:Number(options.leg_b),hypotenuse:Number(options.hypotenuse)},
-    prompt:String(options.prompt||'Complète la relation de Pythagore.')
+    prompt
   };
   const model=globalThis.pythagorasBuilderModel(data);
   return {module:mod,q,scope:{},answers:model.expected,answerChoices:model.expected.map(value=>[value]),rawStatement:'',rawFooter:'',hasSvg:true,pythagorasTactile:{...data,...model}};

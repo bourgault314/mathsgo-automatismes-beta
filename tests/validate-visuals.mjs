@@ -170,6 +170,8 @@ const builderQuestion=pythagorasBuilder?.render({task:'complete',rightAngle:'C',
 const builderCorrection=pythagorasBuilder?.render({task:'complete',rightAngle:'C',lengths:{legA:6,legB:8,hypotenuse:10}},true)||'';
 if(!builderQuestion.includes('data-pythagoras-token')||!builderQuestion.includes('AB²')) fail('Le constructeur tactile doit fournir les étiquettes du triangle rectangle en C.');
 if(!builderCorrection.includes('100')||!builderCorrection.includes('36')||!builderCorrection.includes('64')) fail('La correction tactile doit afficher les trois aires exactes.');
+const renamedBuilder=pythagorasBuilder?.render({task:'relation',vertices:'MNP',rightAnglePosition:'B',lengths:{legA:5,legB:12,hypotenuse:13}},false)||'';
+if(!renamedBuilder.includes('Triangle MNP rectangle en N')||!renamedBuilder.includes('MP²')) fail('Le constructeur tactile doit adapter le triangle et son hypoténuse aux noms de sommets fournis.');
 
 const relativeTokens = registry?.get('numbers.relative-tokens');
 if (!relativeTokens) fail('Le composant numbers.relative-tokens est absent.');

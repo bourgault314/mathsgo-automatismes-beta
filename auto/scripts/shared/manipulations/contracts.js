@@ -73,14 +73,14 @@
   });
 
   registry.register('geometry.pythagoras-builder',{
-    version:'1.0.0',label:'Constructeur Pythagore',status:'active',moduleId:'dnb_24b',componentId:'geometry.pythagoras-builder',
-    description:'Placer les côtés au carré et les aires dans la relation de Pythagore.',
+    version:'1.1.0',label:'Constructeur Pythagore',status:'active',moduleId:'dnb_24b',componentId:'geometry.pythagoras-builder',
+    description:'Placer les côtés au carré et les aires dans la relation de Pythagore avec des noms de sommets variables.',
     supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
     state:[
       {id:'task',label:'Relation, aires ou construction complète',serializable:true},
       {id:'slots',label:'Valeur placée dans chaque case',serializable:true},
       {id:'selected-token',label:'Étiquette sélectionnée',serializable:false},
-      {id:'triangle',label:'Angle droit et longueurs de référence',serializable:true}
+      {id:'triangle',label:'Noms des sommets, angle droit et longueurs de référence',serializable:true}
     ],
     actions:[
       {id:'select-token',label:'Sélectionner une étiquette'},
