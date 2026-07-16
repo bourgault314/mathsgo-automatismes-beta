@@ -456,40 +456,20 @@ function buildBalancedQuiz(mods,count){
 
 let currentSeriesDefinition=null;
 
-function generateFromDefinition(definition,{sameTab=false,targetWindow=null}={}){
+function generateFromDefinition(definition,{sameTab=false}={}){
   const normalized=normalizeSeriesDefinition(definition);
   const mods=modulesForSeriesDefinition(normalized);
   setSeed(normalized.seed);
   beginQuizBank(mods);
   quiz=buildBalancedQuiz(mods,normalized.questionCount);
-  if(!quiz.length){ alert('Aucune question compatible avec les options choisies.'); return false; }
+  if(!quiz.length){ alert('Aucune question compatible avec les options choisies.'); return; }
   currentSeriesDefinition=normalized;
-  openDiapoWindow(normalized,{sameTab,targetWindow});
-  return true;
+  openDiapoWindow(normalized,{sameTab});
 }
 
-async function generate(){
-  if(modulePreparationInProgress) return;
-  const targetWindow=window.open('', '_blank');
-  if(!targetWindow){
-    alert('La nouvelle fenêtre a été bloquée. Autorise les popups pour cette page.');
-    return;
-  }
-  writePreparationWindow(targetWindow);
-  modulePreparationInProgress=true;
-  updateSetupActions();
-  try{
-    const definition=readSeriesDefinitionFromUi();
-    await loadModulesForIds(definition.moduleIds.map(mathsgoLegacyModuleId));
-    if(generateFromDefinition(definition,{targetWindow})===false&&!targetWindow.closed) targetWindow.close();
-  }catch(error){
-    const message=error&&error.message?error.message:'Impossible de préparer cette série.';
-    writePreparationError(targetWindow,message);
-    alert(message);
-  }finally{
-    modulePreparationInProgress=false;
-    updateGenerateButtonLabel();
-  }
+function generate(){
+  try{generateFromDefinition(readSeriesDefinitionFromUi());}
+  catch(error){alert(error&&error.message?error.message:'Impossible de préparer cette série.');}
 }
 
 document.querySelectorAll('.segmented-control').forEach(group=>{
@@ -526,7 +506,7 @@ function updateSetupActions(){
     const assistance=document.getElementById('visualMode').value==='with'?'Avec aide':'Sans aide';
     settingsSummary.textContent=level+' · '+count+' questions · '+experience+' · '+assistance;
   }
-  if(generateButton) generateButton.disabled=selectedCount===0||modulePreparationInProgress;
+  if(generateButton) generateButton.disabled=selectedCount===0;
   if(generateCount) generateCount.textContent=selectedCount?' · '+selectedCount:'';
   if(shareButton) shareButton.disabled=selectedCount===0;
 }
@@ -534,7 +514,7 @@ function updateGenerateButtonLabel(){
   const button=document.getElementById('generateButton');
   const mode=document.getElementById('experienceMode');
   const label=button?.querySelector('.generate-label');
-  if(label&&mode) label.textContent=modulePreparationInProgress?'Préparation…':(mode.value==='interactive'?'Lancer l’entraînement':'Lancer le diaporama');
+  if(label&&mode) label.textContent=mode.value==='interactive'?'Lancer l’entraînement':'Lancer le diaporama';
   updateSetupActions();
 }
 document.getElementById('experienceMode').addEventListener('change',updateGenerateButtonLabel);
