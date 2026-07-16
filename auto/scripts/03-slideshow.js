@@ -1366,7 +1366,7 @@ function setupDecimalCardInteraction(spec){
        const dx=moveEvent.clientX-startX,dy=moveEvent.clientY-startY;
        if(Math.hypot(dx,dy)>7)moved=true;
        if(!moved)return;
-       moveEvent.preventDefault();card.classList.add('is-dragging');card.style.transform=`translate(${dx}px,${dy}px)`;
+       moveEvent.preventDefault();card.classList.add('is-dragging');card.style.transform='translate('+dx+'px,'+dy+'px)';
      };
      const finish=(endEvent,cancelled=false)=>{
        card.releasePointerCapture?.(endEvent.pointerId);card.removeEventListener('pointermove',move);card.removeEventListener('pointerup',end);card.removeEventListener('pointercancel',cancel);
@@ -2240,21 +2240,6 @@ function slidesDataForQuiz(sourceQuiz,mode,context={}){
       visualCorrectionHtml:canRevealVisual?buildCleanSlideHtml(inst,true,'with'):null
     };
   });
-}
-
-function writePreparationWindow(targetWindow){
-  if(!targetWindow||targetWindow.closed) return;
-  targetWindow.document.open();
-  targetWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Préparation — maths&go</title><style>html,body{min-height:100%;margin:0}body{display:grid;place-items:center;padding:24px;background:#f5f7fb;color:#10244a;font:600 16px Arial,sans-serif}.card{width:min(100%,360px);padding:28px 24px;border:1px solid #dbe4f3;border-radius:18px;background:#fff;box-shadow:0 10px 30px rgba(16,36,74,.09);text-align:center}.mark{display:inline-grid;place-items:center;width:38px;height:38px;margin-bottom:14px;border:4px solid #dbe4f3;border-top-color:#06b3ad;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}p{margin:0;color:#61708f;font-size:.95rem;line-height:1.4}</style></head><body><main class="card"><span class="mark" aria-hidden="true"></span><p>Préparation de la série…</p></main></body></html>');
-  targetWindow.document.close();
-}
-
-function writePreparationError(targetWindow,message){
-  if(!targetWindow||targetWindow.closed) return;
-  const safe=String(message||'Impossible de préparer la série.').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
-  targetWindow.document.open();
-  targetWindow.document.write('<!doctype html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Erreur — maths&go</title><style>body{margin:0;padding:24px;background:#f5f7fb;color:#10244a;font:16px Arial,sans-serif}.card{max-width:520px;margin:10vh auto;padding:24px;border:1px solid #f1caca;border-radius:18px;background:#fff}.card strong{color:#9d2f2f}</style></head><body><main class="card"><strong>La série n’a pas pu être préparée.</strong><p>'+safe+'</p></main></body></html>');
-  targetWindow.document.close();
 }
 
 function openDiapoWindow(definition=null,{sameTab=false,targetWindow=null}={}){
