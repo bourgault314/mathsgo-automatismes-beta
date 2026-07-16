@@ -5,6 +5,20 @@
 fichier [`data/eduscol-droites-graduees.json`](data/eduscol-droites-graduees.json)
 fournit l’index exploitable par les futurs outils de contrôle.
 
+## État matériel vérifié
+
+Au 16 juillet 2026, les sept PDF ci-dessous sont réellement téléchargés, avec
+sept extractions texte portant les mêmes noms. Leurs SHA-256 correspondent à
+l’index JSON. Le dossier maître durable est
+`mathsgo-sources/eduscol-droites-graduees` ; une archive ZIP datée est conservée
+avec lui. Il ne s’agit donc pas d’une simple liste de liens.
+
+À chaque reprise de `dnb_14`, vérifier le nombre de fichiers, les empreintes,
+la présence des extractions et l’existence éventuelle de documents officiels
+plus récents. Toute analyse attribuée à Éduscol doit être relue dans le PDF ;
+les constructions propres à maths&go restent marquées
+`diagnostic-inference` dans l’index.
+
 ## Documents indexés
 
 | Identifiant | Document | Usage pour `dnb_14` |
