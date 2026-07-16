@@ -253,6 +253,22 @@ réutilisables par Automatismes.
    la banque V1.17 déclare deux choix corrects. La correction doit rester un
    lot de contenu distinct pour ne pas la confondre avec cette extraction.
 
+## Dix-huitième lot préparé
+
+1. Les modules `dnb_32` à `dnb_36` sont classés : lecture de données,
+   reconnaissance et résolution de la proportionnalité, évolutions en
+   pourcentage et lecture d’un graphique de dépendance.
+2. Le domaine Données est complet, soit neuf modules sur neuf. Le registre
+   couvre désormais 41 modules sur 42.
+3. Les tableaux, diagrammes et graphiques qui portent les données sont classés
+   `essential`. Les doubles lignes, barres de pourcentage et aides ajoutées par
+   le moteur restent `optional`.
+4. Les composants graphiques restent volontairement `null` jusqu’à leur
+   comparaison avec les meilleures sources maths&go.
+5. Deux limites d’échelle historiques sont consignées sans modifier la banque :
+   `dnb_33` question 6 peut toucher le bord supérieur et `dnb_36` question 9
+   peut placer la valeur 25 au-dessus de la dernière graduation.
+
 ## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

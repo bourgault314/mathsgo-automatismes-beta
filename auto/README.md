@@ -16,7 +16,7 @@ l'application et du livret A5, pas un deuxième exerciseur.
 - 42 modules ;
 - 473 gabarits ;
 - 24 composants visuels ;
-- 36 modules classés pédagogiquement sur 42 ;
+- 41 modules classés pédagogiquement sur 42 ;
 - partage reproductible par seed, lien, code MG1 et QR code.
 
 Le fichier autonome historique `automatismes_mathsgo.html` n'est plus une

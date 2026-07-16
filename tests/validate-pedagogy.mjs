@@ -62,6 +62,11 @@ const sources=[
   'auto/scripts/shared/pedagogy/data/dnb_29.js',
   'auto/scripts/shared/pedagogy/data/dnb_30.js',
   'auto/scripts/shared/pedagogy/data/dnb_31.js',
+  'auto/scripts/shared/pedagogy/data/dnb_32.js',
+  'auto/scripts/shared/pedagogy/data/dnb_33.js',
+  'auto/scripts/shared/pedagogy/data/dnb_34.js',
+  'auto/scripts/shared/pedagogy/data/dnb_35.js',
+  'auto/scripts/shared/pedagogy/data/dnb_36.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_01.js',
   'auto/scripts/modules/numbers/dnb_02.js',
@@ -97,6 +102,11 @@ const sources=[
   'auto/scripts/modules/data/dnb_29.js',
   'auto/scripts/modules/data/dnb_30.js',
   'auto/scripts/modules/data/dnb_31.js',
+  'auto/scripts/modules/data/dnb_32.js',
+  'auto/scripts/modules/data/dnb_33.js',
+  'auto/scripts/modules/data/dnb_34.js',
+  'auto/scripts/modules/data/dnb_35.js',
+  'auto/scripts/modules/data/dnb_36.js',
   'auto/scripts/modules/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_09.js'
 ];
@@ -133,6 +143,11 @@ globalThis.__probabilityQuestionNumbers=MODULE_DNB_28.questions.map(question=>Nu
 globalThis.__frequencyQuestionNumbers=MODULE_DNB_29.questions.map(question=>Number(question.n));
 globalThis.__meanQuestionNumbers=MODULE_DNB_30.questions.map(question=>Number(question.n));
 globalThis.__medianQuestionNumbers=MODULE_DNB_31.questions.map(question=>Number(question.n));
+globalThis.__readDataQuestionNumbers=MODULE_DNB_32.questions.map(question=>Number(question.n));
+globalThis.__recognizeProportionQuestionNumbers=MODULE_DNB_33.questions.map(question=>Number(question.n));
+globalThis.__solveProportionQuestionNumbers=MODULE_DNB_34.questions.map(question=>Number(question.n));
+globalThis.__percentChangeQuestionNumbers=MODULE_DNB_35.questions.map(question=>Number(question.n));
+globalThis.__readGraphQuestionNumbers=MODULE_DNB_36.questions.map(question=>Number(question.n));
 globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
 globalThis.__pythagorasQuestionNumbers=MODULE_DNB_24.questions.map(question=>Number(question.n));
 globalThis.__pythagorasTactileQuestionNumbers=MODULE_DNB_24_TACTILE.questions.map(question=>Number(question.n));
@@ -143,7 +158,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==36) fail(`Trente-six modules pédagogiques attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==41) fail(`Quarante et un modules pédagogiques attendus, ${modules.length} trouvé(s).`);
 
 function assertClassifiedModule(id,bankNumbers,courseKind,expected){
   const module=registry?.getModule(id);
@@ -256,6 +271,45 @@ assertClassifiedModule('dnb_31',context.__medianQuestionNumbers,'median',expecte
   [[6,7],'mediane-donnees-tableau','numeric','none',null],
   [[8],'refuter-position-ecrite','qcm-one','none',null],
   [[11,12],'calculer-etendue','numeric','none',null]
+));
+
+assertClassifiedModule('dnb_32',context.__readDataQuestionNumbers,'read_data',expectedQuestions(
+  [[1,6,10],'calculer-depuis-tableau','numeric','essential',null],
+  [[2],'comparer-tableau','qcm-one','essential',null],
+  [[3],'lire-diagramme-batons','numeric','essential',null],
+  [[7],'comparer-diagramme-batons','qcm-one','essential',null],
+  [[4],'calculer-evolution','numeric','essential',null],
+  [[8],'comparer-graphique-evolution','qcm-one','essential',null],
+  [[5],'lire-diagramme-circulaire','qcm-one','essential',null],
+  [[9],'lire-pictogramme','numeric','essential',null]
+));
+
+assertClassifiedModule('dnb_33',context.__recognizeProportionQuestionNumbers,'recognize_proportion',expectedQuestions(
+  [[1,2,8],'reconnaitre-tableau','qcm-one','essential',null],
+  [[3,4,9,10],'reconnaitre-contexte','qcm-one','none',null],
+  [[5],'reconnaitre-formule','qcm-one','none',null],
+  [[6,7],'reconnaitre-graphique','qcm-one','essential',null]
+));
+
+assertClassifiedModule('dnb_34',context.__solveProportionQuestionNumbers,'solve_proportion',expectedQuestions(
+  [[1,2,7,9],'resoudre-par-facteur','numeric','optional',null],
+  [[3,4,6,8],'resoudre-par-unite','numeric','optional',null],
+  [[5,11],'completer-tableau','numeric','optional',null],
+  [[10],'choisir-procedure','qcm-one','none',null]
+));
+
+assertClassifiedModule('dnb_35',context.__percentChangeQuestionNumbers,'percent_change',expectedQuestions(
+  [[1,3],'calculer-valeur-apres-hausse','numeric','optional',null],
+  [[2,4,9],'calculer-valeur-apres-baisse','numeric','optional',null],
+  [[5,6],'calculer-coefficient','numeric','optional',null],
+  [[7,8],'choisir-expression','qcm-one','optional',null],
+  [[10],'calculer-montant-hausse','numeric','optional',null]
+));
+
+assertClassifiedModule('dnb_36',context.__readGraphQuestionNumbers,'read_graph',expectedQuestions(
+  [[1,3,5,7],'lire-image','numeric','essential',null],
+  [[2,4,6,8,9],'lire-antecedent','numeric','essential',null],
+  [[10],'interpreter-point','qcm-one','essential',null]
 ));
 
 assertClassifiedModule('dnb_16',context.__figureCodingQuestionNumbers,'figure_coding',expectedQuestions(
@@ -779,9 +833,14 @@ const probabilityMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dn
 const frequencyMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_29.js');
 const meanMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_30.js');
 const medianMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_31.js');
+const readDataMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_32.js');
+const recognizeProportionMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_33.js');
+const solveProportionMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_34.js');
+const percentChangeMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_35.js');
+const readGraphMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_36.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
 const appPosition=index.indexOf('scripts/04-app.js');
-const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition,probabilityMetadataPosition,frequencyMetadataPosition,meanMetadataPosition,medianMetadataPosition];
+const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition,probabilityMetadataPosition,frequencyMetadataPosition,meanMetadataPosition,medianMetadataPosition,readDataMetadataPosition,recognizeProportionMetadataPosition,solveProportionMetadataPosition,percentChangeMetadataPosition,readGraphMetadataPosition];
 if(registryPosition<0||pedagogyPositions.some(position=>position<registryPosition||slideshowPosition<position||appPosition<position)){
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
@@ -845,4 +904,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — 36 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15, Données 4/9.');
+if(!process.exitCode) console.log('OK — 41 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15, Données 9/9.');
