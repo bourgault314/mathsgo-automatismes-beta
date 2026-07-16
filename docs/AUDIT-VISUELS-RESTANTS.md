@@ -106,7 +106,7 @@ mélanger déplacement technique et modification pédagogique.
 
 ## Après cet audit
 
-Le contrat commun des manipulations est maintenant construit à partir des
-jetons relatifs, du plateau Pythagore, du glisse-nombre et du contrat
-Algorithmique. Le prochain lot technique recommandé est un traceur cartésien
-préparé mais non encore branché.
+Le contrat commun des manipulations est construit. Le traceur
+`data.cartesian-graph` est maintenant préparé avec six préréglages, dont les
+deux limites d’échelle repérées. La prochaine étape est la comparaison du même
+gabarit et de la même seed avant tout branchement dans les modules.
