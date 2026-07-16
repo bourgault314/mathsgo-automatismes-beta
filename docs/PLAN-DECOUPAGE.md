@@ -20,6 +20,8 @@ correction tout en conservant le résultat pédagogique attendu.
 - la banque V1.17, les codes MG1 et les rendus de référence sont testés ;
 - génération, fréquences, rendus et corrections restent encore partiellement
   couplés à `02-question-engine.js`, `03-slideshow.js` et `04-app.js`.
+- `dnb_08` éprouve désormais un registre fonctionnel séparant génération,
+  sélection et rendu sans changer la banque ni les séries à seed identique.
 
 ## Cible progressive
 
@@ -76,10 +78,10 @@ Les éléments réellement partagés restent dans :
 
 ### 1. Pilote fonctionnel complet
 
-Choisir un module stable qui n'est pas travaillé dans une autre fenêtre. Sortir
-sa génération, sa sélection, son rendu, son aide et sa correction sans changer
-ses gabarits ni sa reproductibilité. Documenter ce que le moteur doit fournir
-au module et ce que le module retourne.
+Le socle structurel de `dnb_08` est extrait : génération, cycle de sélection et
+point d’entrée de rendu sont locaux au module. La prochaine petite étape active
+l’aide de partage déjà déclarée pour le gabarit 10, puis vérifie le résultat sur
+téléphone et ordinateur. Les gabarits et leur empreinte restent inchangés.
 
 ### 2. Données et Algorithmique
 
