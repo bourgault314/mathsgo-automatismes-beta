@@ -218,21 +218,22 @@ Après chaque petit lot validé pédagogiquement :
 
 ## Points actuellement contradictoires ou incomplets
 
-Ces points ne sont pas des règles : ils doivent être résolus explicitement.
+Aucune contradiction documentaire connue ne subsiste pour `dnb_02` après le
+lot du 16 juillet 2026. Les décisions suivantes sont maintenant appliquées :
 
-- Le module `dnb_02` déclare des composants d'aide dans son registre
-  pédagogique, mais son générateur et son rendu restent génériques : ces aides
-  ne sont pas affichées actuellement.
-- `dnb_02` est déclaré pour les niveaux 4e, 3e et DNB dans le manifeste, mais une
-  dérogation du moteur rend ses dix questions visibles en 5e. Les sources de
-  vérité doivent être harmonisées après validation du classement.
-- Les additions de décimaux relatifs sont encore mélangées à `dnb_02`, malgré
-  le contrat du module d'addition d'entiers relatifs qui prévoit une extension
-  séparée.
-- Le registre associe actuellement `numbers.glisse-nombre` à plusieurs tâches
-  pour lesquelles ce composant n'a pas le bon sens pédagogique. Le glisse-nombre
-  est conçu pour multiplier ou diviser par 10, 100 ou 1 000, pas pour comparer,
-  additionner, multiplier par un entier ou partager.
+- le cours reste accessible en modes « Avec aide » et « Sans aide » ; ce sont
+  les aides facultatives de la question qui sont masquées en mode sans aide ;
+- le manifeste, le module et le registre pédagogique déclarent tous les
+  niveaux 5e, 4e, 3e et DNB ;
+- le générateur, la sélection et le rendu de `dnb_02` sont isolés dans trois
+  extensions fonctionnelles ;
+- les additions de décimaux relatifs ont quitté `dnb_02` ;
+- `numbers.glisse-nombre` reste réservé aux changements de rang par 10, 100 et
+  1 000 dans `dnb_02b`.
+
+Le point encore ouvert est la conception de la future catégorie « Somme de
+nombres décimaux relatifs ». Elle ne doit pas être créée avant validation de
+ses familles de questions.
 
 ## Journal de décision
 
@@ -255,6 +256,8 @@ Ces points ne sont pas des règles : ils doivent être résolus explicitement.
   local, poussé, en pull request, fusionné et déployé. Une demande de
   publication inclut le commit, le push et la pull request de la bêta ; un lot
   encore local doit être signalé spontanément.
+- **2026-07-16 — Décimaux.** Les décisions propres à `dnb_02` sont consignées
+  dans [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md).
 
 Lorsqu'un nouveau point est validé, consigner ici la date, la décision, les
 catégories concernées et les composants retenus. Ne pas transformer une piste

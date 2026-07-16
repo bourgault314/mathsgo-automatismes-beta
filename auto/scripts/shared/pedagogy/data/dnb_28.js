@@ -31,7 +31,7 @@ MATHSGO_PEDAGOGY.registerModule('dnb_28',{
     cautions:[
       'Réduire la fraction sans modifier la probabilité.',
       'Ne pas confondre « et » avec « ou » dans une expérience à deux étapes.',
-      'La banque V1.17 de la question 4 contient une seconde réponse déclarée correcte qui doit être corrigée dans un lot de contenu distinct.'
+      'La banque V1.18 de la question 4 contient une seconde réponse déclarée correcte qui doit être corrigée dans un lot de contenu distinct.'
     ]
   },
   questionTypes:[

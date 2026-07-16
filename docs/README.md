@@ -23,6 +23,7 @@ de vérification et de publication communes à toutes les catégories.
 | [`ARCHITECTURE-CANONIQUE.md`](ARCHITECTURE-CANONIQUE.md) | rôles respectifs de la bêta, de la production et du Studio |
 | [`PLAN-DECOUPAGE.md`](PLAN-DECOUPAGE.md) | organisation progressive du code |
 | [`RELATIFS-AUTOMATISMES.md`](RELATIFS-AUTOMATISMES.md) | décisions propres à l'addition d'entiers relatifs |
+| [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md) | décisions propres à la comparaison et au calcul avec des décimaux |
 
 Les audits et documents de reprise décrivent un état daté du chantier. Ils
 servent de traces et de feuilles de route, mais ne remplacent jamais le

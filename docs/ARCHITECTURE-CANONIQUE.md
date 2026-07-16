@@ -42,8 +42,8 @@ Le flux normal est :
 
 ## Ce qui est déjà séparé
 
-- 42 modules et 473 gabarits sont isolés et protégés par la banque V1.17 ;
-- 25 composants visuels sont enregistrés ;
+- 42 modules et 475 gabarits sont isolés et protégés par la banque V1.18 ;
+- 26 composants visuels sont enregistrés ;
 - Nombres et calculs, Espace et géométrie, les neuf modules Données et le
   module Algorithmique sont classés pédagogiquement, soit 42 modules sur 42 ;
 - le manifeste, le partage MG1 et les identifiants stables sont testés.

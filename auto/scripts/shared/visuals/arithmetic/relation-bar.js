@@ -53,12 +53,12 @@
       const names={2:'la moitié',3:'le tiers',4:'le quart',5:'le cinquième',10:'le dixième'};
       const cellW=width/divisor;
       body+=`<rect x="${x}" y="${topY}" width="${width}" height="${topH}" fill="${palette.fill}" stroke="#222" stroke-width="2"/>`;
-      body+=text(x+width/2,topY+topH/2,correction?visualFormat(data.value):'LE TOUT',25,850);
+      body+=text(x+width/2,topY+topH/2,correction||data.showValue?visualFormat(data.value):'LE TOUT',25,850);
       for(let index=0;index<divisor;index++){
         body+=`<rect x="${x+index*cellW}" y="${bottomY}" width="${cellW}" height="${bottomH}" fill="${index===0?palette.strong:'#fff'}" stroke="#222" stroke-width="2" ${index===0?'':'stroke-dasharray="8 6"'}/>`;
         if(correction) body+=text(x+(index+.5)*cellW,bottomY+bottomH/2,visualFormat(data.result),divisor===10?14:divisor===5?17:20,800);
       }
-      if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,names[divisor],divisor===10?11:divisor===5?14:divisor===4?18:20,780);
+      if(!correction) body+=text(x+cellW/2,bottomY+bottomH/2,data.questionLabel||names[divisor],divisor===10?11:divisor===5?14:divisor===4?18:20,780);
       body+=arrow(`÷ ${divisor}`);
     }
 
@@ -97,13 +97,14 @@
     preset('quart','Quart d’une quantité',{kind:'fraction_direct',divisor:4,value:20,result:5}),
     preset('cinquieme','Cinquième d’une quantité',{kind:'fraction_direct',divisor:5,value:25,result:5}),
     preset('dixieme','Dixième d’une quantité',{kind:'fraction_direct',divisor:10,value:30,result:3},supportsWide),
+    preset('partage-decimal','Partager un décimal',{kind:'fraction_direct',divisor:3,value:2.1,result:.7,showValue:true,questionLabel:'une part ?'}),
     preset('predecesseur','Prédécesseur',{kind:'predecessor',value:42,result:41}),
     preset('successeur','Successeur',{kind:'successor',value:42,result:43})
   ]);
 
   if(!global.MATHSGO_VISUALS) throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant relation-bar.js.');
   global.MATHSGO_VISUALS.register('arithmetic.relation-bar',{
-    version:'1.1.0',
+    version:'1.2.0',
     label:'Schéma en barres — relations',
     family:'Arithmétique',
     description:'Construit les regroupements ×2, ×3, ×4, ×5 et ×10, leurs fractions unitaires inverses et les nombres voisins.',

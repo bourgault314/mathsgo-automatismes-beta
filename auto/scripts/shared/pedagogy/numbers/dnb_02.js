@@ -2,45 +2,56 @@ MATHSGO_PEDAGOGY.registerModule('dnb_02',{
   domain:'numbers',
   topic:'Comparer et calculer avec des nombres décimaux',
   label:'Décimaux : ordre, encadrement et calcul',
-  levelTags:['4e','3e','DNB'],
+  levelTags:['5e','4e','3e','DNB'],
   courseKind:'decimal_numbers',
   generatorContract:{
     configurations:[
-      {id:'compare',label:'Comparer trois décimaux positifs ou négatifs'},
-      {id:'order',label:'Ranger trois décimaux'},
+      {id:'compare-order',label:'Comparer ou ranger des décimaux positifs et négatifs'},
       {id:'frame',label:'Encadrer entre deux entiers consécutifs'},
-      {id:'add-subtract',label:'Additionner ou soustraire des décimaux'},
-      {id:'scale',label:'Multiplier ou diviser par un entier'}
+      {id:'additive',label:'Additionner, soustraire ou compléter une unité'},
+      {id:'multiplicative',label:'Multiplier, partager et raisonner par distributivité'}
     ],
     reasoning:[
-      {id:'place-values',label:'Aligner les rangs',rule:'Comparer d’abord les parties entières, puis dixièmes, centièmes et millièmes.'},
+      {id:'place-values',label:'Comparer les rangs',rule:'Comparer d’abord les parties entières, puis les dixièmes, centièmes et millièmes.'},
       {id:'sign-order',label:'Tenir compte du signe',rule:'Parmi deux nombres négatifs, le plus grand est celui qui est le plus proche de zéro.'},
       {id:'consecutive-integers',label:'Trouver les entiers voisins',rule:'Repérer l’entier immédiatement inférieur et l’entier immédiatement supérieur.'},
-      {id:'align-comma',label:'Aligner les virgules',rule:'Écrire les chiffres de même rang dans la même colonne avant une addition ou une soustraction.'},
-      {id:'estimate',label:'Contrôler l’ordre de grandeur',rule:'Vérifier que le résultat est cohérent avec les nombres de départ.'}
+      {id:'complete-unit',label:'Compléter une unité',rule:'Dix dixièmes forment une unité entière.'},
+      {id:'align-comma',label:'Aligner les rangs',rule:'Pour additionner ou soustraire, placer les chiffres de même rang dans la même colonne.'},
+      {id:'distributivity',label:'Décomposer un produit',rule:'Décomposer le décimal puis multiplier chaque partie par le même entier.'},
+      {id:'equal-sharing',label:'Partager également',rule:'Une division donne la valeur d’une part lorsque le total est partagé en parts égales.'},
+      {id:'estimate',label:'Contrôler',rule:'Vérifier l’ordre de grandeur du résultat.'}
     ],
     representations:[
-      {id:'place-value',label:'Tableau de numération'},
       {id:'number-line',label:'Droite graduée courte'},
-      {id:'written-calculation',label:'Calcul posé avec virgules alignées'}
+      {id:'decimal-band',label:'Bande en dixièmes'},
+      {id:'distributive-table',label:'Tableau de distributivité'},
+      {id:'relation-bar',label:'Schéma en barres'},
+      {id:'order-cards',label:'Cartes à ranger'}
     ],
     visualRules:[
-      'Le tableau de numération garde les colonnes de même largeur et la virgule fixe.',
-      'Sur téléphone, une droite courte ou un tableau limité aux rangs utiles est préféré.',
-      'Les zéros ajoutés pour comparer deux écritures restent visuellement secondaires.'
+      'Sur téléphone, les cartes se placent par toucher puis toucher ; aucun glisser-déposer n’est obligatoire.',
+      'La droite d’encadrement affiche le décimal au bon endroit et laisse les deux entiers à placer.',
+      'La bande en dixièmes et le tableau de distributivité sont identiques dans le cours, l’aide et la correction.',
+      'Le schéma de partage montre le total au-dessus et les parts égales en dessous.'
     ],
     cautions:[
       'Ne pas comparer seulement le nombre de chiffres.',
-      'Pour un nombre négatif, ne pas oublier que l’ordre est inversé par rapport aux distances à zéro.',
-      'Dans une multiplication ou une division, contrôler la position de la virgule avec un ordre de grandeur.'
+      'Ne jamais générer deux cartes identiques dans une question de rangement strict.',
+      'Pour un nombre négatif, respecter l’ordre de la droite graduée.',
+      'Ne pas détourner le glisse-nombre, réservé aux multiplications et divisions par 10, 100 et 1 000.'
     ]
   },
   questionTypes:[
-    {id:'comparer-trois-decimaux',label:'Choisir le plus grand de trois décimaux',questions:[1,2],response:'numeric',visual:{policy:'optional',component:'numbers.glisse-nombre'},helpSections:['place-values','sign-order','estimate']},
-    {id:'ranger-trois-decimaux',label:'Ranger trois décimaux dans l’ordre croissant',questions:[3],response:'numeric',visual:{policy:'optional',component:'numbers.glisse-nombre'},helpSections:['place-values','estimate']},
-    {id:'encadrer-entre-entiers',label:'Encadrer un décimal positif ou négatif',questions:[4,5],response:'numeric',visual:{policy:'optional',component:'numbers.number-line'},helpSections:['consecutive-integers','sign-order']},
-    {id:'addition-soustraction',label:'Additionner ou soustraire des décimaux positifs',questions:[6,7],response:'numeric',visual:{policy:'optional',component:'numbers.glisse-nombre'},helpSections:['align-comma','estimate']},
-    {id:'addition-signee',label:'Additionner un décimal positif et un décimal négatif',questions:[8],response:'numeric',visual:{policy:'optional',component:'numbers.number-line'},helpSections:['sign-order','estimate']},
-    {id:'multiplier-diviser',label:'Multiplier ou diviser un décimal par un entier',questions:[9,10],response:'numeric',visual:{policy:'optional',component:'numbers.glisse-nombre'},helpSections:['place-values','estimate']}
+    {id:'comparer-decimaux-positifs',label:'Choisir le plus grand décimal positif',questions:[1],response:'qcm-one',visual:{policy:'none'},helpSections:['place-values','estimate']},
+    {id:'comparer-decimaux-negatifs',label:'Choisir le plus grand décimal négatif',questions:[2],response:'qcm-one',visual:{policy:'none'},helpSections:['sign-order','place-values']},
+    {id:'ranger-decimaux',label:'Ranger trois décimaux par cartes',questions:[3],response:'manipulation',visual:{policy:'essential',component:'numbers.order-cards'},helpSections:['place-values','estimate']},
+    {id:'encadrer-decimal',label:'Placer les entiers voisins sur une droite',questions:[4,5],response:'manipulation',visual:{policy:'essential',component:'numbers.number-line'},helpSections:['consecutive-integers','sign-order']},
+    {id:'addition-unite',label:'Additionner deux dixièmes complémentaires',questions:[6],response:'numeric',visual:{policy:'optional',component:'arithmetic.fraction-decimal-grid'},helpSections:['complete-unit','align-comma']},
+    {id:'soustraction-decimale',label:'Soustraire deux décimaux positifs',questions:[7],response:'numeric',visual:{policy:'none'},helpSections:['align-comma','estimate']},
+    {id:'complement-unite',label:'Trouver le complément à une unité',questions:[8],response:'numeric',visual:{policy:'optional',component:'arithmetic.fraction-decimal-grid'},helpSections:['complete-unit']},
+    {id:'multiplication-decimale',label:'Multiplier un décimal par un entier',questions:[9],response:'numeric',visual:{policy:'optional',component:'algebra.area-model'},helpSections:['distributivity','estimate']},
+    {id:'division-decimale',label:'Diviser un décimal par un entier',questions:[10],response:'numeric',visual:{policy:'optional',component:'arithmetic.relation-bar'},helpSections:['equal-sharing','estimate']},
+    {id:'partage-decimal-contexte',label:'Partager une quantité dans un contexte court',questions:[11],response:'numeric',visual:{policy:'optional',component:'arithmetic.relation-bar'},helpSections:['equal-sharing']},
+    {id:'raisonnement-distributivite',label:'Placer les produits partiels',questions:[12],response:'manipulation',visual:{policy:'essential',component:'algebra.area-model'},helpSections:['distributivity']}
   ]
 });

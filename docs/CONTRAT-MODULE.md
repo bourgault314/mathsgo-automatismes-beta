@@ -54,8 +54,8 @@ usuels sont `statement`, `answer`, `options` et `footer`.
 7. La meilleure source recensée dans `SOURCES-DE-VERITE.md` est comparée avant
    toute substitution visuelle.
 
-Le test fige actuellement les 42 modules, les 473 gabarits, le registre MG1 et
-l’empreinte complète de la banque V1.17. Une extraction pure doit donc laisser
+Le test fige actuellement les 42 modules, les 475 gabarits, le registre MG1 et
+l’empreinte complète de la banque V1.18. Une extraction pure doit donc laisser
 cette empreinte inchangée.
 
 ## Registre pédagogique associé
@@ -74,14 +74,19 @@ Pour chaque type de question, ce registre peut déclarer :
 `dnb_25` constitue le premier pilote de classement et de rendu. `dnb_08` est le
 premier pilote fonctionnel sans changement de contenu. `dnb_02b` utilise le
 même registre pour une évolution pédagogique : génération, sélection par
-familles et rendu passent par `MATHSGO_MODULE_RUNTIME`. Tant qu’un autre module n’est pas
-migré, les anciennes règles du moteur restent disponibles comme solution de
-repli : le découpage peut donc avancer notion par notion.
+familles et rendu passent par `MATHSGO_MODULE_RUNTIME`. `dnb_02` applique le
+même contrat à une refonte pédagogique assumée de la banque des décimaux. Tant
+qu’un autre module n’est pas migré, les anciennes règles du moteur restent
+disponibles comme solution de repli : le découpage peut donc avancer notion par
+notion.
 
 ## Pilotes de référence
 
 - `dnb_08` est le pilote simple ;
 - `dnb_02b` est le pilote de sélection pédagogique par familles ;
+- `dnb_02` est le pilote d'une catégorie enrichie avec sélection équilibrée,
+  aides partagées et réponses manipulables ; ses décisions sont consignées
+  dans [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md) ;
 - `dnb_07` est le pilote visuel et contient déjà sa configuration pédagogique
   finalisée.
 

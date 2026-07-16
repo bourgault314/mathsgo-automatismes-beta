@@ -486,26 +486,22 @@ function generateFromDefinition(definition,{sameTab=false,targetWindow=null}={})
 
 async function generate(){
   if(modulePreparationInProgress) return;
+  const targetWindow=window.open('', '_blank');
+  if(!targetWindow){
+    alert('La nouvelle fenêtre a été bloquée. Autorise les popups pour cette page.');
+    return;
+  }
+  writePreparationWindow(targetWindow);
   modulePreparationInProgress=true;
   updateSetupActions();
-  let targetWindow=null;
   try{
     const definition=readSeriesDefinitionFromUi();
-    targetWindow=window.open('', '_blank');
-    if(!targetWindow){
-      alert('La nouvelle fenêtre a été bloquée. Autorise les popups pour cette page.');
-      return;
-    }
-    targetWindow.document.title='Préparation de la série…';
-    const loading=targetWindow.document.createElement('p');
-    loading.textContent='Préparation de la série…';
-    loading.style.cssText='font:700 18px Arial,sans-serif;color:#073a75;text-align:center;margin:18vh auto';
-    targetWindow.document.body.replaceChildren(loading);
     await loadModulesForIds(definition.moduleIds.map(mathsgoLegacyModuleId));
-    if(!generateFromDefinition(definition,{targetWindow})) targetWindow.close();
+    if(generateFromDefinition(definition,{targetWindow})===false&&!targetWindow.closed) targetWindow.close();
   }catch(error){
-    if(targetWindow&&!targetWindow.closed) targetWindow.close();
-    alert(error&&error.message?error.message:'Impossible de préparer cette série.');
+    const message=error&&error.message?error.message:'Impossible de préparer cette série.';
+    writePreparationError(targetWindow,message);
+    alert(message);
   }finally{
     modulePreparationInProgress=false;
     updateGenerateButtonLabel();
