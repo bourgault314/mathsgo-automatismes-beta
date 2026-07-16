@@ -452,6 +452,22 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .diapo.coordinate-mode .question{font-size:clamp(1.65rem,2.6vw,2.75rem);line-height:1.12;margin-bottom:5px}
 .diapo.coordinate-mode .question svg{display:block;width:min(100%,500px)!important;max-width:500px!important;max-height:min(54vh,430px)!important;margin:5px auto!important}
 .diapo.coordinate-mode .footer{font-size:clamp(2rem,3.45vw,3.65rem);margin-top:5px}
+.coordinate-pairs-response{display:flex;align-items:center;justify-content:center;gap:18px 56px;width:100%;max-width:960px;margin:0 auto}
+.coordinate-pair{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+.coordinate-placement-task{display:flex;flex-direction:column;align-items:center;width:100%}
+.coordinate-placement-prompt,.coordinate-claim-prompt{font-size:clamp(1.45rem,2.35vw,2.35rem)!important;margin-bottom:3px!important}
+.coordinate-point-selectors{display:flex;justify-content:center;gap:8px;margin:2px auto 1px}
+.coordinate-point-selector,.coordinate-placement-reset{min-height:44px;padding:8px 16px;border:2px solid #9fb9d8;border-radius:12px;background:#fff;color:#0b3570;font-size:1rem;font-weight:850;cursor:pointer;touch-action:manipulation}
+.coordinate-point-selector.is-active{border-color:#e86100;background:#fff4e9;color:#9a4100;box-shadow:0 0 0 3px rgba(232,97,0,.12)}
+.coordinate-placement-shell,.coordinate-claim-visual{display:grid;place-items:center;width:100%;margin:0 auto}
+.coordinate-placement-svg,.coordinate-claim-visual svg{display:block;width:min(100%,500px)!important;max-width:500px!important;max-height:min(50vh,410px)!important;margin:0 auto!important;touch-action:manipulation}
+.coordinate-grid-hit{cursor:pointer;pointer-events:all}
+.coordinate-grid-hit:focus{outline:none;stroke:#e86100;stroke-width:3;fill:rgba(255,122,26,.12)}
+.coordinate-selected-point text{font-family:Georgia,serif;font-size:21px;font-style:italic;font-weight:800}
+.coordinate-placement-reset{min-height:40px;margin:-2px auto 0;padding:7px 14px;border-width:1.5px;font-size:.9rem}
+.coordinate-claim-options{grid-template-columns:repeat(2,minmax(0,1fr));max-width:520px;gap:10px;margin-top:4px}
+.coordinate-claim-options .opt{min-height:58px;padding:11px 14px;font-size:clamp(1.15rem,1.8vw,1.55rem)}
+.coordinate-claim-correction{margin:7px auto 0;color:#087a55;font-size:clamp(1.05rem,1.55vw,1.35rem);font-weight:850}
 .diapo.transformations-mode .stage{padding:6px 10px 11px}
 .diapo.transformations-mode .slide{max-width:1180px}
 .diapo.transformations-mode .question{font-size:clamp(1.55rem,2.45vw,2.65rem);line-height:1.12;margin-bottom:5px}
@@ -648,7 +664,7 @@ svg{display:block;max-width:100%;height:auto}
 @media(prefers-reduced-motion:reduce){.thales-course-figure,.thales-course-row-small,.thales-course-row-large,.thales-course-ratios,.thales-course-reminder{opacity:1;animation:none}}
 @media(max-width:800px){.diapo.trigonometry-mode .stage{padding:4px 6px 8px}.diapo.trigonometry-mode .question{font-size:clamp(1.2rem,5vw,1.48rem)}.trig-question-svg{width:min(100%,390px);max-height:225px;margin:2px auto}.diapo.trigonometry-mode .options{grid-template-columns:1fr;gap:6px;margin-top:4px}.diapo.trigonometry-mode .opt{min-height:45px;padding:8px 10px;font-size:clamp(.94rem,4vw,1.1rem)}.diapo.trigonometry-mode .footer{font-size:clamp(1.75rem,7.5vw,2.35rem)}}
 @media(max-width:800px){.diapo.data-mode .stage{padding:5px 6px 9px}.diapo.data-mode .question{margin-bottom:5px;font-size:clamp(1.16rem,5.05vw,1.48rem);line-height:1.1}.diapo.data-mode .question table{font-size:clamp(.88rem,3.75vw,1.06rem)!important}.diapo.data-mode .question table td,.diapo.data-mode .question table th{padding:12px 10px!important}.diapo.data-mode .footer{margin-top:6px;font-size:clamp(1.55rem,6.8vw,2rem)}}
-@media(max-width:800px){.slide .question table{max-width:100%;font-size:clamp(.92rem,3.9vw,1.08rem)!important}.slide .question table td,.slide .question table th{padding:14px 14px!important;border-width:1.5px!important}.diapo.coordinate-mode .stage{padding:4px 4px 8px}.diapo.coordinate-mode .question{font-size:clamp(1.18rem,5.2vw,1.5rem);line-height:1.1;margin-bottom:3px}.diapo.coordinate-mode .question svg{width:min(100%,380px)!important;max-width:380px!important;max-height:min(52vh,380px)!important;margin:3px auto!important}.diapo.coordinate-mode .footer{font-size:clamp(1.75rem,7.8vw,2.3rem);margin-top:3px}.diapo.right-angle-mode .question{font-size:clamp(2rem,9vw,2.8rem);margin-bottom:20px}.diapo.right-angle-mode .footer{font-size:clamp(2.1rem,9.5vw,3rem)}}
+@media(max-width:800px){.slide .question table{max-width:100%;font-size:clamp(.92rem,3.9vw,1.08rem)!important}.slide .question table td,.slide .question table th{padding:14px 14px!important;border-width:1.5px!important}.diapo.coordinate-mode .stage{padding:4px 4px 8px}.diapo.coordinate-mode .question{font-size:clamp(1.18rem,5.2vw,1.5rem);line-height:1.1;margin-bottom:3px}.diapo.coordinate-mode .question svg{width:min(100%,380px)!important;max-width:380px!important;max-height:min(52vh,380px)!important;margin:3px auto!important}.diapo.coordinate-mode .footer{font-size:clamp(1.75rem,7.8vw,2.3rem);margin-top:3px}.coordinate-pairs-response{flex-direction:column;gap:4px}.coordinate-pair{width:100%;min-height:1.55em}.coordinate-placement-prompt,.coordinate-claim-prompt{font-size:clamp(1.03rem,4.45vw,1.25rem)!important;line-height:1.12!important}.coordinate-point-selectors{gap:6px}.coordinate-point-selector{min-height:40px;padding:6px 13px;font-size:.88rem}.coordinate-placement-svg,.coordinate-claim-visual svg{width:min(100%,365px)!important;max-width:365px!important;max-height:min(43vh,335px)!important}.coordinate-placement-reset{min-height:38px;margin:-5px auto 0;padding:6px 12px;font-size:.82rem}.coordinate-claim-options{gap:7px;margin-top:2px}.coordinate-claim-options .opt{min-height:48px;padding:8px 10px;font-size:clamp(1rem,4.3vw,1.18rem)}.coordinate-claim-correction{margin-top:4px;font-size:clamp(.88rem,3.8vw,1.04rem)}.diapo.right-angle-mode .question{font-size:clamp(2rem,9vw,2.8rem);margin-bottom:20px}.diapo.right-angle-mode .footer{font-size:clamp(2.1rem,9.5vw,3rem)}}
 @media(max-width:800px){.diapo.transformations-mode .stage{padding:4px 4px 8px}.diapo.transformations-mode .question{font-size:clamp(1.12rem,4.9vw,1.42rem);line-height:1.09;margin-bottom:3px}.diapo.transformations-mode .question svg{width:min(100%,390px)!important;max-width:390px!important;max-height:min(49vh,390px)!important;margin:3px auto!important}.diapo.transformations-mode .footer{font-size:clamp(1.6rem,7.2vw,2.15rem);margin-top:3px}.diapo.transformations-mode .options{gap:6px;margin-top:4px}.diapo.transformations-mode .opt{font-size:clamp(.9rem,3.85vw,1.08rem);padding:8px 9px}.course-visual{max-height:175px}.course-rule-wide{grid-column:auto}}
 @media(max-width:800px){.diapo.read-data-mode .stage{padding:5px 6px 9px}.diapo.read-data-mode .stage>.slide{margin-top:auto;margin-bottom:auto}.diapo.read-data-mode .question{margin-bottom:5px;font-size:clamp(1.04rem,4.55vw,1.34rem);line-height:1.1}.diapo.read-data-mode .question svg{max-height:min(31vh,215px);margin:3px auto}.diapo.read-data-mode .question table{font-size:clamp(.86rem,3.7vw,1.02rem)!important}.diapo.read-data-mode .question table td,.diapo.read-data-mode .question table th{padding:10px 9px!important}.diapo.read-data-mode .options{grid-template-columns:1fr;gap:7px;margin-top:6px}.diapo.read-data-mode .options.options-4{grid-template-columns:repeat(2,minmax(0,1fr))}.diapo.read-data-mode .opt{min-height:56px;padding:10px 10px;border-width:1.75px;border-radius:12px;font-size:clamp(.98rem,4.25vw,1.17rem)}.diapo.read-data-mode .footer{margin-top:5px;font-size:clamp(1.45rem,6.5vw,1.95rem)}.read-data-aid-caption,.read-data-aid-placeholder{min-height:43px;margin-top:6px!important}.read-data-aid-caption{padding:6px 8px;border-radius:10px;font-size:clamp(.78rem,3.35vw,.94rem);line-height:1.16}.read-data-aid-placeholder .btn{min-height:39px;padding:6px 11px;font-size:.82rem}.read-data-course-table{font-size:.82rem}.read-data-course-table th,.read-data-course-table td{min-width:67px;padding:7px 5px}.read-data-course-chart{max-height:190px}.read-data-pictogram{gap:5px 9px;padding:9px}.read-data-stars{font-size:1.3rem}.read-data-operation{gap:6px;margin-top:7px}.read-data-operation span{width:100%;padding:7px 8px;text-align:center}}
 @media(max-width:800px){.diapo.decimal-mode .stage{padding:5px 7px 8px}.diapo.decimal-mode .question{font-size:clamp(1.48rem,6.25vw,1.9rem);margin-bottom:7px}.diapo.decimal-mode .footer{font-size:clamp(2.05rem,9.1vw,2.8rem);margin-top:7px}.diapo.decimal-mode .options{grid-template-columns:1fr;gap:8px;margin-top:8px}.diapo.decimal-mode .opt{min-height:56px;padding:11px 12px;font-size:clamp(1.18rem,5.05vw,1.45rem)}.decimal-manipulation{padding:10px 8px;border-radius:14px}.decimal-card-tray{gap:7px;margin-bottom:10px}.decimal-card,.decimal-drop-slot{min-width:82px;min-height:56px;padding:8px 9px;border-radius:11px;font-size:clamp(1.34rem,5.8vw,1.7rem)}.decimal-order-slots{gap:5px}.decimal-order-position{gap:5px}.decimal-order-endpoint{font-size:.67rem}.decimal-order-sign{margin-top:14px;font-size:1.75rem}.decimal-frame-line>svg{max-height:143px}.decimal-frame-slots{width:calc(100% - 78px);margin:-30px auto 7px}.decimal-frame-slots .decimal-drop-slot{min-width:78px}.decimal-complement-visual{height:clamp(88px,14vh,112px);margin-top:3px}.area-model-compact .area-model-svg{max-height:190px}.decimal-distributivity-board .decimal-card{min-width:128px;font-size:clamp(1.06rem,4.55vw,1.3rem)}.decimal-decomposition{gap:5px;padding:8px 7px}.decimal-decomposition-title{font-size:.88rem}.decimal-decomposition-line{gap:5px;font-size:clamp(1.28rem,5.55vw,1.62rem)}.decimal-decomposition-start{font-size:clamp(1.6rem,6.8vw,2rem)}.decimal-decomposition-slot,.decimal-decomposition-term{min-width:126px;min-height:50px;padding:6px 5px;font-size:clamp(1.04rem,4.45vw,1.28rem)}.decimal-decomposition-result{font-size:clamp(1.05rem,4.55vw,1.32rem)}}
@@ -1313,13 +1329,14 @@ function setupInteractiveSlide(current){
  const spec=current.interactiveSpec;
  const decimalCards=spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity';
  dock.hidden=false;
- dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='numberline-point'||decimalCards);
+ dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='coordinate-points'||spec.kind==='numberline-point'||decimalCards);
  dock.classList.toggle('relative-tokens-dock',spec.kind==='relative-tokens');
  dock.classList.toggle('locked',interactiveLocked);
  const kind=document.getElementById('answerKind');
  if(kind){
    if(spec.kind==='qcm') kind.textContent=spec.multiple?'Plusieurs réponses':'Une seule réponse';
    else if(spec.kind==='grid-point') kind.textContent='Clique sur le quadrillage';
+   else if(spec.kind==='coordinate-points') kind.textContent=spec.coordinate.targets.length>1?'Place M puis N':'Place le point puis valide';
    else if(spec.kind==='numberline-point') kind.textContent='Déplace puis valide';
    else if(spec.kind==='relative-tokens') kind.textContent='Manipule les jetons puis valide';
    else if(spec.kind==='pythagoras-tactile') kind.textContent='Place toutes les étiquettes';
@@ -1345,6 +1362,8 @@ function setupInteractiveSlide(current){
    });
  }else if(spec.kind==='grid-point'){
    ensureInteractiveEntryState(spec);setupGridPointInteraction(spec);
+ }else if(spec.kind==='coordinate-points'){
+   ensureInteractiveEntryState(spec);setupCoordinatePointInteraction(spec);
  }else if(spec.kind==='numberline-point'){
    ensureInteractiveEntryState(spec);setupNumberLinePointInteraction(spec);
  }else if(spec.kind==='relative-tokens'){
@@ -1460,6 +1479,46 @@ function setupGridPointInteraction(spec){
  }
  if(interactiveLocked)return;
  svg.querySelectorAll('.transformation-grid-hit').forEach(hit=>{hit.setAttribute('tabindex','0');hit.setAttribute('role','button');const choose=()=>{interactiveValues=[hit.dataset.gridX,hit.dataset.gridY];interactiveTouched=[true,true];setupGridPointInteraction(spec);updateInteractiveControls();};hit.onclick=choose;hit.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};});
+}
+function setupCoordinatePointInteraction(spec){
+ const svg=document.querySelector('#slide .coordinate-placement-svg');if(!svg)return;
+ const targets=spec.coordinate.targets||[];
+ svg.querySelectorAll('.coordinate-selected-point').forEach(node=>node.remove());
+ const activePoint=Math.max(0,Math.min(targets.length-1,Math.floor(activeSlotIndex/2)));
+ document.querySelectorAll('#slide .coordinate-point-selector').forEach((button,index)=>{
+   button.classList.toggle('is-active',!interactiveLocked&&index===activePoint);
+   button.setAttribute('aria-pressed',String(!interactiveLocked&&index===activePoint));
+   button.disabled=interactiveLocked;
+   button.onclick=()=>{if(interactiveLocked)return;activeSlotIndex=index*2;setupCoordinatePointInteraction(spec);};
+ });
+ if(!interactiveLocked){
+   targets.forEach((target,index)=>{
+     const x=interactiveValues[index*2],y=interactiveValues[index*2+1];
+     if(!interactiveTouched[index*2]||!interactiveTouched[index*2+1])return;
+     const hit=svg.querySelector('.coordinate-grid-hit[data-grid-x="'+x+'"][data-grid-y="'+y+'"]');
+     if(!hit)return;
+     const ns='http://www.w3.org/2000/svg',mark=document.createElementNS(ns,'g'),color=target.color||'#c0392b';
+     mark.setAttribute('class','coordinate-selected-point');mark.setAttribute('transform','translate('+hit.getAttribute('cx')+' '+hit.getAttribute('cy')+')');
+     mark.innerHTML='<path d="M-8 0H8M0-8V8" stroke="'+color+'" stroke-width="4" stroke-linecap="round"/><text x="11" y="-9" fill="'+color+'">'+target.label+'</text>';
+     svg.append(mark);
+   });
+ }
+ if(interactiveLocked)return;
+ svg.querySelectorAll('.coordinate-grid-hit').forEach(hit=>{
+   hit.setAttribute('tabindex','0');hit.setAttribute('role','button');
+   hit.setAttribute('aria-label','Placer '+targets[activePoint].label+' au point de coordonnées '+hit.dataset.gridX+' ; '+hit.dataset.gridY);
+   const choose=()=>{
+     const base=activePoint*2;
+     interactiveValues[base]=hit.dataset.gridX;interactiveValues[base+1]=hit.dataset.gridY;
+     interactiveTouched[base]=true;interactiveTouched[base+1]=true;
+     const next=targets.findIndex((target,index)=>!interactiveTouched[index*2]||!interactiveTouched[index*2+1]);
+     activeSlotIndex=(next>=0?next:activePoint)*2;
+     setupCoordinatePointInteraction(spec);updateInteractiveControls();
+   };
+   hit.onclick=choose;hit.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};
+ });
+ const reset=document.querySelector('#slide [data-coordinate-reset]');
+ if(reset)reset.onclick=()=>{resetInteractiveEntryState(spec);setupCoordinatePointInteraction(spec);updateInteractiveControls();};
 }
 function setupNumberLinePointInteraction(spec){
  const svg=document.querySelector('#slide .number-line-placement-svg');if(!svg)return;
@@ -1802,7 +1861,7 @@ function renderInteractiveKeypad(spec){
  if(!keypad) return;
  keypad.innerHTML='';
  const body=keypad.closest('.answer-body');
- if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='numberline-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'||spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity'){
+ if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='coordinate-points'||spec.kind==='numberline-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'||spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity'){
    if(body){body.style.setProperty('--keypad-max','940px');body.style.setProperty('--keypad-height-desktop','64px');body.style.setProperty('--keypad-height-mobile','62px');}
    return;
  }
@@ -1826,7 +1885,7 @@ function renderInteractiveKeypad(spec){
 function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
- const available=interactiveMode&&!interactiveFinished&&spec&&!['qcm','grid-point','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
+ const available=interactiveMode&&!interactiveFinished&&spec&&!['qcm','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -1843,6 +1902,7 @@ function toggleKeypad(){
 function hasInteractiveAnswer(){
  const spec=slides[idx].interactiveSpec;
  if(spec.kind==='qcm') return selectedOptions.size>0;
+ if(spec.kind==='coordinate-points') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
  if(spec.kind==='relative-tokens') return interactiveTouched.some(Boolean);
  if(spec.kind==='pythagoras-tactile') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
  if(spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
@@ -2113,6 +2173,16 @@ function interactiveKeysFor(combinations,options={}){
   return keys;
 }
 function interactiveSpecForInstance(inst,correctionHtml){
+ if(inst.coordinateData&&['place-one','place-two'].includes(inst.coordinateData.kind)){
+   const targets=inst.coordinateData.targets;
+   return {
+     kind:'coordinate-points',layout:'tap',
+     slots:targets.flatMap(target=>[{label:'Abscisse de '+target.label},{label:'Ordonnée de '+target.label}]),
+     acceptedCombinations:[(inst.answers||[]).map(String)],
+     expectedDisplay:targets.map(target=>target.label+'('+String(target.x).replace('-', '−')+' ; '+String(target.y).replace('-', '−')+')').join(' et '),
+     keys:[],coordinate:{targets}
+   };
+ }
  if(inst.numberLineData&&inst.numberLineData.kind==='place-point'){
    const data=inst.numberLineData,display=String(data.targetValue).replace('-', '−').replace('.',',');
    return {

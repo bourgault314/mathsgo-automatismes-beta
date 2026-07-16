@@ -99,8 +99,10 @@ de chiffres déplaçable, est isolé dans `numbers.glisse-nombre`. Son contrôle
 de glissement fait partie du composant et sert aussi dans le catalogue. Il
 accepte également le geste robuste « chiffre bleu puis colonne d’arrivée » et
 rejoue le déplacement lors de la correction.
-Les neuf gabarits de repères du plan de `dnb_15`, y compris les demi-unités et
-les lectures à deux points, utilisent un générateur commun.
+Les neuf gabarits historiques de repères du plan de `dnb_15`, y compris les
+demi-unités et les lectures à deux points, utilisent un générateur commun.
+Trois formats fonctionnels complètent désormais la banque figée : placement
+d’un point, placement successif de deux points et vrai/faux diagnostique.
 
 Le module `dnb_38` est le premier module de calcul mental avec jetons
 manipulables. Son plateau est prévu pour 390 × 844 px et 1280 × 720 px ; les

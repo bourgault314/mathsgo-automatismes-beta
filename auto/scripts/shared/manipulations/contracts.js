@@ -52,6 +52,27 @@
     serialization:{version:'MG-MANIP-1',fields:['references','step','start-index','current-index','target-index','instance-key']}
   });
 
+  registry.register('geometry.coordinate-points',{
+    version:'1.0.0',label:'Points dans un repère',status:'active',moduleId:'dnb_15',componentId:'geometry.coordinate-plane',
+    description:'Placer un ou deux points en touchant successivement les intersections d’un repère gradué.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'targets',label:'Lettres et coordonnées attendues dans leur ordre',serializable:true},
+      {id:'chosen-points',label:'Coordonnées actuellement choisies pour chaque point',serializable:true},
+      {id:'active-point',label:'Point actuellement sélectionné',serializable:false}
+    ],
+    actions:[
+      {id:'select-point',label:'Choisir le point M ou N à placer'},
+      {id:'select-intersection',label:'Toucher ou sélectionner une intersection du quadrillage'},
+      {id:'reset',label:'Effacer tous les points placés'},
+      {id:'validate',label:'Valider les coordonnées placées'}
+    ],
+    reset:{mode:'empty-points',preserves:['targets']},
+    validation:{mode:'state-equivalence',trigger:'explicit',expected:'chaque point choisi possède les coordonnées de sa cible'},
+    correction:{mode:'target-state',shows:['même repère','lettres des points','coordonnées cibles']},
+    serialization:{version:'MG-MANIP-1',fields:['targets','chosen-points']}
+  });
+
   registry.register('numbers.relative-tokens',{
     version:'1.0.0',label:'Jetons relatifs',status:'active',moduleId:'dnb_38',componentId:'numbers.relative-tokens',
     description:'Rassembler des jetons +1 et −1, repérer les paires nulles et obtenir une somme.',

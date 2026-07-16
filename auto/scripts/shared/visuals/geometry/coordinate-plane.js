@@ -100,6 +100,30 @@
     return data.mode==='coordinates'||data.bounds?coordinateTracerSvg(data):legacyCoordinatePlaneSvg(data);
   }
 
+  function coordinatePlacementSvg(data={},correction=false){
+    const bounds=data.bounds||{xMin:-3,xMax:3,yMin:-3,yMax:3};
+    const xMin=Number(bounds.xMin),xMax=Number(bounds.xMax),yMin=Number(bounds.yMin),yMax=Number(bounds.yMax);
+    const step=Math.abs(Number(data.step))||1;
+    const width=Math.max(300,Math.min(1000,Number(data.width)||500));
+    const height=Math.max(260,Math.min(900,Number(data.height)||420));
+    const targets=(data.targets||[]).filter(point=>Number.isFinite(Number(point.x))&&Number.isFinite(Number(point.y)));
+    const base=coordinateTracerSvg({...data,mode:'coordinates',bounds,step,width,height,points:correction?targets:[]})
+      .replace('<svg ',`<svg class="coordinate-placement-svg" data-coordinate-placement="1" data-coordinate-point-count="${targets.length}" `);
+    const plot={left:48,right:width-30,top:28,bottom:height-42};
+    const toX=value=>plot.left+((value-xMin)/(xMax-xMin))*(plot.right-plot.left);
+    const toY=value=>plot.bottom-((value-yMin)/(yMax-yMin))*(plot.bottom-plot.top);
+    const gridValues=(min,max)=>{
+      const count=Math.floor((max-min)/step+1e-8);
+      return Array.from({length:count+1},(_,index)=>cleanNumber(min+index*step)).filter(value=>value<=max+1e-8);
+    };
+    const hitRadius=Math.max(13,Math.min(23,Number(data.hitRadius)||18));
+    const hits=[];
+    gridValues(xMin,xMax).forEach(x=>gridValues(yMin,yMax).forEach(y=>{
+      hits.push(`<circle class="coordinate-grid-hit" data-grid-x="${x}" data-grid-y="${y}" cx="${cleanNumber(toX(x))}" cy="${cleanNumber(toY(y))}" r="${hitRadius}" fill="transparent"/>`);
+    }));
+    return correction?base:base.replace('</svg>',`<g class="coordinate-grid-hits">${hits.join('')}</g></svg>`);
+  }
+
   const presets=Object.freeze([
     {id:'point',label:'Un point',supports:['phone','computer','projection','print'],data:{points:[{x:280,y:120,label:'M'}]}},
     {id:'axe',label:'Point sur un axe',supports:['phone','computer','projection','print'],data:{points:[{x:200,y:80,label:'M'}]}},
@@ -112,12 +136,13 @@
   ].map(item=>Object.freeze({id:item.id,label:item.label,supports:Object.freeze(item.supports),data:Object.freeze(Object.fromEntries(Object.entries(item.data).map(([key,value])=>[key,Array.isArray(value)?Object.freeze(value.map(entry=>Object.freeze(entry))):(value&&typeof value==='object'?Object.freeze(value):value)])))})));
 
   global.MATHSGO_VISUALS.register('geometry.coordinate-plane',{
-    version:'1.1.0',
+    version:'1.2.0',
     label:'Repère du plan',
     family:'Géométrie',
-    description:'Traceur de repères : dimensions, bornes, pas, sous-grille, petits traits de graduation et plusieurs points sont paramétrables. Le rendu historique reste figé.',
+    description:'Traceur de repères : dimensions, bornes, pas, sous-grille, petits traits de graduation, plusieurs points et placement tactile sont paramétrables. Le rendu historique reste figé.',
     presets,
-    render:coordinatePlaneSvg
+    render:coordinatePlaneSvg,
+    renderPlacement:coordinatePlacementSvg
   });
   global.coordinatePlaneSvg=coordinatePlaneSvg;
 })(globalThis);

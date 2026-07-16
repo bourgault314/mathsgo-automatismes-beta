@@ -35,6 +35,9 @@ const sources = [
   'auto/scripts/modules/numbers/dnb_14/selection.js',
   'auto/scripts/modules/numbers/dnb_14/render.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
+  'auto/scripts/modules/geometry/dnb_15/generate.js',
+  'auto/scripts/modules/geometry/dnb_15/selection.js',
+  'auto/scripts/modules/geometry/dnb_15/render.js',
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
   'auto/scripts/01-modules.js',
@@ -74,6 +77,7 @@ globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__divisibilityModule = MODULE_DNB_08;
 globalThis.__placeValueModule = MODULE_DNB_02B;
 globalThis.__numberLineModule = MODULE_DNB_14;
+globalThis.__coordinateModule = MODULE_DNB_15;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -214,6 +218,11 @@ const numberLineManifest=context.__moduleManifest.find(module=>module.id==='dnb_
 if(!numberLineRuntime?.generator||!numberLineRuntime?.selection||!numberLineRuntime?.renderer) fail('Les trois extensions fonctionnelles de dnb_14 doivent être enregistrées.');
 if(!numberLineManifest||numberLineManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_14.');
 if(context.__moduleFiles.get('dnb_14')?.length!==4) fail('Le chargeur doit préparer dnb_14 et ses trois extensions fonctionnelles.');
+const coordinateRuntime=context.MATHSGO_MODULE_RUNTIME.get('dnb_15');
+const coordinateManifest=context.__moduleManifest.find(module=>module.id==='dnb_15');
+if(!coordinateRuntime?.generator||!coordinateRuntime?.selection||!coordinateRuntime?.renderer) fail('Les trois extensions fonctionnelles de dnb_15 doivent être enregistrées.');
+if(!coordinateManifest||coordinateManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_15.');
+if(context.__moduleFiles.get('dnb_15')?.length!==4) fail('Le chargeur doit préparer dnb_15 et ses trois extensions fonctionnelles.');
 
 for(let seed=0;seed<1000;seed++){
   for(const count of [5,10,15,20]){
@@ -291,6 +300,45 @@ for(let seed=0;seed<10000;seed++){
     }
   }
 }
+
+for(let seed=0;seed<1000;seed++){
+  for(const count of [5,10,15,20]){
+    context.__setSeed(seed);context.__beginQuizBank([context.__coordinateModule]);
+    const selected=context.__drawRuntimeModuleQuestions(context.__coordinateModule,context.__coordinateModule.questions,count);
+    const fresh=selected.filter(question=>Number(question.n)>=10),expected=count===5?1:(count===10?3:(count===15?4:6));
+    if(selected.length!==count||fresh.length!==expected) fail(`Répartition incorrecte des nouveaux formats dnb_15 (${count} questions, seed ${seed}).`);
+    const families=selected.map(coordinateRuntime.selection.familyForQuestion);
+    if(count<=10&&families.some((family,index)=>index>0&&family===families[index-1])) fail(`Deux familles identiques se suivent dans une série courte dnb_15 (seed ${seed}).`);
+    if(families.some((family,index)=>index>1&&family===families[index-1]&&family===families[index-2])) fail(`Trois familles identiques se suivent dans dnb_15 (seed ${seed}).`);
+    if(count===10&&new Set(fresh.map(question=>Number(question.n))).size!==3) fail(`La série dnb_15 de dix questions doit contenir les trois nouveaux formats (seed ${seed}).`);
+  }
+}
+
+for(let seed=0;seed<2000;seed++){
+  context.__setSeed(seed);
+  for(const template of coordinateRuntime.selection.virtualTemplates){
+    const instance=context.__makeInstance(context.__coordinateModule,template),data=instance.coordinateData;
+    if(!data||data.kind!==template.options.coordinate_kind) fail(`Le gabarit fonctionnel dnb_15 ${template.n} n’a pas produit son modèle.`);
+    if(data.targets.some(point=>point.x<-3||point.x>3||point.y<-3||point.y>3||(point.x===0&&point.y===0))) fail(`Un point de dnb_15 sort du repère ou tombe à l’origine (seed ${seed}).`);
+    if(data.kind==='place-one'||data.kind==='place-two'){
+      if(new Set(data.targets.map(point=>point.x+':'+point.y)).size!==data.targets.length) fail(`Deux points tactiles de dnb_15 se superposent (seed ${seed}).`);
+      const html=context.__renderQuestion(instance,false,'with');
+      if(!html.includes('data-coordinate-placement="1"')||(html.match(/class="coordinate-grid-hit"/g)||[]).length!==49) fail(`Le placement tactile dnb_15 ${template.n} doit proposer les 49 intersections du repère.`);
+      if(data.kind==='place-two'&&(html.match(/data-coordinate-point=/g)||[]).length!==2) fail('Le placement de deux points doit permettre de choisir M ou N.');
+    }else{
+      const options=data.qcm.options;
+      if(options.length!==2||options.filter(option=>option.errorCode==='correct').length!==1||new Set(options.map(option=>option.value)).size!==2) fail(`Le vrai/faux dnb_15 doit avoir une seule réponse correcte (seed ${seed}).`);
+      if(data.claimKind==='correct'&&(data.claim.x!==data.targets[0].x||data.claim.y!==data.targets[0].y)) fail(`Une affirmation vraie de dnb_15 est fausse (seed ${seed}).`);
+      if(data.claimKind!=='correct'&&data.claim.x===data.targets[0].x&&data.claim.y===data.targets[0].y) fail(`Une affirmation fausse de dnb_15 est vraie (seed ${seed}).`);
+      if(!context.__renderQuestion(instance,false,'with').includes('data-error-code=')) fail('Le vrai/faux de dnb_15 doit exposer son erreur diagnostique.');
+    }
+  }
+}
+
+context.__setSeed(15);
+const twoCoordinateQuestion=context.__makeInstance(context.__coordinateModule,context.__coordinateModule.questions.find(question=>Number(question.n)===5));
+const twoCoordinateHtml=context.__renderQuestion(twoCoordinateQuestion,false,'with');
+if(!twoCoordinateHtml.includes('coordinate-pairs-response')||(twoCoordinateHtml.match(/class="coordinate-pair"/g)||[]).length!==2||(twoCoordinateHtml.match(/class="math-display"/g)||[]).length<2||twoCoordinateHtml.includes('$$')) fail('La réponse à deux points de dnb_15 doit être séparée en deux groupes mathématiques adaptables au téléphone.');
 
 context.__setSeed(14);
 const legacyNumberLine=context.__makeInstance(context.__numberLineModule,context.__numberLineModule.questions[0]);
