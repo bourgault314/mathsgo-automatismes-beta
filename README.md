@@ -10,6 +10,14 @@ et le livret A5. L'ancien gros fichier autonome a été retiré. Les rôles de l
 bêta, de la production et du futur Studio sont fixés dans
 [`docs/ARCHITECTURE-CANONIQUE.md`](docs/ARCHITECTURE-CANONIQUE.md).
 
+## Avant toute intervention
+
+Les consignes lues par les assistants et contributeurs sont dans
+[`AGENTS.md`](AGENTS.md). L'index des documents de référence se trouve dans
+[`docs/README.md`](docs/README.md) et le cadre commun obligatoire dans
+[`docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md`](docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md).
+Une branche ne doit jamais remplacer ce protocole par une copie plus ancienne.
+
 ## Fonctionnement
 
 1. Les modifications sont réalisées et testées ici.
@@ -20,12 +28,12 @@ bêta, de la production et du futur Studio sont fixés dans
 La page bêta n’est pas destinée au référencement et ne charge pas la mesure
 d’audience du site public.
 
-## Point de départ
+## État actuel
 
-- Application : **V1.17 bêta**
+- Application : **V1.18 bêta**
 - Source : `bourgault314/maths`, dossier `auto/`
 - Révision copiée : `cd8c2b0407f10be7f272dbb7a42d7af2f682a0f8`
-- Banque chargée : **42 modules et 473 gabarits de questions**
+- Banque chargée : **42 modules et 475 gabarits de questions**
 
 ## Organisation actuelle
 
@@ -83,7 +91,7 @@ tests avant toute évolution graphique.
 Les barres de fractions et de pourcentages, y compris leurs accolades, sont
 également extraites du moteur et visibles dans le catalogue de développement.
 Les dix-huit gabarits de droites graduées de `dnb_14` utilisent désormais un
-unique composant commun, sans modifier le contenu de la banque V1.17.
+unique composant commun, sans modifier le contenu de la banque V1.18.
 Le tableau interactif de conversion de `dnb_19` est lui aussi séparé du gros
 moteur pour les longueurs, masses, capacités, aires et volumes.
 Le glisse-nombre de `dnb_02b`, avec sa virgule fixe, sa bande grise et sa bande

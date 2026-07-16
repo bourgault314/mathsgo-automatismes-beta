@@ -5,8 +5,10 @@ const root=new URL('../',import.meta.url);
 const sources=[
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
+  'auto/scripts/shared/visuals/numbers/order-cards.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
+  'auto/scripts/shared/visuals/algebra/area-model.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
   'auto/scripts/shared/manipulations/00-registry.js',
   'auto/scripts/shared/manipulations/contracts.js'
@@ -18,7 +20,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_MANIPULATIONS;
 if(!registry) fail('Le registre de manipulations est absent.');
 const contracts=registry?.list()||[];
-if(contracts.length!==5) fail(`Cinq contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
+if(contracts.length!==8) fail(`Huit contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
 
 for(const contract of contracts){
   if(contract.status==='active'&&!context.MATHSGO_VISUALS.get(contract.componentId)) fail(`Le composant actif ${contract.id} est absent.`);
@@ -43,6 +45,10 @@ const relative=registry?.get('numbers.relative-tokens');
 if(relative?.reset.mode!=='initial-state'||relative?.actions.some(action=>action.id==='validate')!==true) fail('Les jetons relatifs doivent être réinitialisables et validables.');
 const pythagoras=registry?.get('geometry.pythagoras-builder');
 if(pythagoras?.validation.mode!=='ordered-slots'||pythagoras?.supports.includes('projection')) fail('Le constructeur Pythagore doit valider ses cases et rester une manipulation individuelle.');
+for(const id of ['numbers.order-cards','numbers.frame-integers','numbers.distributivity-cards']){
+  const contract=registry?.get(id);
+  if(contract?.status!=='active'||contract?.validation.mode!=='ordered-slots'||!contract?.actions.some(action=>action.id==='select-card')||!contract?.actions.some(action=>action.id==='place-card')) fail(`La manipulation ${id} doit fonctionner par sélection puis placement ordonné.`);
+}
 const algorithm=registry?.get('algorithm.block-sequence');
 if(algorithm?.status!=='planned'||algorithm?.componentId!==null||algorithm?.correction.mode!=='replay') fail('La suite de blocs doit rester planifiée avec une correction rejouée pas à pas.');
 
@@ -56,4 +62,4 @@ for(const section of ['État sémantique','Gestes et accessibilité','Réinitial
   if(!documentation.includes(section)) fail(`La documentation des manipulations doit contenir « ${section} ».`);
 }
 
-if(!process.exitCode) console.log('OK — 5 contrats de manipulation : 4 actifs et 1 planifié, état MG-MANIP-1 cohérent.');
+if(!process.exitCode) console.log('OK — 8 contrats de manipulation : 7 actifs et 1 planifié, état MG-MANIP-1 cohérent.');

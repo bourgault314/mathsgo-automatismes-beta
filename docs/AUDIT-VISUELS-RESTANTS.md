@@ -9,9 +9,9 @@ enfermées dans un module ou dans le moteur commun.
 
 État de référence après le classement complet :
 
-- 42 modules et 473 gabarits ;
+- 42 modules et 475 gabarits ;
 - 42 modules sur 42 classés pédagogiquement ;
-- 25 composants visuels enregistrés ;
+- 26 composants visuels enregistrés ;
 - 110 balises SVG historiques dans douze fichiers de banque ;
 - 84 types de tâches, couvrant 186 questions, avec un rôle visuel déclaré mais
   sans composant partagé.
@@ -85,7 +85,7 @@ reconstruction dédiée est en cours.
 
 | Module | Question | Constat | Traitement |
 |---|---:|---|---|
-| `dnb_28` | 4 | la banque V1.17 déclare `1/2` et `5/6` comme réponses correctes à la probabilité d’obtenir un nombre pair sur un dé | correction de contenu séparée, avec nouvelle empreinte de banque assumée |
+| `dnb_28` | 4 | la banque V1.18 déclare `1/2` et `5/6` comme réponses correctes à la probabilité d’obtenir un nombre pair sur un dé | correction de contenu séparée, avec nouvelle empreinte de banque assumée |
 | `dnb_33` | 6 | la droite peut atteindre ou dépasser le bord supérieur pour le plus grand coefficient | corriger l’échelle lors du branchement du graphique commun |
 | `dnb_36` | 9 | la valeur 25 peut être placée au-dessus de la dernière graduation et de la flèche de l’axe | étendre automatiquement le domaine vertical dans le graphique commun |
 

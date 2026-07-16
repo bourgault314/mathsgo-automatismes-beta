@@ -95,6 +95,75 @@
     serialization:{version:'MG-MANIP-1',fields:['task','slots','triangle']}
   });
 
+  registry.register('numbers.order-cards',{
+    version:'1.0.0',label:'Cartes de nombres à ranger',status:'active',moduleId:'dnb_02',componentId:'numbers.order-cards',
+    description:'Sélectionner un nombre puis une position pour construire un ordre sans retaper les valeurs.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'cards',label:'Valeurs proposées et ordre initial',serializable:true},
+      {id:'slots',label:'Valeur placée dans chaque position',serializable:true},
+      {id:'direction',label:'Sens de rangement attendu',serializable:true},
+      {id:'selected-card',label:'Carte sélectionnée',serializable:false}
+    ],
+    actions:[
+      {id:'select-card',label:'Sélectionner une carte'},
+      {id:'place-card',label:'Placer la carte dans une position'},
+      {id:'remove-card',label:'Retirer une carte déjà placée'},
+      {id:'reset',label:'Vider toutes les positions'},
+      {id:'validate',label:'Valider l’ordre construit'}
+    ],
+    reset:{mode:'empty-slots',preserves:['cards','direction']},
+    validation:{mode:'ordered-slots',trigger:'explicit',expected:'valeurs strictement croissantes'},
+    correction:{mode:'target-state',shows:['ordre croissant','trois positions remplies']},
+    serialization:{version:'MG-MANIP-1',fields:['cards','slots','direction']}
+  });
+
+  registry.register('numbers.frame-integers',{
+    version:'1.0.0',label:'Encadrement par entiers',status:'active',moduleId:'dnb_02',componentId:'numbers.number-line',
+    description:'Placer les deux entiers voisins autour d’un décimal déjà positionné sur une droite courte.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'decimal',label:'Décimal placé sur la droite',serializable:true},
+      {id:'cards',label:'Entiers proposés',serializable:true},
+      {id:'slots',label:'Entiers placés à gauche et à droite',serializable:true},
+      {id:'selected-card',label:'Carte sélectionnée',serializable:false}
+    ],
+    actions:[
+      {id:'select-card',label:'Sélectionner un entier'},
+      {id:'place-card',label:'Placer l’entier à gauche ou à droite'},
+      {id:'remove-card',label:'Retirer un entier placé'},
+      {id:'reset',label:'Vider les deux emplacements'},
+      {id:'validate',label:'Valider l’encadrement'}
+    ],
+    reset:{mode:'empty-slots',preserves:['decimal','cards']},
+    validation:{mode:'ordered-slots',trigger:'explicit',expected:'entier inférieur puis entier supérieur consécutif'},
+    correction:{mode:'target-state',shows:['point décimal','entier inférieur','entier supérieur']},
+    serialization:{version:'MG-MANIP-1',fields:['decimal','cards','slots']}
+  });
+
+  registry.register('numbers.distributivity-cards',{
+    version:'1.0.0',label:'Produits partiels à placer',status:'active',moduleId:'dnb_02',componentId:'algebra.area-model',
+    description:'Placer les deux produits issus de la décomposition d’un décimal dans le tableau de distributivité.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'factors',label:'Décimal, décomposition et multiplicateur',serializable:true},
+      {id:'cards',label:'Produits partiels proposés',serializable:true},
+      {id:'slots',label:'Produit placé dans chaque case',serializable:true},
+      {id:'selected-card',label:'Produit sélectionné',serializable:false}
+    ],
+    actions:[
+      {id:'select-card',label:'Sélectionner un produit'},
+      {id:'place-card',label:'Placer le produit dans la case correspondante'},
+      {id:'remove-card',label:'Retirer un produit placé'},
+      {id:'reset',label:'Vider les deux cases'},
+      {id:'validate',label:'Valider la décomposition'}
+    ],
+    reset:{mode:'empty-slots',preserves:['factors','cards']},
+    validation:{mode:'ordered-slots',trigger:'explicit',expected:'produit des unités puis produit des dixièmes'},
+    correction:{mode:'target-state',shows:['décomposition','produits partiels','résultat final']},
+    serialization:{version:'MG-MANIP-1',fields:['factors','cards','slots']}
+  });
+
   registry.register('algorithm.block-sequence',{
     version:'1.0.0',label:'Suite de blocs pas à pas',status:'planned',moduleId:'dnb_37',componentId:null,
     description:'Rejouer une suite limitée de calculs, rotations, déplacements, boucles ou constructions.',

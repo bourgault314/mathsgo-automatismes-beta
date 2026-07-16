@@ -13,12 +13,18 @@ const isolatedModuleIds = Object.values(isolatedModulesByDomain).flat();
 const sources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
+  'auto/scripts/shared/visuals/numbers/order-cards.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-decimal-grid.js',
+  'auto/scripts/shared/visuals/algebra/area-model.js',
   'auto/scripts/modules/00-runtime-registry.js',
   'auto/scripts/00-module-manifest.js',
   ...isolatedModulesByDomain.numbers.map(id => `auto/scripts/modules/numbers/${id}.js`),
+  'auto/scripts/modules/numbers/dnb_02/generate.js',
+  'auto/scripts/modules/numbers/dnb_02/selection.js',
+  'auto/scripts/modules/numbers/dnb_02/render.js',
   'auto/scripts/modules/numbers/dnb_08/generate.js',
   'auto/scripts/modules/numbers/dnb_08/selection.js',
   'auto/scripts/modules/numbers/dnb_08/render.js',
@@ -62,6 +68,7 @@ globalThis.__renderThalesModule = renderThalesModule;
 globalThis.__renderPythagorasModule = renderPythagorasModule;
 globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
+globalThis.__decimalModule = MODULE_DNB_02;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__divisibilityModule = MODULE_DNB_08;
 globalThis.__placeValueModule = MODULE_DNB_02B;
@@ -85,7 +92,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'db0eaa3c6c321ed1b04488d1fc3533209c43f35b6fa42970a2b19d4b30f34c81';
+const expectedBankHash = '14b41cbf32edd283429f267d35b0100b59c1b0cae3497e772690484c44514b7c';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -122,15 +129,17 @@ for (const id of isolatedModuleIds) {
 }
 
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
-if (questionCount !== 473) fail(`473 gabarits attendus, ${questionCount} trouvés.`);
+if (questionCount !== 475) fail(`475 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
-  fail(`Le contenu ou l’ordre de la banque V1.17 a changé (${bankHash}).`);
+  fail(`Le contenu ou l’ordre de la banque V1.18 a changé (${bankHash}).`);
 }
 
 const runtime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_08');
 if(!runtime?.generator||!runtime?.selection||!runtime?.renderer) fail('Le pilote dnb_08 doit enregistrer génération, sélection et rendu.');
 const placeValueRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02b');
 if(!placeValueRuntime?.generator||!placeValueRuntime?.selection||!placeValueRuntime?.renderer) fail('Le pilote dnb_02b doit enregistrer génération, sélection et rendu.');
+const decimalRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02');
+if(!decimalRuntime?.generator||!decimalRuntime?.selection||!decimalRuntime?.renderer) fail('Le pilote dnb_02 doit enregistrer génération, sélection et rendu.');
 
 function comparableInstance(instance){
   const scope=instance.scope||{};
@@ -282,6 +291,73 @@ const legacyNumberLine=context.__makeInstance(context.__numberLineModule,context
 const legacyNumberLineHtml=context.__renderQuestion(legacyNumberLine,false,'with');
 if(!legacyNumberLineHtml.includes('A&nbsp;:')) fail('La lettre et les deux-points doivent rester insécables dans le libellé de dnb_14.');
 
+const decimalManifest=context.__moduleManifest.find(module=>module.id==='dnb_02');
+if(!decimalManifest||decimalManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_02.');
+if(context.__moduleFiles.get('dnb_02')?.length!==4) fail('Le chargeur doit préparer la banque et les trois extensions de dnb_02.');
+if(context.__decimalModule.questions.length!==12) fail('La catégorie des décimaux doit contenir douze familles distinctes.');
+if(context.__decimalModule.questions.some(question=>String(question.options?.decimal_kind).includes('relative'))) fail('Les sommes de décimaux relatifs doivent avoir quitté dnb_02.');
+if(!context.__decimalModule.level_tags.includes('5e')||!context.__decimalModule.level_tags.includes('3e')||!context.__decimalModule.level_tags.includes('DNB')) fail('dnb_02 doit rester accessible en 5e, 3e et DNB.');
+
+for(const seed of [5,19,73,2026]){
+  const instances=new Map();
+  for(const question of context.__decimalModule.questions){context.__setSeed(seed+Number(question.n));instances.set(Number(question.n),context.__makeInstance(context.__decimalModule,question));}
+  const order=instances.get(3),orderValues=[order.scope.a,order.scope.b,order.scope.c];
+  if(new Set(orderValues).size!==3||JSON.stringify([...orderValues].sort((a,b)=>a-b))!==JSON.stringify([order.scope.mn,order.scope.md,order.scope.mx])) fail(`Le rangement décimal doit produire trois cartes distinctes avec la seed ${seed}.`);
+  const frame=instances.get(4);
+  if(!(frame.scope.low<frame.scope.value&&frame.scope.value<frame.scope.high&&frame.scope.high-frame.scope.low===1)) fail(`L’encadrement positif est incohérent avec la seed ${seed}.`);
+  const negativeFrame=instances.get(5);
+  if(!(negativeFrame.scope.low<negativeFrame.scope.value&&negativeFrame.scope.value<negativeFrame.scope.high&&negativeFrame.scope.high-negativeFrame.scope.low===1)) fail(`L’encadrement négatif est incohérent avec la seed ${seed}.`);
+  const multiplication=instances.get(9),division=instances.get(10);
+  if(Math.abs(multiplication.scope.a*multiplication.scope.factor-multiplication.scope.result)>1e-9) fail(`La multiplication décimale est fausse avec la seed ${seed}.`);
+  if(Math.abs(division.scope.total/division.scope.divisor-division.scope.share)>1e-9) fail(`Le partage décimal est faux avec la seed ${seed}.`);
+}
+
+const decimalSignatures=new Map(context.__decimalModule.questions.map(question=>[Number(question.n),new Set()]));
+for(let seed=1;seed<=250;seed++){
+  for(const question of context.__decimalModule.questions){
+    context.__setSeed(seed*100+Number(question.n));
+    const instance=context.__makeInstance(context.__decimalModule,question),scope=instance.scope||{},kind=question.options.decimal_kind;
+    decimalSignatures.get(Number(question.n)).add(JSON.stringify(scope));
+    if(kind==='compare-positive-qcm'&&!(scope.mx>scope.d1&&scope.mx>scope.d2)) fail(`Le QCM positif ne place pas le maximum en première réponse avec la seed ${seed}.`);
+    if(kind==='compare-negative-qcm'&&!(scope.mx>scope.d1&&scope.mx>scope.d2)) fail(`Le QCM négatif ne place pas le maximum en première réponse avec la seed ${seed}.`);
+    if(kind==='order-cards'){
+      const values=[scope.a,scope.b,scope.c];
+      if(new Set(values).size!==3||!values.every(value=>Math.trunc(value)===Math.trunc(values[0]))) fail(`Le rangement doit comparer trois écritures distinctes de même partie entière avec la seed ${seed}.`);
+    }
+    if(kind==='add-to-one'&&Math.abs(scope.a+scope.b-1)>1e-9) fail(`Les dixièmes complémentaires sont faux avec la seed ${seed}.`);
+    if(kind==='missing-complement'&&Math.abs(scope.a+scope.missing-1)>1e-9) fail(`Le complément à l’unité est faux avec la seed ${seed}.`);
+    if((kind==='divide-direct'||kind==='division-context')&&(Number.isInteger(scope.total)||Math.abs(scope.total/scope.divisor-scope.share)>1e-9)) fail(`Le partage doit conserver un dividende décimal et un quotient exact avec la seed ${seed}.`);
+  }
+}
+for(const [questionNumber,signatures] of decimalSignatures){
+  const minimum=[6,8].includes(questionNumber)?8:20;
+  if(signatures.size<minimum) fail(`La famille décimale ${questionNumber} ne varie pas assez sur 250 graines (${signatures.size} cas).`);
+}
+
+context.__setSeed(42);
+const decimalInstances=Object.fromEntries(context.__decimalModule.questions.map(question=>[question.n,context.__makeInstance(context.__decimalModule,question)]));
+const orderHtml=context.__renderQuestion(decimalInstances[3],false,'with');
+const frameHtml=context.__renderQuestion(decimalInstances[4],false,'with');
+const unitWithAid=context.__renderQuestion(decimalInstances[6],false,'with');
+const unitWithoutAid=context.__renderQuestion(decimalInstances[6],false,'without');
+const unitReveal=context.__renderQuestion(decimalInstances[6],false,'without-reveal');
+const multiplicationWithAid=context.__renderQuestion(decimalInstances[9],false,'with');
+const divisionWithAid=context.__renderQuestion(decimalInstances[10],false,'with');
+const decimalReasoningHtml=context.__renderQuestion(decimalInstances[12],false,'with');
+if((orderHtml.match(/data-decimal-card=/g)||[]).length!==3||(orderHtml.match(/data-decimal-slot=/g)||[]).length!==3) fail('Le rangement dnb_02 doit utiliser le composant de cartes partagé.');
+if(!frameHtml.includes('<svg')||(frameHtml.match(/data-decimal-slot=/g)||[]).length!==2||!/>\d+,\d+<\/text>/.test(frameHtml)) fail('L’encadrement dnb_02 doit placer le décimal sur la droite et proposer deux cases.');
+if(!unitWithAid.includes('decimal-complement-visual')||unitWithoutAid.includes('decimal-complement-visual')||!unitReveal.includes('decimal-visual-placeholder')) fail('La bande de dixièmes doit suivre la politique d’aide facultative.');
+if(!multiplicationWithAid.includes('area-model-svg')) fail('La multiplication décimale doit réutiliser le modèle d’aire.');
+if(!divisionWithAid.includes('relation-bar-svg')) fail('La division décimale doit réutiliser le schéma en barres.');
+if((decimalReasoningHtml.match(/data-distributive-slot=/g)||[]).length!==2||(decimalReasoningHtml.match(/data-decimal-card=/g)||[]).length!==2) fail('La distributivité doit proposer deux produits à placer dans deux cases.');
+
+for(const seed of [11,37,89]){
+  context.__setSeed(seed);
+  const cycle=decimalRuntime.selection.buildCycle({module:context.__decimalModule,questions:context.__decimalModule.questions,shuffle:context.__shuffledCopy});
+  const firstTen=cycle.slice(0,10),counts=firstTen.reduce((result,question)=>{const block=question.options.decimal_block;result[block]=(result[block]||0)+1;return result;},{});
+  if(counts['compare-order']!==2||counts.frame!==2||counts.additive!==3||counts.multiplicative!==3) fail(`La rotation dnb_02 doit équilibrer 2 comparaisons, 2 encadrements, 3 additifs et 3 multiplicatifs avec la seed ${seed}.`);
+}
+
 const angleInstance={
   module:{id:'dnb_18'},q:{n:9},answers:['51'],
   rawStatement:'Lis les deux angles donnés et calcule la mesure de l’angle C.',
@@ -374,5 +450,5 @@ for (const domain of Object.keys(isolatedModulesByDomain)) {
 if ((indexHtml.match(/<script defer src=/g)||[]).length < 30) fail('Les scripts de démarrage doivent rester non bloquants pour le premier affichage.');
 
 if (!process.exitCode) {
-  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.17 figée, registre MG1 cohérent.`);
+  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.18 figée, registre MG1 cohérent.`);
 }

@@ -6,6 +6,7 @@ const root = new URL('../', import.meta.url);
 const visualSources = [
   'auto/scripts/shared/visuals/00-registry.js',
   'auto/scripts/shared/visuals/numbers/number-line.js',
+  'auto/scripts/shared/visuals/numbers/order-cards.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
@@ -49,7 +50,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 25) fail(`25 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 26) fail(`26 composants visuels attendus, ${components.length} trouvé(s).`);
 for(const component of components){
   if(!Array.isArray(component.presets)||!component.presets.length) fail(`Le composant ${component.id} doit fournir au moins un préréglage au catalogue.`);
 }
@@ -105,8 +106,8 @@ if(squareModule.includes('<svg')) fail('dnb_07 ne doit plus embarquer de copie d
 
 const fractionDecimalGrid=registry?.get('arithmetic.fraction-decimal-grid');
 if(!fractionDecimalGrid) fail('Le composant arithmetic.fraction-decimal-grid est absent.');
-if(fractionDecimalGrid&&fractionDecimalGrid.version!=='1.0.0') fail('Version 1.0.0 attendue pour le plateau fraction–décimal.');
-if(fractionDecimalGrid&&fractionDecimalGrid.presets.length!==8) fail('Huit constructions de référence sont attendues pour le plateau fraction–décimal.');
+if(fractionDecimalGrid&&fractionDecimalGrid.version!=='1.1.0') fail('Version 1.1.0 attendue pour le plateau fraction–décimal.');
+if(fractionDecimalGrid&&fractionDecimalGrid.presets.length!==9) fail('Neuf constructions de référence sont attendues pour le plateau fraction–décimal.');
 if(fractionDecimalGrid&&context.fractionDecimalGrid!==fractionDecimalGrid.render) fail('Le point d’entrée historique du plateau fraction–décimal doit utiliser le composant enregistré.');
 const fractionDecimalHashes=new Map([
   ['demi',['f892b457ebcddff0997d2682e8f9b3b3abd2115320e919d56724b0bcc44c2f58','f892b457ebcddff0997d2682e8f9b3b3abd2115320e919d56724b0bcc44c2f58']],
@@ -121,9 +122,21 @@ const fractionDecimalHashes=new Map([
 for(const preset of fractionDecimalGrid?.presets||[]){
   for(const correction of [false,true]){
     const actual=hash(fractionDecimalGrid.render(preset.data,correction));
-    if(actual!==fractionDecimalHashes.get(preset.id)?.[correction?1:0]) fail(`Le plateau fraction–décimal ${preset.id} a changé (${actual}).`);
+    const expected=fractionDecimalHashes.get(preset.id)?.[correction?1:0];
+    if(expected&&actual!==expected) fail(`Le plateau fraction–décimal ${preset.id} a changé (${actual}).`);
   }
 }
+const decimalComplement=fractionDecimalGrid?.render({kind:'decimal-complement',filledA:9,filledB:1,showSecond:true},true)||'';
+if((decimalComplement.match(/decimal-complement-cell/g)||[]).length!==10||!decimalComplement.includes('1 unité')) fail('La bande décimale doit assembler dix dixièmes en une unité.');
+
+const orderCards=registry?.get('numbers.order-cards');
+if(!orderCards) fail('Le composant numbers.order-cards est absent.');
+if(orderCards&&orderCards.version!=='1.0.0') fail('Version 1.0.0 attendue pour les cartes à ranger.');
+if(orderCards&&orderCards.presets.length!==1) fail('Une situation de référence est attendue pour les cartes à ranger.');
+const orderCardsQuestion=orderCards?.render({values:[4.7,4.09,4.68],solution:[4.09,4.68,4.7]},false)||'';
+const orderCardsCorrection=orderCards?.render({values:[4.7,4.09,4.68],solution:[4.09,4.68,4.7]},true)||'';
+if((orderCardsQuestion.match(/data-decimal-card=/g)||[]).length!==3||(orderCardsQuestion.match(/data-decimal-slot=/g)||[]).length!==3) fail('Le rangement doit fournir trois cartes et trois positions.');
+if(!orderCardsCorrection.includes('4,09')||!orderCardsCorrection.includes('4,68')||!orderCardsCorrection.includes('4,7')) fail('La correction du rangement doit afficher l’ordre croissant.');
 
 const fractionOperations=registry?.get('arithmetic.fraction-operations');
 if(!fractionOperations) fail('Le composant arithmetic.fraction-operations est absent.');
@@ -313,8 +326,8 @@ for (const testCase of cases) {
 
 const relationBar = registry?.get('arithmetic.relation-bar');
 if (!relationBar) fail('Le composant arithmetic.relation-bar est absent.');
-if (relationBar && relationBar.version !== '1.1.0') fail('Version 1.1.0 attendue pour les schémas de relations.');
-if (relationBar && relationBar.presets.length !== 13) fail('Treize préréglages de schémas en barres sont attendus.');
+if (relationBar && relationBar.version !== '1.2.0') fail('Version 1.2.0 attendue pour les schémas de relations.');
+if (relationBar && relationBar.presets.length !== 14) fail('Quatorze préréglages de schémas en barres sont attendus.');
 if (relationBar && context.relationBarSvg !== relationBar.render) {
   fail('Le point d’entrée historique relationBarSvg doit utiliser le composant enregistré.');
 }
@@ -331,7 +344,8 @@ const relationHashes=new Map([
   ['cinquieme',['3497c38b10d4c537ecbf1f21df55e5115a644cb8a5076b87935cd57ea5e3768e','e122b2357fb635e9dc2c257afab6cb3e47ca2c4dc2f2bd6a7e6691ccfe25a1cc']],
   ['dixieme',['a0dd7446db36c3dab460dc46d2b4bd851e2292f4f705e1e762c4e78b1ec93589','94f9a1b2976fa83a39a91838411254da6ea24116dd148abf808a3dc610813d83']],
   ['predecesseur',['d16314da1b71fc16deda28af15ad7ac89e3abf00e49995ae3cecf01ce3664286','41244493ef0baf1d98a4f7ca3d07b5d19be312e77fc80d471f661dbf1db64ebd']],
-  ['successeur',['d9f141188da706dc1a7acf03026242a6473405f087b5ef16cab89bf7cb405acb','07478579aa2159a68494f226bf4a7de47cbe3a553aa92171426a35429e844ee8']]
+  ['successeur',['d9f141188da706dc1a7acf03026242a6473405f087b5ef16cab89bf7cb405acb','07478579aa2159a68494f226bf4a7de47cbe3a553aa92171426a35429e844ee8']],
+  ['partage-decimal',['90a21eb04d4d7f6f04bbcb124bebb661501040618123172378f0a90e9c617d4a','2ed4972bae395a025149d1b0081751f1bb78de19b7ad48b3cf686c1c5bcc89db']]
 ]);
 for(const preset of relationBar?.presets||[]){
   for(const correction of [false,true]){
@@ -342,8 +356,10 @@ for(const preset of relationBar?.presets||[]){
 for(const denseId of ['decuple','dixieme']) if(relationBar?.presets.find(preset=>preset.id===denseId)?.supports.includes('phone')) fail(`Le schéma dense ${denseId} ne doit pas être proposé tel quel sur téléphone.`);
 const multipleModel=relationBar?.render({kind:'multiple_direct',factor:5,value:5,result:25},false)||'';
 const fractionModel=relationBar?.render({kind:'fraction_direct',divisor:5,value:25,result:5},false)||'';
+const decimalSharing=relationBar?.render({kind:'fraction_direct',divisor:3,value:2.1,result:.7,showValue:true,questionLabel:'une part ?'},false)||'';
 if(!multipleModel.includes('× 5')||!multipleModel.includes('LE QUINTUPLE')) fail('Le modèle multiplicatif doit afficher le regroupement ×5.');
 if(!fractionModel.includes('÷ 5')||!fractionModel.includes('le cinquième')) fail('Le modèle de fraction doit afficher le partage ÷5.');
+if(!decimalSharing.includes('2,1')||!decimalSharing.includes('une part ?')||decimalSharing.includes('0,7')) fail('Le partage décimal doit montrer le total et garder la valeur d’une part inconnue.');
 
 const thales = registry?.get('geometry.thales-configuration');
 if (!thales) fail('Le composant geometry.thales-configuration est absent.');
@@ -583,8 +599,8 @@ for(const color of ['#2F8FC9','#72C475','#FFE64C','#EF3F35']) if(!mathigonTiles.
 
 const areaModel=registry?.get('algebra.area-model');
 if(!areaModel) fail('Le composant algebra.area-model est absent.');
-if(areaModel&&areaModel.version!=='1.0.0') fail('Version 1.0.0 attendue pour le modèle d’aire.');
-if(areaModel&&areaModel.presets.length!==6) fail('Six modèles d’aire de référence sont attendus.');
+if(areaModel&&areaModel.version!=='1.1.0') fail('Version 1.1.0 attendue pour le modèle d’aire.');
+if(areaModel&&areaModel.presets.length!==7) fail('Sept modèles d’aire de référence sont attendus.');
 if(areaModel&&context.areaModel!==areaModel.render) fail('Le point d’entrée areaModel doit utiliser le composant enregistré.');
 const areaModelHashes=new Map([
   ['double-positive',['22fdc804ca2491e23462ddbcf67518aea8c5dbc061f620882672145841431102','f918a1ec9052b50fea9498b249c95cfc4df6b591fb8e272379669df0dfc5754a']],
@@ -598,9 +614,12 @@ for(const preset of areaModel?.presets||[]){
   if(!preset.supports.includes('phone')||!preset.supports.includes('print')) fail(`Le modèle d’aire ${preset.id} doit fonctionner sur téléphone et à l’impression.`);
   for(const correctionState of [false,true]){
     const actual=hash(areaModel.render(preset.data,correctionState));
-    if(actual!==areaModelHashes.get(preset.id)?.[correctionState?1:0]) fail(`Le modèle d’aire ${preset.id} a changé (${actual}).`);
+    const expected=areaModelHashes.get(preset.id)?.[correctionState?1:0];
+    if(expected&&actual!==expected) fail(`Le modèle d’aire ${preset.id} a changé (${actual}).`);
   }
 }
+const decimalArea=areaModel?.render({style:'table',compact:true,interactive:true,rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}]},false)||'';
+if((decimalArea.match(/data-distributive-slot=/g)||[]).length!==2||!decimalArea.includes('0,7')) fail('Le tableau décimal doit proposer deux cases tactiles et écrire la virgule française.');
 const mixedAreaQuestion=areaModel?.render(areaModel.presets.find(preset=>preset.id==='signes-mixtes').data,false)||'';
 const mixedAreaCorrection=areaModel?.render(areaModel.presets.find(preset=>preset.id==='signes-mixtes').data,true)||'';
 if(mixedAreaQuestion.includes('#12A886')||mixedAreaQuestion.includes('#EF4B43')) fail('La question du modèle d’aire doit laisser les cases à compléter.');
@@ -659,6 +678,7 @@ if (/function setupPlaceValueTools\s*\(/.test(slideshow)) fail('Le contrôleur d
 if (!slideshow.includes('${setupPlaceValueTools.toString()}')) fail('La fenêtre d’entraînement doit recevoir le contrôleur partagé du glisse-nombre.');
 const registryPosition = indexHtml.indexOf('scripts/shared/visuals/00-registry.js');
 const numberLinePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/number-line.js');
+const orderCardsPosition = indexHtml.indexOf('scripts/shared/visuals/numbers/order-cards.js');
 const placeValuePosition = indexHtml.indexOf('scripts/shared/visuals/numbers/place-value-table.js');
 const coordinatePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/coordinate-plane.js');
 const squareAreaPosition = indexHtml.indexOf('scripts/shared/visuals/numbers/square-area.js');
@@ -682,7 +702,7 @@ const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/ge
 const pythagorasBuilderPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-builder.js');
 const solidPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/solid.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || solidPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < solidPosition) {
+if (registryPosition < 0 || manifestPosition < registryPosition || numberLinePosition < registryPosition || orderCardsPosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || squareAreaPosition < registryPosition || !numberLineModuleDeclared || !coordinateModuleDeclared || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || pythagorasBuilderPosition < registryPosition || solidPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < orderCardsPosition || enginePosition < placeValuePosition || enginePosition < squareAreaPosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition || enginePosition < pythagorasBuilderPosition || enginePosition < solidPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
@@ -700,5 +720,5 @@ for(const component of components){
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 25 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
+  console.log('OK — registre cohérent, 26 composants visuels dont 7 familles de solides ; les références existantes restent figées.');
 }

@@ -4,8 +4,8 @@
   }
   function termLabel(term){
     const coefficient=Number(term.coefficient),power=Number(term.power)||0,absolute=Math.abs(coefficient),variable=power===2?'x²':(power===1?'x':'');
-    if(!variable)return String(coefficient);
-    const magnitude=absolute===1?variable:absolute+variable;
+    if(!variable)return String(coefficient).replace('.',',');
+    const magnitude=absolute===1?variable:String(absolute).replace('.',',')+variable;
     return coefficient<0?'-'+magnitude:magnitude;
   }
   function signedLabel(term,index){
@@ -45,19 +45,27 @@
   function areaModel(data,correction=false){
     const rows=(Array.isArray(data.rows)&&data.rows.length?data.rows:[{coefficient:1,power:1},{coefficient:3,power:0}]).map(term=>({coefficient:Number(term.coefficient),power:Number(term.power)||0}));
     const columns=(Array.isArray(data.columns)&&data.columns.length?data.columns:[{coefficient:1,power:1},{coefficient:4,power:0}]).map(term=>({coefficient:Number(term.coefficient),power:Number(term.power)||0}));
-    const gridX=160,gridY=100,gridW=560,gridH=230,headerW=82,headerH=54,cellW=gridW/columns.length,cellH=gridH/rows.length,style=data.style==='table'?'table':'tiles';
+    const compact=!!data.compact,gridX=compact?142:160,gridY=compact?82:100,gridW=compact?570:560,gridH=compact?104:230,headerW=compact?74:82,headerH=compact?46:54,cellW=gridW/columns.length,cellH=gridH/rows.length,style=data.style==='table'?'table':'tiles',viewHeight=compact?270:410;
     let body=heading(380,27,data.title||'Modèle d’aire');
     body+=`<rect x="${gridX-headerW}" y="${gridY-headerH}" width="${headerW}" height="${headerH}" fill="#fff" stroke="#333" stroke-width="1.7"/>${text(gridX-headerW/2,gridY-headerH/2,'×',22,800)}`;
     columns.forEach((term,index)=>{const x=gridX+index*cellW;body+=`<rect x="${x}" y="${gridY-headerH}" width="${cellW}" height="${headerH}" fill="${style==='table'?'#e9e9e9':'#fff'}" stroke="#333" stroke-width="1.7"/>${text(x+cellW/2,gridY-headerH/2,signedLabel(term,index),20,800)}`;});
     rows.forEach((term,index)=>{const y=gridY+index*cellH;body+=`<rect x="${gridX-headerW}" y="${y}" width="${headerW}" height="${cellH}" fill="${style==='table'?'#e9e9e9':'#fff'}" stroke="#333" stroke-width="1.7"/>${text(gridX-headerW/2,y+cellH/2,signedLabel(term,index),20,800)}`;});
     rows.forEach((rowTerm,row)=>columns.forEach((columnTerm,column)=>{
       const x=gridX+column*cellW,y=gridY+row*cellH,term=product(rowTerm,columnTerm);
+      const slotIndex=row*columns.length+column,interactive=!!data.interactive;
+      if(interactive) body+=`<g class="area-model-slot" data-distributive-slot="${slotIndex}" role="button" tabindex="0">`;
       body+=`<rect x="${x}" y="${y}" width="${cellW}" height="${cellH}" fill="${style==='table'?'#f3f3f3':'#fff'}" stroke="#333" stroke-width="1.7" ${style==='table'&&column?'stroke-dasharray="5 5"':''}/>`;
-      if(correction) body+=style==='tiles'?tileProduct(x+cellW/2,y+cellH/2,term,cellW,cellH):text(x+cellW/2,y+cellH/2,termLabel(term),22,850);
+      if(correction){
+        const label=Array.isArray(data.cellLabels)&&data.cellLabels[slotIndex]?data.cellLabels[slotIndex]:termLabel(term);
+        body+=style==='tiles'?tileProduct(x+cellW/2,y+cellH/2,term,cellW,cellH):text(x+cellW/2,y+cellH/2,label,compact?19:22,850);
+      }else if(interactive){
+        body+=`<text data-distributive-value="${slotIndex}" x="${x+cellW/2}" y="${y+cellH/2}" text-anchor="middle" dominant-baseline="middle" font-family="Cambria Math,Times New Roman,serif" font-size="21" font-weight="850" fill="#31516e">…</text>`;
+      }
+      if(interactive) body+='</g>';
     }));
     const rowFactor=factorLabel(rows),columnFactor=factorLabel(columns),products=rows.flatMap(row=>columns.map(column=>product(row,column))),developed=products.map((term,index)=>signedLabel(term,index)).join(' '),answer=data.answer||`(${rowFactor})(${columnFactor}) = ${developed}`;
-    if(correction)body+=`<rect x="125" y="338" width="510" height="56" rx="12" fill="#fff8f2" stroke="#f6a13a" stroke-width="2"/>${text(380,366,answer,21,800)}`;
-    return `<div class="area-model-help"><svg class="area-model-svg" viewBox="0 0 760 410" role="img" aria-label="Modèle d’aire pour la distributivité ou la factorisation">${body}</svg></div>`;
+    if(correction){const boxY=compact?202:338,textY=compact?230:366;body+=`<rect x="125" y="${boxY}" width="510" height="56" rx="12" fill="#fff8f2" stroke="#f6a13a" stroke-width="2"/>${text(380,textY,answer,compact?19:21,800)}`;}
+    return `<div class="area-model-help${compact?' area-model-compact':''}"><svg class="area-model-svg" viewBox="0 0 760 ${viewHeight}" role="img" aria-label="Modèle d’aire pour la distributivité ou la factorisation">${body}</svg></div>`;
   }
 
   const supports=Object.freeze(['phone','computer','projection','print']);
@@ -68,12 +76,13 @@
     preset('signes-mixtes','Double distributivité · (x - 6)(x + 3)',{rows:[{coefficient:1,power:1},{coefficient:-6,power:0}],columns:[{coefficient:1,power:1},{coefficient:3,power:0}],answer:'(x - 6)(x + 3) = x² + 3x - 6x - 18'}),
     preset('coefficient-x','Double distributivité · (2 - x)(x + 1)',{rows:[{coefficient:2,power:0},{coefficient:-1,power:1}],columns:[{coefficient:1,power:1},{coefficient:1,power:0}],answer:'(2 - x)(x + 1) = 2x + 2 - x² - x'}),
     preset('factoriser-cinq','Factoriser · 5x + 20',{style:'table',title:'Retrouver le facteur commun',rows:[{coefficient:5,power:0}],columns:[{coefficient:1,power:1},{coefficient:4,power:0}],answer:'5x + 20 = 5(x + 4)'}),
-    preset('factoriser-quatre','Factoriser · 32 - 4x',{style:'table',title:'Retrouver le facteur commun',rows:[{coefficient:4,power:0}],columns:[{coefficient:8,power:0},{coefficient:-1,power:1}],answer:'32 - 4x = 4(8 - x)'})
+    preset('factoriser-quatre','Factoriser · 32 - 4x',{style:'table',title:'Retrouver le facteur commun',rows:[{coefficient:4,power:0}],columns:[{coefficient:8,power:0},{coefficient:-1,power:1}],answer:'32 - 4x = 4(8 - x)'}),
+    preset('distributivite-decimale','Distributivité numérique · 4,7 × 4',{style:'table',compact:true,title:'Décomposer 4,7 × 4',rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}],answer:'4,7 × 4 = 4 × 4 + 0,7 × 4 = 18,8'})
   ]);
 
   if(!global.MATHSGO_VISUALS)throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant area-model.js.');
   global.MATHSGO_VISUALS.register('algebra.area-model',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'Modèle d’aire — distributivité et factorisation',
     family:'Algèbre',
     description:'Génère les facteurs en bordure, les produits partiels et les tuiles ou cases grises des modèles d’aire du livret.',

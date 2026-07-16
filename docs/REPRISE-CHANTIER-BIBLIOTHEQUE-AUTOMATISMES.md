@@ -86,10 +86,10 @@ Dernier `main` contrôlé et servi par GitHub Pages :
 - commit `fab71f3` — « Extraire le traceur commun des solides » ;
 - PR `https://github.com/bourgault314/mathsgo-automatismes-beta/pull/16` ;
 - paquet `1.31.0-beta.0` ;
-- banque V1.17 figée ;
+- banque V1.18 figée ;
 - 42 modules ;
-- 473 gabarits ;
-- 25 composants visuels ;
+- 475 gabarits ;
+- 26 composants visuels ;
 - 32 modules classés pédagogiquement sur 42 ;
 - Nombres et calculs : 17/17 ;
 - Espace et géométrie : 15/15 ;
@@ -107,8 +107,8 @@ node tests/validate-pedagogy.mjs
 Résultat de référence :
 
 ```text
-OK — 42 modules, 473 gabarits, banque V1.17 figée, registre MG1 cohérent.
-OK — registre cohérent, 25 composants visuels dont 7 familles de solides.
+OK — 42 modules, 475 gabarits, banque V1.18 figée, registre MG1 cohérent.
+OK — registre cohérent, 26 composants visuels dont 7 familles de solides.
 OK — 32 modules classés : Nombres et calculs 17/17,
      Espace et géométrie 15/15.
 ```
@@ -145,14 +145,19 @@ de la figure, rubriques d’aide, composant, familles de nombres, paramètres
 aléatoires, erreurs classiques et étapes de correction. Le but est de séparer
 contenu mathématique, tirage, dessin, aide, correction et interface.
 
-## Les 25 composants déjà présents
+## Les 26 composants déjà présents
 
 ### Nombres
 
 - `numbers.number-line` : droite, bornes, pas, sous-pas et points ;
+- `numbers.order-cards` : cartes de nombres et emplacements ordonnés ;
 - `numbers.glisse-nombre` : bande animée et virgule fixe ;
 - `numbers.square-area` : carré, côté, aire et calculs voisins ;
 - `numbers.relative-tokens` : jetons relatifs maths&go.
+
+### Données
+
+- `data.cartesian-graph` : courbes, points et diagrammes paramétrables ;
 
 ### Arithmétique et fractions
 
@@ -378,7 +383,7 @@ Le second lot était déjà publié depuis une autre fenêtre. La comparaison av
 
 Choisir un module stable et non travaillé dans une autre fenêtre. Séparer sa
 banque, sa génération, sa sélection, son rendu, son aide et sa correction sans
-changer la banque V1.17 ni les tirages reproductibles. Publier le contrat avant
+changer la banque V1.18 ni les tirages reproductibles. Publier le contrat avant
 de le généraliser.
 
 ### 2. Données et Algorithmique
@@ -419,7 +424,7 @@ seulement quand la bêta forme un ensemble suffisamment cohérent.
 - pas de refonte totale dans un seul commit ;
 - pas d’ancienne branche sans `fetch` ;
 - pas d’écrasement d’une version plus récente ;
-- pas de modification silencieuse des 473 gabarits pendant une extraction ;
+- pas de modification silencieuse des 475 gabarits pendant une extraction ;
 - pas de mise à jour d’empreintes uniquement pour faire passer un test ;
 - pas de compatibilité téléphone déclarée sans vérifier la densité ;
 - ne pas confondre fiche colorée et exercice noir ;

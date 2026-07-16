@@ -137,6 +137,8 @@ facteurs sont placés sur les bords et les produits partiels apparaissent en
 correction. Le style `tiles` sert à développer une double distributivité ; le
 style `table` reprend les cases grises utilisées pour retrouver un facteur
 commun. Les signes et coefficients sont des paramètres, pas des dessins figés.
+Sa variante `distributivite-decimale` propose deux produits partiels à placer
+et conserve la virgule française dans le cours, l'aide et la correction.
 
 Les registres de `dnb_10`, `dnb_11` et `dnb_12` classent tout le bloc Calcul
 littéral. La réduction distingue les familles `x²`, `x` et unité, les paires
@@ -160,6 +162,12 @@ au toucher. Le point suit seulement l’axe horizontal, s’aimante aux dix
 graduations et se soulève pendant le geste pour ne pas être masqué par le doigt.
 Chaque graduation possède aussi une cible tactile : toucher le point puis la
 graduation, ou utiliser les flèches, remplace le glissement.
+
+`numbers.order-cards` porte les rangements sans saisie : valeurs proposées,
+ordre cible et emplacements sont des données sémantiques. Sur téléphone et sur
+ordinateur, le geste principal est « toucher une carte, puis toucher une
+case » ; la correction présente les mêmes emplacements remplis. `dnb_02`
+l'utilise pour ranger trois décimaux sans ouvrir le clavier.
 
 `measures.conversion-table` conserve le tableau interactif de `dnb_19` :
 repère de l’unité de mesure, chiffre des unités, virgule fixe, couleurs par

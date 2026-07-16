@@ -37,7 +37,7 @@ doivent pas être présentés comme des citations d’Eduscol.
 ## Décisions appliquées dans la bêta
 
 1. Les 18 gabarits historiques restent inchangés et protégés par le hash de la
-   banque V1.17.
+   banque V1.18.
 2. Trois formats fonctionnels, numérotés 19 à 21 hors de cette banque figée,
    sont ajoutés avec une fréquence limitée : placer un point, déterminer le pas,
    choisir la droite correcte.
