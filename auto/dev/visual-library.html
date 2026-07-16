@@ -16,7 +16,7 @@
   .badge{white-space:nowrap;background:#071a2f;color:white;border-radius:999px;padding:8px 12px;font-weight:800;font-size:.78rem;letter-spacing:.04em}
   .catalogue-nav{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 30px}.catalogue-nav a{padding:9px 12px;border:1px solid #cbd7e4;border-radius:999px;background:#fff;color:#17384d;font-size:.82rem;font-weight:850;text-decoration:none}
   .catalogue-block{margin-top:34px}.section-heading{margin:0 0 14px}.section-heading h2{font-size:1.7rem}.section-heading p{margin-top:6px}
-  #pedagogyCatalogue,#catalogue{display:grid;gap:18px}
+  #pedagogyCatalogue,#manipulationCatalogue,#catalogue{display:grid;gap:18px}
   .component{background:white;border:1px solid #d9e0e8;border-radius:22px;padding:22px;box-shadow:0 10px 28px rgba(7,26,47,.07)}
   .component-head{display:flex;gap:16px;align-items:baseline;justify-content:space-between;margin-bottom:18px}
   h2{margin:0;font-size:1.35rem}
@@ -28,6 +28,7 @@
   .states{display:grid;gap:12px}
   .pedagogy-table{width:100%;border-collapse:collapse;font-size:.86rem}.pedagogy-table th,.pedagogy-table td{padding:11px 10px;border-top:1px solid #e1e6ec;text-align:left;vertical-align:top}.pedagogy-table thead th{border-top:0;background:#f4f7fa;color:#35526e;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}.pedagogy-table tbody th{width:62px;color:#0879d0;font-size:1rem}.type-id{display:block;margin-top:4px;color:#6d7d8e;font-size:.72rem}.help-tags{display:flex;flex-wrap:wrap;gap:4px}.help-tag{padding:4px 7px;border-radius:999px;background:#fff0df;color:#8b4a00;font-size:.68rem;font-weight:850}.visual-role{font-weight:850;color:#17384d}.visual-component{display:block;margin-top:4px}
   .generator-contract{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.contract-card{padding:13px 14px;border:1px solid #dce5ee;border-radius:14px;background:#f8fbfe}.contract-card h3{margin-bottom:8px;color:#17384d}.contract-card ul{margin:0;padding-left:18px;color:#42556c;font-size:.82rem;line-height:1.42}.contract-card li+li{margin-top:5px}.contract-card strong{color:#17384d}
+  .manipulation-status{display:inline-flex;margin-left:auto;padding:5px 8px;border-radius:999px;background:#e8f7ef;color:#087a55;font-size:.68rem;font-weight:900;text-transform:uppercase}.manipulation-status.planned{background:#fff0df;color:#9a4b00}.manipulation-description{margin:-7px 0 14px}.manipulation-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
   figure{margin:0;border-radius:12px;border:1px solid #e1e6ec;background:white;overflow:hidden}
   figcaption{padding:8px 11px;background:#f4f6f8;color:#53677d;font-size:.78rem;font-weight:700}
   .visual{padding:10px}
@@ -71,10 +72,14 @@
     </div>
     <span class="badge">CHANTIER · HORS PRODUCTION</span>
   </header>
-  <nav class="catalogue-nav" aria-label="Accès aux catalogues"><a href="#pedagogie">Types de questions et aides</a><a href="#visuels">Composants visuels</a></nav>
+  <nav class="catalogue-nav" aria-label="Accès aux catalogues"><a href="#pedagogie">Types de questions et aides</a><a href="#manipulations">Contrats de manipulation</a><a href="#visuels">Composants visuels</a></nav>
   <section class="catalogue-block" id="pedagogie">
     <div class="section-heading"><h2>Catalogue pédagogique</h2><p>Classement principal par notion mathématique, puis par tâche demandée à l’élève.</p></div>
     <div id="pedagogyCatalogue"></div>
+  </section>
+  <section class="catalogue-block" id="manipulations">
+    <div class="section-heading"><h2>Contrats de manipulation</h2><p>État sémantique, actions, remise à zéro, validation et correction indépendants de l’interface.</p></div>
+    <div id="manipulationCatalogue"></div>
   </section>
   <section class="catalogue-block" id="visuels">
     <div class="section-heading"><h2>Catalogue visuel</h2><p>Composants générés par le code, avec leurs préréglages et leurs supports compatibles.</p></div>
@@ -82,6 +87,8 @@
   </section>
 </main>
 <script src="../scripts/shared/visuals/00-registry.js"></script>
+<script src="../scripts/shared/manipulations/00-registry.js?v=20260716-1"></script>
+<script src="../scripts/shared/manipulations/contracts.js?v=20260716-1"></script>
 <script src="../scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
 <script src="../scripts/shared/pedagogy/numbers/dnb_01.js?v=20260716-1"></script>
 <script src="../scripts/shared/pedagogy/numbers/dnb_02.js?v=20260716-1"></script>
@@ -114,6 +121,17 @@
 <script src="../scripts/shared/pedagogy/geometry/dnb_26.js?v=20260716-1"></script>
 <script src="../scripts/shared/pedagogy/geometry/dnb_26b.js?v=20260716-1"></script>
 <script src="../scripts/shared/pedagogy/geometry/dnb_27.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_28.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_29.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_30.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_31.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_32.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_33.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_34.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_35.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/data/dnb_36.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/algorithm/dnb_37.js?v=20260716-1"></script>
+<script src="../scripts/shared/pedagogy/numbers/dnb_38.js?v=20260716-1"></script>
 <script src="../scripts/shared/visuals/numbers/number-line.js?v=20260715-2"></script>
 <script src="../scripts/shared/visuals/numbers/place-value-table.js?v=20260715-3"></script>
 <script src="../scripts/shared/visuals/numbers/square-area.js?v=20260716-1"></script>
@@ -171,6 +189,27 @@
     addContractCard('Règles visuelles',contract.visualRules,item=>item);
     if(contractGrid.childElementCount)section.append(contractGrid);
     pedagogyCatalogue.append(section);
+  });
+
+  const manipulationCatalogue=document.getElementById('manipulationCatalogue');
+  const manipulationStatusLabels={active:'Actif',prototype:'Prototype',planned:'Prévu'};
+  MATHSGO_MANIPULATIONS.list().forEach(contract=>{
+    const section=document.createElement('section');section.className='component manipulation-component';
+    const head=document.createElement('div');head.className='component-head';
+    const title=document.createElement('h2');title.textContent=contract.label;
+    const id=document.createElement('code');id.textContent=contract.id+' · v'+contract.version;
+    const status=document.createElement('span');status.className='manipulation-status '+contract.status;status.textContent=manipulationStatusLabels[contract.status]||contract.status;
+    head.append(title,id,status);
+    const description=document.createElement('p');description.className='manipulation-description';description.textContent=contract.description;
+    const meta=document.createElement('div');meta.className='manipulation-meta';
+    [...contract.supports,...contract.inputMethods].forEach(value=>{const badge=document.createElement('span');badge.className='support';badge.textContent=value;meta.append(badge);});
+    const grid=document.createElement('div');grid.className='generator-contract';
+    const addCard=(heading,items)=>{const card=document.createElement('section');card.className='contract-card';const h=document.createElement('h3');h.textContent=heading;const list=document.createElement('ul');items.forEach(text=>{const item=document.createElement('li');item.textContent=text;list.append(item);});card.append(h,list);grid.append(card);};
+    addCard('État',contract.state.map(item=>item.label+(item.serializable?' · sérialisé':'')));
+    addCard('Actions',contract.actions.map(item=>item.label));
+    addCard('Cycle',[`Réinitialisation · ${contract.reset.mode}`,`Validation · ${contract.validation.mode}`,`Correction · ${contract.correction.mode}`]);
+    addCard('Persistance',[contract.serialization.version+' · '+contract.serialization.fields.join(', ')]);
+    section.append(head,description,meta,grid);manipulationCatalogue.append(section);
   });
 
   const catalogue=document.getElementById('catalogue');

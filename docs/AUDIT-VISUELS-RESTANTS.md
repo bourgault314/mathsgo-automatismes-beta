@@ -106,7 +106,7 @@ mélanger déplacement technique et modification pédagogique.
 
 ## Après cet audit
 
-Le prochain lot technique recommandé est un traceur cartésien préparé mais non
-encore branché. Le prochain lot de structure est le contrat commun des
-manipulations, construit à partir des jetons relatifs, du plateau Pythagore, du
-glisse-nombre et du contrat Algorithmique.
+Le contrat commun des manipulations est maintenant construit à partir des
+jetons relatifs, du plateau Pythagore, du glisse-nombre et du contrat
+Algorithmique. Le prochain lot technique recommandé est un traceur cartésien
+préparé mais non encore branché.

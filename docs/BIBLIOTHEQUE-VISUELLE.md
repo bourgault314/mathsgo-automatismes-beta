@@ -23,6 +23,11 @@ Le registre commun se trouve dans
 `auto/scripts/shared/visuals/00-registry.js`. Les composants sont classés par
 famille dans `auto/scripts/shared/visuals/`.
 
+Les outils qui changent d’état possèdent en plus un contrat dans
+[`CONTRAT-MANIPULATION.md`](CONTRAT-MANIPULATION.md). Le rendu et l’interaction
+restent séparés : une nouvelle interface peut réutiliser le même état, les
+mêmes actions et la même correction.
+
 ## Premier composant
 
 `algebra.equation-splat` représente les deux membres d’une équation avec des

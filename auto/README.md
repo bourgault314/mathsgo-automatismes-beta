@@ -76,6 +76,8 @@ visuelle ne remplace jamais une source plus riche par un dessin générique.
 - [`../docs/PLAN-DECOUPAGE.md`](../docs/PLAN-DECOUPAGE.md) : ordre technique ;
 - [`../docs/CONTRAT-MODULE.md`](../docs/CONTRAT-MODULE.md) : invariants d'un
   module ;
+- [`../docs/CONTRAT-MANIPULATION.md`](../docs/CONTRAT-MANIPULATION.md) : état,
+  gestes, validation et correction des outils manipulables ;
 - [`../docs/BIBLIOTHEQUE-VISUELLE.md`](../docs/BIBLIOTHEQUE-VISUELLE.md) :
   contrat des composants ;
 - [`../docs/AUDIT-VISUELS-RESTANTS.md`](../docs/AUDIT-VISUELS-RESTANTS.md) :
@@ -92,4 +94,4 @@ npm test
 ```
 
 La validation contrôle la banque, les identifiants, les gabarits, le registre
-MG1, les composants et les contrats pédagogiques déjà classés.
+MG1, les composants et les contrats pédagogiques et manipulables.
