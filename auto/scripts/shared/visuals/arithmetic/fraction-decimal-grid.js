@@ -116,7 +116,24 @@
     }
     return `<div class="module01-visual"><svg viewBox="0 0 ${width} ${height}" style="max-width:${width}px" role="img" aria-label="${boards===1?'Une unité partagée en '+per+' parts égales':boards+' unités, chacune partagée en '+per+' parts égales'}">${shapes}</svg></div>`;
   }
+  function decimalComplementVisual(data,correction=false){
+    const first=Math.max(0,Math.min(10,Math.round(Number(data.filledA)||0)));
+    const second=Math.max(0,Math.min(10-first,Math.round(Number(data.filledB)||0)));
+    const showSecond=!!data.showSecond||correction;
+    const cellW=56,x0=22,y=24,height=58;
+    let cells='';
+    for(let index=0;index<10;index++){
+      const firstPart=index<first,secondPart=showSecond&&index>=first&&index<first+second;
+      const fill=firstPart?'#39b8aa':(secondPart?'#f4a340':'#f8fafc');
+      const cellClass=firstPart?' decimal-complement-first':(secondPart?' decimal-complement-second':' decimal-complement-empty');
+      cells+=`<rect class="decimal-complement-cell${cellClass}" x="${x0+index*cellW}" y="${y}" width="${cellW}" height="${height}" fill="${fill}" stroke="#18324f" stroke-width="1.7"/>`;
+    }
+    const outline=correction?`<rect x="${x0-4}" y="${y-4}" width="${10*cellW+8}" height="${height+8}" rx="8" fill="none" stroke="#0b7c67" stroke-width="4"/><text x="${x0+5*cellW}" y="106" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="900" fill="#0b6f5d">1 unité</text>`:'';
+    const label=showSecond?'Les deux couleurs complètent la bande.':'La partie blanche est à compléter.';
+    return `<div class="decimal-complement-visual"><svg viewBox="0 0 604 118" role="img" aria-label="${label}">${cells}${outline}</svg></div>`;
+  }
   function render(data,correction=false){
+    if(data&&data.kind==='decimal-complement') return decimalComplementVisual(data,correction);
     const common=gcd(data.num,data.den),simplified=correction&&common>1&&data.reduced&&data.reduced.den<data.den;
     return gridVisual(data.num,data.den,data.visualKind==='neutral',simplified?data.reduced.den:null,data.reduced?data.reduced.den:null);
   }
@@ -131,12 +148,13 @@
     preset('dix-neuf-vingtiemes','Dix-neuf vingtièmes',{num:19,den:20,reduced:{num:19,den:20}}),
     preset('sept-cinquiemes','Sept cinquièmes et unités complètes',{num:7,den:5,reduced:{num:7,den:5}}),
     preset('ecriture-decimale','Écriture décimale sur cent cases',{num:3,den:4,visualKind:'neutral',reduced:{num:3,den:4}}),
-    preset('simplification','Simplifier six huitièmes en trois quarts',{num:6,den:8,reduced:{num:3,den:4}})
+    preset('simplification','Simplifier six huitièmes en trois quarts',{num:6,den:8,reduced:{num:3,den:4}}),
+    preset('complement-dixièmes','Compléter une unité en dixièmes',{kind:'decimal-complement',filledA:7,filledB:3,showSecond:true})
   ]);
 
   if(!global.MATHSGO_VISUALS)throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant fraction-decimal-grid.js.');
   global.MATHSGO_VISUALS.register('arithmetic.fraction-decimal-grid',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'Plateau fraction–décimal',
     family:'Arithmétique',
     description:'Construit les unités partagées, grilles de cent cases, unités complètes et regroupements utilisés pour passer d’une fraction à un décimal.',

@@ -51,6 +51,28 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .frac{display:inline-flex;flex-direction:column;vertical-align:middle;align-items:center;line-height:1;margin:0 .08em}.frac .frac-num{border-bottom:2px solid currentColor;padding:0 .16em .06em}.frac .frac-den{padding:.06em .16em 0}
 .math-inline,.math-display{display:inline-block;white-space:nowrap}.aligned-math{display:inline-block;text-align:left;line-height:1.35}.quad{display:inline-block;width:1.2em}.qquad{display:inline-block;width:2.4em}.widehat{display:inline-block;position:relative;padding-top:.24em;text-decoration:none;line-height:1}.widehat::before,.widehat::after{content:"";position:absolute;top:.08em;width:52%;border-top:1.8px solid currentColor;pointer-events:none}.widehat::before{left:-1%;transform:rotate(-11deg);transform-origin:100% 50%}.widehat::after{right:-1%;transform:rotate(11deg);transform-origin:0 50%}.mathcal{font-family:Georgia,serif;font-style:italic}.answer-slot{display:inline-flex;align-items:baseline;justify-content:center;width:var(--answer-width,1.05em);margin:0 .08em;white-space:nowrap;vertical-align:baseline}.frac .answer-slot-small{margin:0 .02em}.answer-dots{display:inline-block;letter-spacing:.06em}sup .answer-slot{align-items:center;line-height:1;margin-left:.02em;margin-right:.02em}sup .answer-slot-filled{width:auto!important;min-width:0;margin-left:-.04em;margin-right:0}sup .answer-dots{line-height:1;letter-spacing:0;transform:translateY(-.16em)}
 .visual-note{font-size:1.4rem;color:var(--muted);border:1px dashed var(--border);border-radius:12px;padding:12px;margin:12px auto;max-width:620px}
+.diapo.decimal-mode .stage{align-items:center;padding:8px 18px 12px}
+.diapo.decimal-mode .slide{max-width:980px}
+.diapo.decimal-mode .question{font-size:clamp(1.55rem,3vw,3rem);line-height:1.14;margin:0 auto 10px}
+.decimal-manipulation{width:min(100%,780px);margin:3px auto 0;padding:12px 14px;border:1px solid #cfddee;border-radius:18px;background:linear-gradient(180deg,#fff,#f6faff);user-select:none}
+.decimal-card-tray{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:2px auto 10px}
+.decimal-card,.decimal-drop-slot{display:inline-grid;place-items:center;min-width:92px;min-height:52px;padding:8px 13px;border-radius:13px;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.35rem,2.7vw,2rem);font-weight:850;line-height:1;background:#fff;touch-action:manipulation}
+.decimal-card{border:2px solid #0b79d0;color:#084f87;box-shadow:0 2px 0 rgba(8,79,135,.13);cursor:pointer}
+.decimal-card.is-selected{outline:3px solid #ff7a1a;outline-offset:2px;background:#fff5ec;border-color:#e86100;color:#9a4100}
+.decimal-card.is-used{visibility:hidden;pointer-events:none}
+.decimal-drop-slot{border:2px dashed #86a8cf;color:#31516e;cursor:pointer}
+.decimal-drop-slot.is-filled{border-style:solid;border-color:#e86100;background:#fff7ef;color:#9a4100}
+.decimal-drop-slot:focus-visible,.decimal-card:focus-visible,.area-model-slot:focus-visible{outline:3px solid #ff7a1a;outline-offset:3px}
+.decimal-order-direction{display:flex;align-items:center;justify-content:space-between;width:min(100%,430px);margin:0 auto 5px;color:#60708c;font-size:.78rem;font-weight:900;letter-spacing:.035em;text-transform:uppercase}
+.decimal-order-slots,.decimal-frame-slots{display:flex;align-items:center;justify-content:center;gap:12px}
+.decimal-frame-line{width:min(100%,630px);margin:0 auto}.decimal-frame-line>svg{display:block;width:100%;height:auto;max-height:170px}
+.decimal-frame-slots{justify-content:space-between;width:calc(100% - 86px);margin:-31px auto 8px;position:relative;z-index:3;pointer-events:none}.decimal-frame-slots .decimal-drop-slot{pointer-events:auto}
+.decimal-frame-cards{margin-bottom:0}
+.decimal-complement-visual{display:flex;align-items:center;justify-content:center;width:min(100%,620px);height:clamp(92px,16vh,132px);margin:5px auto 0}.decimal-complement-visual svg{display:block;width:100%;height:auto;max-height:100%}
+.area-model-help{display:flex;align-items:center;justify-content:center;width:min(100%,760px);margin:2px auto}.area-model-svg{display:block;width:100%;height:auto;max-height:310px}
+.area-model-compact .area-model-svg{max-height:245px}.area-model-slot{cursor:pointer;touch-action:manipulation}.area-model-slot rect{transition:fill .15s ease}.area-model-slot.is-filled rect{fill:#fff3e3!important;stroke:#e86100}.area-model-slot.is-selected rect{stroke:#ff7a1a;stroke-width:4}
+.decimal-distributivity-board{padding-top:8px}.decimal-distributivity-board .decimal-card-tray{margin:2px auto 0}
+.decimal-manipulation.is-correction .decimal-card-tray{display:none}
 .diapo.divisibility-sharing-mode .stage{align-items:center;padding:8px 20px 12px}
 .diapo.divisibility-sharing-mode .slide{max-width:1050px}
 .diapo.divisibility-sharing-mode .question{font-size:clamp(1.45rem,2.5vw,2.7rem);line-height:1.12;margin:0 auto 3px}
@@ -533,6 +555,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 @media(min-width:801px){.diapo.place-value-reasoning-mode .stage{padding:8px 24px 10px}.diapo.place-value-reasoning-mode .place-value-prompt{font-size:clamp(1.8rem,2.45vw,2.6rem);line-height:1.1;margin-bottom:2px}.diapo.place-value-reasoning-mode .place-value-equation{font-size:clamp(3.2rem,4.8vw,4.6rem);margin:1px auto 7px}.diapo.place-value-reasoning-mode .place-value-tool{width:min(94%,1380px);margin-top:2px}.diapo.place-value-reasoning-mode .place-value-head{height:40px;font-size:1rem}.diapo.place-value-reasoning-mode .place-value-preview-row,.diapo.place-value-reasoning-mode .place-value-fixed-row{height:64px}.diapo.place-value-reasoning-mode .place-value-drag-bar{top:8px;height:48px}.diapo.place-value-reasoning-mode .place-value-strip-digit,.diapo.place-value-reasoning-mode .place-value-fixed-digit{font-size:3.65rem}.diapo.place-value-reasoning-mode .place-value-comma{bottom:1px;font-size:2.6rem}.diapo.place-value-reasoning-mode .place-value-tool-note{height:42px;min-height:42px;margin-top:3px;font-size:1.08rem}.diapo.place-value-reasoning-mode .place-value-options.is-reasoning{max-width:1200px;gap:8px;margin-top:6px}.diapo.place-value-reasoning-mode .place-value-options.is-reasoning .opt{min-height:0;padding:10px 14px;font-size:clamp(1rem,1.3vw,1.3rem);line-height:1.14}}
 @media(min-width:801px) and (min-height:761px){.diapo.place-value-reasoning-mode .stage{padding-top:42px}.diapo.place-value-reasoning-mode .stage>.slide{margin-top:0;margin-bottom:0}}
 @media(min-width:801px) and (max-height:760px){.diapo.place-value-reasoning-mode .stage{padding:4px 20px 6px}.diapo.place-value-reasoning-mode .place-value-prompt{font-size:clamp(1.45rem,2.1vw,2rem);line-height:1.08;margin-bottom:1px}.diapo.place-value-reasoning-mode .place-value-equation{font-size:clamp(2.7rem,4.2vw,3.4rem);margin:0 auto 5px}.diapo.place-value-reasoning-mode .place-value-tool{margin-top:0}.diapo.place-value-reasoning-mode .place-value-head{height:30px;font-size:.82rem}.diapo.place-value-reasoning-mode .place-value-preview-row,.diapo.place-value-reasoning-mode .place-value-fixed-row{height:45px}.diapo.place-value-reasoning-mode .place-value-drag-bar{top:6px;height:33px}.diapo.place-value-reasoning-mode .place-value-strip-digit,.diapo.place-value-reasoning-mode .place-value-fixed-digit{font-size:2.45rem}.diapo.place-value-reasoning-mode .place-value-comma{bottom:1px;font-size:1.9rem}.diapo.place-value-reasoning-mode .place-value-tool-note{height:29px;min-height:29px;margin-top:2px;font-size:.9rem}.diapo.place-value-reasoning-mode .place-value-options.is-reasoning{max-width:1020px;gap:5px;margin-top:3px}.diapo.place-value-reasoning-mode .place-value-options.is-reasoning .opt{min-height:0;padding:6px 12px;font-size:clamp(.9rem,1.22vw,1.05rem);line-height:1.12}}
+.decimal-course-visual{width:min(100%,520px);max-height:none}.decimal-course-visual .decimal-manipulation{padding:7px 9px;border-radius:12px}.decimal-course-visual .decimal-drop-slot{min-width:72px;min-height:40px;font-size:1.18rem}.decimal-course-visual .decimal-complement-visual{height:94px}.decimal-course-visual .area-model-svg{max-height:180px}.decimal-course-visual .relation-bar-svg{max-height:175px}
 .thales-course-template{display:grid;grid-template-columns:minmax(230px,.85fr) minmax(300px,1.15fr);align-items:center;gap:14px 20px;width:100%}.thales-course-figure{opacity:0;animation:thalesCourseReveal .32s ease-out .05s forwards}.thales-course-figure svg{display:block;width:100%;height:auto;max-height:250px}.thales-course-method{display:flex;flex-direction:column;gap:8px}.thales-course-caption{color:#35526e;font-size:.86rem;font-weight:850;text-align:center}.thales-course-table{display:grid;grid-template-columns:1.25fr repeat(3,1fr);overflow:hidden;border:2px solid #17384d;border-radius:12px;background:#fff}.thales-course-cell{display:flex;align-items:center;justify-content:center;min-height:42px;padding:6px 7px;border-right:1px solid #9fb3c8;border-bottom:1px solid #9fb3c8;font-weight:900}.thales-course-cell:nth-child(4n){border-right:0}.thales-course-cell:nth-last-child(-n+4){border-bottom:0}.thales-course-head{background:#eef3f9;color:#35526e;font-size:.78rem}.thales-course-small{color:#11468c}.thales-course-large{color:#087f83}.thales-course-row-small{opacity:0;animation:thalesCourseReveal .32s ease-out .38s forwards}.thales-course-row-large{opacity:0;animation:thalesCourseReveal .32s ease-out .72s forwards}.thales-course-ratios{opacity:0;padding:10px;border-radius:11px;background:#eef8f7;color:#17384d;font-size:1.12rem;font-weight:900;text-align:center;animation:thalesCourseReveal .32s ease-out 1.06s forwards}.thales-course-ratios .small{color:#11468c}.thales-course-ratios .large{color:#087f83}.thales-course-reminder{opacity:0;color:#60708c;font-size:.82rem;font-weight:800;text-align:center;animation:thalesCourseReveal .32s ease-out 1.35s forwards}@keyframes thalesCourseReveal{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 .median-course-values{display:flex;align-items:center;justify-content:center;gap:.36em;margin:7px 0 2px;font-weight:850}.median-middle{padding:1px 4px;border-bottom:3px solid #e86100;border-radius:5px;background:#fff1df;color:#9a4100}
 .equation-detail-modal{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(11,33,71,.52)}
@@ -583,6 +606,7 @@ svg{display:block;max-width:100%;height:auto}
 @media(max-width:800px){.diapo.data-mode .stage{padding:5px 6px 9px}.diapo.data-mode .question{margin-bottom:5px;font-size:clamp(1.16rem,5.05vw,1.48rem);line-height:1.1}.diapo.data-mode .question table{font-size:clamp(.88rem,3.75vw,1.06rem)!important}.diapo.data-mode .question table td,.diapo.data-mode .question table th{padding:12px 10px!important}.diapo.data-mode .footer{margin-top:6px;font-size:clamp(1.55rem,6.8vw,2rem)}}
 @media(max-width:800px){.slide .question table{max-width:100%;font-size:clamp(.92rem,3.9vw,1.08rem)!important}.slide .question table td,.slide .question table th{padding:14px 14px!important;border-width:1.5px!important}.diapo.coordinate-mode .stage{padding:4px 4px 8px}.diapo.coordinate-mode .question{font-size:clamp(1.18rem,5.2vw,1.5rem);line-height:1.1;margin-bottom:3px}.diapo.coordinate-mode .question svg{width:min(100%,380px)!important;max-width:380px!important;max-height:min(52vh,380px)!important;margin:3px auto!important}.diapo.coordinate-mode .footer{font-size:clamp(1.75rem,7.8vw,2.3rem);margin-top:3px}.diapo.right-angle-mode .question{font-size:clamp(2rem,9vw,2.8rem);margin-bottom:20px}.diapo.right-angle-mode .footer{font-size:clamp(2.1rem,9.5vw,3rem)}}
 @media(max-width:800px){.diapo.transformations-mode .stage{padding:4px 4px 8px}.diapo.transformations-mode .question{font-size:clamp(1.12rem,4.9vw,1.42rem);line-height:1.09;margin-bottom:3px}.diapo.transformations-mode .question svg{width:min(100%,390px)!important;max-width:390px!important;max-height:min(49vh,390px)!important;margin:3px auto!important}.diapo.transformations-mode .footer{font-size:clamp(1.6rem,7.2vw,2.15rem);margin-top:3px}.diapo.transformations-mode .options{gap:6px;margin-top:4px}.diapo.transformations-mode .opt{font-size:clamp(.9rem,3.85vw,1.08rem);padding:8px 9px}.course-visual{max-height:175px}.course-rule-wide{grid-column:auto}}
+@media(max-width:800px){.diapo.decimal-mode .stage{padding:4px 6px 7px}.diapo.decimal-mode .question{font-size:clamp(1.2rem,5.25vw,1.55rem);margin-bottom:5px}.diapo.decimal-mode .footer{font-size:clamp(1.65rem,7.4vw,2.2rem);margin-top:5px}.diapo.decimal-mode .options{grid-template-columns:1fr;gap:6px;margin-top:6px}.diapo.decimal-mode .opt{min-height:48px;padding:9px 10px;font-size:clamp(.95rem,4.05vw,1.12rem)}.decimal-manipulation{padding:8px 7px;border-radius:14px}.decimal-card-tray{gap:6px;margin-bottom:7px}.decimal-card,.decimal-drop-slot{min-width:70px;min-height:48px;padding:7px 8px;border-radius:11px;font-size:clamp(1.15rem,5.2vw,1.5rem)}.decimal-order-slots{gap:7px}.decimal-order-direction{width:calc(100% - 14px);font-size:.63rem}.decimal-frame-line>svg{max-height:125px}.decimal-frame-slots{width:calc(100% - 50px);margin:-25px auto 5px}.decimal-frame-slots .decimal-drop-slot{min-width:68px}.decimal-complement-visual{height:clamp(74px,12vh,96px);margin-top:2px}.area-model-compact .area-model-svg{max-height:180px}.decimal-distributivity-board .decimal-card{min-width:112px;font-size:clamp(.98rem,4.25vw,1.2rem)}}
 @media(max-width:800px){.diapo>.top{order:2;border-top:1px solid var(--border);border-bottom:0}.diapo>.stage{order:1}}
 @media(max-width:800px){.diapo.interactive-mode{--stage-x:7px;--stage-bottom:7px}.diapo.interactive-mode>.top{order:1;height:54px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);border-top:0;border-bottom:1px solid var(--border);padding:7px max(9px,env(safe-area-inset-right)) 7px max(9px,env(safe-area-inset-left))}.diapo.interactive-mode>.stage{order:2;padding-top:5px}.diapo.interactive-mode>.answer-dock{order:3}.diapo.interactive-mode .keyboard-toggle,.diapo.interactive-mode .fullscreen-btn{width:40px;height:40px;min-height:40px;padding:0}.interactive-summary{grid-column:2;justify-content:center;font-size:.86rem}.interactive-score{padding:5px 8px}.answer-dock{padding:6px max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))}.answer-body{grid-template-columns:minmax(0,1fr) 154px;justify-content:stretch;gap:5px}.answer-main{height:var(--keypad-height-mobile);min-height:58px}.keypad{grid-template-columns:repeat(var(--key-columns-mobile,6),minmax(0,1fr));gap:4px}.key{min-height:0;padding:4px 2px;border-radius:9px;font-size:1.04rem}.key.utility{font-size:.78rem}.key.utility svg{width:23px;height:23px}.answer-guidance,.answer-feedback{min-height:58px;padding:8px 8px;border-radius:10px;font-size:1.16rem}.feedback-answer{font-size:1em}.answer-kind{padding:0}.answer-dock.keypad-collapsed .answer-main,.answer-dock.qcm-mode .answer-main{height:62px}.dock-actions{grid-template-columns:1fr;width:154px}.dock-action{min-width:0;min-height:58px;padding:7px 5px;font-size:1.03rem}.answer-dock.qcm-mode .dock-action{font-size:1.1rem}.interactive-input-slot{min-height:1.48em;min-width:2.18em;border-radius:.28em}.interactive-polynomial-response{gap:7px 10px;margin-top:7px;font-size:clamp(1.7rem,7.7vw,2.25rem)}.interactive-polynomial-response.term-count-1{font-size:clamp(2.3rem,10vw,3rem)}.interactive-polynomial-response.term-count-2{font-size:clamp(1.95rem,8.8vw,2.65rem)}.interactive-polynomial-term small{font-size:.42em}.interactive-finish{margin:3vh auto 0;padding:22px 15px}.interactive-finish-mark{width:54px;height:54px}.interactive-finish-score{margin-bottom:14px}.interactive-finish-actions{flex-direction:column;gap:8px}.interactive-finish-actions .btn,.interactive-finish-actions .btn.primary{width:min(100%,260px);min-width:0}}
 @media(max-width:800px){.multiple-forms-help.multiple-forms-line{height:clamp(245px,39vh,315px)}.multiple-forms-line-desktop{display:none}.multiple-forms-line-mobile{display:block;width:min(100%,390px)!important;height:auto}.fraction-ops-result-separated{margin-top:13px}.fraction-ops-simplification{max-width:360px;margin-bottom:3px;font-size:.88rem;line-height:1.12}.legacy-statement-table-wrap{margin:15px auto 20px}}
@@ -643,6 +667,7 @@ let interactiveTouched=[];
 let relativeBoardState=null;
 let relativeBoardKey='';
 let pythagorasSelectedToken=null;
+let decimalSelectedCard=null;
 let pythagorasSuppressClickUntil=0;
 let activeSlotIndex=0;
 let selectedOptions=new Set();
@@ -733,6 +758,19 @@ function courseThalesTemplateVisual(){
   +'<span class="thales-course-cell thales-course-large thales-course-row-large">grand ABC</span><span class="thales-course-cell thales-course-large thales-course-row-large">AB</span><span class="thales-course-cell thales-course-large thales-course-row-large">AC</span><span class="thales-course-cell thales-course-large thales-course-row-large">BC</span></div>'
   +'<div class="thales-course-ratios"><span class="small">AD</span>/<span class="large">AB</span> = <span class="small">AE</span>/<span class="large">AC</span> = <span class="small">DE</span>/<span class="large">BC</span></div><div class="thales-course-reminder">On lit toujours les points dans le même ordre.</div></div></div>';
 }
+function courseDecimalVisual(kind){
+ const ids={order:'numbers.order-cards',frame:'numbers.number-line',unit:'arithmetic.fraction-decimal-grid',multiply:'algebra.area-model',divide:'arithmetic.relation-bar'};
+ const component=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get(ids[kind]);
+ if(!component)return '';
+ let data={},correction=true;
+ if(kind==='order')data={values:[4.7,4.09,4.68],solution:[4.09,4.68,4.7]};
+ if(kind==='frame')data={mode:'scale',min:9,max:10,step:1,width:520,height:142,autoLabels:true,points:[{value:9.32,label:'9,32',color:'#0b79d0'}]};
+ if(kind==='unit')data={kind:'decimal-complement',filledA:9,filledB:1,showSecond:true};
+ if(kind==='multiply')data={style:'table',compact:true,title:'Décomposer 4,7 × 4',rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}],answer:'4,7 × 4 = 4 × 4 + 0,7 × 4 = 18,8'};
+ if(kind==='divide')data={kind:'fraction_direct',divisor:3,value:2.1,result:.7,showValue:true,questionLabel:'une part'};
+ const html=component.render(data,correction);
+ return '<div class="course-visual decimal-course-visual">'+html+'</div>';
+}
 const courseCatalog={
   divisibility:{title:'Critères de divisibilité',rules:[
     ['Divisible par 2','Son chiffre des unités est 0, 2, 4, 6 ou 8.<span class="course-example">Exemple : 1 438 se termine par 8, donc il est divisible par 2.</span>'],
@@ -803,9 +841,14 @@ Object.assign(courseCatalog,{
     ['Rendre irréductible','On divise le numérateur et le dénominateur par un même diviseur commun.<span class="course-example"><span class="course-equation">'+courseFraction(60,100)+' = '+courseFraction(3,5)+'</span></span>']
   ]},
   decimal_numbers:{title:'Comparer et calculer avec des décimaux',rules:[
-    ['Comparer','On compare d’abord les parties entières, puis les dixièmes, les centièmes… On peut ajouter des zéros sans changer le nombre.<span class="course-example">4,7 = 4,70 et 4,70 &gt; 4,68.</span>'],
-    ['Nombres négatifs','Parmi deux nombres négatifs, celui qui est le plus proche de 0 est le plus grand.<span class="course-example">−2,4 &gt; −3,1.</span>'],
-    ['Poser un calcul','Pour additionner ou soustraire, on aligne les virgules. Avant de calculer, on estime l’ordre de grandeur du résultat.']
+    ['Comparer les rangs','On compare d’abord les parties entières, puis les dixièmes, les centièmes… Ajouter des zéros à droite ne change pas le nombre : 4,7 = 4,70.'+courseDecimalVisual('order'),false,'place-values'],
+    ['Nombres négatifs','Sur une droite graduée, le nombre le plus à droite est le plus grand. Parmi deux nombres négatifs, celui qui est le plus proche de 0 est donc le plus grand.<span class="course-example">−2,4 &gt; −3,1.</span>',false,'sign-order'],
+    ['Encadrer','On repère l’entier immédiatement avant le décimal et l’entier immédiatement après. Ils doivent être consécutifs.'+courseDecimalVisual('frame'),false,'consecutive-integers'],
+    ['Compléter une unité','Dix dixièmes forment une unité entière. Les deux couleurs complètent la même bande : 0,9 + 0,1 = 1.'+courseDecimalVisual('unit'),false,'complete-unit'],
+    ['Additionner ou soustraire','On aligne les virgules pour placer unités sous unités, dixièmes sous dixièmes et centièmes sous centièmes.',false,'align-comma'],
+    ['Multiplier par un entier','On peut décomposer le décimal, puis distribuer le même multiplicateur à chaque partie.'+courseDecimalVisual('multiply'),false,'distributivity'],
+    ['Partager également','Diviser un total par le nombre de parts donne la valeur d’une part. Le schéma montre le total au-dessus et les parts égales en dessous.'+courseDecimalVisual('divide'),false,'equal-sharing'],
+    ['Vérifier','Avant de valider, on estime l’ordre de grandeur : multiplier par un entier supérieur à 1 augmente le nombre ; partager en plusieurs parts le diminue.',false,'estimate']
   ]},
   fraction_ops:{title:'Simplifier, comparer et additionner des fractions',rules:[
     ['Simplifier','On divise le numérateur et le dénominateur par un même nombre non nul.<span class="course-example"><span class="course-equation">'+courseFraction(18,24)+' = '+courseFraction('18 ÷ 6','24 ÷ 6')+' = '+courseFraction(3,4)+'</span></span>'],
@@ -1082,6 +1125,11 @@ function courseForSlide(slide){
    const rules=course.rules.filter(rule=>sections.includes(rule[3]));
    return {title:course.title,rules:rules.length?rules:course.rules};
  }
+ if(slide.courseKind==='decimal_numbers'){
+   const course=courseCatalog.decimal_numbers,sections=Array.isArray(slide.courseContext&&slide.courseContext.helpSections)?slide.courseContext.helpSections:[];
+   const rules=course.rules.filter(rule=>sections.includes(rule[3]));
+   return {title:course.title,rules:rules.length?rules:course.rules};
+ }
  return courseCatalog[slide.courseKind]||null;
 }
 function fitNavNumbers(){
@@ -1105,7 +1153,7 @@ function fitNavNumbers(){
 }
 function setModuleClasses(diapo,moduleId){
  const map={
-   'module01-mode':['dnb_01'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
+   'module01-mode':['dnb_01'],'decimal-mode':['dnb_02'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
    'multiple-forms-mode':['dnb_05'],'scientific-mode':['dnb_06'],'squares-mode':['dnb_07'],
    'relation-mode':['dnb_09'],'reduction-mode':['dnb_10'],'substitution-mode':['dnb_11'],
    'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angle-sum-mode':['dnb_18'],
@@ -1191,8 +1239,9 @@ function render(){
 function setupInteractiveSlide(current){
  const dock=document.getElementById('answerDock');
  const spec=current.interactiveSpec;
+ const decimalCards=spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity';
  dock.hidden=false;
- dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point');
+ dock.classList.toggle('qcm-mode',spec.kind==='qcm'||spec.kind==='grid-point'||decimalCards);
  dock.classList.toggle('relative-tokens-dock',spec.kind==='relative-tokens');
  dock.classList.toggle('locked',interactiveLocked);
  const kind=document.getElementById('answerKind');
@@ -1201,6 +1250,9 @@ function setupInteractiveSlide(current){
    else if(spec.kind==='grid-point') kind.textContent='Clique sur le quadrillage';
    else if(spec.kind==='relative-tokens') kind.textContent='Manipule les jetons puis valide';
    else if(spec.kind==='pythagoras-tactile') kind.textContent='Place toutes les étiquettes';
+   else if(spec.kind==='decimal-order') kind.textContent='Place les trois nombres';
+   else if(spec.kind==='decimal-frame') kind.textContent='Place les deux entiers';
+   else if(spec.kind==='decimal-distributivity') kind.textContent='Place les deux produits';
    else if(spec.layout==='fraction') kind.textContent='Numérateur / dénominateur';
    else if(spec.layout==='polynomial') kind.textContent='Coefficients';
    else kind.textContent=(spec.slots&&spec.slots.length>1)?spec.slots.length+' cases':'Réponse';
@@ -1224,6 +1276,8 @@ function setupInteractiveSlide(current){
    ensureInteractiveEntryState(spec);setupRelativeTokensInteraction(spec);
  }else if(spec.kind==='pythagoras-tactile'){
    ensureInteractiveEntryState(spec);setupPythagorasTactileInteraction(spec);
+ }else if(decimalCards){
+   ensureInteractiveEntryState(spec);setupDecimalCardInteraction(spec);
  }else if(!interactiveLocked){
    ensureInteractiveEntryState(spec);
    injectInteractiveResponse(spec);
@@ -1231,6 +1285,65 @@ function setupInteractiveSlide(current){
  renderInteractiveKeypad(spec);
  applyKeypadVisibility(spec);
  updateInteractiveControls();
+}
+function displayDecimalCardValue(value){
+ return String(value??'').replace('.',',').replace('-', '−');
+}
+function setupDecimalCardInteraction(spec){
+ const root=document.querySelector('#slide [data-decimal-manipulation]');
+ if(!root)return;
+ const cards=[...root.querySelectorAll('[data-decimal-card]')];
+ const slots=[...root.querySelectorAll('[data-decimal-slot],[data-distributive-slot]')].sort((left,right)=>Number(left.dataset.decimalSlot??left.dataset.distributiveSlot)-Number(right.dataset.decimalSlot??right.dataset.distributiveSlot));
+ if(interactiveLocked){
+   cards.forEach(card=>{card.disabled=true;card.setAttribute('aria-pressed','false');});
+   slots.forEach(slot=>slot.setAttribute('tabindex','-1'));
+   return;
+ }
+ const paint=()=>{
+   cards.forEach(card=>{
+     const value=String(card.dataset.decimalCard||'');
+     const used=interactiveValues.includes(value);
+     card.classList.toggle('is-selected',!interactiveLocked&&decimalSelectedCard===value);
+     card.classList.toggle('is-used',!interactiveLocked&&used);
+     card.setAttribute('aria-pressed',String(!interactiveLocked&&decimalSelectedCard===value));
+     card.disabled=interactiveLocked;
+   });
+   slots.forEach(slot=>{
+     const index=Number(slot.dataset.decimalSlot??slot.dataset.distributiveSlot),value=interactiveValues[index]||'';
+     slot.classList.toggle('is-filled',!!value);
+     slot.classList.toggle('is-selected',!interactiveLocked&&index===activeSlotIndex&&!!decimalSelectedCard);
+     slot.setAttribute('aria-label',(spec.slots[index]&&spec.slots[index].label||('Position '+(index+1)))+(value?' : '+displayDecimalCardValue(value):' : vide'));
+     slot.setAttribute('tabindex',interactiveLocked?'-1':'0');
+     if(slot.matches('[data-decimal-slot]')) slot.textContent=value?displayDecimalCardValue(value):'…';
+     const textNode=slot.querySelector('[data-distributive-value]');
+     if(textNode) textNode.textContent=value?displayDecimalCardValue(value):'…';
+   });
+ };
+ cards.forEach(card=>{
+   card.onclick=()=>{
+     const value=String(card.dataset.decimalCard||'');
+     if(interactiveValues.includes(value))return;
+     decimalSelectedCard=decimalSelectedCard===value?null:value;
+     paint();
+   };
+ });
+ slots.forEach(slot=>{
+   const choose=()=>{
+     const index=Number(slot.dataset.decimalSlot??slot.dataset.distributiveSlot);
+     activeSlotIndex=index;
+     if(decimalSelectedCard){
+       const previousIndex=interactiveValues.indexOf(decimalSelectedCard);
+       if(previousIndex>=0){interactiveValues[previousIndex]='';interactiveTouched[previousIndex]=false;}
+       interactiveValues[index]=decimalSelectedCard;interactiveTouched[index]=true;decimalSelectedCard=null;
+     }else if(interactiveValues[index]){
+       interactiveValues[index]='';interactiveTouched[index]=false;
+     }
+     paint();updateInteractiveControls();
+   };
+   slot.onclick=choose;
+   if(!slot.matches('button')) slot.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};
+ });
+ paint();
 }
 function setupGridPointInteraction(spec){
  const svg=document.querySelector('#slide .transformation-placement-svg');if(!svg)return;
@@ -1417,6 +1530,7 @@ function setupFractionProductTools(){
 }
 function resetInteractiveEntryState(spec){
  pythagorasSelectedToken=null;
+ decimalSelectedCard=null;
  if(spec&&spec.kind==='relative-tokens'){
    relativeBoardKey=spec.relative.instanceKey;relativeBoardState=relativeClientInitialState(spec);interactiveValues=[relativeClientStateKey(relativeBoardState)];interactiveTouched=[false];activeSlotIndex=0;return;
  }
@@ -1532,7 +1646,7 @@ function renderInteractiveKeypad(spec){
  if(!keypad) return;
  keypad.innerHTML='';
  const body=keypad.closest('.answer-body');
- if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'){
+ if(spec.kind==='qcm'||spec.kind==='grid-point'||spec.kind==='relative-tokens'||spec.kind==='pythagoras-tactile'||spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity'){
    if(body){body.style.setProperty('--keypad-max','940px');body.style.setProperty('--keypad-height-desktop','64px');body.style.setProperty('--keypad-height-mobile','62px');}
    return;
  }
@@ -1556,7 +1670,7 @@ function renderInteractiveKeypad(spec){
 function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
- const available=interactiveMode&&!interactiveFinished&&spec&&spec.kind!=='qcm'&&spec.kind!=='grid-point'&&spec.kind!=='relative-tokens'&&spec.kind!=='pythagoras-tactile';
+ const available=interactiveMode&&!interactiveFinished&&spec&&!['qcm','grid-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -1575,6 +1689,7 @@ function hasInteractiveAnswer(){
  if(spec.kind==='qcm') return selectedOptions.size>0;
  if(spec.kind==='relative-tokens') return interactiveTouched.some(Boolean);
  if(spec.kind==='pythagoras-tactile') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
+ if(spec.kind==='decimal-order'||spec.kind==='decimal-frame'||spec.kind==='decimal-distributivity') return interactiveTouched.length===spec.slots.length&&interactiveTouched.every(Boolean);
  return interactiveTouched.some(Boolean);
 }
 function updateInteractiveControls(){
@@ -1850,6 +1965,20 @@ function interactiveSpecForInstance(inst,correctionHtml){
  if(inst.relativeTokens&&inst.relativeTokens.interactive){
    const result=String(inst.relativeTokens.result);
    return {kind:'relative-tokens',relative:inst.relativeTokens,expectedDisplay:'réponse : '+(result.startsWith('-')?'−'+result.slice(1):result)};
+ }
+ const decimalKind=String(inst.q&&inst.q.options&&inst.q.options.decimal_kind||'');
+ const decimalDisplay=value=>String(value??'').replace('.',',').replace('-', '−');
+ if(decimalKind==='order-cards'){
+   const scope=inst.scope||{},cards=[scope.a,scope.b,scope.c].map(String),expected=[scope.mn,scope.md,scope.mx].map(String);
+   return {kind:'decimal-order',layout:'cards',cards,slots:[{label:'Nombre le plus petit'},{label:'Nombre du milieu'},{label:'Nombre le plus grand'}],acceptedCombinations:[expected],expectedDisplay:'ordre : '+expected.map(decimalDisplay).join(' < '),keys:[]};
+ }
+ if(decimalKind==='frame-positive'||decimalKind==='frame-negative'){
+   const scope=inst.scope||{},cards=(Array.isArray(scope.frameCards)?scope.frameCards:[scope.low,scope.high]).map(String),expected=[scope.low,scope.high].map(String);
+   return {kind:'decimal-frame',layout:'cards',cards,slots:[{label:'Entier immédiatement inférieur'},{label:'Entier immédiatement supérieur'}],acceptedCombinations:[expected],expectedDisplay:decimalDisplay(scope.low)+' < '+decimalDisplay(scope.value)+' < '+decimalDisplay(scope.high),keys:[]};
+ }
+ if(decimalKind==='distributivity-reasoning'){
+   const scope=inst.scope||{},cards=(Array.isArray(scope.reasoningCards)?scope.reasoningCards:[scope.firstProduct,scope.secondProduct]).map(String),expected=[scope.firstProduct,scope.secondProduct].map(String);
+   return {kind:'decimal-distributivity',layout:'cards',cards,slots:[{label:'Produit des unités'},{label:'Produit des dixièmes'}],acceptedCombinations:[expected],expectedDisplay:'décomposition : '+expected.map(decimalDisplay).join(' + '),keys:[]};
  }
  if(inst.q&&inst.q.options&&inst.q.options.transformation_place_kind){
     const combinations=interactiveAnswerCombinations(inst,(inst.answers||[]).map(value=>String(value)));
