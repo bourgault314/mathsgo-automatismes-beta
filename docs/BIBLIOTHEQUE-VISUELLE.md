@@ -171,6 +171,11 @@ déplacent de une à trois colonnes. Le composant contient son contrôleur compl
 souris, toucher, flèches du clavier, zéros fantômes et animation de correction.
 Les cinq références couvrent les deux sens et les facteurs 10, 100 et 1 000.
 
+`numbers.relative-tokens` possède trois références équilibrées autour des
+paires nulles : somme positive, somme nulle et somme négative. Ces préréglages
+permettent au catalogue d’exécuter le composant statique sans recopier le
+plateau interactif de `dnb_38`.
+
 Le registre de `dnb_02b` relie maintenant ce composant aux calculs directs,
 aux tirages mixtes, aux QCM et aux questions où le facteur ou le nombre de
 départ manque. La règle pédagogique est explicite : la virgule reste fixe et
