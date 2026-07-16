@@ -44,11 +44,20 @@ const sources=[
   'auto/scripts/shared/pedagogy/numbers/dnb_13.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_14.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_15.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_16.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_17.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_18.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_19.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_20.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_21.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_22.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_23.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_24.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_24b.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_25.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_26.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_26b.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_27.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_01.js',
   'auto/scripts/modules/numbers/dnb_02.js',
@@ -66,11 +75,20 @@ const sources=[
   'auto/scripts/modules/numbers/dnb_13.js',
   'auto/scripts/modules/numbers/dnb_14.js',
   'auto/scripts/modules/geometry/dnb_15.js',
+  'auto/scripts/modules/geometry/dnb_16.js',
+  'auto/scripts/modules/geometry/dnb_17.js',
   'auto/scripts/modules/geometry/dnb_18.js',
   'auto/scripts/modules/geometry/dnb_19.js',
+  'auto/scripts/modules/geometry/dnb_20.js',
+  'auto/scripts/modules/geometry/dnb_21.js',
+  'auto/scripts/modules/geometry/dnb_22.js',
+  'auto/scripts/modules/geometry/dnb_23.js',
   'auto/scripts/modules/geometry/dnb_24.js',
   'auto/scripts/modules/geometry/dnb_24b.js',
   'auto/scripts/modules/geometry/dnb_25.js',
+  'auto/scripts/modules/geometry/dnb_26.js',
+  'auto/scripts/modules/geometry/dnb_26b.js',
+  'auto/scripts/modules/geometry/dnb_27.js',
   'auto/scripts/modules/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_09.js'
 ];
@@ -91,9 +109,18 @@ globalThis.__expandFactorQuestionNumbers=MODULE_DNB_12.questions.map(question=>N
 globalThis.__equationQuestionNumbers=MODULE_DNB_13.questions.map(question=>Number(question.n));
 globalThis.__numberLineQuestionNumbers=MODULE_DNB_14.questions.map(question=>Number(question.n));
 globalThis.__coordinateQuestionNumbers=MODULE_DNB_15.questions.map(question=>Number(question.n));
+globalThis.__figureCodingQuestionNumbers=MODULE_DNB_16.questions.map(question=>Number(question.n));
+globalThis.__angleVocabularyQuestionNumbers=MODULE_DNB_17.questions.map(question=>Number(question.n));
 globalThis.__conversionQuestionNumbers=MODULE_DNB_19.questions.map(question=>Number(question.n));
 globalThis.__angleQuestionNumbers=MODULE_DNB_18.questions.map(question=>Number(question.n));
+globalThis.__solidQuestionNumbers=MODULE_DNB_20.questions.map(question=>Number(question.n));
+globalThis.__perimeterQuestionNumbers=MODULE_DNB_21.questions.map(question=>Number(question.n));
+globalThis.__areaQuestionNumbers=MODULE_DNB_22.questions.map(question=>Number(question.n));
+globalThis.__volumeQuestionNumbers=MODULE_DNB_23.questions.map(question=>Number(question.n));
 globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(question.n));
+globalThis.__trigonometryReasoningQuestionNumbers=MODULE_DNB_26.questions.map(question=>Number(question.n));
+globalThis.__trigonometryCalculationQuestionNumbers=MODULE_DNB_26B.questions.map(question=>Number(question.n));
+globalThis.__transformationQuestionNumbers=MODULE_DNB_27.questions.map(question=>Number(question.n));
 globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
 globalThis.__pythagorasQuestionNumbers=MODULE_DNB_24.questions.map(question=>Number(question.n));
 globalThis.__pythagorasTactileQuestionNumbers=MODULE_DNB_24_TACTILE.questions.map(question=>Number(question.n));
@@ -104,9 +131,9 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==23) fail(`Vingt-trois modules pédagogiques attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==32) fail(`Trente-deux modules pédagogiques attendus, ${modules.length} trouvé(s).`);
 
-function assertNumberModule(id,bankNumbers,courseKind,expected){
+function assertClassifiedModule(id,bankNumbers,courseKind,expected){
   const module=registry?.getModule(id);
   if(!module) return fail(`Le classement pédagogique de ${id} est absent.`);
   if(module.courseKind!==courseKind) fail(`Cours incorrect pour ${id} (${module.courseKind}).`);
@@ -123,7 +150,11 @@ function assertNumberModule(id,bankNumbers,courseKind,expected){
   }
 }
 
-assertNumberModule('dnb_02',context.__decimalQuestionNumbers,'decimal_numbers',{
+function expectedQuestions(...groups){
+  return Object.fromEntries(groups.flatMap(([questions,type,response,policy,component])=>questions.map(question=>[question,[type,response,policy,component]])));
+}
+
+assertClassifiedModule('dnb_02',context.__decimalQuestionNumbers,'decimal_numbers',{
   1:['comparer-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
   2:['comparer-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
   3:['ranger-trois-decimaux','numeric','optional','numbers.glisse-nombre'],
@@ -136,7 +167,7 @@ assertNumberModule('dnb_02',context.__decimalQuestionNumbers,'decimal_numbers',{
   10:['multiplier-diviser','numeric','optional','numbers.glisse-nombre']
 });
 
-assertNumberModule('dnb_06',context.__scientificQuestionNumbers,'scientific_notation',{
+assertClassifiedModule('dnb_06',context.__scientificQuestionNumbers,'scientific_notation',{
   1:['grand-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
   2:['grand-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
   3:['petit-vers-scientifique','numeric','optional','numbers.glisse-nombre'],
@@ -150,7 +181,7 @@ assertNumberModule('dnb_06',context.__scientificQuestionNumbers,'scientific_nota
   11:['scientifique-vers-petit','numeric','optional','numbers.glisse-nombre']
 });
 
-assertNumberModule('dnb_07',context.__squareQuestionNumbers,'integer_squares',{
+assertClassifiedModule('dnb_07',context.__squareQuestionNumbers,'integer_squares',{
   1:['calculer-carre','numeric','essential','numbers.square-area'],
   2:['calculer-carre','numeric','essential','numbers.square-area'],
   3:['retrouver-cote','numeric','essential','numbers.square-area'],
@@ -163,7 +194,7 @@ assertNumberModule('dnb_07',context.__squareQuestionNumbers,'integer_squares',{
   10:['choisir-valeur-carre','qcm-one','essential','numbers.square-area']
 });
 
-assertNumberModule('dnb_08',context.__divisibilityQuestionNumbers,'divisibility_rules',{
+assertClassifiedModule('dnb_08',context.__divisibilityQuestionNumbers,'divisibility_rules',{
   1:['identifier-critere-simple','qcm-multiple','none',null],
   2:['identifier-critere-simple','qcm-multiple','none',null],
   3:['identifier-critere-simple','qcm-multiple','none',null],
@@ -175,6 +206,88 @@ assertNumberModule('dnb_08',context.__divisibilityQuestionNumbers,'divisibility_
   9:['justifier-par-somme-chiffres','qcm-one','none',null],
   10:['partage-sans-reste','qcm-one','optional','arithmetic.equal-sharing-board']
 });
+
+assertClassifiedModule('dnb_16',context.__figureCodingQuestionNumbers,'figure_coding',expectedQuestions(
+  [[1,2,3],'reconnaitre-triangle-code','qcm-one','essential',null],
+  [[4,5,6,7],'reconnaitre-quadrilatere-code','qcm-one','essential',null],
+  [[8],'reconnaitre-mediatrice','qcm-one','essential',null],
+  [[9],'justifier-isocelite','qcm-one','essential',null],
+  [[10],'propriete-mediatrice','qcm-one','essential',null]
+));
+
+assertClassifiedModule('dnb_17',context.__angleVocabularyQuestionNumbers,'angle_vocabulary',expectedQuestions(
+  [[1,2],'reconnaitre-nature-figure','qcm-one','essential',null],
+  [[3,4],'connaitre-angles-reperes','numeric','none',null],
+  [[5,6],'reconnaitre-relation','qcm-one','essential',null],
+  [[7,8,10],'calculer-complement-supplement','numeric','none',null],
+  [[9],'reconnaitre-nature-mesure','qcm-one','none',null]
+));
+
+assertClassifiedModule('dnb_20',context.__solidQuestionNumbers,'solid_recognition',expectedQuestions(
+  [[1,2,3,4,5,6,7,8,9,10,11,12,13,14,26,27],'reconnaitre-solide-dessine','qcm-one','essential',null],
+  [[15,16,17,18,19,20,21,31,32,33,34,35],'modeliser-objet','qcm-one','essential',null],
+  [[22,23,24,25,28,29,30],'compter-elements','qcm-one','essential',null]
+));
+
+assertClassifiedModule('dnb_21',context.__perimeterQuestionNumbers,'perimeter',expectedQuestions(
+  [[1,5],'rectangle-parallelogramme','numeric','essential',null],
+  [[2,4,10],'polygone-regulier','numeric','essential',null],
+  [[3,9],'somme-cotes','numeric','essential',null],
+  [[6],'contour-compose','numeric','essential',null],
+  [[7],'disque-rayon','numeric','essential',null],
+  [[8],'disque-diametre','numeric','essential',null]
+));
+
+assertClassifiedModule('dnb_22',context.__areaQuestionNumbers,'area',expectedQuestions(
+  [[1,2],'aire-rectangle','numeric','optional',null],
+  [[3,4],'aire-carre','numeric','optional','numbers.square-area'],
+  [[5,6,17],'aire-triangle-general','numeric','optional',null],
+  [[7,8],'aire-triangle-rectangle','numeric','optional',null],
+  [[9,10,11],'aire-disque','numeric','essential',null],
+  [[12,13,14,15],'aire-composee','numeric','essential',null],
+  [[16],'choisir-longueurs-utiles','numeric','essential',null],
+  [[18],'reconnaitre-formule','qcm-one','essential',null]
+));
+
+assertClassifiedModule('dnb_23',context.__volumeQuestionNumbers,'volume',expectedQuestions(
+  [[1,5,10],'volume-cube','numeric','optional',null],
+  [[2,6],'volume-pave','numeric','optional',null],
+  [[3],'volume-prisme-triangulaire','numeric','essential',null],
+  [[7,8],'volume-prisme-aire-base','numeric','optional',null],
+  [[4],'volume-cylindre-rayon','numeric','essential',null],
+  [[9],'volume-cylindre-diametre','numeric','essential',null]
+));
+
+assertClassifiedModule('dnb_26',context.__trigonometryReasoningQuestionNumbers,'trigonometry_reasoning',expectedQuestions(
+  [[1],'condition-utilisation','qcm-one','none',null],
+  [[2],'nommer-cote','qcm-one','essential',null],
+  [[3,4],'definir-rapport','qcm-one','essential',null],
+  [[5],'rapport-longueurs','qcm-one','essential',null],
+  [[6],'choisir-formule','qcm-one','essential',null],
+  [[7],'analyser-formules','qcm-variable','essential',null],
+  [[8],'invariance-rapport','qcm-one','essential',null],
+  [[9,10],'choisir-methode','qcm-one','essential',null],
+  [[11],'controler-coherence','qcm-one','none',null],
+  [[12],'premiere-etape','qcm-one','essential',null]
+));
+
+assertClassifiedModule('dnb_26b',context.__trigonometryCalculationQuestionNumbers,'trigonometry_calculation',expectedQuestions(
+  [[1],'calculer-rapport-decimal','numeric','essential',null],
+  [[2,3],'cote-avec-cosinus','numeric','essential',null],
+  [[4,9],'cote-avec-sinus','numeric','essential',null],
+  [[5,10],'cote-avec-tangente','numeric','essential',null],
+  [[6,7,8],'calculer-angle','numeric','essential',null],
+  [[11,12],'application-aire-perimetre','numeric','essential',null]
+));
+
+assertClassifiedModule('dnb_27',context.__transformationQuestionNumbers,'transformations',expectedQuestions(
+  [[1,2,3],'coordonnees-symetrie-axes','numeric','essential',null],
+  [[4,5],'coordonnees-symetrie-generale','numeric','essential',null],
+  [[6],'coordonnees-translation','numeric','essential',null],
+  [[7],'proprietes-conservees','qcm-multiple','none',null],
+  [[8,9,10],'reconnaitre-transformation','qcm-one','essential',null],
+  [[11,12,13],'placer-point-image','point-placement','essential',null]
+));
 
 const fractionDecimal=registry?.getModule('dnb_01');
 if(!fractionDecimal) fail('Le classement pédagogique de dnb_01 est absent.');
@@ -598,13 +711,22 @@ const expandFactorMetadataPosition=index.indexOf('scripts/shared/pedagogy/number
 const equationMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_13.js');
 const numberLineMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_14.js');
 const coordinateMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_15.js');
+const figureCodingMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_16.js');
+const angleVocabularyMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_17.js');
 const angleMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_18.js');
 const conversionMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_19.js');
+const solidMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_20.js');
+const perimeterMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_21.js');
+const areaMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_22.js');
+const volumeMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_23.js');
 const pythagorasMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_24.js');
 const thalesMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_25.js');
+const trigonometryReasoningMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_26.js');
+const trigonometryCalculationMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_26b.js');
+const transformationMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_27.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
 const appPosition=index.indexOf('scripts/04-app.js');
-const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,angleMetadataPosition,conversionMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition];
+const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition];
 if(registryPosition<0||pedagogyPositions.some(position=>position<registryPosition||slideshowPosition<position||appPosition<position)){
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
@@ -668,4 +790,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — les 17 modules de Nombres et calculs sont classés ; les repères, conversions, Pythagore, Angles et Thalès restent branchés.');
+if(!process.exitCode) console.log('OK — 32 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15.');
