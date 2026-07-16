@@ -467,9 +467,20 @@ function generateFromDefinition(definition,{sameTab=false}={}){
   openDiapoWindow(normalized,{sameTab});
 }
 
-function generate(){
-  try{generateFromDefinition(readSeriesDefinitionFromUi());}
-  catch(error){alert(error&&error.message?error.message:'Impossible de préparer cette série.');}
+async function generate(){
+  if(modulePreparationInProgress) return;
+  modulePreparationInProgress=true;
+  updateSetupActions();
+  try{
+    const definition=readSeriesDefinitionFromUi();
+    await loadModulesForIds(definition.moduleIds.map(mathsgoLegacyModuleId));
+    generateFromDefinition(definition);
+  }catch(error){
+    alert(error&&error.message?error.message:'Impossible de préparer cette série.');
+  }finally{
+    modulePreparationInProgress=false;
+    updateGenerateButtonLabel();
+  }
 }
 
 document.querySelectorAll('.segmented-control').forEach(group=>{
@@ -506,7 +517,7 @@ function updateSetupActions(){
     const assistance=document.getElementById('visualMode').value==='with'?'Avec aide':'Sans aide';
     settingsSummary.textContent=level+' · '+count+' questions · '+experience+' · '+assistance;
   }
-  if(generateButton) generateButton.disabled=selectedCount===0;
+  if(generateButton) generateButton.disabled=selectedCount===0||modulePreparationInProgress;
   if(generateCount) generateCount.textContent=selectedCount?' · '+selectedCount:'';
   if(shareButton) shareButton.disabled=selectedCount===0;
 }
@@ -514,7 +525,7 @@ function updateGenerateButtonLabel(){
   const button=document.getElementById('generateButton');
   const mode=document.getElementById('experienceMode');
   const label=button?.querySelector('.generate-label');
-  if(label&&mode) label.textContent=mode.value==='interactive'?'Lancer l’entraînement':'Lancer le diaporama';
+  if(label&&mode) label.textContent=modulePreparationInProgress?'Préparation…':(mode.value==='interactive'?'Lancer l’entraînement':'Lancer le diaporama');
   updateSetupActions();
 }
 document.getElementById('experienceMode').addEventListener('change',updateGenerateButtonLabel);
