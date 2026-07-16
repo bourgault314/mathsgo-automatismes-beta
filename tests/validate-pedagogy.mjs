@@ -58,6 +58,10 @@ const sources=[
   'auto/scripts/shared/pedagogy/geometry/dnb_26.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_26b.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_27.js',
+  'auto/scripts/shared/pedagogy/data/dnb_28.js',
+  'auto/scripts/shared/pedagogy/data/dnb_29.js',
+  'auto/scripts/shared/pedagogy/data/dnb_30.js',
+  'auto/scripts/shared/pedagogy/data/dnb_31.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_01.js',
   'auto/scripts/modules/numbers/dnb_02.js',
@@ -89,6 +93,10 @@ const sources=[
   'auto/scripts/modules/geometry/dnb_26.js',
   'auto/scripts/modules/geometry/dnb_26b.js',
   'auto/scripts/modules/geometry/dnb_27.js',
+  'auto/scripts/modules/data/dnb_28.js',
+  'auto/scripts/modules/data/dnb_29.js',
+  'auto/scripts/modules/data/dnb_30.js',
+  'auto/scripts/modules/data/dnb_31.js',
   'auto/scripts/modules/numbers/dnb_38.js',
   'auto/scripts/modules/numbers/dnb_09.js'
 ];
@@ -121,6 +129,10 @@ globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(
 globalThis.__trigonometryReasoningQuestionNumbers=MODULE_DNB_26.questions.map(question=>Number(question.n));
 globalThis.__trigonometryCalculationQuestionNumbers=MODULE_DNB_26B.questions.map(question=>Number(question.n));
 globalThis.__transformationQuestionNumbers=MODULE_DNB_27.questions.map(question=>Number(question.n));
+globalThis.__probabilityQuestionNumbers=MODULE_DNB_28.questions.map(question=>Number(question.n));
+globalThis.__frequencyQuestionNumbers=MODULE_DNB_29.questions.map(question=>Number(question.n));
+globalThis.__meanQuestionNumbers=MODULE_DNB_30.questions.map(question=>Number(question.n));
+globalThis.__medianQuestionNumbers=MODULE_DNB_31.questions.map(question=>Number(question.n));
 globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
 globalThis.__pythagorasQuestionNumbers=MODULE_DNB_24.questions.map(question=>Number(question.n));
 globalThis.__pythagorasTactileQuestionNumbers=MODULE_DNB_24_TACTILE.questions.map(question=>Number(question.n));
@@ -131,7 +143,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==32) fail(`Trente-deux modules pédagogiques attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==36) fail(`Trente-six modules pédagogiques attendus, ${modules.length} trouvé(s).`);
 
 function assertClassifiedModule(id,bankNumbers,courseKind,expected){
   const module=registry?.getModule(id);
@@ -206,6 +218,45 @@ assertClassifiedModule('dnb_08',context.__divisibilityQuestionNumbers,'divisibil
   9:['justifier-par-somme-chiffres','qcm-one','none',null],
   10:['partage-sans-reste','qcm-one','optional','arithmetic.equal-sharing-board']
 });
+
+assertClassifiedModule('dnb_28',context.__probabilityQuestionNumbers,'probability',expectedQuestions(
+  [[1,2,3,5,9],'calculer-equiprobabilite','numeric','none',null],
+  [[4],'reconnaitre-probabilite-de-pair','qcm-multiple','none',null],
+  [[6],'reconnaitre-probabilite-mot','qcm-one','none',null],
+  [[7],'composer-deux-epreuves','numeric','none',null],
+  [[8],'reconnaitre-evenement-impossible','qcm-one','none',null],
+  [[10],'calculer-evenement-contraire','numeric','none',null]
+));
+
+assertClassifiedModule('dnb_29',context.__frequencyQuestionNumbers,'frequency',expectedQuestions(
+  [[1,2,5,6],'calculer-frequence-fraction','numeric','none',null],
+  [[3],'calculer-frequence-decimale','numeric','none',null],
+  [[4],'reconnaitre-formule-frequence','qcm-one','none',null],
+  [[7],'retrouver-effectif','numeric','none',null],
+  [[8],'reconnaitre-frequence-fraction','qcm-one','none',null],
+  [[9],'convertir-en-pourcentage','numeric','none',null],
+  [[10],'choisir-population-reference','qcm-one','none',null]
+));
+
+assertClassifiedModule('dnb_30',context.__meanQuestionNumbers,'mean',expectedQuestions(
+  [[1,2,10],'calculer-moyenne-simple','numeric','optional',null],
+  [[3,9],'calculer-moyenne-ponderee','numeric','optional',null],
+  [[4],'reconnaitre-formule-moyenne','qcm-one','none',null],
+  [[5],'retrouver-valeur-manquante','numeric','optional',null],
+  [[6],'passer-somme-moyenne','numeric','optional',null],
+  [[7],'passer-moyenne-somme','numeric','optional',null],
+  [[8],'controler-bornes-moyenne','qcm-one','optional',null]
+));
+
+assertClassifiedModule('dnb_31',context.__medianQuestionNumbers,'median',expectedQuestions(
+  [[1,2,9],'mediane-impaire-non-ordonnee','numeric','none',null],
+  [[3],'mediane-paire-non-ordonnee','numeric','none',null],
+  [[4,10],'mediane-paire-ordonnee','numeric','none',null],
+  [[5],'reconnaitre-methode-mediane','qcm-one','none',null],
+  [[6,7],'mediane-donnees-tableau','numeric','none',null],
+  [[8],'refuter-position-ecrite','qcm-one','none',null],
+  [[11,12],'calculer-etendue','numeric','none',null]
+));
 
 assertClassifiedModule('dnb_16',context.__figureCodingQuestionNumbers,'figure_coding',expectedQuestions(
   [[1,2,3],'reconnaitre-triangle-code','qcm-one','essential',null],
@@ -724,9 +775,13 @@ const thalesMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb
 const trigonometryReasoningMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_26.js');
 const trigonometryCalculationMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_26b.js');
 const transformationMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_27.js');
+const probabilityMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_28.js');
+const frequencyMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_29.js');
+const meanMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_30.js');
+const medianMetadataPosition=index.indexOf('scripts/shared/pedagogy/data/dnb_31.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
 const appPosition=index.indexOf('scripts/04-app.js');
-const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition];
+const pedagogyPositions=[fractionDecimalMetadataPosition,placeValueMetadataPosition,fractionOperationsMetadataPosition,fractionMultiplyDivideMetadataPosition,fractionPercentMetadataPosition,equivalentFormsMetadataPosition,relationMetadataPosition,reductionMetadataPosition,substitutionMetadataPosition,expandFactorMetadataPosition,equationMetadataPosition,numberLineMetadataPosition,coordinateMetadataPosition,figureCodingMetadataPosition,angleVocabularyMetadataPosition,angleMetadataPosition,conversionMetadataPosition,solidMetadataPosition,perimeterMetadataPosition,areaMetadataPosition,volumeMetadataPosition,pythagorasMetadataPosition,thalesMetadataPosition,trigonometryReasoningMetadataPosition,trigonometryCalculationMetadataPosition,transformationMetadataPosition,probabilityMetadataPosition,frequencyMetadataPosition,meanMetadataPosition,medianMetadataPosition];
 if(registryPosition<0||pedagogyPositions.some(position=>position<registryPosition||slideshowPosition<position||appPosition<position)){
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
@@ -790,4 +845,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — 32 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15.');
+if(!process.exitCode) console.log('OK — 36 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15, Données 4/9.');
