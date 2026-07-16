@@ -33,14 +33,71 @@ types de questions, les réponses attendues, le rôle des figures et les aides
 associées sans ouvrir le moteur.
 
 `arithmetic.relation-bar` est le premier socle commun pour les schémas en
-barres. Il couvre actuellement le double, le triple, le quadruple, la moitié,
-le quart, le prédécesseur et le successeur. Ses dix états de référence sont
-également figés sans changement graphique.
+barres. Il couvre le double, le triple, le quadruple, le quintuple et le
+décuple, ainsi que la moitié, le tiers, le quart, le cinquième, le dixième, le
+prédécesseur et le successeur. La construction reprend la version la plus
+riche déjà publiée : parts au-dessus du tout pour un multiple, parts sous le
+tout pour une fraction, première part colorée, prolongements pointillés et
+flèche ×n ou ÷n. Les formats en dix parts sont déclarés trop denses pour un
+téléphone et restent destinés à l’ordinateur, la projection ou l’impression.
+
+`algebra.relation-tiles` sort du gros moteur les représentations symboliques
+utilisées par le même module : rectangles `n`, carré `n²`, unités positives ou
+négatives et tuile `n/q` subdivisée. Les sept compositions de référence
+(double, triple, moitié, quart, prédécesseur, successeur et carré) gardent la
+géométrie historique du moteur, mais peuvent maintenant être appelées depuis
+une question, une aide ou une fiche sans recopier leur SVG.
+
+Le registre pédagogique classe aussi les 18 gabarits de `dnb_09` en huit
+tâches : synthèse, calcul d’un multiple, calcul d’une fraction unitaire,
+nombre voisin, opération inverse et reconnaissance des trois familles
+d’expressions. Le catalogue indique pour chacune le type de réponse, le rôle
+facultatif de la figure et l’aide associée.
 
 `arithmetic.fraction-percent-bar` conserve les découpages en parts égales,
 les couleurs des fractions usuelles, les grilles de 1 %, ainsi que la forme et
 le placement des accolades. Sept cas de référence couvrent les demis, quarts,
 huitièmes et pourcentages usuels ; leurs états question/correction sont testés.
+
+`arithmetic.equal-sharing-board` reprend les gabarits imprimables « Partager
+équitablement en 2, 3, 4 ou 5 ». Ce n’est pas une deuxième barre de fractions :
+le composant représente un espace de manipulation, avec une ou deux quantités
+de départ, les boîtes arrondies bleu marine, les flèches turquoise et les
+espaces de réception. Il reste lisible sur téléphone et peut aussi servir à
+produire une fiche ou une diapositive.
+
+`algebra.inquiry-bar` conserve les étapes des enquêtes additives et
+multiplicatives : représenter les inconnues, aligner les parts, enlever les
+surplus, puis partager la quantité restante. Les zones roses et orange, les
+accolades placées sous les barres, les hachures, la coupe rouge et les lignes
+de division bleues appartiennent au composant. Il accepte deux ou trois
+inconnues additives ainsi que les facteurs multiplicatifs 2, 3, 4 et `n`.
+
+Le cas multiplicatif ×2 est figé selon le gabarit validé : à l’étape 2, seules
+les accolades « Petite part » et « Grande part » nomment les zones ; il n’y a
+ni « Total » ni « unités » dans les barres. L’étape 3 présente trois cases
+orange pointillées. L’étape 4 ne conserve que les deux résultats pointillés et
+il n’existe pas d’étape 5.
+
+`arithmetic.fraction-wall` extrait le moteur graphique du générateur public
+sans le remplacer. Il accepte une liste de dénominateurs entre 1 et 24, les
+couleurs pédagogiques ou pastel, une version noir et blanc et les écritures en
+fraction, décimal ou pourcentage. Les murs compacts et les équivalences sont
+compatibles téléphone ; le mur de base, plus dense, est réservé à
+l’ordinateur, la projection et l’impression.
+
+`algebra.algebra-tiles` extrait le langage du dossier maître Calcul littéral :
+les carrés `x²`, les rectangles `x` et les unités, chacun en version positive
+ou négative, avec contour noir, écriture mathématique interne et légère ombre.
+Il conserve les quatre palettes prévues par la source : vert/rouge,
+bleu/jaune, Mathigon et blanc/gris. Une expression peut ainsi être composée,
+réduite ou montrée en correction sans recopier une image du livret.
+
+`algebra.area-model` prolonge ces tuiles dans les grilles du livret. Les
+facteurs sont placés sur les bords et les produits partiels apparaissent en
+correction. Le style `tiles` sert à développer une double distributivité ; le
+style `table` reprend les cases grises utilisées pour retrouver un facteur
+commun. Les signes et coefficients sont des paramètres, pas des dessins figés.
 
 `numbers.number-line` produit la droite graduée utilisée par les dix-huit
 gabarits de `dnb_14`. Le mode historique conserve exactement leurs coordonnées.
@@ -131,11 +188,30 @@ sans être redessinés.
 
 ## Référence PythaBarre
 
-`geometry.pythagoras-mill` extrait le moulin de la fiche PythaBarre v34 : le
-triangle rectangle, les trois carrés, la palette bleu/orange/vert et les
-variantes relation, recherche de l’hypoténuse et recherche d’un côté. Il est
-d’abord exposé dans le catalogue. Son utilisation par `dnb_24` sera faite
-après validation de ses proportions sur téléphone et en projection.
+La fiche PythaBarre v34 fournit désormais trois constructions séparées :
+
+- `geometry.pythagoras-mill` dessine le triangle rectangle et les trois carrés
+  construits sur ses côtés ;
+- `geometry.pythagoras-bar` construit la barre du carré de l’hypoténuse et les
+  deux carrés qui la composent. Les trois rectangles sont réellement accolés,
+  les couleurs sont reprises dans l’égalité et la largeur des deux parties
+  peut être proportionnelle aux carrés calculés ;
+- `geometry.pythagoras-reasoning` produit la rédaction guidée, de la
+  justification à la vérification. Il encode explicitement les deux chemins :
+  regrouper les carrés connus pour chercher l’hypoténuse, ou soustraire le
+  carré connu pour chercher un côté de l’angle droit.
+
+Chaque composant reçoit les sommets, les noms de côtés, les longueurs, le côté
+cherché, l’unité et l’étape à afficher. Les aperçus du catalogue sont donc
+générés à partir de ces paramètres : aucune capture de la fiche n’est
+utilisée.
+
+Le module `dnb_24` est maintenant classé et branché. Les questions de calcul
+affichent PythaBarre comme aide facultative, puis la correction utilise la
+rédaction guidée avec le bon chemin, addition pour l’hypoténuse ou soustraction
+pour un côté. Le cours appelle les mêmes composants et filtre ses rubriques en
+fonction de la tâche : condition, égalité, calcul, racine, réciproque ou
+vérification.
 
 L’audit complet du lot reçu est conservé dans
 `docs/AUDIT-RESSOURCES-2026-07-16.md`.

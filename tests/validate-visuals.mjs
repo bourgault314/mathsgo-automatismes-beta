@@ -11,11 +11,19 @@ const visualSources = [
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/equal-sharing-board.js',
+  'auto/scripts/shared/visuals/arithmetic/fraction-wall.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
+  'auto/scripts/shared/visuals/algebra/inquiry-bar.js',
+  'auto/scripts/shared/visuals/algebra/algebra-tiles.js',
+  'auto/scripts/shared/visuals/algebra/area-model.js',
+  'auto/scripts/shared/visuals/algebra/relation-tiles.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
-  'auto/scripts/shared/visuals/geometry/pythagoras-mill.js'
+  'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js'
 ];
 const code = visualSources
   .map(path => fs.readFileSync(new URL(path, root), 'utf8'))
@@ -35,7 +43,7 @@ const registry = context.MATHSGO_VISUALS;
 
 if (!registry) fail('Le registre visuel global est absent.');
 const components = registry ? registry.list() : [];
-if (components.length !== 11) fail(`11 composants visuels attendus, ${components.length} trouvé(s).`);
+if (components.length !== 19) fail(`19 composants visuels attendus, ${components.length} trouvé(s).`);
 
 const relativeTokens = registry?.get('numbers.relative-tokens');
 if (!relativeTokens) fail('Le composant numbers.relative-tokens est absent.');
@@ -175,25 +183,37 @@ for (const testCase of cases) {
 
 const relationBar = registry?.get('arithmetic.relation-bar');
 if (!relationBar) fail('Le composant arithmetic.relation-bar est absent.');
-if (relationBar && relationBar.presets.length !== 5) fail('Cinq préréglages de schémas en barres sont attendus.');
+if (relationBar && relationBar.version !== '1.1.0') fail('Version 1.1.0 attendue pour les schémas de relations.');
+if (relationBar && relationBar.presets.length !== 13) fail('Treize préréglages de schémas en barres sont attendus.');
 if (relationBar && context.relationBarSvg !== relationBar.render) {
   fail('Le point d’entrée historique relationBarSvg doit utiliser le composant enregistré.');
 }
-const relationCases = relationBar ? [
-  { data: { kind: 'multiple_direct', factor: 2, value: 7, result: 14 }, expected: ['a871998d70900cbd3107e077c667582774609d93c630ce2aa1b4d05b760f4ed9', '0f9bfd51390cf9ddd7537b54b80b34203d3450d6d0bec5df7e7a5a332ff237a2'] },
-  { data: { kind: 'multiple_inverse', factor: 3, value: 8, result: 24 }, expected: ['e16d98130bb6711f647d486d1a4d4abed2539368eb1c21e7612ddb324d901fd7', '970cdff01153a337835333e06bc4afa15d153b03c8b5a6c07d1edbb0ccdec173'] },
-  { data: { kind: 'fraction_direct', divisor: 4, value: 20, result: 5 }, expected: ['008d9f6dd7a98576aa3f1b2b7fdedbd311c0141826af9d618a54d00fc9738665', 'bc88ea4fd7cb6281b61133b8f5952415a9937ba7839eeec9ec40e1155eaad19a'] },
-  { data: { kind: 'predecessor', value: 42, result: 41 }, expected: ['42bc8f235366141b0a40d988c4fab44dbc228393c802a9dfd06ec312a54aa6f2', 'd43c256bb85a59099a7600883dff8cbebc2db6f9b528bba2d212434ac7d73dbd'] },
-  { data: { kind: 'successor', value: 42, result: 43 }, expected: ['2fe48065cb63ce3db6a7e5cd4d7ea196fb4bee6809f324039c30526020c8f139', '04408891107e5bf1c4a2ff973c4af1586d6c42c6ecca0a117f7e8b1650a8e1b5'] }
-] : [];
-for (const testCase of relationCases) {
-  for (const revealed of [false, true]) {
-    const actual = hash(relationBar.render(testCase.data, revealed));
-    if (actual !== testCase.expected[revealed ? 1 : 0]) {
-      fail(`Un rendu de schéma en barres a changé (${actual}).`);
-    }
+const relationHashes=new Map([
+  ['double',['4715816637837a3bf32e1e306dc1078d0d70e9b342fe700f7982177d69d3f537','a14b9cc1acf6244896e69904cf0cdfd81c50b8560d7139eedab51261b688b986']],
+  ['triple',['74df7bd57d3ee3501a06f19269a96bc354f7e8c315d3dbcb1c77b35d0fd24ced','abbaa0fbdd1127a1fe1ef24508dd2a8917d9326e36f9972c3cd4ec41965d43c0']],
+  ['quadruple',['0e4955e99239120487ba9e4f416aa48ca946859349a4d53847325c95655f7e41','5730d732041fcf5bf2921697062e0e99284a0eda4c859eaac5814b4c188733f3']],
+  ['quintuple',['24362944a144b97ea2704fba0c257277f1c2e91d07b5ae3c10dcce7430098a86','6cef99fd06b1e5a7c47fe34716cef01c3628d584702221be2b3f4d6ce1eea240']],
+  ['decuple',['e9fc33dea197d2b92c682bb119260dc7a22c498e5275700f77f08866c360a8f4','96691e6522cdd1d59954815b31f04760bc2ac7d5c118acd0ce047a110fafaade']],
+  ['triple-inverse',['54bc1a7ac740667f9032c5f7299687f19210a26c0e7caca8799e445d5199bba1','4bd407e8a50afe3f402fd855b25ce1a17e5d9ac0363a50416c609ec5c480eb81']],
+  ['moitie',['7ee166d8a8ccb0a33529e61303b5fbe7b9a6d91047891a8254ff1e3e644bbd6d','ede9e22dd572f8239027cc66a6074f9391fc7bf25c77f8f9a2f8e87fa71447b0']],
+  ['tiers',['8891a166ca3410f8997f1e71441285577a9b31e22981b007ca0b0d42954dc239','cfb4aa64b80d64a3e207d03678a5f607bf1861185e605be616af15dc4d5139dd']],
+  ['quart',['f5365f68bdbb5cd27062def79d0839eb8258e879715e620479f1b2f023069543','a1d62e8c9bb4904d89b4b8ac8a7bc2e183556961cb5f7994f25bb3ea16a0b9b9']],
+  ['cinquieme',['3497c38b10d4c537ecbf1f21df55e5115a644cb8a5076b87935cd57ea5e3768e','e122b2357fb635e9dc2c257afab6cb3e47ca2c4dc2f2bd6a7e6691ccfe25a1cc']],
+  ['dixieme',['a0dd7446db36c3dab460dc46d2b4bd851e2292f4f705e1e762c4e78b1ec93589','94f9a1b2976fa83a39a91838411254da6ea24116dd148abf808a3dc610813d83']],
+  ['predecesseur',['d16314da1b71fc16deda28af15ad7ac89e3abf00e49995ae3cecf01ce3664286','41244493ef0baf1d98a4f7ca3d07b5d19be312e77fc80d471f661dbf1db64ebd']],
+  ['successeur',['d9f141188da706dc1a7acf03026242a6473405f087b5ef16cab89bf7cb405acb','07478579aa2159a68494f226bf4a7de47cbe3a553aa92171426a35429e844ee8']]
+]);
+for(const preset of relationBar?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(relationBar.render(preset.data,correction));
+    if(actual!==relationHashes.get(preset.id)?.[correction?1:0]) fail(`Le schéma en barres ${preset.id} a changé (${actual}).`);
   }
 }
+for(const denseId of ['decuple','dixieme']) if(relationBar?.presets.find(preset=>preset.id===denseId)?.supports.includes('phone')) fail(`Le schéma dense ${denseId} ne doit pas être proposé tel quel sur téléphone.`);
+const multipleModel=relationBar?.render({kind:'multiple_direct',factor:5,value:5,result:25},false)||'';
+const fractionModel=relationBar?.render({kind:'fraction_direct',divisor:5,value:25,result:5},false)||'';
+if(!multipleModel.includes('× 5')||!multipleModel.includes('LE QUINTUPLE')) fail('Le modèle multiplicatif doit afficher le regroupement ×5.');
+if(!fractionModel.includes('÷ 5')||!fractionModel.includes('le cinquième')) fail('Le modèle de fraction doit afficher le partage ÷5.');
 
 const thales = registry?.get('geometry.thales-configuration');
 if (!thales) fail('Le composant geometry.thales-configuration est absent.');
@@ -259,12 +279,222 @@ for(const preset of pythagorasMill?.presets||[]){
   }
 }
 
+const pythagorasBar=registry?.get('geometry.pythagoras-bar');
+if(!pythagorasBar) fail('Le composant geometry.pythagoras-bar est absent.');
+if(pythagorasBar&&pythagorasBar.version!=='1.0.0') fail('Version 1.0.0 attendue pour PythaBarre.');
+if(pythagorasBar&&pythagorasBar.presets.length!==6) fail('Six états de référence sont attendus pour PythaBarre.');
+if(pythagorasBar&&context.pythagorasBar!==pythagorasBar.render) fail('Le point d’entrée pythagorasBar doit utiliser le composant enregistré.');
+const pythagorasBarHashes=new Map([
+  ['vierge',['561f1f401a3406f2e1f2ff93b0e2de2de9aa82be7e2e548aef5841d496157728','561f1f401a3406f2e1f2ff93b0e2de2de9aa82be7e2e548aef5841d496157728']],
+  ['relation-lettres',['ac76ace00abd54c3b3d42d5ec4d864304404968fc1aebd5e9da4c7b6cc06cb65','ac76ace00abd54c3b3d42d5ec4d864304404968fc1aebd5e9da4c7b6cc06cb65']],
+  ['hypotenuse-longueurs',['0545b6dc7f5bc4bd68273d3dada42d76751eb896cd91b746c4fd5b4a90735050','c5289e3a4fdd49a393cbec2701da5e7636b833cb200ce4d7999554f9e00b9a9c']],
+  ['hypotenuse-carres',['a378350923495933aef11dcf09074f96fa501e528159a82e3f5623176db11cc6','cebdecb54eb58566dabb7983f0ece1ef80d315e209a77a4c94f71f850dee9283']],
+  ['cote-longueurs',['668a41e4be76e01d4e1dd598baf5c7c534b7b9cec1443c0df1ff5e4b931f47bc','c5289e3a4fdd49a393cbec2701da5e7636b833cb200ce4d7999554f9e00b9a9c']],
+  ['cote-carres',['4cc586c17fbc83d88fc9f010730a4f989b12d42c4c1a5e9762484cbb7d26a8bd','cebdecb54eb58566dabb7983f0ece1ef80d315e209a77a4c94f71f850dee9283']]
+]);
+for(const preset of pythagorasBar?.presets||[]){
+  if(!preset.supports.includes('phone')||!preset.supports.includes('print')) fail(`PythaBarre ${preset.id} doit fonctionner sur téléphone et à l’impression.`);
+  for(const correction of [false,true]){
+    const actual=hash(pythagorasBar.render(preset.data,correction));
+    if(actual!==pythagorasBarHashes.get(preset.id)?.[correction?1:0]) fail(`PythaBarre ${preset.id} a changé (${actual}).`);
+  }
+}
+const touchingBar=pythagorasBar?.render({phase:'squares',target:'hypotenuse',values:{legA:3,legB:4,hypotenuse:5},proportional:true},false)||'';
+if(!touchingBar.includes('y="114"')||!touchingBar.includes('x="289"')) fail('Les trois rectangles de PythaBarre doivent rester accolés et proportionnels aux carrés 9 et 16.');
+
+const pythagorasReasoning=registry?.get('geometry.pythagoras-reasoning');
+if(!pythagorasReasoning) fail('Le composant geometry.pythagoras-reasoning est absent.');
+if(pythagorasReasoning&&pythagorasReasoning.version!=='1.0.0') fail('Version 1.0.0 attendue pour la rédaction Pythagore.');
+if(pythagorasReasoning&&pythagorasReasoning.presets.length!==12) fail('Douze étapes de rédaction Pythagore sont attendues.');
+if(pythagorasReasoning&&context.pythagorasReasoning!==pythagorasReasoning.render) fail('Le point d’entrée pythagorasReasoning doit utiliser le composant enregistré.');
+const pythagorasReasoningHashes=new Map([
+  ['justifier',['0317529ed2346a86e8e1429862f5a2363b4608dcb63f8dca30714140a87cb9cf','e634eb9079b140fbd2badd4a99e83fba63565e32a573a3cc6f3bed64d3e50640']],
+  ['relation',['3954cd14b981a564c3fa4338de1d7ffe6b2f6dc97932950640ec0e2776505062','d1315af5f0d338cad81332753bb18c30196f6ff987097e2ad7e1de304ab4d668']],
+  ['hypotenuse-remplacer',['49d7c6b3aabff93947e786ffeff3180e72d69e03cb15933754e616215e7a8a3c','e80943a71acbf2a8aef994fbf48c86486a59f8453a62092d15911aa819bda91e']],
+  ['hypotenuse-carres',['e7c1decaf63f16f1f54922f123fea09aa407624c9dcab1c97ed95635c38ccccf','e1ae3454e7d31d8b1de748b4b46c4b046e157051b95689b0e7ffd80056f9415b']],
+  ['hypotenuse-regrouper',['6792311b502ff791720ba0a8ee5d5e6237200b24a11c59487dca2576cbdc51d6','495b8b36ec7322d46a290d3a26868c71a57780d74aaf3440d3152b4f6eaef610']],
+  ['hypotenuse-racine',['923e2adc5462ba3c0d546fbd86321904f68e51bb1299b7108ee7c13efc8f560b','a00fbdb8e67193924cd101cf200f25b63c049d53caf3468ba4015d3331ccdb6e']],
+  ['cote-remplacer',['49d7c6b3aabff93947e786ffeff3180e72d69e03cb15933754e616215e7a8a3c','49fd7d24e1b3d405c4afcbf0f9f43bba8657045efef2c5d82a69cd6cd128c6c8']],
+  ['cote-carres',['e7c1decaf63f16f1f54922f123fea09aa407624c9dcab1c97ed95635c38ccccf','98f2605907e052434e042be7ba56e6ff5341812782c6cc932325ad8dbadec92d']],
+  ['cote-soustraire',['9c4f19faa0f4d30fdcbd7c1df345a0ac74194149592ca33a28cb89b1896ed208','1d241bb0ab69fe85db7e6e36708c22e1d221cf0cf7f060dbfbe5a36f46cfbb5b']],
+  ['cote-racine',['923e2adc5462ba3c0d546fbd86321904f68e51bb1299b7108ee7c13efc8f560b','0cd871f7a34ac40ba6c3081d1d4c7b1d1191e0d9e823315d2c1145468346d3e3']],
+  ['reponse',['44edd234ca176eba8fdccfe08601208bcb7f482c0d3d2534d2b5af0633de9e4f','2b5526bf811e5ffb0d643435e8c79c8f4a4ef16e8b4af883fc31f80022b1afbd']],
+  ['verification',['a744329070dea9e3ca3e1b21990fee4ff0b0f25e0b0bb1daca16d1e25229ab7e','038004603a83b51067acfd3ec326e6641276d920a3c1ed6482a41cb54246b34f']]
+]);
+for(const preset of pythagorasReasoning?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(pythagorasReasoning.render(preset.data,correction));
+    if(actual!==pythagorasReasoningHashes.get(preset.id)?.[correction?1:0]) fail(`L’étape Pythagore ${preset.id} a changé (${actual}).`);
+  }
+}
+const legPath=pythagorasReasoning?.render({step:'isolate',target:'legA',values:{legA:3,legB:4,hypotenuse:5}},true)||'';
+const hypotenusePath=pythagorasReasoning?.render({step:'isolate',target:'hypotenuse',values:{legA:3,legB:4,hypotenuse:5}},true)||'';
+if(!legPath.includes('25 − 16 = 9')) fail('Le chemin côté doit soustraire le carré connu.');
+if(!hypotenusePath.includes('BC² = 25')) fail('Le chemin hypoténuse doit regrouper les deux carrés connus.');
+
 const fractionPercent = registry?.get('arithmetic.fraction-percent-bar');
 if (!fractionPercent) fail('Le composant arithmetic.fraction-percent-bar est absent.');
 if (fractionPercent && fractionPercent.presets.length !== 7) fail('Sept préréglages fractions/pourcentages sont attendus.');
 if (fractionPercent && context.fractionPercentBarSvg !== fractionPercent.render) {
   fail('Le moteur doit utiliser le composant fractions/pourcentages enregistré.');
 }
+
+const equalSharing=registry?.get('arithmetic.equal-sharing-board');
+if(!equalSharing) fail('Le composant arithmetic.equal-sharing-board est absent.');
+if(equalSharing&&equalSharing.version!=='1.0.0') fail('Version 1.0.0 attendue pour le partage équitable.');
+if(equalSharing&&equalSharing.presets.length!==4) fail('Quatre gabarits de partage équitable sont attendus.');
+if(equalSharing&&context.equalSharingBoard!==equalSharing.render) fail('Le point d’entrée equalSharingBoard doit utiliser le composant enregistré.');
+const equalSharingHashes=new Map([
+  ['deux-morceaux',['6381ae903bb916aab7a2709d59a1911b47fa0444a8f4d048794a2240099efebf','ffbe2ba11c217d2789f61a88a7091101f9115a2b0134024134cbce769811c8d1']],
+  ['partage-trois',['1d5ebd51b598c191c3b32945760d835c74c917eaa56254d4321d731a6cde2554','8fc33ce6e65e738d03ffba12e3bbdd06f22f650b189027b03d92d37d4afcede1']],
+  ['partage-quatre',['996bfc2ad23d75b66357496819aeda7a01eecd9baa580e44b270fded6d4b9d8e','27fd52c9bd03231b828f552247983b4f0dcefa7f36b2de39d96ae4c531eb066c']],
+  ['partage-cinq',['0fc33ee026d40bb2332a6cafd68f13a99404a98c3221b825f85a884f453d226f','82ebcb93579c2f77b8cb54165f504564d491caafef09c7df3be993f772a1d92a']]
+]);
+for(const preset of equalSharing?.presets||[]){
+  if(!preset.supports.includes('phone')||!preset.supports.includes('print')) fail(`Le partage ${preset.id} doit fonctionner sur téléphone et à l’impression.`);
+  const question=equalSharing.render(preset.data,false),correction=equalSharing.render(preset.data,true);
+  if(!question.includes('class="equal-sharing-svg"')) fail(`Le partage ${preset.id} doit produire le SVG commun.`);
+  if(question===correction) fail(`Le partage ${preset.id} doit avoir un état de correction.`);
+  for(const correctionState of [false,true]){
+    const actual=hash(equalSharing.render(preset.data,correctionState));
+    if(actual!==equalSharingHashes.get(preset.id)?.[correctionState?1:0]) fail(`Le partage ${preset.id} a changé (${actual}).`);
+  }
+}
+
+const inquiryBar=registry?.get('algebra.inquiry-bar');
+if(!inquiryBar) fail('Le composant algebra.inquiry-bar est absent.');
+if(inquiryBar&&inquiryBar.version!=='1.0.0') fail('Version 1.0.0 attendue pour les schémas d’enquêtes.');
+if(inquiryBar&&inquiryBar.presets.length!==15) fail('Quinze étapes de référence sont attendues pour les enquêtes.');
+if(inquiryBar&&context.inquiryBar!==inquiryBar.render) fail('Le point d’entrée inquiryBar doit utiliser le composant enregistré.');
+const inquiryHashes=new Map([
+  ['additif-deux-representer',['62d75c7b59080a17309e0b3c0f5f02bc11e77f45456c2877abe0f66eb11687c9','2ab70fb7a7f59a019ff8a5a414c0cad458c8ef53d72902931b0bf163ddb6dfa3']],
+  ['additif-deux-aligner',['bce2f110e0383901477d0a22f8b0e80ab230dae795bd42dc985a48f53f68c905','fb5c20f07a420145468bd34d8a561c3b5094dda4e669050972d1666687ea9596']],
+  ['additif-deux-egaliser',['1bb742a3d2ffab840fcc898127e160e9fa8d0fd44dc23c9b9e64896a95966389','018e2ad60a46f794e0a05ec1fe0c274c5061243f1ce68fd00497be376cca6594']],
+  ['additif-deux-diviser',['68e896941fe41ff570d5a9b40395f2890820256641f534136443d56b1acdaaf5','3aa860e919382a8e7d1311e8e70e0a605a89bb4d61eb2bbb6dd9a973ad4ad821']],
+  ['additif-trois-representer',['3010fcf3fa307e7268d99153a40d2c0c050f1cbebc5b5a551e390a3485fad3c1','80e4fdf55a9c517bfca9d8567cdf6039bc7302e34c4e3e9ec4d60d47d02eb4bc']],
+  ['additif-trois-aligner',['dd5f3c37ab57f4193c69995e7f3648d377f894c93b9f827cda2c2c0b0ee40e64','2e4d7168de8a8f1f3efcdcdffb03fe8bdc20a836961e64c3eeee4ad683aaa138']],
+  ['additif-trois-egaliser',['e315b75f24830e90373919596e5e333a8d3af5a352a7d205d73ce1c722f9c9ce','e3a4046bae7e9b6c784ac99f8ccfbcfd30824875ea9a35680cec20546adec169']],
+  ['additif-trois-diviser',['3c0f9b50e33f9e1154dad7b45c5550cbedfea9c34e822da5b66b770b5fdb6072','d26bef1c4f43a1f65f2ce1ea993b009f03097daab204687f1ad19339695ee922']],
+  ['multiplicatif-x2-representer',['9c2c437d2c9baccfebee3e385620ca6511b9f18d7bb73f4d5dfe70281c6d26b2','8de775cdc52ea0463baeced187e845b318dbfa44c094d76586fe561cb8c4d48d']],
+  ['multiplicatif-x2-aligner',['776df2b12b118d4707e560fc7dd2662dd10ba4fde9f9c496c90ac3afd23c24a8','8b3433490c640f9a32da0c89445b25b8cc010a04e9efe245e8718545ef69de11']],
+  ['multiplicatif-x2-diviser',['8e7986e7db6f370dcb34680766b956fbddc12a51834a6e75a6b3ab9e45a7c8e2','6d60209671cac70b1b2953af84f1fe4c668c5faabe16e2c3891544324a4e72d2']],
+  ['multiplicatif-x2-resultat',['124e546e056bc1cc02b9348d097eff86666ccbbef28f01e8a7bcae0602765518','894bbcda3477470346ff38cb748a47d9d562fd19bce5a8ab5ee496d700c4b4d1']],
+  ['multiplicatif-x3-aligner',['47faec084d361ba53ee595216ee693d49d1b8c82df79d127b3eb10f26c583f6b','275938d157469a3583cc456e8f493d8f2c33761fd0d35a13f22ad0ec348106f6']],
+  ['multiplicatif-x4-aligner',['79570bdf68534006db314cb9e20e650f3c363b9a2dc91a02d595c8c994abc086','cde5cc9fb51efddeae98059b915cdccf283e919db0f0e4d8f95d63f7c8226ea4']],
+  ['multiplicatif-xn-aligner',['41e4b7eacf9bdc35113af78c10c66dd35e2ebf54ca4ef06e22a3d0a15da54fc5','4817aad33f7eb3abc45ffde69d2d6e727e59494f50c132dc3a2ace8a588599d1']]
+]);
+for(const preset of inquiryBar?.presets||[]){
+  if(!preset.supports.includes('phone')||!preset.supports.includes('print')) fail(`L’enquête ${preset.id} doit fonctionner sur téléphone et à l’impression.`);
+  const rendered=inquiryBar.render(preset.data,false);
+  if(!rendered.includes('class="inquiry-bar-svg"')) fail(`L’enquête ${preset.id} doit produire le SVG commun.`);
+  for(const correctionState of [false,true]){
+    const actual=hash(inquiryBar.render(preset.data,correctionState));
+    if(actual!==inquiryHashes.get(preset.id)?.[correctionState?1:0]) fail(`L’enquête ${preset.id} a changé (${actual}).`);
+  }
+}
+const multiplicativeX2Align=inquiryBar?.render({family:'multiplicative',factor:2,step:'align',total:36},false)||'';
+if(!multiplicativeX2Align.includes('Petite part')||!multiplicativeX2Align.includes('Grande part')) fail('L’étape ×2 alignée doit conserver les deux accolades nommées.');
+if(multiplicativeX2Align.includes('Total')||multiplicativeX2Align.includes('unité')) fail('L’étape ×2 alignée ne doit afficher ni Total ni unités dans les barres.');
+const multiplicativeX2Divide=inquiryBar?.render({family:'multiplicative',factor:2,step:'divide',total:36},false)||'';
+if((multiplicativeX2Divide.match(/fill="#f4c99f"/g)||[]).length!==3) fail('L’étape ×2 de division doit afficher trois cases orange.');
+if((multiplicativeX2Divide.match(/>…<\/text>/g)||[]).length!==3) fail('Les trois cases orange de l’étape ×2 doivent contenir seulement des points.');
+const multiplicativeX2Result=inquiryBar?.render({family:'multiplicative',factor:2,step:'result',total:36},false)||'';
+if((multiplicativeX2Result.match(/>…<\/text>/g)||[]).length!==2||multiplicativeX2Result.includes('Petite part')||multiplicativeX2Result.includes('Grande part')) fail('L’étape ×2 finale doit conserver uniquement les deux zones pointillées.');
+
+const fractionWall=registry?.get('arithmetic.fraction-wall');
+if(!fractionWall) fail('Le composant arithmetic.fraction-wall est absent.');
+if(fractionWall&&fractionWall.version!=='1.0.0') fail('Version 1.0.0 attendue pour le mur de fractions.');
+if(fractionWall&&fractionWall.presets.length!==6) fail('Six murs de fractions de référence sont attendus.');
+if(fractionWall&&context.fractionWall!==fractionWall.render) fail('Le point d’entrée fractionWall doit utiliser le composant enregistré.');
+const fractionWallHashes=new Map([
+  ['compact',['ad9090df9cf57f981a709a8ae358ec2c349d258f05f55256b6e1883cf9cd4f56','f78fdc4f8e10299b398d40d6e4861c8383c7ac7881d7b4a06447ddc05a46a5cc']],
+  ['equivalences',['7ca21bf182e99e6482ddaef1ba5d8d3d1c4672ad88347e47793ddd115461dbe9','a235e09e8d11a39f21b8e4cfccca617b116fd9114385e643eb92b2aab3c4e93f']],
+  ['base',['f0b4dae3fa6a70ee5aadd81bfca567fcf3a2beab2d881c2c77847d349309300d','af74c55d5dfdafaba705b201c5597391449c31e0ba4d224f9887434183cb4389']],
+  ['decimaux',['78111e80017b5c8be6d37f1c8c771678669091e96c4f5104f0e684930a0a0dd3','aac6a840255581dedd229bb3437f9ee6d562b1a9cdb03a45d705ee65e0cf8353']],
+  ['pourcentages',['78111e80017b5c8be6d37f1c8c771678669091e96c4f5104f0e684930a0a0dd3','d722a4ad3d9f905f55936397939f744931c87ef07e7b340225dc84ff614ea18b']],
+  ['impression-noir-blanc',['4b3dca4be37c6752502ade3b08db6fb8a9ea554116e501200e450d4b9fbc1f1b','b03664a908fb4d84f66278768026312fb4a94ea62cd870df230f2c57da4b340a']]
+]);
+for(const preset of fractionWall?.presets||[]){
+  for(const correctionState of [false,true]){
+    const actual=hash(fractionWall.render(preset.data,correctionState));
+    if(actual!==fractionWallHashes.get(preset.id)?.[correctionState?1:0]) fail(`Le mur de fractions ${preset.id} a changé (${actual}).`);
+  }
+}
+if(!fractionWall?.presets.find(preset=>preset.id==='compact')?.supports.includes('phone')) fail('Le mur compact doit être déclaré compatible téléphone.');
+if(fractionWall?.presets.find(preset=>preset.id==='base')?.supports.includes('phone')) fail('Le mur de base dense ne doit pas être proposé tel quel sur téléphone.');
+const wallUpTo24=fractionWall?.render({denominators:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]},true)||'';
+if((wallUpTo24.match(/<rect x="28"/g)||[]).length!==24) fail('Le mur doit savoir générer les 24 lignes du générateur public.');
+
+const algebraTiles=registry?.get('algebra.algebra-tiles');
+if(!algebraTiles) fail('Le composant algebra.algebra-tiles est absent.');
+if(algebraTiles&&algebraTiles.version!=='1.0.0') fail('Version 1.0.0 attendue pour les tuiles algébriques.');
+if(algebraTiles&&algebraTiles.presets.length!==7) fail('Sept compositions de tuiles algébriques sont attendues.');
+if(algebraTiles&&context.algebraTiles!==algebraTiles.render) fail('Le point d’entrée algebraTiles doit utiliser le composant enregistré.');
+const algebraTileHashes=new Map([
+  ['legende',['c9d9d492ad466668f604b23be129f7ef7bd7ad45eb7609f86d70d811c4c524b3','d22f0376760c96013b4f71897dc52e4dd8e8fb270b4e049f66fc3ff144b4e818']],
+  ['expression-simple',['8981ea68ece003ba978fcf7b8681a58909dea21a513fd4a7a67cb3d84c592536','d68e5baab03b6b7261792da4393b8feb45c62c86fc5e978f34054fdfb8b85e82']],
+  ['expression-mixte',['49105e163fb0abe933961930ce6be4f44e1a9f57a7e0238933c51be36f3e3be0','c6f04f2fffb915782f3833139705958444b3ab75670999076f32f99f6aaec02c']],
+  ['reduire',['a9c9e7337d30bf8809facb5578341e9013e9ec434db962bdceef4cd477ff2dab','43e98dcc3f822ff2bd1ff4f92ae6c19ba5f714281fcc03930bff5f035984b321']],
+  ['palette-bleu-jaune',['f0576db16b58d591dee80fd90e762029b789d070e0156827cc0292953a7df4b7','80f515006ee0eed5e3a3291494d53cb8eb11322041a81d8b4cc4ba5db7cd068a']],
+  ['palette-mathigon',['a73bc967d39740536ce35e1a48503d4d972f5a528f9f8237031c257b7498e103','14425fbe34f5c7bec318131ae086267875fa4952c0aaac44d167146bc230c820']],
+  ['palette-noir-gris',['ceb64ee8e220eb00d5444803be1524bfe6cd4b07222efd8f5dea25c66cbb668a','c10f124023b7d5097914bbe96ceb6f27528755b90284d601654c665dfc433c17']]
+]);
+for(const preset of algebraTiles?.presets||[]){
+  if(!preset.supports.includes('phone')||!preset.supports.includes('print')) fail(`Les tuiles ${preset.id} doivent fonctionner sur téléphone et à l’impression.`);
+  for(const correctionState of [false,true]){
+    const actual=hash(algebraTiles.render(preset.data,correctionState));
+    if(actual!==algebraTileHashes.get(preset.id)?.[correctionState?1:0]) fail(`Les tuiles ${preset.id} ont changé (${actual}).`);
+  }
+}
+const mathigonTiles=algebraTiles?.render({theme:'mathigon',terms:[{kind:'x2',count:1,sign:1},{kind:'x',count:1,sign:1},{kind:'u',count:1,sign:1},{kind:'x',count:1,sign:-1}]},false)||'';
+for(const color of ['#2F8FC9','#72C475','#FFE64C','#EF3F35']) if(!mathigonTiles.includes(color)) fail(`La palette Mathigon doit conserver la couleur ${color}.`);
+
+const areaModel=registry?.get('algebra.area-model');
+if(!areaModel) fail('Le composant algebra.area-model est absent.');
+if(areaModel&&areaModel.version!=='1.0.0') fail('Version 1.0.0 attendue pour le modèle d’aire.');
+if(areaModel&&areaModel.presets.length!==6) fail('Six modèles d’aire de référence sont attendus.');
+if(areaModel&&context.areaModel!==areaModel.render) fail('Le point d’entrée areaModel doit utiliser le composant enregistré.');
+const areaModelHashes=new Map([
+  ['double-positive',['22fdc804ca2491e23462ddbcf67518aea8c5dbc061f620882672145841431102','f918a1ec9052b50fea9498b249c95cfc4df6b591fb8e272379669df0dfc5754a']],
+  ['double-seconde',['07caeae4186b64543ea7094be196b63ed7aaeaa60837c7b07f97d74482e5184d','ae7cc01d5b7b60f416010675c910f6feae8f227b87993f74282d0e54aa918671']],
+  ['signes-mixtes',['0e39d89890703f7109c29755c86595e0d3aaba4f53477160c8aa542386f48407','b4701461da332feb7e69d988b8100d9a1d0110f51a6c51ba79dd807ffdc567f2']],
+  ['coefficient-x',['18e25c8ef3ba3aa3ca37dbd799ea167ce24f9e8a36e59bfaf8140043221ee565','29e64a6a7d3b403df24ccef30fa7d1f62751b1db6637e868cca22256bd55983f']],
+  ['factoriser-cinq',['17e19f146e5b278ca35ba64ba67ae31cdfee6c39f2807318284462ddaf831ad1','0604d0164d8830401d5adea4999243c603c3fad8c994d03d5bd8bf03af5a4734']],
+  ['factoriser-quatre',['f7c2477dc9ab15ff9b792e137e8cf58fe60b9231425516ce24c65c96626b0242','ecdfe2338a99572f8dd68ca0ba8c57420ecd5d7f85c38dddef35df41543ed234']]
+]);
+for(const preset of areaModel?.presets||[]){
+  if(!preset.supports.includes('phone')||!preset.supports.includes('print')) fail(`Le modèle d’aire ${preset.id} doit fonctionner sur téléphone et à l’impression.`);
+  for(const correctionState of [false,true]){
+    const actual=hash(areaModel.render(preset.data,correctionState));
+    if(actual!==areaModelHashes.get(preset.id)?.[correctionState?1:0]) fail(`Le modèle d’aire ${preset.id} a changé (${actual}).`);
+  }
+}
+const mixedAreaQuestion=areaModel?.render(areaModel.presets.find(preset=>preset.id==='signes-mixtes').data,false)||'';
+const mixedAreaCorrection=areaModel?.render(areaModel.presets.find(preset=>preset.id==='signes-mixtes').data,true)||'';
+if(mixedAreaQuestion.includes('#12A886')||mixedAreaQuestion.includes('#EF4B43')) fail('La question du modèle d’aire doit laisser les cases à compléter.');
+if(!mixedAreaCorrection.includes('#12A886')||!mixedAreaCorrection.includes('#EF4B43')) fail('La correction à signes mixtes doit afficher les tuiles positives et négatives.');
+
+const relationTiles=registry?.get('algebra.relation-tiles');
+if(!relationTiles) fail('Le composant algebra.relation-tiles est absent.');
+if(relationTiles&&relationTiles.version!=='1.0.0') fail('Version 1.0.0 attendue pour les jetons de relations.');
+if(relationTiles&&relationTiles.presets.length!==7) fail('Sept compositions de jetons de relations sont attendues.');
+if(relationTiles&&context.relationTilesHtml!==relationTiles.render) fail('Le moteur doit utiliser le composant partagé des jetons de relations.');
+const relationTileHashes=new Map([
+  ['double','76eb4280119ba1d2c239dc181dfeccc3f256f0d221977e501d53fc06ec1a55d4'],
+  ['triple','d9f6db8330c0450b498f1ce19486cab915a2ff24bf420da4fa2f3d5d52465e06'],
+  ['moitie','0f482393de34cd7eef3eb4479cf5a79a6a867236e317596df14d9d0c1d170927'],
+  ['quart','dea9ae268344ddd775c3014c010483b94f31d99f6b56960c39aef5d287bb5ad2'],
+  ['predecesseur','55f875c948f63b75a5208bdab020952559cd0680d8c179a6c7998a79dcba7066'],
+  ['successeur','67f51d381b22a40733571eb0a93aeef5c2e46b5d299f6849cbb540afc557da86'],
+  ['carre','d3c079db5cb6f6bf9ebbadc8f432a0103116d9b7e3f33d6c5d1ea0433663264d']
+]);
+for(const preset of relationTiles?.presets||[]){
+  for(const correction of [false,true]){
+    const actual=hash(relationTiles.render(preset.data,correction));
+    if(actual!==relationTileHashes.get(preset.id)) fail(`Les jetons de relations ${preset.id} ont changé (${actual}).`);
+  }
+}
+if(questionEngine.includes('function relationTileUnit')||questionEngine.includes('function relationTilesHtml')) fail('Les jetons de relations ne doivent plus être définis dans le gros moteur.');
 const fractionPercentCases = fractionPercent ? [
   {data:{kind:'fraction',numerator:1,denominator:2,total:24,part:12},expected:['e7ed02d1d7bc0c5561c255ee20340a5717e8de933cf508ef3a2d56e06a1a4344','481a00fa9299aa393a5690c38e667f81bd7c28ba925edf0b146edb5c02a2b982']},
   {data:{kind:'fraction',numerator:3,denominator:4,total:28,part:7},expected:['294dc47d73c37ecb749fbb71cb17f88f38b691cb26bd13b981fcc9ee02f29d66','4283eb568a67213fb5fa2b3df2fdba03cf6ae195d1067d6a8eef6d8e892dd4b3']},
@@ -296,15 +526,23 @@ const numberLineModulePosition = indexHtml.indexOf('scripts/modules/numbers/dnb_
 const coordinateModulePosition = indexHtml.indexOf('scripts/modules/geometry/dnb_15.js');
 const relationPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/relation-bar.js');
 const fractionPercentPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-percent-bar.js');
+const equalSharingPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/equal-sharing-board.js');
+const fractionWallPosition = indexHtml.indexOf('scripts/shared/visuals/arithmetic/fraction-wall.js');
 const conversionPosition = indexHtml.indexOf('scripts/shared/visuals/measures/conversion-table.js');
 const componentPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/equation-splat.js');
+const inquiryPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/inquiry-bar.js');
+const algebraTilesPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/algebra-tiles.js');
+const areaModelPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/area-model.js');
+const relationTilesPosition = indexHtml.indexOf('scripts/shared/visuals/algebra/relation-tiles.js');
 const triangleAnglePosition = indexHtml.indexOf('scripts/shared/visuals/geometry/triangle-angle-sum.js');
 const pythagorasMillPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-mill.js');
+const pythagorasBarPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-bar.js');
+const pythagorasReasoningPosition = indexHtml.indexOf('scripts/shared/visuals/geometry/pythagoras-reasoning.js');
 const enginePosition = indexHtml.indexOf('scripts/02-question-engine.js');
-if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || enginePosition < componentPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition) {
+if (registryPosition < 0 || numberLinePosition < registryPosition || placeValuePosition < registryPosition || coordinatePosition < registryPosition || numberLineModulePosition < numberLinePosition || coordinateModulePosition < coordinatePosition || relationPosition < registryPosition || fractionPercentPosition < registryPosition || equalSharingPosition < registryPosition || fractionWallPosition < registryPosition || conversionPosition < registryPosition || componentPosition < registryPosition || inquiryPosition < registryPosition || algebraTilesPosition < registryPosition || areaModelPosition < registryPosition || relationTilesPosition < registryPosition || triangleAnglePosition < registryPosition || pythagorasMillPosition < registryPosition || pythagorasBarPosition < registryPosition || pythagorasReasoningPosition < registryPosition || enginePosition < componentPosition || enginePosition < inquiryPosition || enginePosition < algebraTilesPosition || enginePosition < areaModelPosition || enginePosition < relationTilesPosition || enginePosition < relationPosition || enginePosition < fractionPercentPosition || enginePosition < equalSharingPosition || enginePosition < fractionWallPosition || enginePosition < conversionPosition || enginePosition < placeValuePosition || enginePosition < triangleAnglePosition || enginePosition < pythagorasMillPosition || enginePosition < pythagorasBarPosition || enginePosition < pythagorasReasoningPosition) {
   fail('Le registre et ses composants doivent être chargés avant le moteur de questions.');
 }
 
 if (!process.exitCode) {
-  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 24 schémas en barres, 5 configurations de Thalès, 12 états Angles et 8 moulins de Pythagore figés.');
+  console.log('OK — registre cohérent, 9 droites graduées, 8 repères du plan, 10 états du glisse-nombre, 10 tableaux de conversion, 4 équations/Splats, 40 schémas en barres, 14 jetons de relations, 8 partages équitables, 30 étapes d’enquêtes, 12 murs de fractions, 14 compositions de tuiles algébriques, 12 modèles d’aire, 5 configurations de Thalès, 12 états Angles, 8 moulins, 12 PythaBarres et 24 étapes Pythagore figés.');
 }

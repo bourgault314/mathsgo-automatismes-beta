@@ -7,25 +7,86 @@ const sources=[
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/geometry/thales-configuration.js',
   'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-mill.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-bar.js',
+  'auto/scripts/shared/visuals/geometry/pythagoras-reasoning.js',
+  'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
+  'auto/scripts/shared/visuals/algebra/relation-tiles.js',
   'auto/scripts/shared/pedagogy/00-registry.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_09.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_18.js',
+  'auto/scripts/shared/pedagogy/geometry/dnb_24.js',
   'auto/scripts/shared/pedagogy/geometry/dnb_25.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
   'auto/scripts/modules/geometry/dnb_18.js',
+  'auto/scripts/modules/geometry/dnb_24.js',
   'auto/scripts/modules/geometry/dnb_25.js',
-  'auto/scripts/modules/numbers/dnb_38.js'
+  'auto/scripts/modules/numbers/dnb_38.js',
+  'auto/scripts/modules/numbers/dnb_09.js'
 ];
 const code=sources.map(path=>fs.readFileSync(new URL(path,root),'utf8')).join('\n')+`
 globalThis.__angleQuestionNumbers=MODULE_DNB_18.questions.map(question=>Number(question.n));
 globalThis.__thalesQuestionNumbers=MODULE_DNB_25.questions.map(question=>Number(question.n));
-globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));`;
+globalThis.__relativeQuestionNumbers=MODULE_DNB_38.questions.map(question=>Number(question.n));
+globalThis.__pythagorasQuestionNumbers=MODULE_DNB_24.questions.map(question=>Number(question.n));
+globalThis.__relationQuestionNumbers=MODULE_DNB_09.questions.map(question=>Number(question.n));`;
 const context={};context.globalThis=context;vm.createContext(context);vm.runInContext(code,context,{timeout:5000});
 
 const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;};
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==3) fail(`Trois modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==5) fail(`Cinq modules pédagogiques pilotes attendus, ${modules.length} trouvé(s).`);
+
+const relations=registry?.getModule('dnb_09');
+if(!relations) fail('Le classement pédagogique de dnb_09 est absent.');
+if(relations&&relations.topic!=='Relations autour d’un nombre') fail('La notion principale de dnb_09 doit décrire les relations autour d’un nombre.');
+if(relations&&relations.questionTypes.length!==8) fail('Les huit types de questions de relations doivent être explicitement classés.');
+const relationBankNumbers=[...(context.__relationQuestionNumbers||[])].sort((a,b)=>a-b);
+const relationClassifiedNumbers=(relations?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(relationClassifiedNumbers)!==JSON.stringify(relationBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit de relations exactement une fois.');
+const expectedRelations={
+  1:['synthese-relations','numeric','algebra.relation-tiles'],
+  2:['multiple-direct','numeric','arithmetic.relation-bar'],3:['multiple-direct','numeric','arithmetic.relation-bar'],
+  4:['fraction-unitaire','numeric','arithmetic.relation-bar'],5:['nombre-voisin','numeric','arithmetic.relation-bar'],6:['nombre-voisin','numeric','arithmetic.relation-bar'],
+  8:['reconnaitre-multiple','qcm-one','algebra.relation-tiles'],9:['multiple-inverse','numeric','arithmetic.relation-bar'],
+  10:['multiple-direct','numeric','arithmetic.relation-bar'],11:['multiple-direct','numeric','arithmetic.relation-bar'],
+  12:['fraction-unitaire','numeric','arithmetic.relation-bar'],13:['fraction-unitaire','numeric','arithmetic.relation-bar'],
+  14:['reconnaitre-multiple','qcm-one','algebra.relation-tiles'],15:['reconnaitre-multiple','qcm-one','algebra.relation-tiles'],
+  16:['reconnaitre-fraction','qcm-one','algebra.relation-tiles'],17:['reconnaitre-fraction','qcm-one','algebra.relation-tiles'],
+  18:['reconnaitre-voisin','qcm-one','algebra.relation-tiles'],19:['reconnaitre-voisin','qcm-one','algebra.relation-tiles']
+};
+for(const [questionNumber,[id,response,component]] of Object.entries(expectedRelations)){
+  const type=registry?.getQuestionType('dnb_09',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Relations ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Relations ${questionNumber}.`);
+  if(type&&type.visual.policy!=='optional') fail(`La figure de la question Relations ${questionNumber} doit rester une aide facultative.`);
+  if(type&&type.visual.component!==component) fail(`Composant incorrect pour la question Relations ${questionNumber}.`);
+  if(type&&!context.MATHSGO_VISUALS.get(component)) fail(`Composant visuel absent pour la question Relations ${questionNumber}.`);
+}
+
+const pythagoras=registry?.getModule('dnb_24');
+if(!pythagoras) fail('Le classement pédagogique de dnb_24 est absent.');
+if(pythagoras&&pythagoras.courseKind!=='pythagoras') fail('dnb_24 doit appeler le cours Pythagore.');
+if(pythagoras&&pythagoras.questionTypes.length!==10) fail('Les dix types de questions Pythagore doivent être explicitement classés.');
+const pythagorasBankNumbers=[...(context.__pythagorasQuestionNumbers||[])].sort((a,b)=>a-b);
+const pythagorasClassifiedNumbers=(pythagoras?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
+if(JSON.stringify(pythagorasClassifiedNumbers)!==JSON.stringify(pythagorasBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Pythagore exactement une fois.');
+const expectedPythagoras={
+  1:['verifier-angle-droit','qcm-one','essential',null],2:['refuser-apparence','qcm-one','essential',null],
+  3:['choisir-egalite','qcm-one','aid-only','geometry.pythagoras-bar'],4:['identifier-hypotenuse','qcm-one','aid-only','geometry.pythagoras-mill'],
+  5:['calculer-carre-hypotenuse','numeric','aid-only','geometry.pythagoras-bar'],6:['calculer-hypotenuse','numeric','aid-only','geometry.pythagoras-reasoning'],
+  7:['calculer-cote','numeric','aid-only','geometry.pythagoras-reasoning'],8:['appliquer-reciproque','qcm-one','none',null],
+  9:['refuter-reciproque','qcm-one','none',null],10:['controler-hypotenuse','qcm-one','none',null]
+};
+for(const [questionNumber,[id,response,policy,component]] of Object.entries(expectedPythagoras)){
+  const type=registry?.getQuestionType('dnb_24',Number(questionNumber));
+  if(!type||type.id!==id) fail(`Type incorrect pour la question Pythagore ${questionNumber}.`);
+  if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Pythagore ${questionNumber}.`);
+  if(type&&type.visual.policy!==policy) fail(`Rôle visuel incorrect pour la question Pythagore ${questionNumber}.`);
+  if(type&&type.visual.component!==component) fail(`Composant incorrect pour la question Pythagore ${questionNumber}.`);
+  if(component&&!context.MATHSGO_VISUALS.get(component)) fail(`Composant visuel absent pour la question Pythagore ${questionNumber}.`);
+}
 
 const angles=registry?.getModule('dnb_18');
 if(!angles) fail('Le classement pédagogique de dnb_18 est absent.');
@@ -95,11 +156,13 @@ const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'ut
 const functionBlock=(source,name,nextName)=>source.slice(source.indexOf(`function ${name}(`),source.indexOf(`function ${nextName}(`));
 const thalesTemplateBlock=slideshow.slice(slideshow.indexOf('function courseThalesTemplateVisual('),slideshow.indexOf('const courseCatalog='));
 const registryPosition=index.indexOf('scripts/shared/pedagogy/00-registry.js');
+const relationMetadataPosition=index.indexOf('scripts/shared/pedagogy/numbers/dnb_09.js');
 const angleMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_18.js');
+const pythagorasMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_24.js');
 const thalesMetadataPosition=index.indexOf('scripts/shared/pedagogy/geometry/dnb_25.js');
 const slideshowPosition=index.indexOf('scripts/03-slideshow.js');
 const appPosition=index.indexOf('scripts/04-app.js');
-if(registryPosition<0||angleMetadataPosition<registryPosition||thalesMetadataPosition<registryPosition||slideshowPosition<angleMetadataPosition||slideshowPosition<thalesMetadataPosition||appPosition<angleMetadataPosition||appPosition<thalesMetadataPosition){
+if(registryPosition<0||relationMetadataPosition<registryPosition||angleMetadataPosition<registryPosition||pythagorasMetadataPosition<registryPosition||thalesMetadataPosition<registryPosition||slideshowPosition<relationMetadataPosition||slideshowPosition<angleMetadataPosition||slideshowPosition<pythagorasMetadataPosition||slideshowPosition<thalesMetadataPosition||appPosition<relationMetadataPosition||appPosition<angleMetadataPosition||appPosition<pythagorasMetadataPosition||appPosition<thalesMetadataPosition){
   fail('Le registre pédagogique doit être chargé avant le diaporama et l’application.');
 }
 if(!catalogue.includes('id="pedagogyCatalogue"')||!catalogue.includes('MATHSGO_PEDAGOGY.list()')) fail('Le catalogue pédagogique doit être visible dans la bibliothèque.');
@@ -108,6 +171,7 @@ for(const script of [...catalogue.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/scr
 }
 if(!app.includes('MATHSGO_PEDAGOGY.getQuestionType(m.id,q.n)')) fail('La politique visuelle doit consulter le registre pédagogique.');
 if(!slideshow.includes('MATHSGO_PEDAGOGY.getModule(moduleId)')||!slideshow.includes('sections.includes(rule[3])')) fail('Les aides doivent être choisies à partir du registre pédagogique.');
+if(!slideshow.includes("coursePythagorasLibraryVisual('bar')")||!slideshow.includes("slide.courseKind==='pythagoras'")) fail('Le cours Pythagore doit utiliser la bibliothèque et filtrer ses rubriques.');
 
 context.courseCatalog={thales:{title:'Thalès',rules:[
   ['Conditions','',false,'conditions'],['Rapports','',false,'ratios'],['Calcul','',false,'calculation'],
@@ -161,4 +225,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — les questions Angles, Thalès et Addition de relatifs, leurs réponses, leurs visuels et leurs aides sont classés et branchés.');
+if(!process.exitCode) console.log('OK — les 18 questions Relations, les 10 questions Pythagore, les questions Angles, les 10 types Thalès et l’Addition de relatifs, leurs réponses, leurs visuels et leurs aides sont classés et branchés.');
