@@ -4,6 +4,10 @@ Cette bibliothèque rassemble les figures pédagogiques générées par le code.
 Elle doit permettre de réutiliser un rendu déjà validé dans Automatismes ou
 dans un autre outil maths&go sans le redessiner ni en réinventer les règles.
 
+La référence à comparer avant toute extraction est recensée dans
+[`SOURCES-DE-VERITE.md`](SOURCES-DE-VERITE.md). Cette bibliothèque éprouve les
+composants dans Automatismes ; elle ne constitue pas un deuxième Studio.
+
 ## Contrat d’un composant
 
 Chaque composant enregistré fournit au minimum :

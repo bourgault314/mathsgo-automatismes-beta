@@ -2,90 +2,123 @@
 
 ## Objectif
 
-Permettre de modifier un automatisme sans devoir intervenir dans le moteur
-général et sans modifier le comportement des autres modules.
+Permettre de modifier un automatisme sans intervenir dans le moteur général et
+sans modifier le comportement des autres modules. Le découpage sert aussi à
+réutiliser une représentation validée dans une fiche, un parcours ou le futur
+Studio maths&go.
 
-## Cible
+Il ne s'agit pas de supprimer le plus de SVG possible. La réussite se mesure à
+la capacité de modifier localement génération, sélection, rendu, aide et
+correction tout en conservant le résultat pédagogique attendu.
 
-Chaque module disposera à terme de son propre dossier :
+## État actuel
+
+- 42 modules et 473 gabarits sont isolés dans `auto/scripts/modules/` ;
+- le manifeste charge les modules sans recopier leurs blocs dans la page ;
+- 32 modules sur 42 possèdent un classement pédagogique complet ;
+- 24 composants visuels partagés sont enregistrés ;
+- la banque V1.17, les codes MG1 et les rendus de référence sont testés ;
+- génération, fréquences, rendus et corrections restent encore partiellement
+  couplés à `02-question-engine.js`, `03-slideshow.js` et `04-app.js`.
+
+## Cible progressive
+
+Un module conserve toujours un point d'entrée stable :
 
 ```text
-auto/modules/<module-id>/
-  module.js        métadonnées et gabarits
-  generate.js      génération des données aléatoires
-  render.js        affichage et aide visuelle propres au module
-  selection.js     fréquences et règles de couverture
+auto/scripts/modules/<domaine>/<module-id>.js
 ```
 
-Les composants réellement partagés resteront dans le moteur ou dans une
-bibliothèque commune. Une question ne deviendra pas un fichier isolé : le bon
-niveau de séparation est le module pédagogique.
+Lorsqu'un pilote justifie une séparation plus fine, il peut devenir :
 
-Le découpage comporte désormais cinq couches explicites :
+```text
+auto/scripts/modules/<domaine>/<module-id>/
+  module.js       métadonnées et gabarits
+  generate.js     paramètres et réponses canoniques
+  selection.js    familles, poids et règles de couverture
+  render.js       question, aide et correction propres au module
+```
 
-1. la banque historique et ses gabarits numérotés ;
-2. la logique qui tire les valeurs et construit une instance ;
-3. le registre pédagogique qui classe les types de tâches, les réponses, les
-   figures et les aides ;
-4. les composants visuels partagés ;
-5. l’interface qui sélectionne, affiche et recueille la réponse.
+Cette arborescence n'est pas appliquée en masse. Elle doit d'abord être éprouvée
+sur un seul module stable. Une question ne devient pas un fichier : le bon
+niveau de séparation reste la notion pédagogique.
 
-Le registre pédagogique est séparé de la banque afin que son enrichissement ne
-change ni les gabarits ni leur empreinte de référence.
+Les éléments réellement partagés restent dans :
+
+- `shared/pedagogy/` pour les tâches, réponses, aides et contrats ;
+- `shared/visuals/` pour les représentations paramétriques ;
+- `core/` pour les séries, identifiants et liens ;
+- les moteurs communs uniquement pour l'orchestration générique.
 
 ## Contraintes à préserver
 
-- conserver les 40 identifiants de modules ;
+- conserver les 42 identifiants de modules ;
 - conserver les codes numériques permanents des liens MG1 ;
 - conserver les numéros `n` des gabarits ;
-- conserver la reproductibilité d’une série à seed identique ;
-- ne pas déplacer une règle pédagogique vers un composant générique sans
-  vérifier qu’elle est réellement partagée ;
-- valider chaque extraction par les tests avant de poursuivre.
+- conserver la reproductibilité d'une série à seed identique ;
+- ne pas modifier l'empreinte V1.17 pendant une extraction pure ;
+- ne pas déplacer une règle propre à une notion dans un composant générique ;
+- comparer la meilleure source maths&go avant de remplacer un rendu ;
+- vérifier téléphone et ordinateur avant de déclarer un support compatible ;
+- publier et tester chaque petit lot avant de poursuivre.
 
-## Ordre proposé
+## Étapes déjà terminées
 
-1. Installer les tests de structure et figer l’état V1.15. **Terminé.**
-2. Définir le contrat commun d’un module. **Terminé : voir
-   `docs/CONTRAT-MODULE.md`.**
-3. Extraire deux modules pilotes : un simple et un très visuel. **Terminé :
-   `dnb_08` est le pilote simple et `dnb_07` le pilote visuel.**
-4. Comparer les séries avant et après extraction.
-5. Étendre le découpage domaine par domaine.
-6. Ouvrir ensuite la contribution à d’autres personnes.
+1. Tests de structure et banque V1.17 figée.
+2. Contrat minimal d'un module.
+3. Isolation des 42 banques par domaine.
+4. Pilotes simples et visuels (`dnb_08`, `dnb_07`).
+5. Classement pédagogique complet de Nombres et calculs.
+6. Classement pédagogique complet d'Espace et géométrie.
+7. Extraction de 24 composants visuels et tactiles.
 
-### Avancement du domaine Nombres
+## Ordre de travail actuel
 
-- `dnb_01` à `dnb_14`, ainsi que `dnb_02b` et `dnb_03b`, sont isolés dans des
-  fichiers indépendants ;
-- les configurations pédagogiques des modules Nombres sont maintenant
-  intégrées à leurs fichiers ; elles ne sont plus appliquées après coup par le
-  moteur ;
-- les dix-huit droites graduées répétées dans `dnb_14` sont maintenant rendues
-  par le composant partagé `numbers.number-line` ;
-- le glisse-nombre de `dnb_02b`, sa virgule fixe et son contrôleur animé sont
-  isolés dans `numbers.glisse-nombre`.
+### 1. Pilote fonctionnel complet
 
-### Avancement du domaine Géométrie
+Choisir un module stable qui n'est pas travaillé dans une autre fenêtre. Sortir
+sa génération, sa sélection, son rendu, son aide et sa correction sans changer
+ses gabarits ni sa reproductibilité. Documenter ce que le moteur doit fournir
+au module et ce que le module retourne.
 
-- `dnb_15` à `dnb_27`, ainsi que `dnb_26b`, sont isolés dans des fichiers
-  indépendants ;
-- les configurations pédagogiques sont intégrées à leurs fichiers ; elles ne
-  sont plus appliquées après coup par le moteur ;
-- les neuf repères répétés de `dnb_15` sont rendus par
-  `geometry.coordinate-plane` ;
-- le tableau interactif de conversion de `dnb_19` est isolé dans
-  `measures.conversion-table` ; le moteur conserve l’assemblage de l’exercice,
-  mais plus la construction du tableau.
-- `dnb_25` est le premier pilote du registre pédagogique : ses dix gabarits
-  Thalès sont classés individuellement avec leur mode de réponse, le rôle de la
-  figure et les rubriques d’aide pertinentes. Son contrat de génération décrit
-  aussi les cas emboîté/papillon, théorème/réciproque/contraposée, les
-  représentations autorisées et les règles visuelles.
+### 2. Données et Algorithmique
 
-### Avancement des domaines Données et Algorithmique
+Classer `dnb_28` à `dnb_37`, puis choisir les représentations réellement
+partagées : graphiques, diagrammes, arbres de probabilité, quadrillages et blocs
+nécessaires aux questions. Ne pas reproduire un logiciel complet.
 
-- `dnb_28` à `dnb_36` et `dnb_37` sont isolés dans des fichiers indépendants ;
-- leurs configurations pédagogiques sont intégrées à leurs fichiers ;
-- le fichier d’assemblage `01-modules.js` ne transforme plus les contenus après
-  leur chargement.
+### 3. Visuels encore historiques
+
+Migrer par familles homogènes et uniquement après comparaison avec
+[`SOURCES-DE-VERITE.md`](SOURCES-DE-VERITE.md) :
+
+- `dnb_20` : solides et objets ;
+- `dnb_27` : transformations sur quadrillage ;
+- `dnb_16` : figures codées ;
+- `dnb_21` : périmètres et figures composées ;
+- `dnb_36`, `dnb_32`, `dnb_33` : graphiques et probabilités.
+
+Le composant `geometry.solid` est préparé. Les figures de `dnb_20` restent la
+référence tant que chaque variante utile n'est pas équivalente ou meilleure.
+
+### 4. Jeux et manipulations
+
+À partir de `numbers.relative-tokens`, `geometry.pythagoras-builder` et
+`numbers.glisse-nombre`, définir un contrat pour l'état, les gestes, la
+réinitialisation, la validation et la correction. Ce contrat alimentera le
+Studio ; il n'est pas créé comme un second moteur dans la bêta.
+
+### 5. Revue et passage en production
+
+Tester les 42 modules sur téléphone et ordinateur : sans/avec aide,
+question/correction/cours, fin de série, tirages et modes avec/sans
+calculatrice. Transférer une version validée vers le dépôt public seulement
+après cette revue.
+
+## Travail parallèle
+
+Le contenu peut continuer pendant le découpage, mais deux branches ne modifient
+pas le même module. Les fichiers globaux `02-question-engine.js`,
+`03-slideshow.js` et `04-app.js` ne sont confiés qu'à un seul chantier à la
+fois. La trigonométrie reste hors périmètre lorsqu'une reconstruction dédiée est
+en cours.

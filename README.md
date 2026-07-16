@@ -4,6 +4,12 @@ Ce dépôt est l’espace permanent de développement et de test d’Automatisme
 maths&go. La version publique stable reste dans `bourgault314/maths`, au chemin
 `auto/`.
 
+Il n'existe pas deux applications publiques concurrentes. Dans le dépôt du
+site, `/outils/automatismes/` est seulement la page qui présente l'application
+et le livret A5. L'ancien gros fichier autonome a été retiré. Les rôles de la
+bêta, de la production et du futur Studio sont fixés dans
+[`docs/ARCHITECTURE-CANONIQUE.md`](docs/ARCHITECTURE-CANONIQUE.md).
+
 ## Fonctionnement
 
 1. Les modifications sont réalisées et testées ici.
@@ -74,7 +80,7 @@ tests avant toute évolution graphique.
 Les barres de fractions et de pourcentages, y compris leurs accolades, sont
 également extraites du moteur et visibles dans le catalogue de développement.
 Les dix-huit gabarits de droites graduées de `dnb_14` utilisent désormais un
-unique composant commun, sans modifier le contenu de la banque V1.15.
+unique composant commun, sans modifier le contenu de la banque V1.17.
 Le tableau interactif de conversion de `dnb_19` est lui aussi séparé du gros
 moteur pour les longueurs, masses, capacités, aires et volumes.
 Le glisse-nombre de `dnb_02b`, avec sa virgule fixe, sa bande grise et sa bande
@@ -86,6 +92,10 @@ les lectures à deux points, utilisent un générateur commun.
 Le module `dnb_38` est le premier module de calcul mental avec jetons
 manipulables. Son plateau est prévu pour 390 × 844 px et 1280 × 720 px ; les
 contrôles tactiles et le rendu de correction sont testés avec la banque.
+
+Les composants ne sont pas redessinés à partir de zéro. Leur source publique,
+leur gabarit de référence et leur état de branchement sont recensés dans
+[`docs/SOURCES-DE-VERITE.md`](docs/SOURCES-DE-VERITE.md).
 
 ## Adresse bêta officielle
 

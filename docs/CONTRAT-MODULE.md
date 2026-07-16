@@ -21,8 +21,9 @@ const MODULE_DNB_07 = {
 };
 ```
 
-Le fichier est chargé dans `auto/index.html` avant le fichier regroupant son
-domaine. Celui-ci référence ensuite la constante à la place de l’ancien bloc.
+Le fichier est déclaré dans `auto/scripts/00-module-manifest.js`. Le chargeur le
+récupère lorsqu'il est nécessaire, puis `01-modules.js` assemble les constantes
+chargées. `auto/index.html` ne recopie plus la liste complète des banques.
 
 ## Champs stables
 
@@ -48,6 +49,10 @@ usuels sont `statement`, `answer`, `options` et `footer`.
 4. Le rendu ou la sélection ne sont déplacés qu’après avoir identifié leur
    interface avec le moteur.
 5. `npm test` doit réussir avant toute publication sur la bêta.
+6. Une amélioration de contenu et une extraction structurelle ne sont pas
+   mélangées dans le même commit.
+7. La meilleure source recensée dans `SOURCES-DE-VERITE.md` est comparée avant
+   toute substitution visuelle.
 
 Le test fige actuellement les 42 modules, les 473 gabarits, le registre MG1 et
 l’empreinte complète de la banque V1.17. Une extraction pure doit donc laisser
@@ -83,13 +88,22 @@ fichiers.
 Le domaine Géométrie suit le même contrat pour ses quatorze modules, y compris
 le complément de trigonométrie `dnb_26b`.
 
-Les domaines Données et Algorithmique complètent ce découpage : les 40 modules
-de la banque suivent maintenant ce contrat.
+Les domaines Données et Algorithmique complètent l'isolation des banques : les
+42 modules suivent maintenant ce contrat minimal. Leur classement pédagogique
+reste à terminer.
 
 Le module `dnb_38` ajoute un contrat pédagogique associé dans
 `auto/scripts/shared/pedagogy/numbers/dnb_38.js` et utilise le composant partagé
 `numbers.relative-tokens`. Les règles visuelles et tactiles sont détaillées
 dans [`docs/RELATIFS-AUTOMATISMES.md`](RELATIFS-AUTOMATISMES.md).
 
-Les fonctions de rendu visuel de `dnb_07` restent provisoirement dans le moteur.
-Elles seront déplacées dans un lot distinct, avec un test adapté à leur contrat.
+Les neuf carrés historiques de `dnb_07` utilisent désormais
+`numbers.square-area` et leurs références sont figées par des tests.
+
+## Extension fonctionnelle d'un pilote
+
+Le fichier unique est le contrat minimal, pas l'objectif final. Pour un module
+pilote stable, les responsabilités pourront être séparées en `module.js`,
+`generate.js`, `selection.js` et `render.js`. Cette structure n'est généralisée
+qu'après vérification de l'équivalence, de la seed et des interactions avec le
+moteur. Voir [`PLAN-DECOUPAGE.md`](PLAN-DECOUPAGE.md).

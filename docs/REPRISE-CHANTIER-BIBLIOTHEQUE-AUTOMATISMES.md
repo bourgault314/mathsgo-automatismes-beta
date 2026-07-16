@@ -13,8 +13,9 @@ Gwenaël Bourgault. Lis entièrement ce fichier, puis :
 1. travaille dans `bourgault314/mathsgo-automatismes-beta` ;
 2. récupère toujours le `main` distant, car plusieurs fenêtres peuvent
    travailler en parallèle ;
-3. lis aussi `docs/PLAN-DECOUPAGE.md`, `docs/CONTRAT-MODULE.md`,
-   `docs/BIBLIOTHEQUE-VISUELLE.md` et
+3. lis d'abord `docs/ARCHITECTURE-CANONIQUE.md` et
+   `docs/SOURCES-DE-VERITE.md`, puis `docs/PLAN-DECOUPAGE.md`,
+   `docs/CONTRAT-MODULE.md`, `docs/BIBLIOTHEQUE-VISUELLE.md` et
    `docs/AUDIT-RESSOURCES-2026-07-16.md` ;
 4. lance `npm test` avant et après chaque petit lot ;
 5. fais un seul objectif cohérent par commit et publie-le rapidement par PR ;
@@ -23,9 +24,11 @@ Gwenaël Bourgault. Lis entièrement ce fichier, puis :
 7. poursuis concrètement le travail au lieu de refaire seulement un rapport ;
 8. donne à Gwenaël un lien direct lorsqu’un nouveau rendu est observable.
 
-Première tâche recommandée : comparer le traceur partagé des solides aux
-figures historiques de `dnb_20`, l’étendre si nécessaire, puis brancher un
-premier sous-ensemble visuellement équivalent dans un petit commit séparé.
+Première tâche recommandée : vérifier les branches actives, choisir un module
+pédagogiquement stable qui n'est pas travaillé ailleurs, puis réaliser un
+pilote fonctionnel complet séparant génération, sélection, rendu, aide et
+correction. Les solides peuvent continuer par petits sous-ensembles, mais le
+nombre de SVG retirés n'est pas une priorité en soi.
 
 ## Qui est Gwenaël et ce qu’il construit
 
@@ -371,35 +374,38 @@ Le second lot était déjà publié depuis une autre fenêtre. La comparaison av
 
 ## Ordre de reprise
 
-### 1. Solides, par sous-ensembles
+### 1. Pilote fonctionnel complet
 
-Comparer `geometry/dnb_20.js` et `geometry/solid.js`, puis ajouter les variantes
-nécessaires (prisme pentagonal, pyramide triangulaire, tétraèdre, rotations,
-objets). Migrer d’abord un sous-ensemble homogène, conserver textes/réponses,
-ajouter des tests, publier. Migrer les objets dans une PR suivante.
+Choisir un module stable et non travaillé dans une autre fenêtre. Séparer sa
+banque, sa génération, sa sélection, son rendu, son aide et sa correction sans
+changer la banque V1.17 ni les tirages reproductibles. Publier le contrat avant
+de le généraliser.
 
-### 2. Transformations
+### 2. Données et Algorithmique
 
-Extraire de `dnb_27` quadrillage, symétries, translation et invariants. Ne pas
-forcer ce quadrillage dans `coordinate-plane` si son contrat est différent.
+Classer les dix modules restants ; extraire ensuite graphiques, diagrammes,
+arbres de probabilité et quadrillage/blocs de `dnb_37`. Ne pas reproduire
+Scratch au complet, seulement le langage nécessaire aux questions.
 
-### 3. Figures codées et périmètres
+### 3. Visuels historiques, selon les besoins
 
-- `dnb_16` : égalités, parallèles, perpendiculaires, médiatrice et codages ;
-- `dnb_21` : carré, rectangle, triangle, disque et figures composées ;
-- réutiliser `square-area` sans créer une API qui mélange tout.
+Comparer chaque fois la source recensée dans `SOURCES-DE-VERITE.md`, puis migrer
+un sous-ensemble homogène : solides de `dnb_20`, transformations de `dnb_27`,
+figures codées de `dnb_16`, périmètres de `dnb_21` et graphiques de données.
+Conserver une figure précise tant que le composant commun est moins bon.
 
 ### 4. Trigonométrie
 
-Créer un triangle rectangle orientable : angle choisi, hypoténuse, adjacent,
-opposé, connu/inconnu. Corriger le défaut du triangle toujours identique et
-séparer avec/sans calculatrice.
+La reconstruction dédiée doit fournir un triangle rectangle orientable : angle
+choisi, hypoténuse, adjacent, opposé, connu/inconnu, avec/sans calculatrice.
+Une ancienne branche défectueuse est fermée et n'est jamais fusionnée.
 
-### 5. Données et Algorithmique
+### 5. Jeux et manipulations
 
-Classer les dix modules restants ; extraire graphiques, diagrammes, arbres de
-probabilité, puis quadrillage/blocs de `dnb_37`. Ne pas reproduire Scratch au
-complet, seulement le langage nécessaire aux questions.
+Définir le contrat d'interaction à partir des jetons relatifs, du constructeur
+Pythagore et du glisse-nombre : état initial, gestes, annulation,
+réinitialisation, validation et correction. Le Studio appelle ces composants ;
+la bêta ne crée pas une deuxième fabrique générale.
 
 ### 6. Revue avant arrivée de Claire
 
