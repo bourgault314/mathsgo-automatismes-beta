@@ -70,6 +70,7 @@ const sources=[
   'auto/scripts/shared/pedagogy/data/dnb_36.js',
   'auto/scripts/shared/pedagogy/algorithm/dnb_37.js',
   'auto/scripts/shared/pedagogy/numbers/dnb_38.js',
+  'auto/scripts/shared/pedagogy/numbers/dnb_39.js',
   'auto/scripts/modules/numbers/dnb_01.js',
   'auto/scripts/modules/numbers/dnb_02.js',
   'auto/scripts/modules/numbers/dnb_02b.js',
@@ -111,11 +112,13 @@ const sources=[
   'auto/scripts/modules/data/dnb_36.js',
   'auto/scripts/modules/algorithm/dnb_37.js',
   'auto/scripts/modules/numbers/dnb_38.js',
+  'auto/scripts/modules/numbers/dnb_39.js',
   'auto/scripts/modules/numbers/dnb_09.js'
 ];
 const code=sources.map(path=>fs.readFileSync(new URL(path,root),'utf8')).join('\n')+`
 globalThis.__fractionDecimalQuestionNumbers=MODULE_DNB_01.questions.map(question=>Number(question.n));
 globalThis.__decimalQuestionNumbers=MODULE_DNB_02.questions.map(question=>Number(question.n));
+globalThis.__decimalRelativeQuestionNumbers=MODULE_DNB_39.questions.map(question=>Number(question.n));
 globalThis.__placeValueQuestionNumbers=MODULE_DNB_02B.questions.map(question=>Number(question.n));
 globalThis.__fractionOperationQuestionNumbers=MODULE_DNB_03.questions.map(question=>Number(question.n));
 globalThis.__fractionMultiplyDivideQuestionNumbers=MODULE_DNB_03B.questions.map(question=>Number(question.n));
@@ -162,7 +165,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_PEDAGOGY;
 if(!registry) fail('Le registre pédagogique global est absent.');
 const modules=registry?registry.list():[];
-if(modules.length!==42) fail(`Quarante-deux modules pédagogiques attendus, ${modules.length} trouvé(s).`);
+if(modules.length!==43) fail(`Quarante-trois modules pédagogiques attendus, ${modules.length} trouvé(s).`);
 
 function assertClassifiedModule(id,bankNumbers,courseKind,expected){
   const module=registry?.getModule(id);
@@ -187,10 +190,8 @@ function expectedQuestions(...groups){
 
 assertClassifiedModule('dnb_02',context.__decimalQuestionNumbers,'decimal_numbers',{
   1:['comparer-decimaux-positifs','qcm-one','none',null],
-  2:['comparer-decimaux-negatifs','qcm-one','none',null],
   3:['ranger-decimaux','manipulation','essential','numbers.order-cards'],
   4:['encadrer-decimal','manipulation','essential','numbers.number-line'],
-  5:['encadrer-decimal','manipulation','essential','numbers.number-line'],
   6:['addition-unite','numeric','optional','arithmetic.fraction-decimal-grid'],
   7:['soustraction-decimale','numeric','none',null],
   8:['complement-unite','numeric','optional','arithmetic.fraction-decimal-grid'],
@@ -198,6 +199,12 @@ assertClassifiedModule('dnb_02',context.__decimalQuestionNumbers,'decimal_number
   10:['division-decimale','numeric','optional','arithmetic.relation-bar'],
   11:['partage-decimal-contexte','numeric','optional','arithmetic.relation-bar'],
   12:['raisonnement-distributivite','manipulation','essential','algebra.area-model']
+});
+
+assertClassifiedModule('dnb_39',context.__decimalRelativeQuestionNumbers,'decimal_relative_numbers',{
+  1:['comparer-decimaux-negatifs','qcm-one','none',null],
+  2:['encadrer-decimal-negatif','manipulation','essential','numbers.number-line'],
+  3:['addition-decimaux-relatifs','numeric','none',null]
 });
 
 assertClassifiedModule('dnb_06',context.__scientificQuestionNumbers,'scientific_notation',{
@@ -933,4 +940,4 @@ const relativeCourse=context.courseForSlide({courseKind:'relative_addition',cour
 if(!relativeCourse||relativeCourse.title!=='Additionner des nombres entiers relatifs') fail('Le cours des relatifs doit être disponible dans le diaporama.');
 if(relativeCourse&&!relativeCourse.rules.some(rule=>rule[0]==='Paire nulle')) fail('Le cours des relatifs doit expliquer les paires nulles.');
 
-if(!process.exitCode) console.log('OK — 42 modules classés : Nombres et calculs 17/17, Espace et géométrie 15/15, Données 9/9, Algorithmique 1/1.');
+if(!process.exitCode) console.log('OK — 43 modules classés : Nombres et calculs 18/18, Espace et géométrie 15/15, Données 9/9, Algorithmique 1/1.');

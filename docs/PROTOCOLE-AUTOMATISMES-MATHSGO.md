@@ -92,6 +92,9 @@ modification → vérification visuelle**.
   ne présenter que l'explication pertinente.
 - La correction réemploie la représentation de la question ou de l'aide. Elle
   montre l'état résolu sans changer arbitrairement d'univers graphique.
+- Quand une question demande une réponse ordonnée ou un placement, la question
+  et la correction gardent la même forme, les mêmes symboles et les mêmes
+  alignements ; seule la complétion change.
 
 ## Statut d'une représentation visuelle
 
@@ -125,6 +128,14 @@ choisir une représentation, manipuler ou rappeler la règle utile.
   ni changer la bonne réponse.
 - Le bouton « Cours » ouvre une fiche contextuelle sans remplacer la question.
   La fiche ne masque pas durablement l'énoncé ni les commandes essentielles.
+- Utiliser réellement l'espace disponible : une consigne, un calcul, une
+  réponse, une droite ou une case ne restent pas petits par habitude lorsqu'ils
+  peuvent être agrandis sans provoquer de débordement. La taille se décide
+  après capture et inspection de l'écran de référence.
+- Dans une égalité, le signe `=` est visuellement équilibré par des espacements
+  comparables à gauche et à droite. Dans un schéma orienté, une pointe de flèche
+  indique toujours l'arrivée. Les marges d'un tableau ou d'un schéma sont
+  contrôlées visuellement, pas seulement déduites du code.
 
 ## Modes tactile, interactif et diaporama
 
@@ -136,7 +147,8 @@ choisir une représentation, manipuler ou rappeler la règle utile.
 - Lorsqu'une manipulation remplace utilement la saisie, le clavier est masqué.
 - Toute manipulation tactile possède une solution robuste sans glisser-déposer
   obligatoire, par exemple « toucher un objet puis toucher une cible ». Le
-  glisser-déposer peut rester disponible comme interaction secondaire.
+  glisser-déposer peut être le geste naturel principal, mais cette alternative
+  reste toujours disponible sur téléphone, à la souris et au clavier.
 - Une manipulation conserve un état sémantique, une action de remise à zéro et
   une validation explicite. La remise à zéro garde la même question et la même
   graine.
@@ -218,8 +230,9 @@ Après chaque petit lot validé pédagogiquement :
 
 ## Points actuellement contradictoires ou incomplets
 
-Aucune contradiction documentaire connue ne subsiste pour `dnb_02` après le
-lot du 16 juillet 2026. Les décisions suivantes sont maintenant appliquées :
+Aucune contradiction documentaire connue ne subsiste pour `dnb_02` et
+`dnb_39` après leur séparation du 16 juillet 2026. Les décisions suivantes
+sont maintenant appliquées :
 
 - le cours reste accessible en modes « Avec aide » et « Sans aide » ; ce sont
   les aides facultatives de la question qui sont masquées en mode sans aide ;
@@ -227,13 +240,17 @@ lot du 16 juillet 2026. Les décisions suivantes sont maintenant appliquées :
   niveaux 5e, 4e, 3e et DNB ;
 - le générateur, la sélection et le rendu de `dnb_02` sont isolés dans trois
   extensions fonctionnelles ;
-- les additions de décimaux relatifs ont quitté `dnb_02` ;
+- les deux familles négatives ont quitté `dnb_02`, qui reste entièrement
+  positif ;
+- `dnb_39` restaure comparaison négative, encadrement négatif et ancienne
+  somme de décimaux relatifs, avec leur provenance documentée ;
 - `numbers.glisse-nombre` reste réservé aux changements de rang par 10, 100 et
   1 000 dans `dnb_02b`.
 
-Le point encore ouvert est la conception de la future catégorie « Somme de
-nombres décimaux relatifs ». Elle ne doit pas être créée avant validation de
-ses familles de questions.
+Le point encore ouvert est l'étoffement futur de `dnb_39`. Une nouvelle aide
+pour la somme relative ne doit pas être inventée uniquement pour afficher un
+bouton : la méthode reste dans le cours jusqu'à validation d'une représentation
+réellement utile.
 
 ## Journal de décision
 
@@ -258,12 +275,21 @@ ses familles de questions.
   mixtes 7 et 8 en contexte monétaire et analyse d'erreur, avec une version de
   gabarit 2 dans les nouvelles séries. Le générateur passe en version 1.13.0
   afin qu'une même version de lien ne produise jamais deux séries différentes.
+- **2026-07-16 — Banque V1.19.** La séparation des décimaux relatifs porte la
+  banque à 43 modules et 476 gabarits. Le générateur passe en version 1.14.0 ;
+  le nouveau code MG1 permanent de `dnb_39` est 42.
 - **2026-07-16 — Clôture et publication.** Tout compte rendu distingue l'état
   local, poussé, en pull request, fusionné et déployé. Une demande de
   publication inclut le commit, le push et la pull request de la bêta ; un lot
   encore local doit être signalé spontanément.
 - **2026-07-16 — Décimaux.** Les décisions propres à `dnb_02` sont consignées
   dans [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md).
+- **2026-07-16 — Décimaux relatifs et espace écran.** `dnb_02` devient
+  exclusivement positif ; `dnb_39` récupère les familles négatives et la somme
+  historique. Les cartes acceptent glisser et toucher–toucher. Les calculs,
+  consignes, réponses et composants sont dimensionnés après captures aux
+  écrans de référence. Les décisions sont consignées dans
+  [`DECIMAUX-RELATIFS-AUTOMATISMES.md`](DECIMAUX-RELATIFS-AUTOMATISMES.md).
 
 Lorsqu'un nouveau point est validé, consigner ici la date, la décision, les
 catégories concernées et les composants retenus. Ne pas transformer une piste

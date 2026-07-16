@@ -106,7 +106,7 @@ if(squareModule.includes('<svg')) fail('dnb_07 ne doit plus embarquer de copie d
 
 const fractionDecimalGrid=registry?.get('arithmetic.fraction-decimal-grid');
 if(!fractionDecimalGrid) fail('Le composant arithmetic.fraction-decimal-grid est absent.');
-if(fractionDecimalGrid&&fractionDecimalGrid.version!=='1.1.0') fail('Version 1.1.0 attendue pour le plateau fraction–décimal.');
+if(fractionDecimalGrid&&fractionDecimalGrid.version!=='1.2.0') fail('Version 1.2.0 attendue pour le plateau fraction–décimal.');
 if(fractionDecimalGrid&&fractionDecimalGrid.presets.length!==9) fail('Neuf constructions de référence sont attendues pour le plateau fraction–décimal.');
 if(fractionDecimalGrid&&context.fractionDecimalGrid!==fractionDecimalGrid.render) fail('Le point d’entrée historique du plateau fraction–décimal doit utiliser le composant enregistré.');
 const fractionDecimalHashes=new Map([
@@ -131,7 +131,7 @@ if((decimalComplement.match(/decimal-complement-cell/g)||[]).length!==10||!decim
 
 const orderCards=registry?.get('numbers.order-cards');
 if(!orderCards) fail('Le composant numbers.order-cards est absent.');
-if(orderCards&&orderCards.version!=='1.0.0') fail('Version 1.0.0 attendue pour les cartes à ranger.');
+if(orderCards&&orderCards.version!=='1.1.0') fail('Version 1.1.0 attendue pour les cartes à ranger.');
 if(orderCards&&orderCards.presets.length!==1) fail('Une situation de référence est attendue pour les cartes à ranger.');
 const orderCardsQuestion=orderCards?.render({values:[4.7,4.09,4.68],solution:[4.09,4.68,4.7]},false)||'';
 const orderCardsCorrection=orderCards?.render({values:[4.7,4.09,4.68],solution:[4.09,4.68,4.7]},true)||'';
@@ -326,7 +326,7 @@ for (const testCase of cases) {
 
 const relationBar = registry?.get('arithmetic.relation-bar');
 if (!relationBar) fail('Le composant arithmetic.relation-bar est absent.');
-if (relationBar && relationBar.version !== '1.2.0') fail('Version 1.2.0 attendue pour les schémas de relations.');
+if (relationBar && relationBar.version !== '1.3.0') fail('Version 1.3.0 attendue pour les schémas de relations.');
 if (relationBar && relationBar.presets.length !== 14) fail('Quatorze préréglages de schémas en barres sont attendus.');
 if (relationBar && context.relationBarSvg !== relationBar.render) {
   fail('Le point d’entrée historique relationBarSvg doit utiliser le composant enregistré.');
@@ -599,7 +599,7 @@ for(const color of ['#2F8FC9','#72C475','#FFE64C','#EF3F35']) if(!mathigonTiles.
 
 const areaModel=registry?.get('algebra.area-model');
 if(!areaModel) fail('Le composant algebra.area-model est absent.');
-if(areaModel&&areaModel.version!=='1.1.0') fail('Version 1.1.0 attendue pour le modèle d’aire.');
+if(areaModel&&areaModel.version!=='1.2.0') fail('Version 1.2.0 attendue pour le modèle d’aire.');
 if(areaModel&&areaModel.presets.length!==7) fail('Sept modèles d’aire de référence sont attendus.');
 if(areaModel&&context.areaModel!==areaModel.render) fail('Le point d’entrée areaModel doit utiliser le composant enregistré.');
 const areaModelHashes=new Map([

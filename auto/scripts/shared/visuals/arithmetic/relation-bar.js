@@ -23,12 +23,16 @@
   }
 
   function relationBarSvg(data,correction=false){
-    const x=92,width=610,topY=28,topH=70,bottomY=98,bottomH=70;
+    const x=data.balanced?75:92,width=610,topY=28,topH=70,bottomY=98,bottomH=70;
     const text=(x,y,value,size=24,weight=800)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="#17283f">${visualEscapeHtml(value)}</text>`;
     const arrow=(label,up=false)=>{
-      const path=up?'M70 139 C34 132 34 64 70 56':'M70 55 C34 62 34 130 70 139';
-      const head=up?'M70 56 L59 51 L61 63 Z':'M70 139 L59 134 L61 146 Z';
-      return `<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round"/><path d="${head}" fill="#4b5563"/>${text(27,97,label,19,750)}`;
+      if(data.arrowStyle!=='hand'){
+        const path=up?'M70 139 C34 132 34 64 70 56':'M70 55 C34 62 34 130 70 139';
+        const head=up?'M70 56 L59 51 L61 63 Z':'M70 139 L59 134 L61 146 Z';
+        return `<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round"/><path d="${head}" fill="#4b5563"/>${text(27,97,label,19,750)}`;
+      }
+      const path=up?'M58 142 C24 125 24 73 58 54':'M58 54 C24 73 24 125 58 142';
+      return `<defs><marker id="relation-arrow-head" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4b5563"/></marker></defs><path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" marker-end="url(#relation-arrow-head)"/>${text(22,98,label,19,750)}`;
     };
     let body='';
 
@@ -104,7 +108,7 @@
 
   if(!global.MATHSGO_VISUALS) throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant relation-bar.js.');
   global.MATHSGO_VISUALS.register('arithmetic.relation-bar',{
-    version:'1.2.0',
+    version:'1.3.0',
     label:'Schéma en barres — relations',
     family:'Arithmétique',
     description:'Construit les regroupements ×2, ×3, ×4, ×5 et ×10, leurs fractions unitaires inverses et les nombres voisins.',

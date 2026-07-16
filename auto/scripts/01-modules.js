@@ -47,6 +47,7 @@ function moduleFromLoadedGlobal(module){
     case 'MODULE_DNB_36': return typeof MODULE_DNB_36==='undefined'?null:MODULE_DNB_36;
     case 'MODULE_DNB_37': return typeof MODULE_DNB_37==='undefined'?null:MODULE_DNB_37;
     case 'MODULE_DNB_38': return typeof MODULE_DNB_38==='undefined'?null:MODULE_DNB_38;
+    case 'MODULE_DNB_39': return typeof MODULE_DNB_39==='undefined'?null:MODULE_DNB_39;
     default: return null;
   }
 }

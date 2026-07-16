@@ -24,6 +24,7 @@ const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_13',title:'Résoudre des équations',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_13',file:'scripts/modules/numbers/dnb_13.js'},
   {id:'dnb_14',title:'Lire une abscisse sur une droite graduée',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_14',file:'scripts/modules/numbers/dnb_14.js',runtimeFiles:['scripts/modules/numbers/dnb_14/generate.js','scripts/modules/numbers/dnb_14/selection.js','scripts/modules/numbers/dnb_14/render.js']},
   {id:'dnb_38',title:'Addition de nombres entiers relatifs',level_tags:['5e','4e','3e'],domain:'numbers',globalName:'MODULE_DNB_38',file:'scripts/modules/numbers/dnb_38.js'},
+  {id:'dnb_39',title:'Comparer et calculer avec des nombres décimaux relatifs',level_tags:['5e','4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_39',file:'scripts/modules/numbers/dnb_39.js',runtimeFiles:['scripts/modules/numbers/dnb_02/generate.js','scripts/modules/numbers/dnb_02/selection.js','scripts/modules/numbers/dnb_02/render.js']},
   {id:'dnb_15',title:'Lire des coordonnées dans un repère',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_15',file:'scripts/modules/geometry/dnb_15.js'},
   {id:'dnb_16',title:"Codage d'une figure — triangles, quadrilatères, médiatrice",level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_16',file:'scripts/modules/geometry/dnb_16.js'},
   {id:'dnb_17',title:'Angles : reconnaître, nommer et mesurer',level_tags:['4e','3e','DNB'],domain:'geometry',globalName:'MODULE_DNB_17',file:'scripts/modules/geometry/dnb_17.js'},
@@ -62,7 +63,7 @@ function loadModuleScript(src){
   if(MATHSGO_LOADED_MODULE_SCRIPTS.has(src)) return MATHSGO_LOADED_MODULE_SCRIPTS.get(src);
   const promise=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
-    script.src=src+'?v=20260716-6';
+    script.src=src+'?v=20260716-7';
     script.onload=resolve;
     script.onerror=()=>reject(new Error('Impossible de charger un module d’automatismes.'));
     document.head.appendChild(script);

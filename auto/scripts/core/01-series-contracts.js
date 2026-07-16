@@ -1,6 +1,6 @@
 const MATHSGO_SCHEMA_VERSION=1;
-const MATHSGO_GENERATOR_VERSION='1.13.0';
-const MATHSGO_APP_VERSION='1.15';
+const MATHSGO_GENERATOR_VERSION='1.14.0';
+const MATHSGO_APP_VERSION='1.16';
 const MATHSGO_SERIES_PREFIX='MG1-';
 const MATHSGO_CANONICAL_URL='https://bourgault314.github.io/mathsgo-automatismes-beta/auto/';
 const MATHSGO_ALLOWED_LEVELS=new Set(['5e','4e','3e','DNB']);
@@ -53,7 +53,8 @@ const MATHSGO_MODULE_REGISTRY=Object.freeze([
   ['lire-graphique-dependance','dnb_36',38],
   ['algorithmique-instructions','dnb_37',39],
   ['relatifs-addition-entiers-jetons','dnb_38',40],
-  ['pythagore-tactile','dnb_24b',41]
+  ['pythagore-tactile','dnb_24b',41],
+  ['decimaux-relatifs-comparer-calculer','dnb_39',42]
 ].map(([id,legacyId,code])=>Object.freeze({id,legacyId,code,aliases:Object.freeze([legacyId])})));
 
 const MATHSGO_MODULE_BY_ID=new Map(MATHSGO_MODULE_REGISTRY.map(entry=>[entry.id,entry]));

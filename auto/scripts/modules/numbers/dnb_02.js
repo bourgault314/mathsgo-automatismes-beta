@@ -23,17 +23,6 @@ const MODULE_DNB_02 = {
       "footer": "[[formula_qcm1]]"
     },
     {
-      "n": 2,
-      "statement": "Parmi ces nombres négatifs, lequel est le plus grand ?&&$$${mx}$$&&$$${d1}$$&&$$${d2}$$&&",
-      "answer": "[\"1\"]",
-      "options": {
-        "decimal_kind": "compare-negative-qcm",
-        "decimal_block": "compare-order",
-        "shuffle_answers": true
-      },
-      "footer": "[[formula_qcm1]]"
-    },
-    {
       "n": 3,
       "statement": "Range ces trois nombres dans l'ordre croissant.",
       "answer": "[\"mn\",\"md\",\"mx\"]",
@@ -54,16 +43,6 @@ const MODULE_DNB_02 = {
       "footer": ""
     },
     {
-      "n": 5,
-      "statement": "Encadre ce nombre négatif entre deux entiers consécutifs.",
-      "answer": "[\"low\",\"high\"]",
-      "options": {
-        "decimal_kind": "frame-negative",
-        "decimal_block": "frame"
-      },
-      "footer": ""
-    },
-    {
       "n": 6,
       "statement": "Calcule :",
       "answer": "[\"sum\"]",
@@ -71,7 +50,7 @@ const MODULE_DNB_02 = {
         "decimal_kind": "add-to-one",
         "decimal_block": "additive"
       },
-      "footer": "$$${a}+${b}=[[formula]]$$"
+      "footer": "$$${a} + ${b} = [[formula]]$$"
     },
     {
       "n": 7,
@@ -81,7 +60,7 @@ const MODULE_DNB_02 = {
         "decimal_kind": "subtract",
         "decimal_block": "additive"
       },
-      "footer": "$$${a}-${b}=[[formula]]$$"
+      "footer": "$$${a} - ${b} = [[formula]]$$"
     },
     {
       "n": 8,
@@ -91,7 +70,7 @@ const MODULE_DNB_02 = {
         "decimal_kind": "missing-complement",
         "decimal_block": "additive"
       },
-      "footer": "$$${a}+[[formula]]=1$$"
+      "footer": "$$${a} + [[formula]] = 1$$"
     },
     {
       "n": 9,
@@ -101,7 +80,7 @@ const MODULE_DNB_02 = {
         "decimal_kind": "multiply-direct",
         "decimal_block": "multiplicative"
       },
-      "footer": "$$${a}\\times${factor}=[[formula]]$$"
+      "footer": "$$${a} \\times ${factor} = [[formula]]$$"
     },
     {
       "n": 10,
@@ -111,7 +90,7 @@ const MODULE_DNB_02 = {
         "decimal_kind": "divide-direct",
         "decimal_block": "multiplicative"
       },
-      "footer": "$$${total}\\div${divisor}=[[formula]]$$"
+      "footer": "$$${total} \\div ${divisor} = [[formula]]$$"
     },
     {
       "n": 11,

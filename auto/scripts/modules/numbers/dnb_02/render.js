@@ -26,7 +26,7 @@
 
   function frameBoard(instance,correction=false){
     const scope=instance.scope||{},component=global.MATHSGO_VISUALS&&global.MATHSGO_VISUALS.get('numbers.number-line');
-    const line=component?component.render({mode:'scale',min:Number(scope.low),max:Number(scope.high),step:1,width:520,height:142,autoLabels:false,points:[{value:Number(scope.value),label:display(scope.value),color:'#0b79d0'}]}):'';
+    const line=component?component.render({mode:'scale',min:Number(scope.low),max:Number(scope.high),step:1,width:560,height:154,axisPadding:.1,autoLabels:false,tickFontSize:21,pointFontSize:28,points:[{value:Number(scope.value),label:display(scope.value),color:'#0b79d0'}]}):'';
     const values=correction?[scope.low,scope.high]:['',''],cards=Array.isArray(scope.frameCards)?scope.frameCards:[scope.low-1,scope.low,scope.high,scope.high+1];
     return `<div class="question">${escapeHtml(instance.rawStatement)}</div><div class="decimal-manipulation decimal-frame-board${correction?' is-correction':''}" data-decimal-manipulation="frame"><div class="decimal-frame-line">${line}<div class="decimal-frame-slots">${slot(0,values[0],'Entier de gauche')}${slot(1,values[1],'Entier de droite')}</div></div><div class="decimal-card-tray decimal-frame-cards" aria-label="Entiers proposés">${cards.map(card).join('')}</div></div>`;
   }
@@ -42,7 +42,7 @@
     if(!component) return '';
     const scope=instance.scope||{};
     const data={
-      style:'table',compact:true,interactive,
+      style:'decimal-decomposition',compact:true,interactive,
       title:'Décomposer '+display(scope.a)+' × '+display(scope.factor),
       rows:[{coefficient:Number(scope.whole),power:0},{coefficient:Number(scope.tenths),power:0}],
       columns:[{coefficient:Number(scope.factor),power:0}],
@@ -56,7 +56,7 @@
     const component=global.MATHSGO_VISUALS&&global.MATHSGO_VISUALS.get('arithmetic.relation-bar');
     if(!component) return '';
     const scope=instance.scope||{};
-    return component.render({kind:'fraction_direct',divisor:Number(scope.divisor),value:Number(scope.total),result:Number(scope.share),showValue:true,questionLabel:'une part ?'},correction);
+    return component.render({kind:'fraction_direct',divisor:Number(scope.divisor),value:Number(scope.total),result:Number(scope.share),showValue:true,questionLabel:'une part ?',balanced:true,arrowStyle:'hand'},correction);
   }
 
   function distributivityBoard(instance,correction=false){
@@ -90,7 +90,7 @@
   }
 
   if(!global.MATHSGO_MODULE_RUNTIME) throw new Error('Le registre fonctionnel doit être chargé avant le rendu dnb_02.');
-  global.MATHSGO_MODULE_RUNTIME.register('dnb_02',{
-    renderer:{version:'2.0.0',renderQuestion}
-  });
+  ['dnb_02','dnb_39'].forEach(moduleId=>global.MATHSGO_MODULE_RUNTIME.register(moduleId,{
+    renderer:{version:'2.1.0',renderQuestion}
+  }));
 })(globalThis);

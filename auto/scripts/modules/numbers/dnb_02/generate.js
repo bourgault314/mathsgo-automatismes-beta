@@ -19,6 +19,10 @@
         d2:cut(-(units+(tenths+1)/10))
       };
     }
+    if(kind==='signed-add'){
+      const a=randomInt(1,99)/10,b=-randomInt(1,99)/10;
+      return {a,b,result:cut(a+b)};
+    }
     if(kind==='order-cards'){
       const units=randomInt(0,18),parts=[randomInt(1,9)*10];
       while(parts.length<3){const candidate=randomInt(1,99);if(!parts.includes(candidate))parts.push(candidate);}
@@ -65,7 +69,7 @@
   }
 
   if(!global.MATHSGO_MODULE_RUNTIME) throw new Error('Le registre fonctionnel doit être chargé avant le générateur dnb_02.');
-  global.MATHSGO_MODULE_RUNTIME.register('dnb_02',{
-    generator:{version:'2.0.0',createScope}
-  });
+  ['dnb_02','dnb_39'].forEach(moduleId=>global.MATHSGO_MODULE_RUNTIME.register(moduleId,{
+    generator:{version:'2.1.0',createScope}
+  }));
 })(globalThis);

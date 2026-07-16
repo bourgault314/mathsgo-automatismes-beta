@@ -6,6 +6,7 @@
   ]);
 
   function buildCycle({questions,shuffle}){
+    if(questions.length<=3) return shuffle(questions);
     const pools=new Map();
     questions.forEach(question=>{
       const group=String(question&&question.options&&question.options.decimal_block||'other');
@@ -28,7 +29,7 @@
   }
 
   if(!global.MATHSGO_MODULE_RUNTIME) throw new Error('Le registre fonctionnel doit être chargé avant la sélection dnb_02.');
-  global.MATHSGO_MODULE_RUNTIME.register('dnb_02',{
-    selection:{version:'2.0.0',buildCycle,familyForQuestion}
-  });
+  ['dnb_02','dnb_39'].forEach(moduleId=>global.MATHSGO_MODULE_RUNTIME.register(moduleId,{
+    selection:{version:'2.1.0',buildCycle,familyForQuestion}
+  }));
 })(globalThis);

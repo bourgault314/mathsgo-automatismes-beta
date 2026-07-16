@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
 const isolatedModulesByDomain = {
-  numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14', 'dnb_38'],
+  numbers: ['dnb_01', 'dnb_02', 'dnb_02b', 'dnb_03', 'dnb_03b', 'dnb_04', 'dnb_05', 'dnb_06', 'dnb_07', 'dnb_08', 'dnb_09', 'dnb_10', 'dnb_11', 'dnb_12', 'dnb_13', 'dnb_14', 'dnb_38', 'dnb_39'],
   geometry: ['dnb_15', 'dnb_16', 'dnb_17', 'dnb_18', 'dnb_19', 'dnb_20', 'dnb_21', 'dnb_22', 'dnb_23', 'dnb_24', 'dnb_24b', 'dnb_25', 'dnb_26', 'dnb_26b', 'dnb_27'],
   data: ['dnb_28', 'dnb_29', 'dnb_30', 'dnb_31', 'dnb_32', 'dnb_33', 'dnb_34', 'dnb_35', 'dnb_36'],
   algorithm: ['dnb_37']
@@ -68,6 +68,7 @@ globalThis.__renderThalesModule = renderThalesModule;
 globalThis.__renderPythagorasModule = renderPythagorasModule;
 globalThis.__renderAngleSumModule = renderAngleSumModule;
 globalThis.__relativeModule = MODULE_DNB_38;
+globalThis.__decimalRelativeModule = MODULE_DNB_39;
 globalThis.__decimalModule = MODULE_DNB_02;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__divisibilityModule = MODULE_DNB_08;
@@ -92,7 +93,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = '14b41cbf32edd283429f267d35b0100b59c1b0cae3497e772690484c44514b7c';
+const expectedBankHash = '662ac08d547b3aca31626f04b3af1ad7c57333a8ec32e9cc7276d3ba577e63ac';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -100,7 +101,7 @@ const fail = message => {
 
 const requiredModuleFields = ['id', 'num', 'title', 'level_tags', 'source', 'has_svg', 'questions'];
 
-if (bank.length !== 42) fail(`42 modules attendus, ${bank.length} trouvés.`);
+if (bank.length !== 43) fail(`43 modules attendus, ${bank.length} trouvés.`);
 
 const moduleIds = bank.map(module => module.id);
 if (new Set(moduleIds).size !== moduleIds.length) fail('Un identifiant de module est utilisé plusieurs fois.');
@@ -129,9 +130,9 @@ for (const id of isolatedModuleIds) {
 }
 
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
-if (questionCount !== 475) fail(`475 gabarits attendus, ${questionCount} trouvés.`);
+if (questionCount !== 476) fail(`476 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
-  fail(`Le contenu ou l’ordre de la banque V1.18 a changé (${bankHash}).`);
+  fail(`Le contenu ou l’ordre de la banque V1.19 a changé (${bankHash}).`);
 }
 
 const runtime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_08');
@@ -294,7 +295,7 @@ if(!legacyNumberLineHtml.includes('A&nbsp;:')) fail('La lettre et les deux-point
 const decimalManifest=context.__moduleManifest.find(module=>module.id==='dnb_02');
 if(!decimalManifest||decimalManifest.runtimeFiles?.length!==3) fail('Le manifeste doit charger les trois extensions fonctionnelles de dnb_02.');
 if(context.__moduleFiles.get('dnb_02')?.length!==4) fail('Le chargeur doit préparer la banque et les trois extensions de dnb_02.');
-if(context.__decimalModule.questions.length!==12) fail('La catégorie des décimaux doit contenir douze familles distinctes.');
+if(context.__decimalModule.questions.length!==10) fail('La catégorie des décimaux positifs doit contenir dix familles distinctes.');
 if(context.__decimalModule.questions.some(question=>String(question.options?.decimal_kind).includes('relative'))) fail('Les sommes de décimaux relatifs doivent avoir quitté dnb_02.');
 if(!context.__decimalModule.level_tags.includes('5e')||!context.__decimalModule.level_tags.includes('3e')||!context.__decimalModule.level_tags.includes('DNB')) fail('dnb_02 doit rester accessible en 5e, 3e et DNB.');
 
@@ -305,8 +306,6 @@ for(const seed of [5,19,73,2026]){
   if(new Set(orderValues).size!==3||JSON.stringify([...orderValues].sort((a,b)=>a-b))!==JSON.stringify([order.scope.mn,order.scope.md,order.scope.mx])) fail(`Le rangement décimal doit produire trois cartes distinctes avec la seed ${seed}.`);
   const frame=instances.get(4);
   if(!(frame.scope.low<frame.scope.value&&frame.scope.value<frame.scope.high&&frame.scope.high-frame.scope.low===1)) fail(`L’encadrement positif est incohérent avec la seed ${seed}.`);
-  const negativeFrame=instances.get(5);
-  if(!(negativeFrame.scope.low<negativeFrame.scope.value&&negativeFrame.scope.value<negativeFrame.scope.high&&negativeFrame.scope.high-negativeFrame.scope.low===1)) fail(`L’encadrement négatif est incohérent avec la seed ${seed}.`);
   const multiplication=instances.get(9),division=instances.get(10);
   if(Math.abs(multiplication.scope.a*multiplication.scope.factor-multiplication.scope.result)>1e-9) fail(`La multiplication décimale est fausse avec la seed ${seed}.`);
   if(Math.abs(division.scope.total/division.scope.divisor-division.scope.share)>1e-9) fail(`Le partage décimal est faux avec la seed ${seed}.`);
@@ -319,7 +318,6 @@ for(let seed=1;seed<=250;seed++){
     const instance=context.__makeInstance(context.__decimalModule,question),scope=instance.scope||{},kind=question.options.decimal_kind;
     decimalSignatures.get(Number(question.n)).add(JSON.stringify(scope));
     if(kind==='compare-positive-qcm'&&!(scope.mx>scope.d1&&scope.mx>scope.d2)) fail(`Le QCM positif ne place pas le maximum en première réponse avec la seed ${seed}.`);
-    if(kind==='compare-negative-qcm'&&!(scope.mx>scope.d1&&scope.mx>scope.d2)) fail(`Le QCM négatif ne place pas le maximum en première réponse avec la seed ${seed}.`);
     if(kind==='order-cards'){
       const values=[scope.a,scope.b,scope.c];
       if(new Set(values).size!==3||!values.every(value=>Math.trunc(value)===Math.trunc(values[0]))) fail(`Le rangement doit comparer trois écritures distinctes de même partie entière avec la seed ${seed}.`);
@@ -347,7 +345,7 @@ const decimalReasoningHtml=context.__renderQuestion(decimalInstances[12],false,'
 if((orderHtml.match(/data-decimal-card=/g)||[]).length!==3||(orderHtml.match(/data-decimal-slot=/g)||[]).length!==3) fail('Le rangement dnb_02 doit utiliser le composant de cartes partagé.');
 if(!frameHtml.includes('<svg')||(frameHtml.match(/data-decimal-slot=/g)||[]).length!==2||!/>\d+,\d+<\/text>/.test(frameHtml)) fail('L’encadrement dnb_02 doit placer le décimal sur la droite et proposer deux cases.');
 if(!unitWithAid.includes('decimal-complement-visual')||unitWithoutAid.includes('decimal-complement-visual')||!unitReveal.includes('decimal-visual-placeholder')) fail('La bande de dixièmes doit suivre la politique d’aide facultative.');
-if(!multiplicationWithAid.includes('area-model-svg')) fail('La multiplication décimale doit réutiliser le modèle d’aire.');
+if(!multiplicationWithAid.includes('decimal-decomposition')) fail('La multiplication décimale doit réutiliser la décomposition distributive partagée.');
 if(!divisionWithAid.includes('relation-bar-svg')) fail('La division décimale doit réutiliser le schéma en barres.');
 if((decimalReasoningHtml.match(/data-distributive-slot=/g)||[]).length!==2||(decimalReasoningHtml.match(/data-decimal-card=/g)||[]).length!==2) fail('La distributivité doit proposer deux produits à placer dans deux cases.');
 
@@ -355,8 +353,24 @@ for(const seed of [11,37,89]){
   context.__setSeed(seed);
   const cycle=decimalRuntime.selection.buildCycle({module:context.__decimalModule,questions:context.__decimalModule.questions,shuffle:context.__shuffledCopy});
   const firstTen=cycle.slice(0,10),counts=firstTen.reduce((result,question)=>{const block=question.options.decimal_block;result[block]=(result[block]||0)+1;return result;},{});
-  if(counts['compare-order']!==2||counts.frame!==2||counts.additive!==3||counts.multiplicative!==3) fail(`La rotation dnb_02 doit équilibrer 2 comparaisons, 2 encadrements, 3 additifs et 3 multiplicatifs avec la seed ${seed}.`);
+  if(counts['compare-order']!==2||counts.frame!==1||counts.additive!==3||counts.multiplicative!==4) fail(`La rotation dnb_02 doit faire tourner ses dix familles positives sans répétition avec la seed ${seed}.`);
 }
+
+if(context.__decimalRelativeModule.questions.length!==3) fail('La catégorie des décimaux relatifs doit restaurer trois familles initiales.');
+const decimalRelativeRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_39');
+if(!decimalRelativeRuntime?.generator||!decimalRelativeRuntime?.selection||!decimalRelativeRuntime?.renderer) fail('Le pilote partagé des décimaux doit aussi prendre en charge dnb_39.');
+for(let seed=1;seed<=250;seed++){
+  const [compareQuestion,frameQuestion,sumQuestion]=context.__decimalRelativeModule.questions;
+  context.__setSeed(seed*10+1);const compare=context.__makeInstance(context.__decimalRelativeModule,compareQuestion);
+  context.__setSeed(seed*10+2);const frame=context.__makeInstance(context.__decimalRelativeModule,frameQuestion);
+  context.__setSeed(seed*10+3);const sum=context.__makeInstance(context.__decimalRelativeModule,sumQuestion);
+  if(!(compare.scope.mx>compare.scope.d1&&compare.scope.mx>compare.scope.d2)) fail(`Le QCM relatif ne place pas le maximum en première réponse avec la seed ${seed}.`);
+  if(!(frame.scope.low<frame.scope.value&&frame.scope.value<frame.scope.high&&frame.scope.high-frame.scope.low===1&&frame.scope.value<0)) fail(`L’encadrement relatif est incohérent avec la seed ${seed}.`);
+  if(Math.abs(sum.scope.a+sum.scope.b-sum.scope.result)>1e-9||!(sum.scope.a>0&&sum.scope.b<0)) fail(`La somme de décimaux relatifs est incohérente avec la seed ${seed}.`);
+}
+context.__setSeed(42);
+const relativeFrame=context.__makeInstance(context.__decimalRelativeModule,context.__decimalRelativeModule.questions[1]);
+if((context.__renderQuestion(relativeFrame,false,'with').match(/data-decimal-slot=/g)||[]).length!==2) fail('L’encadrement relatif doit conserver la droite et ses deux cases tactiles.');
 
 const angleInstance={
   module:{id:'dnb_18'},q:{n:9},answers:['51'],
@@ -426,7 +440,7 @@ if(pythagorasWithoutAid.includes('pythagoras-bar-svg')||pythagorasWithoutAid.inc
 
 const contracts = fs.readFileSync(new URL('auto/scripts/core/01-series-contracts.js', root), 'utf8');
 const registeredLegacyIds = [...contracts.matchAll(/\['[^']+','(dnb_[^']+)',\d+\]/g)].map(match => match[1]);
-if (registeredLegacyIds.length !== 42) fail(`42 entrées MG1 attendues, ${registeredLegacyIds.length} trouvées.`);
+if (registeredLegacyIds.length !== 43) fail(`43 entrées MG1 attendues, ${registeredLegacyIds.length} trouvées.`);
 
 const missingFromRegistry = moduleIds.filter(id => !registeredLegacyIds.includes(id));
 const missingFromBank = registeredLegacyIds.filter(id => !moduleIds.includes(id));
@@ -450,5 +464,5 @@ for (const domain of Object.keys(isolatedModulesByDomain)) {
 if ((indexHtml.match(/<script defer src=/g)||[]).length < 30) fail('Les scripts de démarrage doivent rester non bloquants pour le premier affichage.');
 
 if (!process.exitCode) {
-  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.18 figée, registre MG1 cohérent.`);
+  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.19 figée, registre MG1 cohérent.`);
 }

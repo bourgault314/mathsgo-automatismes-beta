@@ -54,8 +54,8 @@ usuels sont `statement`, `answer`, `options` et `footer`.
 7. La meilleure source recensée dans `SOURCES-DE-VERITE.md` est comparée avant
    toute substitution visuelle.
 
-Le test fige actuellement les 42 modules, les 475 gabarits, le registre MG1 et
-l’empreinte complète de la banque V1.18. Une extraction pure doit donc laisser
+Le test fige actuellement les 43 modules, les 476 gabarits, le registre MG1 et
+l’empreinte complète de la banque V1.19. Une extraction pure doit donc laisser
 cette empreinte inchangée.
 
 ## Registre pédagogique associé
@@ -98,7 +98,7 @@ Le domaine Géométrie suit le même contrat pour ses quatorze modules, y compri
 le complément de trigonométrie `dnb_26b`.
 
 Les domaines Données et Algorithmique complètent l'isolation des banques : les
-42 modules suivent maintenant ce contrat minimal. Leur classement pédagogique
+43 modules suivent maintenant ce contrat minimal. Leur classement pédagogique
 reste à terminer.
 
 Le module `dnb_38` ajoute un contrat pédagogique associé dans

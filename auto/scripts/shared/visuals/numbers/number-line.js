@@ -42,9 +42,13 @@
     const width=Math.max(320,Math.min(1200,Number(data.width)||680));
     const height=Math.max(100,Math.min(220,Number(data.height)||130));
     const left=48,right=width-42,axisEnd=right+12,axisY=Math.round(height*.5);
+    const axisPadding=Math.max(0,Math.min(.22,Number(data.axisPadding)||0));
+    const plotInset=(right-left)*axisPadding,plotLeft=left+plotInset,plotRight=right-plotInset;
+    const tickFontSize=Math.max(14,Math.min(28,Number(data.tickFontSize)||16));
+    const pointFontSize=Math.max(18,Math.min(34,Number(data.pointFontSize)||22));
     const labelEvery=Math.max(1,Math.round(Number(data.labelEvery)||1));
     const minorStep=Math.abs(Number(data.minorStep))||0;
-    const span=max-min,toX=value=>left+((value-min)/span)*(right-left);
+    const span=max-min,toX=value=>plotLeft+((value-min)/span)*(plotRight-plotLeft);
     const references=Array.isArray(data.references)?data.references:[];
     const points=Array.isArray(data.points)?data.points:[];
     const values=(increment)=>{
@@ -69,20 +73,23 @@
       const x=cleanNumber(toX(value));
       lines.push(`<line x1="${x}" y1="${axisY-9}" x2="${x}" y2="${axisY+9}" stroke="#222" stroke-width="1.5"/>`);
       if(data.autoLabels!==false&&index%labelEvery===0){
-        lines.push(`<text x="${x}" y="${axisY+33}" font-family="sans-serif" font-size="16" text-anchor="middle">${svgEscape(numberLabel(value))}</text>`);
+        const labelY=data.tickFontSize?axisY+38:axisY+33;
+        lines.push(`<text x="${x}" y="${labelY}" font-family="sans-serif" font-size="${data.tickFontSize?tickFontSize:16}" text-anchor="middle">${svgEscape(numberLabel(value))}</text>`);
       }
     });
     references.forEach(reference=>{
       const value=Number(reference.value);
       if(!Number.isFinite(value)||value<min||value>max)return;
-      lines.push(`<text x="${cleanNumber(toX(value))}" y="${axisY+33}" font-family="sans-serif" font-size="16" font-weight="700" text-anchor="middle">${svgEscape(reference.label??numberLabel(value))}</text>`);
+      const labelY=data.tickFontSize?axisY+38:axisY+33;
+      lines.push(`<text x="${cleanNumber(toX(value))}" y="${labelY}" font-family="sans-serif" font-size="${data.tickFontSize?tickFontSize:16}" font-weight="700" text-anchor="middle">${svgEscape(reference.label??numberLabel(value))}</text>`);
     });
     points.forEach(point=>{
       const value=Number(point.value);
       if(!Number.isFinite(value)||value<min||value>max)return;
       const x=cleanNumber(toX(value)),color=svgEscape(point.color||'#2563a6');
       lines.push(`<line x1="${x}" y1="${axisY-14}" x2="${x}" y2="${axisY+14}" stroke="${color}" stroke-width="5" stroke-linecap="round"/>`);
-      lines.push(`<text x="${x}" y="${axisY-24}" font-family="serif" font-style="italic" font-size="22" text-anchor="middle" fill="${color}">${svgEscape(point.label||'A')}</text>`);
+      const pointWeight=data.pointFontSize?' font-weight="700"':'';
+      lines.push(`<text x="${x}" y="${data.pointFontSize?axisY-26:axisY-24}" font-family="serif" font-style="italic" font-size="${data.pointFontSize?pointFontSize:22}"${pointWeight} text-anchor="middle" fill="${color}">${svgEscape(point.label||'A')}</text>`);
     });
     lines.push('</svg>');
     return lines.join('\n');
