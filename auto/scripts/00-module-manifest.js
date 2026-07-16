@@ -44,7 +44,7 @@ const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_29',title:'Fréquences simples',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_29',file:'scripts/modules/data/dnb_29.js'},
   {id:'dnb_30',title:'Moyennes',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_30',file:'scripts/modules/data/dnb_30.js'},
   {id:'dnb_31',title:'Médiane et étendue',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_31',file:'scripts/modules/data/dnb_31.js'},
-  {id:'dnb_32',title:'Lire des tableaux, diagrammes et graphiques',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_32',file:'scripts/modules/data/dnb_32.js'},
+  {id:'dnb_32',title:'Lire des tableaux, diagrammes et graphiques',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_32',file:'scripts/modules/data/dnb_32.js',runtimeFiles:['scripts/modules/data/dnb_32/render.js']},
   {id:'dnb_33',title:'Reconnaître une situation de proportionnalité',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_33',file:'scripts/modules/data/dnb_33.js'},
   {id:'dnb_34',title:'Résoudre un problème de proportionnalité',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_34',file:'scripts/modules/data/dnb_34.js'},
   {id:'dnb_35',title:'Augmentation et diminution en pourcentage',level_tags:['4e','3e','DNB'],domain:'data',globalName:'MODULE_DNB_35',file:'scripts/modules/data/dnb_35.js'},
@@ -63,7 +63,7 @@ function loadModuleScript(src){
   if(MATHSGO_LOADED_MODULE_SCRIPTS.has(src)) return MATHSGO_LOADED_MODULE_SCRIPTS.get(src);
   const promise=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
-    script.src=src+'?v=20260716-8';
+    script.src=src+'?v=20260716-9';
     script.onload=resolve;
     script.onerror=()=>reject(new Error('Impossible de charger un module d’automatismes.'));
     document.head.appendChild(script);
