@@ -10,6 +10,7 @@ const sources=[
   'auto/scripts/shared/visuals/numbers/relative-tokens.js',
   'auto/scripts/shared/visuals/algebra/area-model.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/shared/visuals/geometry/triangle-angle-sum.js',
   'auto/scripts/shared/visuals/geometry/pythagoras-builder.js',
   'auto/scripts/shared/manipulations/00-registry.js',
   'auto/scripts/shared/manipulations/contracts.js'
@@ -21,7 +22,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_MANIPULATIONS;
 if(!registry) fail('Le registre de manipulations est absent.');
 const contracts=registry?.list()||[];
-if(contracts.length!==9) fail(`Neuf contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
+if(contracts.length!==10) fail(`Dix contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
 
 for(const contract of contracts){
   if(contract.status==='active'&&!context.MATHSGO_VISUALS.get(contract.componentId)) fail(`Le composant actif ${contract.id} est absent.`);
@@ -49,6 +50,9 @@ const relative=registry?.get('numbers.relative-tokens');
 if(relative?.reset.mode!=='initial-state'||relative?.actions.some(action=>action.id==='validate')!==true) fail('Les jetons relatifs doivent être réinitialisables et validables.');
 const pythagoras=registry?.get('geometry.pythagoras-builder');
 if(pythagoras?.validation.mode!=='ordered-slots'||pythagoras?.supports.includes('projection')) fail('Le constructeur Pythagore doit valider ses cases et rester une manipulation individuelle.');
+const angleBuilder=registry?.get('geometry.triangle-angle-builder');
+if(angleBuilder?.validation.mode!=='two-stage'||angleBuilder?.supports.includes('projection')) fail('La manipulation des angles doit valider le placement puis le calcul et rester individuelle.');
+if(!angleBuilder?.actions.some(action=>action.id==='drag-card')||!angleBuilder?.actions.some(action=>action.id==='select-card')||!angleBuilder?.actions.some(action=>action.id==='place-card')) fail('La manipulation des angles doit proposer le glisser et le toucher carte puis case.');
 for(const id of ['numbers.order-cards','numbers.frame-integers','numbers.distributivity-cards']){
   const contract=registry?.get(id);
   if(contract?.status!=='active'||contract?.validation.mode!=='ordered-slots'||!contract?.actions.some(action=>action.id==='drag-card')||!contract?.actions.some(action=>action.id==='select-card')||!contract?.actions.some(action=>action.id==='place-card')) fail(`La manipulation ${id} doit fonctionner par glisser ou par sélection puis placement ordonné.`);
@@ -69,5 +73,7 @@ for(const section of ['État sémantique','Gestes et accessibilité','Réinitial
 const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'utf8');
 if(!slideshow.includes('card.onpointerdown=event=>')||!slideshow.includes('document.elementsFromPoint(endEvent.clientX,endEvent.clientY)')) fail('Les cartes décimales doivent réellement gérer un glisser-déposer par pointeur.');
 if(!slideshow.includes('card.onclick=()=>')||!slideshow.includes('place(decimalSelectedCard,index)')) fail('Le toucher carte puis case doit rester disponible avec le glisser-déposer.');
+if(!slideshow.includes('setupAngleSumTactileInteraction(spec)')||!slideshow.includes('placeAngleSumBuilderToken(spec,value,Number(target.dataset.angleSumSlot))')) fail('Les cartes des angles doivent réutiliser le double geste glisser ou toucher puis toucher.');
+if(!slideshow.includes("angleSumPlacementValidated=true")||!slideshow.includes("'Valider le placement'")||!slideshow.includes("'Valider 𝑥'")) fail('La manipulation des angles doit séparer la validation du placement et celle du calcul.');
 
-if(!process.exitCode) console.log('OK — 9 contrats de manipulation : 8 actifs et 1 planifié, état MG-MANIP-1 cohérent.');
+if(!process.exitCode) console.log('OK — 10 contrats de manipulation : 9 actifs et 1 planifié, état MG-MANIP-1 cohérent.');

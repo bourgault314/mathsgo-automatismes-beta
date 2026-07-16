@@ -93,6 +93,7 @@ promet pas encore un stockage de progression.
 | `geometry.coordinate-points` | cibles, points choisis et point actif | état équivalent | points cibles sur le même repère | actif |
 | `numbers.relative-tokens` | jetons, signes et zones | état équivalent | rassemblement et paires nulles | actif |
 | `geometry.pythagoras-builder` | tâche, triangle et cases | cases ordonnées | relation et aires exactes | actif |
+| `geometry.triangle-angle-builder` | deux angles, orientation, cases et réponse | placement puis calcul | barre complétée et valeur de `𝑥` | actif |
 | `numbers.order-cards` | cartes, positions et sens de rangement | cases ordonnées | ordre croissant résolu | actif |
 | `numbers.frame-integers` | décimal, entiers proposés et deux emplacements | cases ordonnées | deux entiers consécutifs | actif |
 | `numbers.distributivity-cards` | facteurs, produits proposés et deux cases | cases ordonnées | décomposition résolue | actif |

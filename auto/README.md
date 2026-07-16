@@ -11,7 +11,7 @@ l'application et du livret A5, pas un deuxième exerciseur.
 
 ## État de référence
 
-- paquet : `1.31.0-beta.0` ;
+- paquet : `1.32.0-beta.0` ;
 - banque : V1.20 ;
 - 43 modules ;
 - 476 gabarits ;
@@ -19,6 +19,8 @@ l'application et du livret A5, pas un deuxième exerciseur.
 - 43 modules classés pédagogiquement sur 43 ;
 - 3 formats fonctionnels supplémentaires pour `dnb_14`, sans modifier ses 18
   gabarits historiques dans la banque figée ;
+- 1 format fonctionnel tactile supplémentaire pour `dnb_18`, sans modifier ses
+  10 gabarits historiques dans la banque figée ;
 - partage reproductible par seed, lien, code MG1 et QR code.
 
 Le fichier autonome historique `automatismes_mathsgo.html` n'est plus une

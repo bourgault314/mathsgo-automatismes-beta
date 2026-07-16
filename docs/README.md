@@ -26,6 +26,7 @@ de vérification et de publication communes à toutes les catégories.
 | [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md) | décisions propres à la comparaison et au calcul avec des décimaux |
 | [`RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md`](RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md) | décisions propres à la lecture et au placement sur une droite graduée |
 | [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md) | décisions propres à la lecture et au placement de points dans un repère |
+| [`ANGLES-TRIANGLE-AUTOMATISMES.md`](ANGLES-TRIANGLE-AUTOMATISMES.md) | dimensions, sélection et manipulation en deux temps pour la somme des angles d’un triangle |
 | [`CORPUS-EDUSCOL-DROITES-GRADUEES.md`](CORPUS-EDUSCOL-DROITES-GRADUEES.md) | sources institutionnelles et erreurs diagnostiques pour `dnb_14` |
 | [`ANGLES-AUTOMATISMES.md`](ANGLES-AUTOMATISMES.md) | contrat pédagogique, cours contextuel et couverture de `dnb_17` |
 | [`CORPUS-EDUSCOL-ANGLES.md`](CORPUS-EDUSCOL-ANGLES.md) | sources institutionnelles et distracteurs diagnostiques pour les angles |
