@@ -72,14 +72,16 @@ Pour chaque type de question, ce registre peut déclarer :
 - les rubriques d’aide utiles à cette tâche précise.
 
 `dnb_25` constitue le premier pilote de classement et de rendu. `dnb_08` est le
-premier pilote fonctionnel : sa génération, sa sélection et son rendu passent
-par le registre `MATHSGO_MODULE_RUNTIME`. Tant qu’un autre module n’est pas
+premier pilote fonctionnel sans changement de contenu. `dnb_02b` utilise le
+même registre pour une évolution pédagogique : génération, sélection par
+familles et rendu passent par `MATHSGO_MODULE_RUNTIME`. Tant qu’un autre module n’est pas
 migré, les anciennes règles du moteur restent disponibles comme solution de
 repli : le découpage peut donc avancer notion par notion.
 
 ## Pilotes de référence
 
 - `dnb_08` est le pilote simple ;
+- `dnb_02b` est le pilote de sélection pédagogique par familles ;
 - `dnb_07` est le pilote visuel et contient déjà sa configuration pédagogique
   finalisée.
 

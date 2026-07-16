@@ -70,6 +70,9 @@ tests de reproductibilité.
 
 Le contrat suivi par tous les fichiers isolés est décrit dans
 [`docs/CONTRAT-MODULE.md`](docs/CONTRAT-MODULE.md).
+Le protocole pédagogique, tactile et visuel à relire avant chaque chantier est
+décrit dans
+[`docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md`](docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md).
 
 La bibliothèque visuelle interne et ses règles d’évolution sont décrites dans
 [`docs/BIBLIOTHEQUE-VISUELLE.md`](docs/BIBLIOTHEQUE-VISUELLE.md). Le premier
@@ -85,7 +88,9 @@ Le tableau interactif de conversion de `dnb_19` est lui aussi séparé du gros
 moteur pour les longueurs, masses, capacités, aires et volumes.
 Le glisse-nombre de `dnb_02b`, avec sa virgule fixe, sa bande grise et sa bande
 de chiffres déplaçable, est isolé dans `numbers.glisse-nombre`. Son contrôleur
-de glissement fait partie du composant et sert aussi dans le catalogue.
+de glissement fait partie du composant et sert aussi dans le catalogue. Il
+accepte également le geste robuste « chiffre bleu puis colonne d’arrivée » et
+rejoue le déplacement lors de la correction.
 Les neuf gabarits de repères du plan de `dnb_15`, y compris les demi-unités et
 les lectures à deux points, utilisent un générateur commun.
 

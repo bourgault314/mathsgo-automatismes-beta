@@ -9,7 +9,7 @@
 const MATHSGO_MODULE_MANIFEST=Object.freeze([
   {id:'dnb_01',title:'Écriture décimale des fractions simples',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_01',file:'scripts/modules/numbers/dnb_01.js'},
   {id:'dnb_02',title:'Comparer et calculer avec des nombres décimaux',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_02',file:'scripts/modules/numbers/dnb_02.js'},
-  {id:'dnb_02b',title:'Multiplier et diviser par 10, 100 et 1 000',level_tags:['5e','4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_02B',file:'scripts/modules/numbers/dnb_02b.js'},
+  {id:'dnb_02b',title:'Multiplier et diviser par 10, 100 et 1 000',level_tags:['5e','4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_02B',file:'scripts/modules/numbers/dnb_02b.js',runtimeFiles:['scripts/modules/numbers/dnb_02b/generate.js','scripts/modules/numbers/dnb_02b/selection.js','scripts/modules/numbers/dnb_02b/render.js']},
   {id:'dnb_03',title:'Fractions : simplifier, comparer, additionner',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_03',file:'scripts/modules/numbers/dnb_03.js'},
   {id:'dnb_03b',title:'Fractions : multiplier et diviser',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_03B',file:'scripts/modules/numbers/dnb_03b.js'},
   {id:'dnb_04',title:'Fractions d’une quantité et pourcentages repères',level_tags:['4e','3e','DNB'],domain:'numbers',globalName:'MODULE_DNB_04',file:'scripts/modules/numbers/dnb_04.js'},
@@ -62,7 +62,7 @@ function loadModuleScript(src){
   if(MATHSGO_LOADED_MODULE_SCRIPTS.has(src)) return MATHSGO_LOADED_MODULE_SCRIPTS.get(src);
   const promise=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
-    script.src=src+'?v=20260716-4';
+    script.src=src+'?v=20260716-5';
     script.onload=resolve;
     script.onerror=()=>reject(new Error('Impossible de charger un module d’automatismes.'));
     document.head.appendChild(script);

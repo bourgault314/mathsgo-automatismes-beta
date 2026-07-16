@@ -440,14 +440,14 @@ for(const [questionNumber,id] of Object.entries(expectedFractionDecimal)){
 const placeValue=registry?.getModule('dnb_02b');
 if(!placeValue) fail('Le classement pédagogique de dnb_02b est absent.');
 if(placeValue&&placeValue.courseKind!=='place_value_shift') fail('dnb_02b doit appeler le cours du glisse-nombre.');
-if(placeValue&&placeValue.questionTypes.length!==6) fail('Les six types de questions du glisse-nombre doivent être explicitement classés.');
+if(placeValue&&placeValue.questionTypes.length!==7) fail('Les sept types de questions du glisse-nombre doivent être explicitement classés.');
 const placeValueBankNumbers=[...(context.__placeValueQuestionNumbers||[])].sort((a,b)=>a-b);
 const placeValueClassifiedNumbers=(placeValue?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
 if(JSON.stringify(placeValueClassifiedNumbers)!==JSON.stringify(placeValueBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit du glisse-nombre exactement une fois.');
 const expectedPlaceValue={
   1:['multiplier-puissance-dix','numeric'],2:['multiplier-puissance-dix','numeric'],3:['multiplier-puissance-dix','numeric'],
   4:['diviser-puissance-dix','numeric'],5:['diviser-puissance-dix','numeric'],6:['diviser-puissance-dix','numeric'],
-  7:['calcul-mixte','numeric'],8:['calcul-mixte','numeric'],9:['choisir-resultat','qcm-one'],10:['choisir-resultat','qcm-one'],
+  7:['contexte-monnaie','numeric'],8:['analyser-erreur','qcm-one'],9:['choisir-resultat','qcm-one'],10:['choisir-resultat','qcm-one'],
   11:['retrouver-facteur','numeric'],12:['retrouver-nombre','numeric']
 };
 for(const [questionNumber,[id,response]] of Object.entries(expectedPlaceValue)){
@@ -897,6 +897,7 @@ const q3Context=context.courseContextForInstance({module:{id:'dnb_25'},q:{n:3}})
 const q3Course=context.courseForSlide({courseKind:'thales',courseContext:q3Context});
 if(q3Course.rules[0]?.[0]!=='La méthode'||q3Course.rules.slice(1).map(rule=>rule[3]).join(',')!=='ratios,calculation,coherence') fail('La question 3 doit proposer le gabarit puis seulement rapports, calcul et cohérence.');
 if(context.visualPolicyForQuestion({id:'dnb_25'},{n:1})!=='essential'||context.visualPolicyForQuestion({id:'dnb_25'},{n:6})!=='aid-only') fail('La politique visuelle Thalès n’est pas appliquée par l’application.');
+if(context.courseKindForModule('dnb_02b','without')!=='place_value_shift') fail('Le cours du glisse-nombre doit rester accessible sans aide.');
 
 const relative=registry?.getModule('dnb_38');
 if(!relative) fail('Le classement pédagogique de dnb_38 est absent.');

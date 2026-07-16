@@ -76,6 +76,13 @@ function drawFromQuestionDeck(deckKey,questions,count,cycleBuilder=null){
 function drawRuntimeModuleQuestions(module,questions,count){
   const runtime=globalThis.MATHSGO_MODULE_RUNTIME&&globalThis.MATHSGO_MODULE_RUNTIME.get(module&&module.id);
   const selection=runtime&&runtime.selection;
+  if(selection&&typeof selection.selectQuestions==='function'){
+    return selection.selectQuestions({
+      module,questions,count,shuffle:shuffledCopy,
+      draw:(key,pool,poolCount,cycleBuilder=null)=>drawFromQuestionDeck(key,pool,poolCount,cycleBuilder),
+      drawOrder:drawOrderKey
+    });
+  }
   const cycleBuilder=selection&&typeof selection.buildCycle==='function'
     ?()=>selection.buildCycle({module,questions,shuffle:shuffledCopy})
     :null;
@@ -465,26 +472,39 @@ function buildBalancedQuiz(mods,count){
 
 let currentSeriesDefinition=null;
 
-function generateFromDefinition(definition,{sameTab=false}={}){
+function generateFromDefinition(definition,{sameTab=false,targetWindow=null}={}){
   const normalized=normalizeSeriesDefinition(definition);
   const mods=modulesForSeriesDefinition(normalized);
   setSeed(normalized.seed);
   beginQuizBank(mods);
   quiz=buildBalancedQuiz(mods,normalized.questionCount);
-  if(!quiz.length){ alert('Aucune question compatible avec les options choisies.'); return; }
+  if(!quiz.length){ alert('Aucune question compatible avec les options choisies.'); return false; }
   currentSeriesDefinition=normalized;
-  openDiapoWindow(normalized,{sameTab});
+  openDiapoWindow(normalized,{sameTab,targetWindow});
+  return true;
 }
 
 async function generate(){
   if(modulePreparationInProgress) return;
   modulePreparationInProgress=true;
   updateSetupActions();
+  let targetWindow=null;
   try{
     const definition=readSeriesDefinitionFromUi();
+    targetWindow=window.open('', '_blank');
+    if(!targetWindow){
+      alert('La nouvelle fenêtre a été bloquée. Autorise les popups pour cette page.');
+      return;
+    }
+    targetWindow.document.title='Préparation de la série…';
+    const loading=targetWindow.document.createElement('p');
+    loading.textContent='Préparation de la série…';
+    loading.style.cssText='font:700 18px Arial,sans-serif;color:#073a75;text-align:center;margin:18vh auto';
+    targetWindow.document.body.replaceChildren(loading);
     await loadModulesForIds(definition.moduleIds.map(mathsgoLegacyModuleId));
-    generateFromDefinition(definition);
+    if(!generateFromDefinition(definition,{targetWindow})) targetWindow.close();
   }catch(error){
+    if(targetWindow&&!targetWindow.closed) targetWindow.close();
     alert(error&&error.message?error.message:'Impossible de préparer cette série.');
   }finally{
     modulePreparationInProgress=false;

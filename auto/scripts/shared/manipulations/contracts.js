@@ -3,7 +3,7 @@
   if(!registry) throw new Error('Le registre de manipulations doit être chargé avant les contrats.');
 
   registry.register('numbers.glisse-nombre',{
-    version:'1.0.0',label:'Glisse-nombre',status:'active',moduleId:'dnb_02b',componentId:'numbers.glisse-nombre',
+    version:'1.1.0',label:'Glisse-nombre',status:'active',moduleId:'dnb_02b',componentId:'numbers.glisse-nombre',
     description:'Déplacer les chiffres devant une virgule fixe pour multiplier ou diviser par une puissance de dix.',
     supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
     state:[
@@ -13,13 +13,15 @@
     ],
     actions:[
       {id:'drag-strip',label:'Faire glisser la bandelette'},
+      {id:'select-units-digit',label:'Toucher le chiffre des unités'},
+      {id:'select-target-column',label:'Toucher la colonne d’arrivée'},
       {id:'move-left',label:'Déplacer d’une colonne vers la gauche'},
       {id:'move-right',label:'Déplacer d’une colonne vers la droite'},
       {id:'reset',label:'Revenir au nombre de départ'}
     ],
     reset:{mode:'initial-state',preserves:['base-digits','target-shift']},
     validation:{mode:'derived-value',trigger:'external',expected:'shift = target-shift'},
-    correction:{mode:'target-state',shows:['déplacement','zéros de position','résultat']},
+    correction:{mode:'target-state',shows:['rejeu du déplacement','zéros de position','résultat']},
     serialization:{version:'MG-MANIP-1',fields:['base-digits','shift','target-shift']}
   });
 
