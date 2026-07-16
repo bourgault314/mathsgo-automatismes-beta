@@ -15,14 +15,11 @@ const sources = [
   'auto/scripts/shared/visuals/numbers/number-line.js',
   'auto/scripts/shared/visuals/numbers/place-value-table.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
+  'auto/scripts/00-module-manifest.js',
   ...isolatedModulesByDomain.numbers.map(id => `auto/scripts/modules/numbers/${id}.js`),
-  'auto/scripts/data/01-numbers.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
-  'auto/scripts/data/02-geometry.js',
   ...isolatedModulesByDomain.data.map(id => `auto/scripts/modules/data/${id}.js`),
-  'auto/scripts/data/03-data.js',
   ...isolatedModulesByDomain.algorithm.map(id => `auto/scripts/modules/algorithm/${id}.js`),
-  'auto/scripts/data/04-algorithm.js',
   'auto/scripts/01-modules.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
@@ -168,25 +165,11 @@ if (missingFromRegistry.length) fail(`Modules absents du registre MG1 : ${missin
 if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.join(', ')}.`);
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
-const domainFiles = {
-  numbers: '01-numbers',
-  geometry: '02-geometry',
-  data: '03-data',
-  algorithm: '04-algorithm'
-};
-for (const [domain, ids] of Object.entries(isolatedModulesByDomain)) {
-  const dataPath = `auto/scripts/data/${domainFiles[domain]}.js`;
-  const domainScriptPosition = indexHtml.indexOf(`scripts/data/${domainFiles[domain]}.js`);
-  const bankSource = fs.readFileSync(new URL(dataPath, root), 'utf8');
-  for (const id of ids) {
-    const moduleScriptPosition = indexHtml.indexOf(`scripts/modules/${domain}/${id}.js`);
-    if (moduleScriptPosition < 0 || domainScriptPosition < 0 || moduleScriptPosition > domainScriptPosition) {
-      fail(`Le module ${id} doit être chargé avant le fichier du domaine ${domain}.`);
-    }
-    const constant = `MODULE_${id.toUpperCase()}`;
-    if (!bankSource.includes(constant)) {
-      fail(`Le domaine ${domain} doit référencer la constante ${constant}.`);
-    }
+if (!indexHtml.includes('scripts/00-module-manifest.js')) fail('Le catalogue léger doit être chargé par la page.');
+if (indexHtml.includes('scripts/data/01-numbers.js')||indexHtml.includes('scripts/data/02-geometry.js')||indexHtml.includes('scripts/data/03-data.js')||indexHtml.includes('scripts/data/04-algorithm.js')) fail('Les banques complètes ne doivent plus être chargées au démarrage.');
+for (const domain of Object.keys(isolatedModulesByDomain)) {
+  for (const id of isolatedModulesByDomain[domain]) {
+    if (indexHtml.includes(`scripts/modules/${domain}/${id}.js`)) fail(`Le module ${id} ne doit plus être chargé directement par index.html.`);
   }
 }
 
