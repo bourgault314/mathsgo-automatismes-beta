@@ -19,7 +19,7 @@ Les statuts sont :
 | `numbers.relative-tokens` | `/outils/nombres_relatifs/` | branché dans `dnb_38` |
 | `arithmetic.relation-bar` | `/outils/sheet_generator_schema_partie_tout.html` et gabarits multiples/fractions | partiel |
 | `arithmetic.fraction-percent-bar` | gabarits fractions et pourcentages publiés | partiel |
-| `arithmetic.equal-sharing-board` | `/outils/gabarits_partage_equitable_2_3_4_5.pdf` | préparé |
+| `arithmetic.equal-sharing-board` | `/outils/gabarits_partage_equitable_2_3_4_5.pdf` | branché dans `dnb_08`, gabarit 10 |
 | `arithmetic.fraction-wall` | `/outils/fractions/mur_fractions.html` | partiel |
 | `arithmetic.fraction-decimal-grid` | `modules/numbers/dnb_01.js` historique | branché |
 | `arithmetic.fraction-operations` | `dnb_03`, `dnb_03b` et `/outils/fractions/fractions_produit_manipulation.html` | branché |

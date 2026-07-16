@@ -24,11 +24,12 @@
 
   function renderSingleSource(data,correction){
     const shares=Math.max(2,Math.min(5,Math.round(data.shares||2)));
+    const showTotal=correction||data.showTotal===true;
     const gap=14,margin=24,available=760-margin*2-gap*(shares-1),cellW=available/shares;
     let body=label(380,27,`Partager équitablement en ${shares}`,27,900);
     body+=roundedBox(38,52,684,112);
     body+=label(380,76,'Quantité à partager',18,850);
-    body+=label(380,120,correction?data.total:'…',correction?31:28,900,'#17283f');
+    body+=label(380,120,showTotal?data.total:'…',showTotal?31:28,900,'#17283f');
     for(let index=0;index<shares;index++){
       const x=margin+index*(cellW+gap),center=x+cellW/2;
       body+=arrow(center,170,218);
@@ -79,10 +80,10 @@
 
   if(!global.MATHSGO_VISUALS) throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant equal-sharing-board.js.');
   global.MATHSGO_VISUALS.register('arithmetic.equal-sharing-board',{
-    version:'1.0.0',
+    version:'1.1.0',
     label:'Gabarit de partage équitable',
     family:'Arithmétique',
-    description:'Distribue un ou deux morceaux en 2, 3, 4 ou 5 parts égales avec les boîtes et flèches maths&go.',
+    description:'Distribue un ou deux morceaux en 2, 3, 4 ou 5 parts égales avec les boîtes et flèches maths&go ; la quantité connue peut rester visible dans la question.',
     viewBox:'0 0 760 420',
     supports,
     presets,

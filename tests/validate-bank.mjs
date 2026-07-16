@@ -28,6 +28,7 @@ const sources = [
   'auto/scripts/01-modules.js',
   'auto/scripts/shared/visuals/arithmetic/relation-bar.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-percent-bar.js',
+  'auto/scripts/shared/visuals/arithmetic/equal-sharing-board.js',
   'auto/scripts/shared/visuals/measures/conversion-table.js',
   'auto/scripts/shared/visuals/algebra/equation-splat.js',
   'auto/scripts/shared/visuals/algebra/relation-tiles.js',
@@ -142,10 +143,24 @@ for(const seed of [1,2,42,999,233279]){
     for(const correction of [false,true]){
       const genericHtml=context.__renderGenericQuestion(pilot,correction,'with');
       const pilotHtml=context.__renderQuestion(pilot,correction,'with');
-      if(pilotHtml!==genericHtml) fail(`Le rendu extrait de dnb_08 change le gabarit ${question.n}.`);
+      if(Number(question.n)!==10&&pilotHtml!==genericHtml) fail(`Le rendu extrait de dnb_08 change le gabarit ${question.n}.`);
     }
   }
 }
+
+context.__setSeed(42);
+const sharingQuestion=context.__makeInstance(context.__divisibilityModule,context.__divisibilityModule.questions.find(question=>Number(question.n)===10));
+const sharingTotal=Number(sharingQuestion.scope.P)*3;
+const sharingPart=Number(sharingQuestion.scope.P);
+const sharingWithAid=context.__renderQuestion(sharingQuestion,false,'with');
+const sharingCorrection=context.__renderQuestion(sharingQuestion,true,'with');
+const sharingWithoutAid=context.__renderQuestion(sharingQuestion,false,'without');
+const sharingReveal=context.__renderQuestion(sharingQuestion,false,'without-reveal');
+if(!sharingWithAid.includes('equal-sharing-svg')||!sharingWithAid.includes(`>${sharingTotal}<`)) fail('La question de partage dnb_08 doit montrer la quantité connue dans le gabarit commun.');
+if(sharingWithAid.includes(`>${sharingPart}<`)) fail('La question de partage dnb_08 ne doit pas révéler la valeur d’une part.');
+if(!sharingCorrection.includes(`>${sharingPart}<`)||!sharingCorrection.includes('class="opt correct"')) fail('La correction de partage dnb_08 doit montrer les parts égales et la bonne réponse.');
+if(sharingWithoutAid.includes('equal-sharing-svg')||sharingWithoutAid.includes('visual-placeholder')) fail('Le partage doit être totalement absent en mode sans aide.');
+if(sharingReveal.includes('equal-sharing-svg')||!sharingReveal.includes('divisibility-sharing-placeholder')) fail('Le partage facultatif doit pouvoir être révélé seul.');
 
 for(const seed of [3,17,81,2026]){
   context.__setSeed(seed);
@@ -242,9 +257,11 @@ if (missingFromRegistry.length) fail(`Modules absents du registre MG1 : ${missin
 if (missingFromBank.length) fail(`Entrées MG1 sans module : ${missingFromBank.join(', ')}.`);
 
 const indexHtml = fs.readFileSync(new URL('auto/index.html', root), 'utf8');
+const slideshowSource = fs.readFileSync(new URL('auto/scripts/03-slideshow.js', root), 'utf8');
 if (!indexHtml.includes('scripts/00-module-manifest.js')) fail('Le catalogue léger doit être chargé par la page.');
 if (!indexHtml.includes('scripts/modules/00-runtime-registry.js')) fail('Le registre fonctionnel doit être chargé par la page.');
 if (indexHtml.indexOf('scripts/modules/00-runtime-registry.js')>indexHtml.indexOf('scripts/02-question-engine.js')) fail('Le registre fonctionnel doit précéder le moteur de questions.');
+if (!slideshowSource.includes('divisibility-sharing-mode')||!slideshowSource.includes('.equal-sharing-svg')) fail('Le partage dnb_08 doit avoir un cadrage téléphone et projection dédié.');
 if (indexHtml.includes('scripts/data/01-numbers.js')||indexHtml.includes('scripts/data/02-geometry.js')||indexHtml.includes('scripts/data/03-data.js')||indexHtml.includes('scripts/data/04-algorithm.js')) {
   fail('Les banques complètes ne doivent plus être chargées au démarrage.');
 }
