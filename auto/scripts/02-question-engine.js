@@ -4003,6 +4003,8 @@ function updateThemeCounts(){
       master.checked=boxes.length>0&&checked===boxes.length;
       master.indeterminate=checked>0&&checked<boxes.length;
     }
+    group.classList.toggle('has-selection',checked>0);
+    group.classList.toggle('is-complete',boxes.length>0&&checked===boxes.length);
     if(badge){
       badge.innerHTML='<span class="theme-count-value">'+checked+' / '+boxes.length+'</span><span class="theme-count-label"> sélectionné'+(checked===1?'':'s')+'</span>';
       badge.setAttribute('aria-label',checked+' module'+(checked===1?'':'s')+' sélectionné'+(checked===1?'':'s')+' sur '+boxes.length);
@@ -4024,9 +4026,13 @@ function renderModuleList(){
     group.open=theme.id===openTheme;
     const summary=document.createElement('summary');
     summary.className='theme-summary';
-    summary.innerHTML='<span class="theme-chevron">▶</span><span class="theme-name">'+theme.title+'</span><label class="theme-select-all"><input class="theme-select-cb" type="checkbox" aria-label="Tout sélectionner dans '+theme.title+'"><span>Tout</span></label><span class="theme-count"></span>';
+    summary.innerHTML='<span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">'+theme.title+'</span><span class="theme-count"></span>';
     const items=document.createElement('div');
     items.className='theme-items';
+    const itemsToolbar=document.createElement('div');
+    itemsToolbar.className='theme-items-toolbar';
+    itemsToolbar.innerHTML='<label class="theme-select-all"><input class="theme-select-cb" type="checkbox" aria-label="Tout sélectionner dans '+theme.title+'"><span>Tout sélectionner dans ce domaine</span></label>';
+    items.appendChild(itemsToolbar);
     menuGroupsForTheme(theme.id,members).forEach(menuGroup=>{
       const subgroup=document.createElement('section');
       subgroup.className='module-subgroup';
@@ -4046,9 +4052,7 @@ function renderModuleList(){
       items.appendChild(subgroup);
     });
     group.append(summary,items);
-    const themeSelector=summary.querySelector('.theme-select-all');
-    const themeCheckbox=summary.querySelector('.theme-select-cb');
-    themeSelector.addEventListener('click',event=>event.stopPropagation());
+    const themeCheckbox=itemsToolbar.querySelector('.theme-select-cb');
     themeCheckbox.addEventListener('change',()=>{
       group.querySelectorAll('.modcb').forEach(cb=>cb.checked=themeCheckbox.checked);
       updateThemeCounts();

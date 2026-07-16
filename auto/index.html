@@ -9,7 +9,7 @@
   <title>Bêta Automatismes maths cycle 4 et DNB — version 1.18 | maths&amp;go</title>
 <meta name="description" content="Outil d’automatismes de mathématiques pour le cycle 4 et le DNB : entraînez vos élèves en vidéoprojection ou sur téléphone, avec aides et corrections.">
 <link rel="canonical" href="https://mathsgo.re/auto/">
-<link rel="stylesheet" href="styles/setup.css">
+<link rel="stylesheet" href="styles/setup.css?v=20260717-1">
 </head>
 <body>
 <div class="app">
@@ -19,7 +19,7 @@
     </a>
     <div class="title">
       <h1>Automatismes<span class="title-cycle">Cycle 4 – DNB</span></h1>
-      <span class="revision-badge">CHANTIER · V1.18</span>
+      <span class="revision-badge">BÊTA · V1.18</span>
     </div>
   </div>
 
@@ -39,8 +39,8 @@
         <label id="visualModeLabel">Aide</label>
         <input type="hidden" id="visualMode" value="with">
         <div class="segmented-control" data-control="visualMode" role="group" aria-labelledby="visualModeLabel">
-          <button type="button" class="segment-btn is-active" data-value="with" aria-pressed="true">Avec</button>
-          <button type="button" class="segment-btn" data-value="without" aria-pressed="false">Sans</button>
+          <button type="button" class="segment-btn is-active" data-value="with" aria-pressed="true">Avec aide</button>
+          <button type="button" class="segment-btn" data-value="without" aria-pressed="false">Sans aide</button>
         </div>
       </div>
       <div class="field field-experience">
@@ -69,27 +69,30 @@
     <div class="modules-toolbar">
       <h2>Choisir les automatismes</h2>
       <div class="bulk-actions" role="group" aria-label="Sélection des automatismes">
-        <button class="secondary" type="button" onclick="globalThis.selectVisible?.(true)">Tout</button>
-        <button class="secondary" type="button" onclick="globalThis.selectVisible?.(false)">Effacer</button>
+        <button class="secondary" type="button" aria-label="Tout sélectionner" onclick="globalThis.selectVisible?.(true)">Tous</button>
+        <button class="secondary" type="button" aria-label="Tout désélectionner" onclick="globalThis.selectVisible?.(false)">Aucun</button>
       </div>
     </div>
     <div class="series-message" id="seriesMessage" role="status" aria-live="polite" hidden></div>
     <div id="modules" class="modules" aria-label="Domaines d’automatismes">
       <details class="theme-group" open>
-        <summary class="theme-summary"><span class="theme-chevron">▶</span><span class="theme-name">Nombres et calculs</span><label class="theme-select-all"><input class="theme-select-cb" type="checkbox" disabled><span>Tout</span></label><span class="theme-count">0 / 17 sélectionnés</span></summary>
+        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Nombres et calculs</span><span class="theme-count">0 / 17 sélectionnés</span></summary>
       </details>
       <details class="theme-group">
-        <summary class="theme-summary"><span class="theme-chevron">▶</span><span class="theme-name">Espace et géométrie</span><label class="theme-select-all"><input class="theme-select-cb" type="checkbox" disabled><span>Tout</span></label><span class="theme-count">0 / 14 sélectionnés</span></summary>
+        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Espace et géométrie</span><span class="theme-count">0 / 14 sélectionnés</span></summary>
       </details>
       <details class="theme-group">
-        <summary class="theme-summary"><span class="theme-chevron">▶</span><span class="theme-name">Données, statistiques et probabilités</span><label class="theme-select-all"><input class="theme-select-cb" type="checkbox" disabled><span>Tout</span></label><span class="theme-count">0 / 9 sélectionnés</span></summary>
+        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Données, statistiques et probabilités</span><span class="theme-count">0 / 9 sélectionnés</span></summary>
       </details>
       <details class="theme-group">
-        <summary class="theme-summary"><span class="theme-chevron">▶</span><span class="theme-name">Pensée informatique</span><label class="theme-select-all"><input class="theme-select-cb" type="checkbox" disabled><span>Tout</span></label><span class="theme-count">0 / 1 sélectionné</span></summary>
+        <summary class="theme-summary"><span class="theme-chevron" aria-hidden="true"></span><span class="theme-name">Pensée informatique</span><span class="theme-count">0 / 1 sélectionné</span></summary>
       </details>
     </div>
   </div>
-  <p class="credit">Remerciements à Eric Hakenholz, créateur de <a href="https://doctools.org/dnb/automatismes_dnb.html" target="_blank" rel="noopener noreferrer">DocTools</a>, pour le partage du fichier, et à Claire Lagarde, pour son aide précieuse.</p>
+  <details class="credit">
+    <summary>Crédits et remerciements</summary>
+    <p>Remerciements à Eric Hakenholz, créateur de <a href="https://doctools.org/dnb/automatismes_dnb.html" target="_blank" rel="noopener noreferrer">DocTools</a>, pour le partage du fichier, et à Claire Lagarde, pour son aide précieuse.</p>
+  </details>
 </div>
 
 <div class="modal-overlay" id="openSeriesOverlay" hidden onclick="if(event.target===this)setOpenSeriesPanel(false)">
@@ -202,7 +205,7 @@
 <script defer src="scripts/shared/visuals/geometry/pythagoras-reasoning.js?v=20260716-1"></script>
 <script defer src="scripts/shared/visuals/geometry/pythagoras-builder.js?v=20260716-2"></script>
 <script defer src="scripts/shared/visuals/geometry/solid.js?v=20260716-1"></script>
-<script defer src="scripts/02-question-engine.js?v=20260716-9"></script>
+<script defer src="scripts/02-question-engine.js?v=20260717-1"></script>
 <script defer src="scripts/core/01-series-contracts.js?v=20260716-9"></script>
 <script defer src="scripts/03-slideshow.js?v=20260716-13"></script>
 <script defer src="scripts/04-app.js?v=20260716-13"></script>
