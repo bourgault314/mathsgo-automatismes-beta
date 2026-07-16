@@ -206,6 +206,27 @@ réutilisables par Automatismes.
    tous d’un registre pédagogique ; la séparation peut se poursuivre avec le
    domaine Espace et géométrie.
 
+## Quinzième lot préparé
+
+1. Les neuf modules qui restaient dans Espace et géométrie sont classés :
+   codage des figures, vocabulaire des angles, solides, périmètres, aires,
+   volumes, trigonométrie avec et sans calculatrice, puis transformations.
+2. Chaque gabarit possède maintenant un type de tâche, un mode de réponse, une
+   politique visuelle, des rubriques d’aide et un contrat de génération. Les
+   trente-cinq questions sur les solides sont notamment distinguées entre
+   reconnaissance, modélisation d’un objet et dénombrement des éléments.
+3. Les figures historiques qui n’ont pas encore quitté leur module portent
+   volontairement `component: null`. Cette absence visible constitue la liste
+   de travail pour les prochaines extractions ; aucune capture n’est utilisée
+   à leur place.
+4. Les carrés des questions d’aire réemploient déjà
+   `numbers.square-area`. Les prochains composants prioritaires sont le
+   triangle trigonométrique orientable, les figures codées et les quadrillages
+   de transformations.
+5. Les quinze modules du domaine Espace et géométrie sont désormais classés.
+   Avec Nombres et calculs, le registre couvre 32 modules sur 42 sans changer
+   les 473 gabarits ni leurs tirages reproductibles.
+
 ## Ordre de reprise
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;

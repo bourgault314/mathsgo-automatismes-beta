@@ -289,5 +289,20 @@ Le constructeur tactile est déclaré pour le téléphone et l’ordinateur, mai
 pas pour la projection. Dans Automatismes, le module `dnb_24b` l’expose sous
 « Manipuler sur téléphone » uniquement lorsque le mode interactif est choisi.
 
+## Classement complet d’Espace et géométrie
+
+Les quinze modules du domaine sont maintenant décrits dans le registre
+pédagogique. Le catalogue permet donc de retrouver, sans parcourir le gros
+moteur, les familles de questions sur les figures codées, les angles, les
+solides, les périmètres, les aires, les volumes, Pythagore, Thalès, la
+trigonométrie et les transformations.
+
+Ce classement ne prétend pas que toutes les figures sont déjà séparées. Quand
+une construction demeure enfermée dans un ancien module, son champ
+`visual.component` vaut explicitement `null`. C’est une dette technique
+observable, et non une image de substitution. L’extraction suivante peut ainsi
+partir du contrat mathématique déjà écrit et produire un composant paramétrable
+adapté au téléphone, à l’ordinateur, à la projection et à l’impression.
+
 L’audit complet du lot reçu est conservé dans
 `docs/AUDIT-RESSOURCES-2026-07-16.md`.
