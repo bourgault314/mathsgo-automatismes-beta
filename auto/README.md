@@ -78,6 +78,8 @@ visuelle ne remplace jamais une source plus riche par un dessin générique.
   module ;
 - [`../docs/BIBLIOTHEQUE-VISUELLE.md`](../docs/BIBLIOTHEQUE-VISUELLE.md) :
   contrat des composants ;
+- [`../docs/AUDIT-VISUELS-RESTANTS.md`](../docs/AUDIT-VISUELS-RESTANTS.md) :
+  dette visuelle, anomalies et ordre de migration ;
 - [`../docs/SOURCES-DE-VERITE.md`](../docs/SOURCES-DE-VERITE.md) : références
   existantes à comparer avant toute extraction.
 
