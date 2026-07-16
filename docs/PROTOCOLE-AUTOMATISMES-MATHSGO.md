@@ -266,6 +266,14 @@ réellement utile.
   impossible reste volontairement plus court, avec 640 unités utiles, et réduit
   proportionnellement les deux rangées afin de garder la plus longue entièrement
   visible.
+- **2026-07-16 — Coordonnées dans un repère `dnb_15`.** Les neuf gabarits
+  historiques restent figés. La réponse du gabarit à deux points est composée
+  en deux groupes autonomes et passe sur deux lignes sur téléphone. Trois
+  formats fonctionnels limités sont ajoutés hors de la banque : placer un
+  point, placer successivement deux points et juger une affirmation vrai/faux.
+  Une série de 5 en contient un ; les erreurs vrai/faux visent l’ordre et les
+  signes. Les décisions détaillées sont consignées dans
+  [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md).
 - **2026-07-16 — Droite graduée `dnb_14`.** Les 18 gabarits de la banque V1.18
   restent inchangés. Trois formats fonctionnels limités sont ajoutés hors de la
   banque figée : placer un point, déterminer le pas et choisir la droite

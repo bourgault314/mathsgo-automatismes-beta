@@ -219,6 +219,12 @@ le pas, le sous-pas et plusieurs points en coordonnées mathématiques ; il trac
 explicitement les petits traits de graduation sur les deux axes. Il peut ainsi
 fabriquer un repère compact, grand, rectangulaire ou gradué en demi-unités.
 
+La version 1.2 ajoute le placement tactile sans modifier les huit rendus de
+référence. Les intersections entières constituent de grandes cibles invisibles :
+l’élève touche une intersection pour placer le point actif, choisit explicitement
+`M` ou `N` lorsqu’il y en a deux, puis valide. La correction réemploie le même
+repère et montre les positions cibles.
+
 Les registres pédagogiques de `dnb_14` et `dnb_15` décrivent maintenant les
 questions qui consomment ces deux traceurs. Pour une droite, ils distinguent
 le pas de 1, les relatifs, les pas décimaux, deux points, les QCM et les

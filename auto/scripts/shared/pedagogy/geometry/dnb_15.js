@@ -10,7 +10,10 @@ MATHSGO_PEDAGOGY.registerModule('dnb_15',{
       {id:'signed-quadrants',label:'Points dans les quadrants avec coordonnées négatives'},
       {id:'axis',label:'Point placé sur un axe'},
       {id:'two-points',label:'Deux points à lire'},
-      {id:'half-steps',label:'Graduations en demi-unités'}
+      {id:'half-steps',label:'Graduations en demi-unités'},
+      {id:'place-one',label:'Placer un point par toucher'},
+      {id:'place-two',label:'Placer successivement deux points'},
+      {id:'true-false',label:'Contrôler une affirmation vrai/faux'}
     ],
     reasoning:[
       {id:'read-x',label:'Lire l’abscisse',rule:'Projeter verticalement le point sur l’axe horizontal.'},
@@ -28,7 +31,9 @@ MATHSGO_PEDAGOGY.registerModule('dnb_15',{
       'Les deux axes portent explicitement leurs petits traits de graduation.',
       'Le traceur reçoit les bornes, le pas, le sous-pas et les points en coordonnées mathématiques.',
       'La taille du repère peut changer sans changer les coordonnées demandées.',
-      'La couleur distingue plusieurs points mais ne code jamais la valeur de leurs coordonnées.'
+      'La couleur distingue plusieurs points mais ne code jamais la valeur de leurs coordonnées.',
+      'Le placement tactile se fait par toucher d’une intersection et possède une remise à zéro.',
+      'Sur téléphone, les réponses de deux points sont présentées sur deux lignes complètes.'
     ],
     cautions:[
       'Ne pas inverser abscisse et ordonnée.',

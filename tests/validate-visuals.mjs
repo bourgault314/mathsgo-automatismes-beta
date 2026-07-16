@@ -216,7 +216,7 @@ if (numberLineModule.includes('<svg')) fail('dnb_14 ne doit plus embarquer de co
 
 const coordinatePlane = registry?.get('geometry.coordinate-plane');
 if (!coordinatePlane) fail('Le composant geometry.coordinate-plane est absent.');
-if (coordinatePlane && coordinatePlane.version !== '1.1.0') fail('Version 1.1.0 attendue pour le repère du plan.');
+if (coordinatePlane && coordinatePlane.version !== '1.2.0') fail('Version 1.2.0 attendue pour le repère du plan.');
 if (coordinatePlane && coordinatePlane.presets.length !== 8) fail('Huit repères du plan de référence sont attendus.');
 if (coordinatePlane && context.coordinatePlaneSvg !== coordinatePlane.render) {
   fail('Le module dnb_15 doit utiliser le repère du plan enregistré.');
@@ -236,6 +236,10 @@ for (const preset of coordinatePlane?.presets || []) {
   if(actual!==coordinateHashes.get(preset.id)) fail(`Le repère du plan ${preset.id} a changé (${actual}).`);
 }
 const tracedPlane=coordinatePlane?.render(coordinatePlane.presets.find(preset=>preset.id==='compact-parametre').data)||'';
+const placementPlane=coordinatePlane?.renderPlacement({bounds:{xMin:-3,xMax:3,yMin:-3,yMax:3},step:1,width:500,height:420,targets:[{x:-2,y:1,label:'M'}]},false)||'';
+const coordinatePlacementCorrection=coordinatePlane?.renderPlacement({bounds:{xMin:-3,xMax:3,yMin:-3,yMax:3},step:1,width:500,height:420,targets:[{x:-2,y:1,label:'M'}]},true)||'';
+if(!placementPlane.includes('data-coordinate-placement="1"')||(placementPlane.match(/class="coordinate-grid-hit"/g)||[]).length!==49) fail('Le repère tactile doit exposer ses 49 intersections entières.');
+if(placementPlane.includes('coordinate-point-marker')||!coordinatePlacementCorrection.includes('coordinate-point-marker')||coordinatePlacementCorrection.includes('coordinate-grid-hit')) fail('Le point cible doit rester caché dans la question et apparaître seul dans la correction.');
 if(!tracedPlane.includes('y1="160.5"')&&!tracedPlane.includes('stroke-width="1.5"')) fail('Le traceur de repère doit dessiner de petits traits de graduation sur les axes.');
 const coordinateModule = fs.readFileSync(new URL('auto/scripts/modules/geometry/dnb_15.js', root), 'utf8');
 const coordinateCalls = [...coordinateModule.matchAll(/coordinatePlaneSvg\(/g)].length;

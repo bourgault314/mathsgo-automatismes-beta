@@ -90,6 +90,7 @@ promet pas encore un stockage de progression.
 |---|---|---|---|---|
 | `numbers.glisse-nombre` | chiffres et décalage | valeur dérivée | rejeu vers l’état cible | actif |
 | `numbers.number-line-point` | repères, pas et graduation choisie | état équivalent | position choisie et position cible | actif |
+| `geometry.coordinate-points` | cibles, points choisis et point actif | état équivalent | points cibles sur le même repère | actif |
 | `numbers.relative-tokens` | jetons, signes et zones | état équivalent | rassemblement et paires nulles | actif |
 | `geometry.pythagoras-builder` | tâche, triangle et cases | cases ordonnées | relation et aires exactes | actif |
 | `numbers.order-cards` | cartes, positions et sens de rangement | cases ordonnées | ordre croissant résolu | actif |
