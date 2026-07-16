@@ -10,6 +10,14 @@ et le livret A5. L'ancien gros fichier autonome a été retiré. Les rôles de l
 bêta, de la production et du futur Studio sont fixés dans
 [`docs/ARCHITECTURE-CANONIQUE.md`](docs/ARCHITECTURE-CANONIQUE.md).
 
+## Avant toute intervention
+
+Les consignes lues par les assistants et contributeurs sont dans
+[`AGENTS.md`](AGENTS.md). L'index des documents de référence se trouve dans
+[`docs/README.md`](docs/README.md) et le cadre commun obligatoire dans
+[`docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md`](docs/PROTOCOLE-AUTOMATISMES-MATHSGO.md).
+Une branche ne doit jamais remplacer ce protocole par une copie plus ancienne.
+
 ## Fonctionnement
 
 1. Les modifications sont réalisées et testées ici.
