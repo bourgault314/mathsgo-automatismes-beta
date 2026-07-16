@@ -237,6 +237,22 @@ réutilisables par Automatismes.
 4. Ce lot reste volontairement limité au traceur : le branchement du module
    fera l’objet d’un prochain petit commit après comparaison visuelle.
 
+## Dix-septième lot préparé
+
+1. Les modules `dnb_28` à `dnb_31` sont classés : probabilités,
+   fréquences, moyennes, médiane et étendue.
+2. Le registre couvre désormais 36 modules sur 42 et chaque gabarit de ce lot
+   possède un type de tâche, un mode de réponse, une politique visuelle et des
+   rubriques d’aide.
+3. Les tableaux d’effectifs et les listes de valeurs restent des données de
+   l’énoncé. Ils ne sont pas classés comme aides facultatives.
+4. Les aides de moyenne déjà présentes restent facultatives mais n’ont pas
+   encore de composant partagé : `component: null` rend ce travail restant
+   explicite.
+5. L’audit a repéré une incohérence historique dans `dnb_28`, question 4 :
+   la banque V1.17 déclare deux choix corrects. La correction doit rester un
+   lot de contenu distinct pour ne pas la confondre avec cette extraction.
+
 ## Suites propres aux archives reçues
 
 1. récupérer une archive complète des quatre fiches du mur de fractions ;
