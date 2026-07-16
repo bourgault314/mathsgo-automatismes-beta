@@ -15,7 +15,7 @@
 <div class="app">
   <div class="header">
     <a class="logo-link" href="https://mathsgo.re/outils/" aria-label="Retour aux outils maths&go" title="Retour aux outils maths&go">
-    <img class="logo" src="assets/logo-mathsgo.png" alt="maths&go">
+    <img class="logo" src="assets/logo-mathsgo.png" width="138" height="64" decoding="async" alt="maths&go">
     </a>
     <div class="title">
       <h1>Automatismes<span class="title-cycle">Cycle 4 – DNB</span></h1>
@@ -69,12 +69,12 @@
     <div class="modules-toolbar">
       <h2>Choisir les automatismes</h2>
       <div class="bulk-actions" role="group" aria-label="Sélection des automatismes">
-        <button class="secondary" type="button" onclick="selectVisible(true)">Tout</button>
-        <button class="secondary" type="button" onclick="selectVisible(false)">Effacer</button>
+        <button class="secondary" type="button" onclick="globalThis.selectVisible?.(true)">Tout</button>
+        <button class="secondary" type="button" onclick="globalThis.selectVisible?.(false)">Effacer</button>
       </div>
     </div>
     <div class="series-message" id="seriesMessage" role="status" aria-live="polite" hidden></div>
-    <div id="modules" class="modules"></div>
+    <div id="modules" class="modules"><div class="modules-loading" role="status" aria-live="polite">Chargement des automatismes…</div></div>
   </div>
   <p class="credit">Remerciements à Eric Hakenholz, créateur de <a href="https://doctools.org/dnb/automatismes_dnb.html" target="_blank" rel="noopener noreferrer">DocTools</a>, pour le partage du fichier, et à Claire Lagarde, pour son aide précieuse.</p>
 </div>
@@ -115,14 +115,11 @@
     <button class="generate-action" id="generateButton" type="button" onclick="generate()" disabled><span class="generate-label">Lancer l’entraînement</span><span class="generate-count" id="generateCount" aria-hidden="true"></span></button>
   </div>
 </div>
-<!-- Le catalogue et le premier rendu sont critiques : ils doivent apparaître
-     avant le moteur complet et les bibliothèques visuelles. -->
-<script src="scripts/00-module-manifest.js?v=20260716-2"></script>
-<script src="scripts/01-modules.js"></script>
-<script src="scripts/00-menu-bootstrap.js"></script>
-
-<!-- Ces scripts restent dans leur ordre historique, mais sont chargés après
-     le premier affichage du menu. -->
+<!-- Aucun JavaScript externe ne bloque le premier affichage. Les scripts sont
+     injectés après le rendu du cadre visuel, dans l'ordre prévu. -->
+<script data-runtime-src="scripts/00-module-manifest.js?v=20260716-2"></script>
+<script data-runtime-src="scripts/01-modules.js"></script>
+<script data-runtime-src="scripts/00-menu-bootstrap.js"></script>
 <script data-runtime-src="scripts/shared/visuals/00-registry.js"></script>
 <script data-runtime-src="scripts/shared/pedagogy/00-registry.js?v=20260715-2"></script>
 <script data-runtime-src="scripts/shared/pedagogy/numbers/dnb_09.js?v=20260716-1"></script>
