@@ -4016,6 +4016,9 @@ function updateThemeCounts(){
 function renderModuleList(){
   const box=document.getElementById('modules');
   const openTheme=box.querySelector('.theme-group[open]')?.dataset.theme||null;
+  // Les catégories sont reconstruites à chaque changement de réglage. L'icône
+  // doit donc faire partie de ce rendu, et non être ajoutée après coup.
+  const getThemeIconMarkup=globalThis.MATHSGO_SETUP_ICONS?.markup;
   box.innerHTML='';
   const modules=visibleModules();
   MODULE_DOMAINS.forEach(theme=>{
@@ -4027,7 +4030,8 @@ function renderModuleList(){
     group.open=theme.id===openTheme;
     const summary=document.createElement('summary');
     summary.className='theme-summary';
-    summary.innerHTML='<span class="theme-icon" aria-hidden="true"></span><span class="theme-name">'+theme.title+'</span><span class="theme-count"></span><span class="theme-chevron" aria-hidden="true"></span>';
+    const iconMarkup=typeof getThemeIconMarkup==='function'?getThemeIconMarkup(theme.id):'';
+    summary.innerHTML='<span class="theme-icon" aria-hidden="true">'+iconMarkup+'</span><span class="theme-name">'+theme.title+'</span><span class="theme-count"></span><span class="theme-chevron" aria-hidden="true"></span>';
     const items=document.createElement('div');
     items.className='theme-items';
     const itemsToolbar=document.createElement('div');
