@@ -448,9 +448,6 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .solid-visual{display:flex;align-items:center;justify-content:center;width:310px;max-width:100%;height:clamp(190px,30vh,270px);margin:0 auto}
 .solid-visual .solid-svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
 .solid-emoji{font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;font-size:clamp(8rem,22vh,12rem);line-height:1;filter:drop-shadow(0 5px 7px rgba(16,36,74,.15))}
-Warning: truncated output (original token count: 25016)
-Total output lines: 450
-
 .solid-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin:2px auto 0;max-width:780px}
 .solid-options .opt{padding:10px 14px;border-radius:13px;font-size:clamp(1.03rem,1.45vw,1.35rem)}
 .diapo.perimeter-mode .stage{align-items:center;padding:8px 22px 16px;overflow:auto}
@@ -754,7 +751,7 @@ Total output lines: 450
 @media(min-width:801px) and (min-height:761px){.diapo.place-value-reasoning-mode .stage{padding-top:42px}.diapo.place-value-reasoning-mode .stage>.slide{margin-top:0;margin-bottom:0}}
 @media(min-width:801px) and (max-height:760px){.diapo.place-value-reasoning-mode .stage{padding:4px 20px 6px}.diapo.place-value-reasoning-mode .place-value-prompt{font-size:clamp(1.45rem,2.1vw,2rem);line-height:1.08;margin-bottom:1px}.diapo.place-value-reasoning-mode .place-value-equation{font-size:clamp(2.7rem,4.2vw,3.4rem);margin:0 auto 5px}.diapo.place-value-reasoning-mode .place-value-tool{margin-top:0}.diapo.place-value-reasoning-mode .place-value-head{height:30px;font-size:.82rem}.diapo.place-value-reasoning-mode .place-value-preview-row,.diapo.place-value-reasoning-mode .place-value-fixed-row{height:45px}.diapo.place-value-reasoning-mode .place-value-drag-bar{top:6px;height:33px}.diapo.place-value-reasoning-mode .place-value-strip-digit,.diapo.place-value-reasoning-mode .place-value-fixed-digit{font-size:2.45rem}.diapo.place-value-reasoning-mode .place-value-comma{bottom:1px;font-size:1.9rem}.diapo.place-value-reasoning-mode .place-value-tool-note{height:29px;min-height:29px;margin-top:2px;font-size:.9rem}.diapo.place-value-reasoning-mode .place-value-options.is-reasoning{max-width:1020px;gap:5px;margin-top:3px}.diapo.place-value-reasoning-mode .place-value-options.is-reasoning .opt{min-height:0;padding:6px 12px;font-size:clamp(.9rem,1.22vw,1.05rem);line-height:1.12}}
 .decimal-course-visual{width:min(100%,520px);max-height:none}.decimal-course-visual .decimal-manipulation{padding:7px 9px;border-radius:12px}.decimal-course-visual .decimal-drop-slot{min-width:72px;min-height:40px;font-size:1.18rem}.decimal-course-visual .decimal-complement-visual{height:94px}.decimal-course-visual .area-model-svg{max-height:180px}.decimal-course-visual .relation-bar-svg{max-height:175px}
-.thales-course-template{display:grid;grid-template-columns:minmax(230px,.85fr) minmax(300px,1.15fr);align-items:center;gap:14px 20px;width:100%}.thales-course-figure{opacity:0;animation:thalesCourseReveal .32s ease-out .05s forwards}.thales-course-figure svg{display:block;width:100%;height:auto;max-height:250px}.thales-course-method{display:flex;flex-direction:column;gap:8px}.thales-course-caption{color:#35526e;font-size:.86rem;font-weight:850;text-align:center}.thales-cou…16 tokens truncated…r);overflow:hidden;border:2px solid #17384d;border-radius:12px;background:#fff}.thales-course-cell{display:flex;align-items:center;justify-content:center;min-height:42px;padding:6px 7px;border-right:1px solid #9fb3c8;border-bottom:1px solid #9fb3c8;font-weight:900}.thales-course-cell:nth-child(4n){border-right:0}.thales-course-cell:nth-last-child(-n+4){border-bottom:0}.thales-course-head{background:#eef3f9;color:#35526e;font-size:.78rem}.thales-course-small{color:#11468c}.thales-course-large{color:#087f83}.thales-course-row-small{opacity:0;animation:thalesCourseReveal .32s ease-out .38s forwards}.thales-course-row-large{opacity:0;animation:thalesCourseReveal .32s ease-out .72s forwards}.thales-course-ratios{opacity:0;padding:10px;border-radius:11px;background:#eef8f7;color:#17384d;font-size:1.12rem;font-weight:900;text-align:center;animation:thalesCourseReveal .32s ease-out 1.06s forwards}.thales-course-ratios .small{color:#11468c}.thales-course-ratios .large{color:#087f83}.thales-course-reminder{opacity:0;color:#60708c;font-size:.82rem;font-weight:800;text-align:center;animation:thalesCourseReveal .32s ease-out 1.35s forwards}@keyframes thalesCourseReveal{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.thales-course-template{display:grid;grid-template-columns:minmax(230px,.85fr) minmax(300px,1.15fr);align-items:center;gap:14px 20px;width:100%}.thales-course-figure{opacity:0;animation:thalesCourseReveal .32s ease-out .05s forwards}.thales-course-figure svg{display:block;width:100%;height:auto;max-height:250px}.thales-course-method{display:flex;flex-direction:column;gap:8px}.thales-course-caption{color:#35526e;font-size:.86rem;font-weight:850;text-align:center}.thales-course-table{display:grid;grid-template-columns:1.25fr repeat(3,1fr);overflow:hidden;border:2px solid #17384d;border-radius:12px;background:#fff}.thales-course-cell{display:flex;align-items:center;justify-content:center;min-height:42px;padding:6px 7px;border-right:1px solid #9fb3c8;border-bottom:1px solid #9fb3c8;font-weight:900}.thales-course-cell:nth-child(4n){border-right:0}.thales-course-cell:nth-last-child(-n+4){border-bottom:0}.thales-course-head{background:#eef3f9;color:#35526e;font-size:.78rem}.thales-course-small{color:#11468c}.thales-course-large{color:#087f83}.thales-course-row-small{opacity:0;animation:thalesCourseReveal .32s ease-out .38s forwards}.thales-course-row-large{opacity:0;animation:thalesCourseReveal .32s ease-out .72s forwards}.thales-course-ratios{opacity:0;padding:10px;border-radius:11px;background:#eef8f7;color:#17384d;font-size:1.12rem;font-weight:900;text-align:center;animation:thalesCourseReveal .32s ease-out 1.06s forwards}.thales-course-ratios .small{color:#11468c}.thales-course-ratios .large{color:#087f83}.thales-course-reminder{opacity:0;color:#60708c;font-size:.82rem;font-weight:800;text-align:center;animation:thalesCourseReveal .32s ease-out 1.35s forwards}@keyframes thalesCourseReveal{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 .median-course-values{display:flex;align-items:center;justify-content:center;gap:.36em;margin:7px 0 2px;font-weight:850}.median-middle{padding:1px 4px;border-bottom:3px solid #e86100;border-radius:5px;background:#fff1df;color:#9a4100}
 .equation-detail-modal{position:fixed;inset:0;z-index:110;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(11,33,71,.52)}
 .equation-detail-card{position:relative;width:min(860px,100%);max-height:min(760px,calc(100dvh - 36px));overflow:auto;padding:24px 24px 28px;border:2px solid var(--border);border-radius:22px;background:#fff;box-shadow:0 24px 70px rgba(11,33,71,.3)}
@@ -1848,7 +1845,7 @@ function setupAngleSumTactileInteraction(spec){
  if(calculation){calculation.hidden=!(angleSumPlacementValidated||interactiveLocked);}
  root.querySelectorAll('[data-angle-sum-slot]').forEach(node=>{
    const index=Number(node.dataset.angleSumSlot),value=displayedValues[index]||'';
-   node.textContent=value||'…';node.classList.toggle('is-filled',!!value);node.classList.toggle('is-selected',!!angleSumSelectedToken&&!angleSumPlacementValidated);
+   node.textContent=value||'…';node.classList.toggle('is-filled',!!value);node.classList.toggle('is-selected',!!angleSumSectedToken&&!angleSumPlacementValidated);
    node.disabled=interactiveLocked||angleSumPlacementValidated;
    node.onclick=()=>{
      if(interactiveLocked||angleSumPlacementValidated)return;
@@ -2152,7 +2149,7 @@ function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
  const placementOnly=spec&&spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated;
- const available=interactiveMode&&!interactiveFinished&&spec&&!placementOnly&&!['qcm','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
+ const available=interactiveMode&&!interactiveFinished&&spec&&!placementOnly&&!['','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -2548,7 +2545,7 @@ function interactiveSpecForInstance(inst,correctionHtml){
   }
 
   const rawAnswers=(inst.answers||[]).map(value=>String(value));
-  let acceptedCombinations=interactiveAnswerCombinations(inst,rawAnswers);
+  let acceptenations=interactiveAnswerCombinations(inst,rawAnswers);
   const moduleId=inst.module.id;
 
   if(moduleId==='dnb_22'){
