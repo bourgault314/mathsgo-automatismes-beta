@@ -1845,7 +1845,7 @@ function setupAngleSumTactileInteraction(spec){
  if(calculation){calculation.hidden=!(angleSumPlacementValidated||interactiveLocked);}
  root.querySelectorAll('[data-angle-sum-slot]').forEach(node=>{
    const index=Number(node.dataset.angleSumSlot),value=displayedValues[index]||'';
-   node.textContent=value||'…';node.classList.toggle('is-filled',!!value);node.classList.toggle('is-selected',!!angleSumSectedToken&&!angleSumPlacementValidated);
+   node.textContent=value||'…';node.classList.toggle('is-filled',!!value);node.classList.toggle('is-selected',!!angleSumSelectedToken&&!angleSumPlacementValidated);
    node.disabled=interactiveLocked||angleSumPlacementValidated;
    node.onclick=()=>{
      if(interactiveLocked||angleSumPlacementValidated)return;
@@ -2149,7 +2149,7 @@ function applyKeypadVisibility(spec=slides[idx]&&slides[idx].interactiveSpec){
  const dock=document.getElementById('answerDock'),toggle=document.getElementById('keyboardToggle');
  if(!dock||!toggle) return;
  const placementOnly=spec&&spec.kind==='angle-sum-tactile'&&!angleSumPlacementValidated;
- const available=interactiveMode&&!interactiveFinished&&spec&&!placementOnly&&!['','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
+ const available=interactiveMode&&!interactiveFinished&&spec&&!placementOnly&&!['qcm','grid-point','coordinate-points','numberline-point','relative-tokens','pythagoras-tactile','decimal-order','decimal-frame','decimal-distributivity'].includes(spec.kind);
  const visible=phoneKeypadMedia.matches||keypadVisible;
  dock.classList.toggle('keypad-collapsed',available&&!visible);
  toggle.hidden=!available||phoneKeypadMedia.matches;
@@ -2545,7 +2545,7 @@ function interactiveSpecForInstance(inst,correctionHtml){
   }
 
   const rawAnswers=(inst.answers||[]).map(value=>String(value));
-  let acceptenations=interactiveAnswerCombinations(inst,rawAnswers);
+  let acceptedCombinations=interactiveAnswerCombinations(inst,rawAnswers);
   const moduleId=inst.module.id;
 
   if(moduleId==='dnb_22'){
