@@ -3282,6 +3282,11 @@ function renderAreaModule(inst,correction=false,mode=null){
 function perimeterCorrectionForQuestion(inst){
   const n=Number(inst.q.n),s=inst.scope||{},answer=String(inst.answers&&inst.answers[0]!==undefined?inst.answers[0]:'');
   const v=name=>fmt(Number(s[name]));
+  if(n===11){
+    return s.isRadius
+      ?{formula:'P=2\\times\\pi\\times r',calculation:'P=2\\times\\pi\\times'+v('measure')+'='+answer+'\\text{ cm}'}
+      :{formula:'P=\\pi\\times d',calculation:'P=\\pi\\times'+v('measure')+'='+answer+'\\text{ cm}'};
+  }
   const cases={
     1:{formula:'P=2\\times(\\text{longueur}+\\text{largeur})',calculation:'P=2\\times('+v('L')+'+'+v('l')+')='+answer+'\\text{ cm}'},
     2:{formula:'P=4\\times\\text{côté}',calculation:'P=4\\times'+v('c')+'='+answer+'\\text{ cm}'},
@@ -3289,20 +3294,23 @@ function perimeterCorrectionForQuestion(inst){
     4:{formula:'P=5\\times\\text{côté}',calculation:'P=5\\times'+v('c')+'='+answer+'\\text{ cm}'},
     5:{formula:'P=2\\times(\\text{longueur}+\\text{largeur})',calculation:'P=2\\times('+v('L')+'+'+v('l')+')='+answer+'\\text{ cm}'},
     6:{formula:'P=2\\times(\\text{largeur totale}+\\text{hauteur totale})',calculation:'P=2\\times('+v('W')+'+'+v('H')+')='+answer+'\\text{ cm}'},
-    7:{formula:'P=2\\times\\pi\\times r',calculation:'P\\approx2\\times3,14\\times'+v('r')+'='+answer+'\\text{ cm}'},
-    8:{formula:'P=\\pi\\times d',calculation:'P\\approx3,14\\times'+v('d')+'='+answer+'\\text{ cm}'},
+    7:{formula:'P=2\\times\\pi\\times r',calculation:'P\\approx2\\times3,1\\times'+v('r')+'='+answer+'\\text{ cm}'},
+    8:{formula:'P=\\pi\\times d',calculation:'P\\approx3,1\\times'+v('d')+'='+answer+'\\text{ cm}'},
     9:{formula:'P=a+b+c+d',calculation:'P='+v('a')+'+'+v('b')+'+'+v('c')+'+'+v('d')+'='+answer+'\\text{ cm}'},
     10:{formula:'P=6\\times\\text{côté}',calculation:'P=6\\times'+v('c')+'='+answer+'\\text{ cm}'}
   };
   return cases[n]||{formula:'P=\\text{somme des longueurs des côtés}',calculation:'P='+answer+'\\text{ cm}'};
 }
 function renderPerimeterModule(inst,correction=false,mode=null){
-  let html='<div class="perimeter-question"><div class="perimeter-prompt">'+renderMathSegments(inst.rawStatement)+'</div></div>';
+  if(Number(inst.q.n)===12) return renderGenericQuestion(inst,correction,mode);
+  let correctionFlow='';
   if(correction){
     const detail=perimeterCorrectionForQuestion(inst);
-    html+='<div class="perimeter-correction-flow"><div class="perimeter-formula">'+renderMathSegments('$$'+detail.formula+'$$')+'</div><div class="perimeter-calculation">'+renderMathSegments('$$'+detail.calculation+'$$')+'</div></div>';
+    correctionFlow='<div class="perimeter-correction-flow"><div class="perimeter-formula">'+renderMathSegments('$$'+detail.formula+'$$')+'</div><div class="perimeter-calculation">'+renderMathSegments('$$'+detail.calculation+'$$')+'</div></div>';
   }
-  if(inst.rawFooter) html+='<div class="footer perimeter-answer">'+renderPlaceholders('$$P=[[formula]]\\text{ cm}$$',inst.answers,correction?'correction':'question')+'</div>';
+  let html='<div class="perimeter-question">'+correctionFlow+'<div class="perimeter-prompt">'+renderMathSegments(inst.rawStatement)+'</div></div>';
+  const relation=[7,8].includes(Number(inst.q.n))?'\\approx':'=';
+  if(inst.rawFooter) html+='<div class="footer perimeter-answer">'+renderPlaceholders('$$P'+relation+'[[formula]]\\text{ cm}$$',inst.answers,correction?'correction':'question')+'</div>';
   return html;
 }
 function volumeFormulaForQuestion(number){

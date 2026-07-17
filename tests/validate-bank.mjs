@@ -87,6 +87,7 @@ globalThis.__numberLineModule = MODULE_DNB_14;
 globalThis.__coordinateModule = MODULE_DNB_15;
 globalThis.__angleVocabularyModule = MODULE_DNB_17;
 globalThis.__angleModule = MODULE_DNB_18;
+globalThis.__perimeterModule = MODULE_DNB_21;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -106,7 +107,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'faeaa908dbe32029823790a0a401c0e59682e2b18b99a95c362a83618811d587';
+const expectedBankHash = 'e239967f763f1c44d01161f542a84c71181b48fc330c13ac6f84ebb8cba10e45';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -143,7 +144,7 @@ for (const id of isolatedModuleIds) {
 }
 
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
-if (questionCount !== 476) fail(`476 gabarits attendus, ${questionCount} trouvés.`);
+if (questionCount !== 478) fail(`478 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
   fail(`Le contenu ou l’ordre de la banque V1.20 a changé (${bankHash}).`);
 }
@@ -202,6 +203,35 @@ if(sharingWithAid.includes(`>${sharingPart}<`)) fail('La question de partage dnb
 if(!sharingCorrection.includes(`>${sharingPart}<`)||!sharingCorrection.includes('class="opt correct"')) fail('La correction de partage dnb_08 doit montrer les parts égales et la bonne réponse.');
 if(sharingWithoutAid.includes('equal-sharing-svg')||sharingWithoutAid.includes('visual-placeholder')) fail('Le partage doit être totalement absent en mode sans aide.');
 if(sharingReveal.includes('equal-sharing-svg')||!sharingReveal.includes('divisibility-sharing-placeholder')) fail('Le partage facultatif doit pouvoir être révélé seul.');
+
+const perimeterQuestion=number=>context.__perimeterModule.questions.find(question=>Number(question.n)===number);
+for(const seed of [3,17,81,2026]){
+  context.__setSeed(seed);
+  const radiusApprox=context.__makeInstance(context.__perimeterModule,perimeterQuestion(7));
+  const expectedRadius=Number((2*3.1*Number(radiusApprox.scope.r)).toFixed(1));
+  if(Number(String(radiusApprox.answers[0]).replace(',','.'))!==expectedRadius) fail('Le périmètre approché donné par le rayon doit utiliser π ≈ 3,1.');
+  const radiusCorrection=context.__renderQuestion(radiusApprox,true,'with');
+  if(!radiusCorrection.includes('P≈')||!radiusCorrection.includes('3,1')) fail('La correction avec le rayon doit conserver le signe ≈ et π ≈ 3,1.');
+
+  context.__setSeed(seed);
+  const diameterApprox=context.__makeInstance(context.__perimeterModule,perimeterQuestion(8));
+  const expectedDiameter=Number((3.1*Number(diameterApprox.scope.d)).toFixed(1));
+  if(Number(String(diameterApprox.answers[0]).replace(',','.'))!==expectedDiameter) fail('Le périmètre approché donné par le diamètre doit utiliser π ≈ 3,1.');
+
+  context.__setSeed(seed);
+  const exact=context.__makeInstance(context.__perimeterModule,perimeterQuestion(11));
+  const expectedCoefficient=exact.scope.isRadius?2*Number(exact.scope.measure):Number(exact.scope.measure);
+  if(exact.answers[0]!==expectedCoefficient+'π') fail('La valeur exacte du périmètre doit être écrite avec π.');
+  const exactCorrection=context.__renderQuestion(exact,true,'with');
+  if(exactCorrection.indexOf('perimeter-correction-flow')>exactCorrection.indexOf('perimeter-prompt')) fail('Le calcul de correction du périmètre doit apparaître au-dessus de la figure.');
+
+  context.__setSeed(seed);
+  const formulaChoice=context.__makeInstance(context.__perimeterModule,perimeterQuestion(12));
+  const formulaCorrection=context.__renderQuestion(formulaChoice,true,'with');
+  const visibleFormula=formulaCorrection.replace(/<[^>]*>/g,'').replace(/\s+/g,'');
+  const expectedFormula=formulaChoice.scope.isRadius?'P=2πr':'P=πd';
+  if((formulaCorrection.match(/class="opt correct"/g)||[]).length!==1||!visibleFormula.includes(expectedFormula)) fail('La sélection tactile doit reconnaître la bonne formule avec le rayon ou le diamètre.');
+}
 
 for(const seed of [3,17,81,2026]){
   context.__setSeed(seed);

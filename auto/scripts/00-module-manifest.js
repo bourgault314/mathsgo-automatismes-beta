@@ -63,7 +63,7 @@ function loadModuleScript(src){
   if(MATHSGO_LOADED_MODULE_SCRIPTS.has(src)) return MATHSGO_LOADED_MODULE_SCRIPTS.get(src);
   const promise=new Promise((resolve,reject)=>{
     const script=document.createElement('script');
-    script.src=src+'?v=20260717-8';
+    script.src=src+'?v=20260717-9';
     script.onload=resolve;
     script.onerror=()=>reject(new Error('Impossible de charger un module d’automatismes.'));
     document.head.appendChild(script);
