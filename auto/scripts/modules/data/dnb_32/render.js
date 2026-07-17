@@ -1,16 +1,16 @@
 (function registerReadDataRenderer(global){
   const SVG_NS='http://www.w3.org/2000/svg';
   const AID_SPECS=Object.freeze({
-    1:Object.freeze({family:'table-total',caption:'Repère toutes les valeurs de la ligne « livres », puis additionne-les.'}),
-    2:Object.freeze({family:'table-compare',caption:'Compare les trois effectifs de la même ligne, dans la même unité.'}),
+    1:Object.freeze({family:'table-total',caption:'Repère toutes les valeurs de la ligne « livres », puis additionne-les.',touch:{axis:'row',required:[1],candidates:[0,1],instruction:'Touche la ligne qui contient les nombres à additionner.'}}),
+    2:Object.freeze({family:'table-compare',caption:'Compare les trois effectifs de la même ligne, dans la même unité.',touch:{axis:'row',required:[1],candidates:[0,1],instruction:'Touche la ligne qui contient les effectifs à comparer.'}}),
     3:Object.freeze({family:'bar-read',caption:'Pars de « théâtre », remonte au sommet du bâton, puis suis le trait vers l’axe gradué.'}),
     4:Object.freeze({family:'line-difference',caption:'Lis les températures de lundi et de vendredi, puis calcule : vendredi − lundi.'}),
     5:Object.freeze({family:'pie-part',caption:'Compte les secteurs égaux associés à A, puis compare ce nombre au nombre total de secteurs.'}),
-    6:Object.freeze({family:'table-column-total',caption:'Suis la colonne « basket », puis additionne les effectifs des filles et des garçons.'}),
+    6:Object.freeze({family:'table-column-total',caption:'Suis la colonne « basket », puis additionne les effectifs des filles et des garçons.',touch:{axis:'column',required:[2],candidates:[1,2,3],instruction:'Touche la colonne correspondant au sport demandé.'}}),
     7:Object.freeze({family:'bar-compare',caption:'Compare les hauteurs des trois bâtons en utilisant la même échelle.'}),
     8:Object.freeze({family:'line-compare',caption:'Compare la hauteur de tous les points en utilisant la même échelle.'}),
-    9:Object.freeze({family:'pictogram',caption:'Compte les symboles de la ligne « espagnol », puis multiplie par la valeur d’un symbole.'}),
-    10:Object.freeze({family:'table-difference',caption:'Lis les ventes de vendredi et de samedi, puis calcule : samedi − vendredi.'})
+    9:Object.freeze({family:'pictogram',caption:'Chaque étoile vaut 5 élèves. Lis les trois « 5 », puis multiplie le nombre d’étoiles par 5.',touch:{axis:'row',required:[1],candidates:[0,1,2],instruction:'Touche la ligne correspondant à la langue demandée.'}}),
+    10:Object.freeze({family:'table-difference',caption:'Lis les ventes de vendredi et de samedi, puis calcule : samedi − vendredi.',touch:{axis:'column',required:[1,2],candidates:[1,2,3],instruction:'Touche les deux colonnes nécessaires pour comparer les ventes.'}})
   });
 
   function aidSpecForQuestion(questionNumber){
@@ -26,24 +26,81 @@
     return row?Array.from(row.cells):[];
   }
 
-  function guideTable(question,number){
-    const table=question.querySelector('table');
-    if(!table) return;
+  function highlightTableCells(table,number){
+    const highlight=(elements,kind)=>elements.filter(Boolean).forEach(element=>element.setAttribute('data-read-data-highlight',kind));
     if(number===1){
-      mark(tableCells(table,0).slice(1),'read-data-focus-label');
-      mark(tableCells(table,1),'read-data-focus-value');
+      highlight([tableCells(table,1)[0]],'label');
+      highlight(tableCells(table,1).slice(1),'focus');
     }else if(number===2){
-      mark(tableCells(table,0).slice(1),'read-data-focus-label');
-      mark(tableCells(table,1).slice(1),'read-data-compare-value');
+      highlight([tableCells(table,1)[0]],'label');
+      highlight(tableCells(table,1).slice(1),'compare');
     }else if(number===6){
-      mark([tableCells(table,0)[2]],'read-data-focus-label');
-      mark([tableCells(table,1)[2],tableCells(table,2)[2]],'read-data-focus-value');
+      highlight([tableCells(table,0)[2]],'label');
+      highlight([tableCells(table,1)[2],tableCells(table,2)[2]],'focus');
     }else if(number===9){
-      mark(tableCells(table,1),'read-data-focus-value');
+      highlight(tableCells(table,1),'focus');
     }else if(number===10){
-      mark([tableCells(table,0)[1],tableCells(table,0)[2]],'read-data-focus-label');
-      mark([tableCells(table,1)[1],tableCells(table,1)[2]],'read-data-focus-value');
+      highlight([tableCells(table,0)[1],tableCells(table,0)[2]],'label');
+      highlight([tableCells(table,1)[1],tableCells(table,1)[2]],'focus');
     }
+  }
+
+  function preparePictogram(question,table){
+    const wrap=question.querySelector('.legacy-table-dnb_32-9-wrap');
+    if(wrap){
+      while(question.firstChild&&question.firstChild!==wrap) question.removeChild(question.firstChild);
+      question.insertBefore(global.document.createTextNode('Le pictogramme indique les langues choisies par les élèves.'),wrap);
+    }
+    question.classList.add('read-data-pictogram-question');
+    const symbols=tableCells(table,1)[1];
+    if(!symbols||symbols.querySelector('.read-data-star-group')) return;
+    const count=(String(symbols.textContent||'').match(/★/g)||[]).length;
+    const group=global.document.createElement('span');
+    group.className='read-data-star-group';
+    group.setAttribute('role','img');
+    group.setAttribute('aria-label',count+' étoiles');
+    for(let index=0;index<count;index++){
+      const item=global.document.createElement('span');
+      item.className='read-data-star-item';
+      item.innerHTML='<span class="read-data-star" aria-hidden="true">★</span><span class="read-data-star-value" aria-hidden="true">5</span>';
+      group.appendChild(item);
+    }
+    symbols.replaceChildren(group);
+  }
+
+  function prepareTouchTable(question,number,spec,correction){
+    const table=question.querySelector('table');
+    if(!table||!spec.touch) return false;
+    const touch=spec.touch,prefix=touch.axis==='row'?'row:':'column:';
+    question.classList.add('read-data-touch-root');
+    question.setAttribute('data-read-data-touch','1');
+    question.setAttribute('data-read-data-question',String(number));
+    question.setAttribute('data-read-data-required',touch.required.map(index=>prefix+index).join('|'));
+    question.setAttribute('data-read-data-instruction',touch.instruction);
+    if(correction) question.classList.add('is-complete');
+    touch.candidates.forEach(index=>{
+      const choice=prefix+index;
+      if(touch.axis==='row'){
+        const row=table.rows&&table.rows[index];
+        if(!row) return;
+        row.setAttribute('data-read-data-choice',choice);
+        row.setAttribute('role','button');
+        row.setAttribute('tabindex',correction?'-1':'0');
+        row.setAttribute('aria-pressed',String(correction&&touch.required.includes(index)));
+      }else{
+        Array.from(table.rows||[]).forEach((row,rowIndex)=>{
+          const cell=row.cells&&row.cells[index];
+          if(!cell) return;
+          cell.setAttribute('data-read-data-choice',choice);
+          cell.setAttribute('role','button');
+          cell.setAttribute('tabindex',!correction&&rowIndex===0?'0':'-1');
+          cell.setAttribute('aria-pressed',String(correction&&touch.required.includes(index)));
+        });
+      }
+    });
+    highlightTableCells(table,number);
+    if(number===9) preparePictogram(question,table);
+    return true;
   }
 
   function numberAttribute(element,name){
@@ -168,6 +225,22 @@
     question.appendChild(caption);
   }
 
+  function appendTouchAid(question,spec,correction){
+    const panel=global.document.createElement('div');
+    panel.className='read-data-touch-panel';
+    panel.setAttribute('aria-live','polite');
+    const instruction=global.document.createElement('div');
+    instruction.className='read-data-touch-instruction';
+    instruction.textContent=spec.touch.instruction;
+    const caption=global.document.createElement('div');
+    caption.className='read-data-aid-caption read-data-touch-caption';
+    caption.setAttribute('role','note');
+    caption.innerHTML='<strong>Chemin de lecture&nbsp;:</strong> '+spec.caption;
+    panel.append(instruction,caption);
+    question.appendChild(panel);
+    if(correction) question.classList.add('is-complete');
+  }
+
   function appendAidPlaceholder(question){
     const placeholder=global.document.createElement('div');
     placeholder.className='visual-placeholder read-data-aid-placeholder';
@@ -188,14 +261,15 @@
       appendAidPlaceholder(question);
       return shell.innerHTML;
     }
-    guideTable(question,number);
+    const tactile=prepareTouchTable(question,number,spec,correction);
     guideSvg(question,number);
-    appendAid(question,spec);
+    if(tactile) appendTouchAid(question,spec,correction);
+    else appendAid(question,spec);
     return shell.innerHTML;
   }
 
   if(!global.MATHSGO_MODULE_RUNTIME) throw new Error('Le registre fonctionnel doit être chargé avant le rendu dnb_32.');
   global.MATHSGO_MODULE_RUNTIME.register('dnb_32',{
-    renderer:{version:'1.0.0',renderQuestion,aidSpecForQuestion}
+    renderer:{version:'1.1.0',renderQuestion,aidSpecForQuestion}
   });
 })(globalThis);
