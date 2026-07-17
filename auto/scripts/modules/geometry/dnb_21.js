@@ -66,8 +66,8 @@ const MODULE_DNB_21 = {
     },
     {
       "n": 7,
-      "statement": "<div style=\"text-align:center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"260\" height=\"auto\" viewBox=\"0 0 260 190\"><circle cx=\"130\" cy=\"90\" r=\"62\" fill=\"#eef4ff\" stroke=\"#315b9f\" stroke-width=\"2\"/><line x1=\"130\" y1=\"90\" x2=\"192\" y2=\"90\" stroke=\"#315b9f\" stroke-width=\"2\"/><text x=\"162\" y=\"82\" font-family=\"serif\" font-size=\"18\" text-anchor=\"middle\">${r} cm</text></svg></div><div style=\"text-align:center\">Calcule le périmètre de ce disque.\nOn prendra $$\\pi\\approx 3,14$$.</div>",
-      "answer": "[\"CUT(2*3,14*r,2)\"]",
+      "statement": "<div style=\"text-align:center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"260\" height=\"auto\" viewBox=\"0 0 260 190\"><circle cx=\"130\" cy=\"90\" r=\"62\" fill=\"#eef4ff\" stroke=\"#315b9f\" stroke-width=\"2\"/><line x1=\"130\" y1=\"90\" x2=\"192\" y2=\"90\" stroke=\"#315b9f\" stroke-width=\"2\"/><text x=\"162\" y=\"82\" font-family=\"serif\" font-size=\"18\" text-anchor=\"middle\">${r} cm</text></svg></div><div style=\"text-align:center\">Calcule le périmètre de ce disque.\nOn prendra $$\\pi\\approx 3,1$$.</div>",
+      "answer": "[\"CUT(2*3,1*r,1)\"]",
       "options": {
         "formula_code": "r=RD(2,9)"
       },
@@ -75,8 +75,8 @@ const MODULE_DNB_21 = {
     },
     {
       "n": 8,
-      "statement": "<div style=\"text-align:center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"270\" height=\"auto\" viewBox=\"0 0 270 190\"><circle cx=\"135\" cy=\"90\" r=\"62\" fill=\"#fff0f0\" stroke=\"#a13030\" stroke-width=\"2\"/><line x1=\"73\" y1=\"90\" x2=\"197\" y2=\"90\" stroke=\"#a13030\" stroke-width=\"2\"/><text x=\"135\" y=\"82\" font-family=\"serif\" font-size=\"18\" text-anchor=\"middle\">${d} cm</text></svg></div><br><div style=\"text-align:center\">Calcule le périmètre de ce disque.\nOn prendra $$\\pi\\approx 3,14$$.</div>",
-      "answer": "[\"CUT(3,14*d,2)\"]",
+      "statement": "<div style=\"text-align:center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"270\" height=\"auto\" viewBox=\"0 0 270 190\"><circle cx=\"135\" cy=\"90\" r=\"62\" fill=\"#fff0f0\" stroke=\"#a13030\" stroke-width=\"2\"/><line x1=\"73\" y1=\"90\" x2=\"197\" y2=\"90\" stroke=\"#a13030\" stroke-width=\"2\"/><text x=\"135\" y=\"82\" font-family=\"serif\" font-size=\"18\" text-anchor=\"middle\">${d} cm</text></svg></div><br><div style=\"text-align:center\">Calcule le périmètre de ce disque.\nOn prendra $$\\pi\\approx 3,1$$.</div>",
+      "answer": "[\"CUT(3,1*d,1)\"]",
       "options": {
         "formula_code": "d=RD(4,18)"
       },
@@ -99,6 +99,25 @@ const MODULE_DNB_21 = {
         "formula_code": "c=RD(2,10)"
       },
       "footer": "Réponse : [[formula]] cm"
+    },
+    {
+      "n": 11,
+      "statement": "<div style=\"text-align:center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"270\" height=\"auto\" viewBox=\"0 0 270 190\"><circle cx=\"135\" cy=\"90\" r=\"62\" fill=\"#eef8f8\" stroke=\"#236b6b\" stroke-width=\"2\"/><line x1=\"${isRadius?135:73}\" y1=\"90\" x2=\"197\" y2=\"90\" stroke=\"#236b6b\" stroke-width=\"2\"/><circle cx=\"135\" cy=\"90\" r=\"3\" fill=\"#236b6b\"/><text x=\"${isRadius?166:135}\" y=\"82\" font-family=\"serif\" font-size=\"18\" text-anchor=\"middle\">${measure} cm</text></svg></div><div style=\"text-align:center\">Donne la valeur exacte du périmètre de ce disque.</div>",
+      "answer": "[\"coefficient+'π'\"]",
+      "options": {
+        "formula_code": "isRadius=RD(0,1)===1\nmeasure=isRadius?RD(2,9):RD(4,18)\ncoefficient=isRadius?2*measure:measure"
+      },
+      "footer": "Réponse : [[formula]] cm"
+    },
+    {
+      "n": 12,
+      "statement": "<div style=\"text-align:center\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"270\" height=\"auto\" viewBox=\"0 0 270 170\"><circle cx=\"135\" cy=\"78\" r=\"58\" fill=\"#f7f7ff\" stroke=\"#3f3f8f\" stroke-width=\"2\"/><line x1=\"${isRadius?135:77}\" y1=\"78\" x2=\"193\" y2=\"78\" stroke=\"#3f3f8f\" stroke-width=\"2\"/><circle cx=\"135\" cy=\"78\" r=\"3\" fill=\"#3f3f8f\"/><text x=\"${isRadius?164:135}\" y=\"68\" font-family=\"serif\" font-size=\"20\" text-anchor=\"middle\">${isRadius?'r':'d'}</text></svg></div><div style=\"text-align:center\">Touche la formule qui permet de calculer le périmètre de ce disque.</div>&&$$${correctFormula}$$&&$$${wrongFormula1}$$&&$$${wrongFormula2}$$&&$$${wrongFormula3}$$&&",
+      "answer": "[\"1\"]",
+      "options": {
+        "formula_code": "isRadius=RD(0,1)===1\ncorrectFormula=isRadius?'P=2\\\\pi r':'P=\\\\pi d'\nwrongFormula1=isRadius?'P=\\\\pi r^2':'P=2\\\\pi d'\nwrongFormula2=isRadius?'P=\\\\pi r':'P=\\\\pi d^2'\nwrongFormula3=isRadius?'P=2\\\\pi r^2':'P=\\\\dfrac{\\\\pi d}{2}'",
+        "shuffle_answers": true
+      },
+      "footer": "[[qcm1]]"
     }
   ]
 };

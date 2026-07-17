@@ -367,13 +367,15 @@ assertClassifiedModule('dnb_20',context.__solidQuestionNumbers,'solid_recognitio
   [[22,23,24,25,28,29,30],'compter-elements','qcm-one','essential',null]
 ));
 
-assertClassifiedModule('dnb_21',context.__perimeterQuestionNumbers,'perimeter',expectedQuestions(
+assertClassifiedModule('dnb_21',context.__perimeterQuestionNumbers,'perimeter_formulas',expectedQuestions(
   [[1,5],'rectangle-parallelogramme','numeric','essential',null],
   [[2,4,10],'polygone-regulier','numeric','essential',null],
   [[3,9],'somme-cotes','numeric','essential',null],
   [[6],'contour-compose','numeric','essential',null],
   [[7],'disque-rayon','numeric','essential',null],
-  [[8],'disque-diametre','numeric','essential',null]
+  [[8],'disque-diametre','numeric','essential',null],
+  [[11],'disque-valeur-exacte','expression','essential',null],
+  [[12],'choisir-formule-disque','qcm-one','essential',null]
 ));
 
 assertClassifiedModule('dnb_22',context.__areaQuestionNumbers,'area',expectedQuestions(
