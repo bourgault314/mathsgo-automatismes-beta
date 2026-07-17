@@ -905,8 +905,16 @@ vm.runInContext(readDataRendererSource,readDataRendererContext,{timeout:5000});
 const expectedReadDataFamilies=['table-total','table-compare','bar-read','line-difference','pie-part','table-column-total','bar-compare','line-compare','pictogram','table-difference'];
 const actualReadDataFamilies=expectedReadDataFamilies.map((_,index)=>readDataRenderer?.aidSpecForQuestion(index+1)?.family);
 if(JSON.stringify(actualReadDataFamilies)!==JSON.stringify(expectedReadDataFamilies)) fail('Chaque variante de lecture de données doit disposer d’une aide visuelle adaptée.');
+const expectedReadDataTouch={1:['row',1],2:['row',1],6:['column',2],9:['row',1],10:['column',1,2]};
+for(const [questionNumber,expected] of Object.entries(expectedReadDataTouch)){
+  const touch=readDataRenderer?.aidSpecForQuestion(questionNumber)?.touch;
+  const actual=touch?[touch.axis,...touch.required]:[];
+  if(JSON.stringify(actual)!==JSON.stringify(expected)) fail(`Le repérage tactile de la question ${questionNumber} ne cible pas les bonnes données.`);
+}
 if(!readDataRendererSource.includes("renderGenericQuestion(instance,correction,'with')")||!readDataRendererSource.includes("mode==='without-essential'")) fail('Le support de données essentiel doit rester visible quand l’aide est masquée.');
 if(!readDataRendererSource.includes('completeTemperatureScale(question,number)')||!readDataRendererSource.includes('[30,35,40].forEach')) fail('L’échelle des températures doit rester complète jusqu’à la valeur maximale générée.');
+if(!readDataRendererSource.includes('data-read-data-choice')||!readDataRendererSource.includes('read-data-star-value')) fail('Les tableaux guidés doivent fournir des cibles tactiles et le pictogramme doit révéler la valeur sous chaque étoile.');
+if(!slideshow.includes('function setupReadDataTools')||!slideshow.includes("Ce choix n’est pas utile ici. Essaie encore.")||!slideshow.includes('read-data-observation-pending')) fail('Le diaporama doit gérer le repérage tactile, le nouvel essai neutre et la réponse après observation.');
 if(!slideshow.includes("const readDataAid=mode==='without'&&inst.module.id==='dnb_32'")||!slideshow.includes("const hiddenMode=readDataAid?'without-essential'")) fail('Le mode sans aide doit permettre de révéler le chemin de lecture sans masquer le support.');
 if(!slideshow.includes("slide.courseKind==='angle_vocabulary'")||!slideshow.includes("MATHSGO_VISUALS.get('geometry.angle-vocabulary')")) fail('Le cours Angles doit être contextuel et appeler le composant partagé.');
 
