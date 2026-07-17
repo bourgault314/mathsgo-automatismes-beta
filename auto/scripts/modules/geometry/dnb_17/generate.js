@@ -69,11 +69,14 @@
   }
 
   function parallelRelations(args){
-    return qcmInstance(args.module,args.question,{kind:'parallel-relations',prompt:'Les deux droites bleues sont parallèles. Quelle relation décrit les angles verts ?',courseSections:['parallel-relations']},[
-      {label:'Ils sont alternes-internes.',errorCode:'correct'},
+    const relation=args.randomInt(0,1)===0?'alternate':'corresponding';
+    const correct=relation==='alternate'?'Ils sont alternes-internes.':'Ils sont correspondants.';
+    const other=relation==='alternate'?'Ils sont correspondants.':'Ils sont alternes-internes.';
+    return qcmInstance(args.module,args.question,{kind:'parallel-relations',relation,prompt:'Les deux droites bleues sont parallèles. Quelle relation décrit les angles verts ?',courseSections:['parallel-relations']},[
+      {label:correct,errorCode:'correct'},
+      {label:other,errorCode:relation==='alternate'?'confuse-corresponding':'confuse-alternate-interior'},
       {label:'Ils sont opposés par le sommet.',errorCode:'confuse-opposite'},
-      {label:'Ils sont adjacents.',errorCode:'confuse-adjacent'},
-      {label:'Ils sont supplémentaires.',errorCode:'confuse-supplementary'}
+      {label:'Ils sont adjacents.',errorCode:'confuse-adjacent'}
     ],args.shuffle);
   }
 
@@ -91,6 +94,16 @@
     ]),values=>values);
   }
 
+  function protractorReading(args){
+    const degrees=args.pick([20,30,40,50,60,70,80,100,110,120,130,140,150,160]);
+    return qcmInstance(args.module,args.question,{kind:'protractor-reading',degrees,prompt:'Lis la mesure de l’angle sur le rapporteur.',courseSections:['protractor-reading']},[
+      {label:degrees+'°',errorCode:'correct'},
+      {label:(180-degrees)+'°',errorCode:'wrong-protractor-scale'},
+      {label:(degrees-10)+'°',errorCode:'one-tick-short'},
+      {label:(degrees+10)+'°',errorCode:'one-tick-far'}
+    ],args.shuffle);
+  }
+
   function supports({question}){return !!question?.options?.angle_kind;}
   function createInstance(args){
     const kind=args.question.options.angle_kind;
@@ -103,6 +116,7 @@
     if(kind==='parallel-relations') return parallelRelations(args);
     if(kind==='set-square') return setSquare(args);
     if(kind==='choose-figure') return chooseFigure(args);
+    if(kind==='protractor-reading') return protractorReading(args);
     throw new Error('Format fonctionnel d’angle inconnu.');
   }
 

@@ -928,6 +928,36 @@ function equationEquality(leftCoefficient,leftConstant,rightCoefficient,rightCon
   return equationExpression(leftCoefficient,leftConstant)+' = '+equationExpression(rightCoefficient,rightConstant);
 }
 const EQUASPLAT_IMPORT_URL='https://mathsgo.re/outils/equasplat_import_splat.html';
+const EQUABARRE_IMPORT_URL='https://mathsgo.re/outils/equabarre_import_splat.html';
+function equabarreImportUrl(payload){
+  return EQUABARRE_IMPORT_URL+'#data='+encodeURIComponent(JSON.stringify(payload));
+}
+function angleSumEquabarPayload(data){
+  const values=Array.isArray(data&&data.values)?data.values.map(Number):[];
+  const unknownIndexes=Array.isArray(data&&data.unknown)?data.unknown.map(Number):[];
+  if(!values.length||!unknownIndexes.length||data.comparison) return null;
+  const unknownValues=unknownIndexes.map(index=>values[index]);
+  const x=unknownValues[0];
+  if(!Number.isFinite(x)||x<=0||unknownValues.some(value=>Math.abs(value-x)>.0001)) return null;
+  const unknown=new Set(unknownIndexes);
+  return {
+    source:'automatismes_triangle_angles',
+    target:'equabarre_import',
+    variable:'𝑥',
+    unknownDisplay:'letter',
+    fullscreenSize:'compact',
+    lhsSide:'bottom',
+    x,
+    total:180,
+    top:[{type:'number',value:180}],
+    bottom:values.map((value,index)=>unknown.has(index)?{type:'x'}:{type:'number',value})
+  };
+}
+function angleSumEquabarButtonHtml(data){
+  const payload=angleSumEquabarPayload(data);
+  if(!payload) return '';
+  return '<div class="angle-bar-action-row"><a class="angle-bar-resolve-btn" href="'+escapeHtml(equabarreImportUrl(payload))+'" target="_blank" rel="noopener noreferrer" aria-label="Résoudre ce schéma dans ÉquaBarre import">Résoudre dans ÉquaBarre</a></div>';
+}
 function equationImportSide(coefficient,constant){
   const pieces=[];
   const sign=coefficient<0?-1:1;
@@ -3027,7 +3057,14 @@ function renderAngleSumModule(inst,correction=false,mode=null){
   const prompt=qcm?qcm.prompt:inst.rawStatement;
   const bar=inst.angleSum&&inst.angleSum.bar;
   let html='<div class="question angle-sum-prompt">'+renderMathSegments(prompt)+'</div>';
-  if(bar) html+=isWithoutVisuals(mode)?visualPlaceholder(mode):triangleAngleSumVisual(bar,correction);
+  if(bar){
+    if(isWithoutVisuals(mode)) html+=visualPlaceholder(mode);
+    else{
+      const action=angleSumEquabarButtonHtml(bar);
+      if(bar.view==='combined') html+='<div class="triangle-angle-sum-visual">'+triangleAngleSumVisual({...bar,view:'triangle'},correction)+action+triangleAngleSumVisual({...bar,view:'bar'},correction)+'</div>';
+      else html+=action+triangleAngleSumVisual(bar,correction);
+    }
+  }
   if(qcm){
     const corrects=new Set(inst.answers.map(value=>String(value)));
     html+='<div class="options angle-sum-options options-'+qcm.opts.length+'">';

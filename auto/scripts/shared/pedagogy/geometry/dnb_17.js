@@ -11,9 +11,10 @@ MATHSGO_PEDAGOGY.registerModule('dnb_17',{
       {id:'relations',label:'Angles opposés ou adjacents'},
       {id:'complementary-supplementary',label:'Angles complémentaires ou supplémentaires'},
       {id:'naming',label:'Nommer un angle avec trois lettres'},
+      {id:'measurement',label:'Lire une mesure sur un rapporteur'},
       {id:'comparison',label:'Comparer des ouvertures indépendamment des longueurs'},
       {id:'bisector',label:'Reconnaître une bissectrice'},
-      {id:'parallel-relations',label:'Reconnaître des angles alternes-internes'},
+      {id:'parallel-relations',label:'Reconnaître des angles alternes-internes ou correspondants'},
       {id:'set-square',label:'Connaître les angles de l’équerre'}
     ],
     reasoning:[
@@ -37,6 +38,9 @@ MATHSGO_PEDAGOGY.registerModule('dnb_17',{
       {id:'compare-first-side-length',label:'Comparer AB et DE au lieu des ouvertures',source:'Eduscol, évaluation 6e 2025, question 22'},
       {id:'compare-second-side-length',label:'Comparer BC et EF au lieu des ouvertures',source:'Eduscol, évaluation 6e 2025, question 22'},
       {id:'requires-measure',label:'Penser qu’une comparaison est impossible sans mesure',source:'Eduscol, évaluation 6e 2025, question 22'},
+      {id:'wrong-protractor-scale',label:'Lire la graduation qui part du mauvais zéro du rapporteur'},
+      {id:'one-tick-short',label:'S’arrêter une graduation trop tôt sur le rapporteur'},
+      {id:'one-tick-far',label:'Lire une graduation trop loin sur le rapporteur'},
       {id:'vertex-first',label:'Placer le sommet en première position dans le nom'},
       {id:'vertex-last',label:'Placer le sommet en dernière position dans le nom'}
     ],

@@ -259,6 +259,12 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-17 — Liaison des barres d’angles vers ÉquaBarre.** Dans `dnb_18`,
+  un bouton compact accompagne uniquement un schéma en barres qui représente
+  une équation résoluble. Il envoie la rangée totale et la rangée décomposée à
+  la route technique existante `equabarre_import_splat.html`, sans déplacer ni
+  renommer cette route. Les questions de validation et d’impossibilité restent
+  sans bouton.
 - **2026-07-16 — Manipulation de la somme des angles.** Les dix gabarits
   historiques de `dnb_18` restent figés. Un format fonctionnel en deux temps
   ajoute le placement de `180°`, de deux angles connus et de `𝑥`, puis le
@@ -280,6 +286,15 @@ réellement utile.
   Une série de 5 en contient un ; les erreurs vrai/faux visent l’ordre et les
   signes. Les décisions détaillées sont consignées dans
   [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md).
+- **2026-07-17 — Audit des angles `dnb_17`.** Les vingt formats sont regroupés
+  dans neuf familles pédagogiques. Une série maximale utilise les dix gabarits
+  historiques et les dix formats fonctionnels sans répétition ; les familles
+  consécutives sont évitées dès qu’une autre reste disponible. La lecture du
+  rapporteur complète la mesure et le parallélisme alterne désormais entre
+  angles alternes-internes et correspondants. Le tableau des six natures passe
+  à deux colonnes afin d’agrandir réellement dessins et libellés sur téléphone.
+  Le générateur passe en version 1.15.0 pour que les liens partagés ne changent
+  pas silencieusement de sélection.
 - **2026-07-16 — Angles `dnb_17`.** Le cours déclaré
   `angle_vocabulary` devient contextuel et appelle le composant partagé
   `geometry.angle-vocabulary`. Neuf formats fonctionnels complètent les dix

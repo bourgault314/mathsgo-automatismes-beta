@@ -954,6 +954,45 @@ if(compareCourse.title!=='Comparer deux angles'||!compareCourse.rules[0][1].incl
 const namedContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:12},angleData:{kind:'name-angle',letters:['C','E','D'],courseSections:['angle-name']}});
 const namedCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:namedContext});
 if(namedCourse.title!=='Nommer un angle'||!namedCourse.rules[0][1].includes('CED')||!namedCourse.rules[0][1].includes('sommet E')) fail('Le cours sur le nom doit reprendre les lettres et le sommet de la question.');
+const protractorContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:20},angleData:{kind:'protractor-reading',degrees:40,courseSections:['protractor-reading']}});
+const protractorCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:protractorContext});
+if(protractorCourse.title!=='Mesurer avec un rapporteur'||!protractorCourse.rules[0][1].includes('On part du 0° à droite : 40°.')) fail('La lecture du rapporteur doit ouvrir son cours visuel avec la bonne échelle.');
+const correspondingContext=context.courseContextForInstance({module:{id:'dnb_17'},q:{n:17},angleData:{kind:'parallel-relations',relation:'corresponding',courseSections:['parallel-relations']}});
+const correspondingCourse=context.courseForSlide({courseKind:'angle_vocabulary',courseContext:correspondingContext});
+if(!correspondingCourse.rules[0][0].includes('correspondants')||!correspondingCourse.rules[0][1].includes('Correspondants : même position')) fail('La variante correspondante doit ouvrir un cours différent de la variante alterne-interne.');
+
+const angleSelectionSource=fs.readFileSync(new URL('auto/scripts/modules/geometry/dnb_17/selection.js',root),'utf8');
+let angleSelection=null;
+const angleSelectionContext={MATHSGO_MODULE_RUNTIME:{register(moduleId,extension){if(moduleId==='dnb_17') angleSelection=extension.selection;}}};
+angleSelectionContext.globalThis=angleSelectionContext;
+vm.createContext(angleSelectionContext);
+vm.runInContext(angleSelectionSource,angleSelectionContext,{timeout:5000});
+const legacyAngleQuestions=Array.from({length:10},(_,index)=>({n:index+1,options:{}}));
+function selectAngleQuestions(count){
+  const orderQueues=new Map();
+  return angleSelection.selectQuestions({
+    module:{id:'dnb_17'},questions:legacyAngleQuestions,count,
+    shuffle:values=>[...values],
+    draw:(_key,pool,poolCount,cycleBuilder)=>[...(cycleBuilder?cycleBuilder():pool)].slice(0,poolCount),
+    drawOrder:(key,keys)=>{
+      let queue=orderQueues.get(key);
+      if(!queue||!queue.length){queue=[...keys];orderQueues.set(key,queue);}
+      return queue.shift();
+    }
+  });
+}
+const expectedFreshCounts=new Map([[5,1],[10,4],[15,7],[20,10]]);
+for(const [count,freshCount] of expectedFreshCounts){
+  const selected=selectAngleQuestions(count);
+  const actualFresh=selected.filter(question=>Number(question.n)>10).length;
+  if(selected.length!==count||actualFresh!==freshCount) fail(`La série Angles de ${count} questions doit contenir ${freshCount} format(s) fonctionnel(s).`);
+}
+const fullAngleSeries=selectAngleQuestions(20);
+if(new Set(fullAngleSeries.map(question=>Number(question.n))).size!==20) fail('La série maximale Angles doit contenir vingt formats distincts sans répétition.');
+const fullAngleFamilies=fullAngleSeries.map(angleSelection.familyForQuestion);
+if(new Set(fullAngleFamilies).size!==9) fail('Les vingt formats Angles doivent rester regroupés dans neuf familles pédagogiques.');
+if(fullAngleFamilies.some((family,index)=>index>0&&family===fullAngleFamilies[index-1])) fail('Deux familles Angles identiques ne doivent pas se suivre lorsqu’une autre reste disponible.');
+if(angleSelection.virtualTemplates.length!==10||!angleSelection.virtualTemplates.some(template=>template.options.angle_kind==='protractor-reading')) fail('Les dix formats fonctionnels Angles doivent inclure la lecture du rapporteur.');
 
 const relative=registry?.getModule('dnb_38');
 if(!relative) fail('Le classement pédagogique de dnb_38 est absent.');

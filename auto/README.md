@@ -15,7 +15,7 @@ l'application et du livret A5, pas un deuxième exerciseur.
 - banque : V1.20 ;
 - 43 modules ;
 - 476 gabarits ;
-- 26 composants visuels ;
+- 27 composants visuels ;
 - 43 modules classés pédagogiquement sur 43 ;
 - 3 formats fonctionnels supplémentaires pour `dnb_14`, sans modifier ses 18
   gabarits historiques dans la banque figée ;

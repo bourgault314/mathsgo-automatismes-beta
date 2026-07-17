@@ -317,14 +317,28 @@ cartes `180°`, deux mesures connues et `𝑥`. Elle valide d’abord le placeme
 puis ouvre la saisie de l’angle manquant. L’orientation de la barre totale peut
 être inversée sans changer le contrat sémantique.
 
+Quand le modèle en barres contient une inconnue réellement résoluble, un bouton
+compact « Résoudre dans ÉquaBarre » apparaît juste au-dessus de la barre. Il
+ouvre la route technique conservée
+`https://mathsgo.re/outils/equabarre_import_splat.html` avec 180° sur la rangée
+du haut et les angles connus ou `𝑥` sur la rangée du bas. Aucun bouton n’est
+affiché pour le contrôle de cohérence ou le cas impossible, qui ne constituent
+pas une équation à résoudre dans ÉquaBarre.
+
 ## Vocabulaire et relations entre angles
 
 `geometry.angle-vocabulary` rassemble les dessins utilisés par `dnb_17` et son
 cours contextuel : six natures d’angles, angle nommé, comparaison d’ouvertures,
 angles opposés, adjacents, complémentaires, supplémentaires, bissectrice,
-angles alternes-internes et équerre. Il reprend les conventions validées dans
+angles alternes-internes, angles correspondants, rapporteur et équerre. Il
+reprend les conventions validées dans
 l’espace Axelle : vrais arcs, carré d’angle droit rattaché au sommet, noms à
 trois lettres et absence de points décoratifs aux extrémités.
+
+Le tableau des six natures utilise deux colonnes et trois rangées. Ses libellés
+restent ainsi lisibles à 390 × 844 au lieu d’être comprimés dans trois petites
+colonnes. Le rapporteur conserve les deux échelles et indique le zéro de départ ;
+la correction révèle la mesure sans changer de figure.
 
 ## Référence PythaBarre
 
