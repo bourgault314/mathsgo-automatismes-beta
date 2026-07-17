@@ -16,6 +16,7 @@ const decimalDecisions = read('docs/DECIMAUX-AUTOMATISMES.md');
 const numberLineDecisions = read('docs/RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md');
 const numberLineCorpus = JSON.parse(read('docs/data/eduscol-droites-graduees.json'));
 const decimalRelativeDecisions = read('docs/DECIMAUX-RELATIFS-AUTOMATISMES.md');
+const equationDecisions = read('docs/EQUATIONS-AUTOMATISMES.md');
 
 const requiredHeadings = [
   '## Méthode permanente',
@@ -70,6 +71,15 @@ if (!docsIndex.includes('DECIMAUX-AUTOMATISMES.md') ||
     !protocol.includes('DECIMAUX-AUTOMATISMES.md') ||
     !protocol.includes('DECIMAUX-RELATIFS-AUTOMATISMES.md')) {
   fail('Les décisions propres aux décimaux doivent être reliées depuis l’index et le protocole.');
+}
+
+if (!docsIndex.includes('EQUATIONS-AUTOMATISMES.md')) {
+  fail('Les décisions propres aux équations doivent être reliées depuis l’index documentaire.');
+}
+for (const decision of ['équation, on cherche la valeur de l’inconnue', 'même opération effectuée', 'ordinateur reste inchangée', '390 × 844']) {
+  if (!equationDecisions.includes(decision)) {
+    fail(`La décision Équations « ${decision} » a disparu de la fiche dédiée.`);
+  }
 }
 
 if (!docsIndex.includes('RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md') ||

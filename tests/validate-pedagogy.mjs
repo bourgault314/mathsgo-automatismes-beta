@@ -835,6 +835,7 @@ const index=fs.readFileSync(new URL('auto/index.html',root),'utf8');
 const catalogue=fs.readFileSync(new URL('auto/dev/visual-library.html',root),'utf8');
 const app=fs.readFileSync(new URL('auto/scripts/04-app.js',root),'utf8');
 const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'utf8');
+const questionEngine=fs.readFileSync(new URL('auto/scripts/02-question-engine.js',root),'utf8');
 const functionBlock=(source,name,nextName)=>source.slice(source.indexOf(`function ${name}(`),source.indexOf(`function ${nextName}(`));
 const thalesTemplateBlock=slideshow.slice(slideshow.indexOf('function courseThalesTemplateVisual('),slideshow.indexOf('const courseCatalog='));
 const registryPosition=index.indexOf('scripts/shared/pedagogy/00-registry.js');
@@ -894,6 +895,21 @@ if(!slideshow.includes("coursePythagorasLibraryVisual('bar')")||!slideshow.inclu
 if(!slideshow.includes("'read-data-mode':['dnb_32']")||!slideshow.includes('.diapo.read-data-mode .stage>.slide{width:100%;max-width:1180px;margin-top:auto;margin-bottom:auto}')) fail('Le module de lecture de données doit disposer de son centrage local.');
 if(!slideshow.includes('courseReadDataTableVisual()')||!slideshow.includes('courseReadDataChartVisual()')||!slideshow.includes('courseReadDataPictogramVisual()')) fail('Le cours de lecture de données doit proposer ses trois exemples explicites.');
 if(!slideshow.includes('variation = valeur finale − valeur initiale')) fail('Le cours de lecture de données doit expliciter le sens de la variation.');
+if(!slideshow.includes('<strong>Équation :</strong> trouver la valeur de l’inconnue qui rend l’égalité vraie.')||
+   !slideshow.includes('<strong>Splat :</strong> trouver la valeur qui se cache sous chaque tache.')||
+   !slideshow.includes('même opération dans les deux membres pour conserver l’équilibre')) {
+  fail('Le cours Équations doit distinguer équation et Splat, puis expliciter la conservation de l’équilibre.');
+}
+if(slideshow.includes('On défait les opérations')||!slideshow.includes('equationCourseExamplePayload')||!slideshow.includes("equationBuildResolution(3,5,0,17,4)")) {
+  fail('Le cours Équations doit réutiliser la rédaction détaillée de la correction et les opérations inverses.');
+}
+if(!questionEngine.includes('equation-mobile-resolve-button-row')||
+   !slideshow.includes('.equation-resolve-button-row:not(.equation-mobile-resolve-button-row){display:none}')||
+   !slideshow.includes('.equation-help{height:auto;justify-content:flex-start}')||
+   !slideshow.includes('.equation-splat-svg{width:calc(100% + 14px);max-width:none;margin-left:-7px;margin-right:-7px}')||
+   !slideshow.includes('transform:scale(1.12)')) {
+  fail('Le bouton et le plateau Équations doivent utiliser leur présentation agrandie réservée au téléphone.');
+}
 const readDataRendererSource=fs.readFileSync(new URL('auto/scripts/modules/data/dnb_32/render.js',root),'utf8');
 let readDataRenderer=null;
 const readDataRendererContext=vm.createContext({

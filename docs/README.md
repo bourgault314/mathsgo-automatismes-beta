@@ -24,6 +24,7 @@ de vérification et de publication communes à toutes les catégories.
 | [`PLAN-DECOUPAGE.md`](PLAN-DECOUPAGE.md) | organisation progressive du code |
 | [`RELATIFS-AUTOMATISMES.md`](RELATIFS-AUTOMATISMES.md) | décisions propres à l'addition d'entiers relatifs |
 | [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md) | décisions propres à la comparaison et au calcul avec des décimaux |
+| [`EQUATIONS-AUTOMATISMES.md`](EQUATIONS-AUTOMATISMES.md) | cours, rédaction et présentation mobile de `dnb_13` |
 | [`RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md`](RECHERCHE-PEDAGOGIQUE-DROITES-GRADUEES.md) | décisions propres à la lecture et au placement sur une droite graduée |
 | [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md) | décisions propres à la lecture et au placement de points dans un repère |
 | [`ANGLES-TRIANGLE-AUTOMATISMES.md`](ANGLES-TRIANGLE-AUTOMATISMES.md) | dimensions, sélection et manipulation en deux temps pour la somme des angles d’un triangle |

@@ -15,7 +15,7 @@ MATHSGO_PEDAGOGY.registerModule('dnb_13',{
     ],
     reasoning:[
       {id:'preserve-equality',label:'Conserver l’égalité',rule:'Effectuer la même opération dans les deux membres.'},
-      {id:'undo-operation',label:'Défaire les opérations',rule:'Utiliser les opérations inverses en commençant par la dernière appliquée à x.'},
+      {id:'undo-operation',label:'Opérations inverses',rule:'Utiliser l’opération inverse en commençant par la dernière appliquée à x.'},
       {id:'group-x',label:'Regrouper les inconnues',rule:'Amener les termes en x dans un même membre avant de diviser.'},
       {id:'check-solution',label:'Vérifier',rule:'Remplacer x par la solution et contrôler que les deux membres sont égaux.'}
     ],
