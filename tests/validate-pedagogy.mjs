@@ -905,11 +905,18 @@ if(!slideshow.includes('<strong>Équation :</strong> trouver la valeur de l’in
 if(slideshow.includes('On défait les opérations')||!slideshow.includes('equationCourseExamplePayload')||!slideshow.includes("equationBuildResolution(3,5,0,17,4)")) {
   fail('Le cours Équations doit réutiliser la rédaction détaillée de la correction et les opérations inverses.');
 }
+if(!slideshow.includes('equationCourseSplatPayload')||
+   !slideshow.includes("a:3,b:5,c:0,d:17,solution:4")||
+   !slideshow.includes('course-equation-splat')) {
+  fail('Le cours Équations doit montrer le mini-plateau Splat correspondant à son exemple.');
+}
 if(!questionEngine.includes('equation-mobile-resolve-button-row')||
    !slideshow.includes('.equation-resolve-button-row:not(.equation-mobile-resolve-button-row){display:none}')||
-   !slideshow.includes('.equation-help{height:auto;justify-content:flex-start}')||
-   !slideshow.includes('.equation-splat-svg{width:calc(100% + 14px);max-width:none;margin-left:-7px;margin-right:-7px}')||
-   !slideshow.includes('transform:scale(1.12)')) {
+   !slideshow.includes('equation-qcm-solution-layout')||
+   !slideshow.includes('equation-qcm-operation-layout')||
+   !slideshow.includes("inst.equationData.qcm.kind==='operation'")||
+   !slideshow.includes('min-height:54px')||
+   !slideshow.includes('transform:scale(1.18)')) {
   fail('Le bouton et le plateau Équations doivent utiliser leur présentation agrandie réservée au téléphone.');
 }
 const readDataRendererSource=fs.readFileSync(new URL('auto/scripts/modules/data/dnb_32/render.js',root),'utf8');

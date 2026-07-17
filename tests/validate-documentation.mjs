@@ -76,7 +76,7 @@ if (!docsIndex.includes('DECIMAUX-AUTOMATISMES.md') ||
 if (!docsIndex.includes('EQUATIONS-AUTOMATISMES.md')) {
   fail('Les décisions propres aux équations doivent être reliées depuis l’index documentaire.');
 }
-for (const decision of ['équation, on cherche la valeur de l’inconnue', 'même opération effectuée', 'ordinateur reste inchangée', '390 × 844']) {
+for (const decision of ['équation, on cherche la valeur de l’inconnue', 'même opération effectuée', 'mini-plateau Splat', 'ordinateur reste inchangée', '390 × 844', 'quatre profils', 'au moins 54 px']) {
   if (!equationDecisions.includes(decision)) {
     fail(`La décision Équations « ${decision} » a disparu de la fiche dédiée.`);
   }
