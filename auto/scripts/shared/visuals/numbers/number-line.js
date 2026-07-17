@@ -34,7 +34,7 @@
   function numberLabel(value){
     return String(cleanNumber(value)).replace('.',',');
   }
-  function scaledNumberLineSvg(data){
+  function scaledNumberLineLayout(data={}){
     const min=Number(data.min),max=Number(data.max),step=Math.abs(Number(data.step));
     if(!Number.isFinite(min)||!Number.isFinite(max)||max<=min||!Number.isFinite(step)||step<=0){
       throw new TypeError('Une droite graduée paramétrable exige min < max et un pas strictement positif.');
@@ -49,6 +49,10 @@
     const labelEvery=Math.max(1,Math.round(Number(data.labelEvery)||1));
     const minorStep=Math.abs(Number(data.minorStep))||0;
     const span=max-min,toX=value=>plotLeft+((value-min)/span)*(plotRight-plotLeft);
+    return {min,max,step,span,width,height,left,right,axisEnd,axisY,plotLeft,plotRight,tickFontSize,pointFontSize,labelEvery,minorStep,toX};
+  }
+  function scaledNumberLineSvg(data){
+    const layout=scaledNumberLineLayout(data),{min,max,step,span,width,height,left,axisEnd,axisY,tickFontSize,pointFontSize,labelEvery,minorStep,toX}=layout;
     const references=Array.isArray(data.references)?data.references:[];
     const points=Array.isArray(data.points)?data.points:[];
     const values=(increment)=>{
@@ -150,12 +154,13 @@
   ].map(item=>Object.freeze({id:item.id,label:item.label,supports:Object.freeze(item.supports),data:Object.freeze(Object.fromEntries(Object.entries(item.data).map(([key,value])=>[key,Array.isArray(value)?Object.freeze(value.map(entry=>Object.freeze(entry))):value])))})));
 
   global.MATHSGO_VISUALS.register('numbers.number-line',{
-    version:'1.2.0',
+    version:'1.3.0',
     label:'Droite graduée',
     family:'Nombres',
     description:'Traceur commun : longueur, bornes, pas principal, sous-graduations, étiquettes et points sont paramétrables. Le mode historique reste figé.',
     presets,
     render:numberLineSvg,
+    getScaleLayout:scaledNumberLineLayout,
     renderPlacement:placementNumberLineSvg
   });
   global.numberLineSvg=numberLineSvg;

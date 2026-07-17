@@ -213,10 +213,14 @@ if (relativeTokens && !relativeTokens.render({positive:2,negative:1}).includes('
 
 const numberLine = registry?.get('numbers.number-line');
 if (!numberLine) fail('Le composant numbers.number-line est absent.');
-if (numberLine && numberLine.version !== '1.2.0') fail('Version 1.2.0 attendue pour le composant droite graduée.');
+if (numberLine && numberLine.version !== '1.3.0') fail('Version 1.3.0 attendue pour le composant droite graduée.');
 if (numberLine && numberLine.presets.length !== 9) fail('Neuf familles de droites graduées sont attendues.');
 if (numberLine && context.numberLineSvg !== numberLine.render) {
   fail('Le module dnb_14 doit utiliser le composant droite graduée enregistré.');
+}
+const numberLineLayout=numberLine?.getScaleLayout?.({mode:'scale',min:1,max:2,step:1,width:560,height:154,axisPadding:.1});
+if (!numberLineLayout || Math.abs(numberLineLayout.toX(1)/numberLineLayout.width*100-16.964286)>1e-6 || Math.abs(numberLineLayout.toX(2)/numberLineLayout.width*100-84.107143)>1e-6) {
+  fail('La droite graduée doit exposer les coordonnées exactes de ses graduations.');
 }
 const numberLineHashes = new Map([
   ['unite', '9849822d67da6bf91ae191fc146b5fbbab5062c5f4e1eb40e17f3f5c1cb08390'],

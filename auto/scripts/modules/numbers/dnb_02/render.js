@@ -12,9 +12,10 @@
     return `<button class="decimal-card" type="button" data-decimal-card="${escapeHtml(value)}">${escapeHtml(display(value))}</button>`;
   }
 
-  function slot(index,value='',label='Réponse'){
+  function slot(index,value='',label='Réponse',style=''){
     const filled=value!==''&&value!==null&&value!==undefined;
-    return `<button class="decimal-drop-slot${filled?' is-filled':''}" type="button" data-decimal-slot="${index}" aria-label="${escapeHtml(label)}">${filled?escapeHtml(display(value)):'…'}</button>`;
+    const styleAttribute=style?` style="${escapeHtml(style)}"`:'';
+    return `<button class="decimal-drop-slot${filled?' is-filled':''}" type="button" data-decimal-slot="${index}" aria-label="${escapeHtml(label)}"${styleAttribute}>${filled?escapeHtml(display(value)):'…'}</button>`;
   }
 
   function orderBoard(instance,correction=false){
@@ -26,9 +27,14 @@
 
   function frameBoard(instance,correction=false){
     const scope=instance.scope||{},component=global.MATHSGO_VISUALS&&global.MATHSGO_VISUALS.get('numbers.number-line');
-    const line=component?component.render({mode:'scale',min:Number(scope.low),max:Number(scope.high),step:1,width:560,height:154,axisPadding:.1,autoLabels:false,tickFontSize:21,pointFontSize:28,points:[{value:Number(scope.value),label:display(scope.value),color:'#0b79d0'}]}):'';
+    const lineData={mode:'scale',min:Number(scope.low),max:Number(scope.high),step:1,width:560,height:154,axisPadding:.1,autoLabels:false,tickFontSize:21,pointFontSize:28,points:[{value:Number(scope.value),label:display(scope.value),color:'#0b79d0'}]};
+    const line=component?component.render(lineData):'',layout=component&&typeof component.getScaleLayout==='function'?component.getScaleLayout(lineData):null;
+    const leftTick=layout?layout.toX(lineData.min)/layout.width*100:17,rightTick=layout?layout.toX(lineData.max)/layout.width*100:84;
+    const slotContainerStyle=`--decimal-frame-left:${leftTick.toFixed(6)}%;--decimal-frame-right:${rightTick.toFixed(6)}%;display:block;width:100%;height:68px;margin:-31px auto 8px;position:relative;z-index:3;pointer-events:none`;
+    const leftSlotStyle='position:absolute;top:0;left:var(--decimal-frame-left);pointer-events:auto;transform:translateX(-50%)';
+    const rightSlotStyle='position:absolute;top:0;left:var(--decimal-frame-right);pointer-events:auto;transform:translateX(-50%)';
     const values=correction?[scope.low,scope.high]:['',''],cards=Array.isArray(scope.frameCards)?scope.frameCards:[scope.low-1,scope.low,scope.high,scope.high+1];
-    return `<div class="question">${escapeHtml(instance.rawStatement)}</div><div class="decimal-manipulation decimal-frame-board${correction?' is-correction':''}" data-decimal-manipulation="frame"><div class="decimal-frame-line">${line}<div class="decimal-frame-slots">${slot(0,values[0],'Entier de gauche')}${slot(1,values[1],'Entier de droite')}</div></div><div class="decimal-card-tray decimal-frame-cards" aria-label="Entiers proposés">${cards.map(card).join('')}</div></div>`;
+    return `<div class="question">${escapeHtml(instance.rawStatement)}</div><div class="decimal-manipulation decimal-frame-board${correction?' is-correction':''}" data-decimal-manipulation="frame"><div class="decimal-frame-line">${line}<div class="decimal-frame-slots" style="${slotContainerStyle}">${slot(0,values[0],'Entier de gauche',leftSlotStyle)}${slot(1,values[1],'Entier de droite',rightSlotStyle)}</div></div><div class="decimal-card-tray decimal-frame-cards" aria-label="Entiers proposés">${cards.map(card).join('')}</div></div>`;
   }
 
   function complementVisual(instance,correction=false,missing=false){
