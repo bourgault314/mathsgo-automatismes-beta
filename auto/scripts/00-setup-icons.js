@@ -77,12 +77,22 @@
     return `<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#fffaf5" stroke="#173a5e" stroke-width="1.3"/><path d="M8 28h20" fill="none" stroke="#9eb0c2" stroke-width="1.1" stroke-linecap="round"/><g stroke="#fffdf8" stroke-width=".55">${bars}</g></svg>`;
   }
 
+  function monotoneRoutes(right, up, prefix = '', routes = []){
+    if (right === 0 && up === 0) {
+      routes.push(prefix);
+      return routes;
+    }
+    if (right > 0) monotoneRoutes(right - 1, up, `${prefix}R`, routes);
+    if (up > 0) monotoneRoutes(right, up - 1, `${prefix}U`, routes);
+    return routes;
+  }
+
   function algorithmIcon(){
     const random = themeRandom('algorithm');
-    const routes = ['RRUU', 'RURU', 'RUUR', 'URRU', 'URUR', 'UURR'];
+    const routes = monotoneRoutes(3, 3);
     const route = routes[Math.floor(random() * routes.length)];
-    const path = `M9 27${[...route].map(move => move === 'R' ? 'h9' : 'v-9').join('')}`;
-    return `<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#f5f4ff" stroke="#4f5fb3" stroke-width="1.3"/><g fill="none" stroke="#c7ccee" stroke-width=".85"><path d="M13.3 4v28M22.7 4v28M4 13.5h28M4 22.5h28"/></g><circle cx="8.8" cy="27" r="2.4" fill="#08aaa5" stroke="#087f78" stroke-width=".8"/><path d="${path}" fill="none" stroke="#6553b8" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 9V4.8" fill="none" stroke="#b95016" stroke-width="1.35" stroke-linecap="round"/><path d="M27 4.8h5.6L27 8.4Z" fill="#f58220" stroke="#b95016" stroke-width=".7" stroke-linejoin="round"/></svg>`;
+    const path = `M9 27${[...route].map(move => move === 'R' ? 'h6' : 'v-6').join('')}`;
+    return `<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#f5f4ff" stroke="#4f5fb3" stroke-width="1.3"/><g fill="none" stroke="#c7ccee" stroke-width=".72"><path d="M12 4v28M18 4v28M24 4v28M4 12h28M4 18h28M4 24h28"/></g><circle cx="8.8" cy="27" r="2.4" fill="#08aaa5" stroke="#087f78" stroke-width=".8"/><path d="${path}" fill="none" stroke="#6553b8" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 9V4.8" fill="none" stroke="#b95016" stroke-width="1.35" stroke-linecap="round"/><path d="M27 4.8h5.6L27 8.4Z" fill="#f58220" stroke="#b95016" stroke-width=".7" stroke-linejoin="round"/></svg>`;
   }
 
   function geometryIcon(){
