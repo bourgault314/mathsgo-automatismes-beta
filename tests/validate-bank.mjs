@@ -480,6 +480,7 @@ const divisionWithAid=context.__renderQuestion(decimalInstances[10],false,'with'
 const decimalReasoningHtml=context.__renderQuestion(decimalInstances[12],false,'with');
 if((orderHtml.match(/data-decimal-card=/g)||[]).length!==3||(orderHtml.match(/data-decimal-slot=/g)||[]).length!==3) fail('Le rangement dnb_02 doit utiliser le composant de cartes partagé.');
 if(!frameHtml.includes('<svg')||(frameHtml.match(/data-decimal-slot=/g)||[]).length!==2||!/>\d+,\d+<\/text>/.test(frameHtml)) fail('L’encadrement dnb_02 doit placer le décimal sur la droite et proposer deux cases.');
+if(!frameHtml.includes('--decimal-frame-left:16.964286%;--decimal-frame-right:84.107143%')) fail('Les cases d’encadrement doivent être ancrées sur les graduations réelles de la droite.');
 if(!unitWithAid.includes('decimal-complement-visual')||unitWithoutAid.includes('decimal-complement-visual')||!unitReveal.includes('decimal-visual-placeholder')) fail('La bande de dixièmes doit suivre la politique d’aide facultative.');
 if(!multiplicationWithAid.includes('decimal-decomposition')) fail('La multiplication décimale doit réutiliser la décomposition distributive partagée.');
 if(!divisionWithAid.includes('relation-bar-svg')) fail('La division décimale doit réutiliser le schéma en barres.');
