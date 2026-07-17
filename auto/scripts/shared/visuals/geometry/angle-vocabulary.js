@@ -21,7 +21,7 @@
     const first=point(cx,cy,lengthA,0),second=point(cx,cy,lengthB,degrees),definition=Object.values(angleDefinitions).find(item=>item.degrees===degrees);
     let marks='';
     if(degrees===90) marks=`<path d="${rightMark(cx,cy,22)}" fill="none" stroke="${palette.arc}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
-    else if(degrees===360) marks=`<circle cx="${cx}" cy="${cy}" r="34" fill="none" stroke="${palette.arc}" stroke-width="5"/><path d="M ${cx+30} ${cy-18} l 13 1 -7 11" fill="${palette.arc}"/>`;
+    else if(degrees===360) marks=`<circle cx="${cx}" cy="${cy}" r="28" fill="none" stroke="${palette.arc}" stroke-width="5"/><path d="M ${cx+25} ${cy-15} l 12 1 -7 10" fill="${palette.arc}"/>`;
     else if(degrees>0) marks=`<path d="${arcPath(cx,cy,35,degrees)}" fill="none" stroke="${palette.arc}" stroke-width="5" stroke-linecap="round"/>`;
     const vertex=(degrees===0||degrees===180||degrees===360)?`<circle cx="${cx}" cy="${cy}" r="4" fill="${palette.ink}"/>`:'';
     const rayTwo=degrees===360?first:second;
@@ -41,11 +41,11 @@
   function gallery(data){
     const extended=data.extended===true;
     const items=extended?['null','acute','right','obtuse','flat','full']:['acute','right','obtuse','flat'];
-    const columns=extended?3:2,cellWidth=extended?190:270,cellHeight=160,width=columns*cellWidth,height=Math.ceil(items.length/columns)*cellHeight;
+    const columns=2,cellWidth=270,cellHeight=180,width=columns*cellWidth,height=Math.ceil(items.length/columns)*cellHeight;
     const cards=items.map((kind,index)=>{
       const col=index%columns,row=Math.floor(index/columns),x=col*cellWidth,y=row*cellHeight,definition=angleDefinitions[kind];
       const degreeLabel=kind==='acute'?'&lt; 90°':kind==='obtuse'?'entre 90° et 180°':`${definition.degrees}°`;
-      return `<g transform="translate(${x} ${y})"><rect x="5" y="5" width="${cellWidth-10}" height="${cellHeight-10}" rx="16" fill="#fff" stroke="${palette.grid}" stroke-width="2"/>${angleDrawing({cx:cellWidth/2-4,cy:92,degrees:definition.degrees,lengthA:extended?66:92,lengthB:extended?62:86,showLabel:false})}<text x="${cellWidth/2}" y="128" text-anchor="middle" fill="${palette.ink}" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="900">${definition.label}</text><text x="${cellWidth/2}" y="148" text-anchor="middle" fill="${palette.muted}" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="800">${degreeLabel}</text></g>`;
+      return `<g transform="translate(${x} ${y})"><rect x="5" y="5" width="${cellWidth-10}" height="${cellHeight-10}" rx="16" fill="#fff" stroke="${palette.grid}" stroke-width="2"/>${angleDrawing({cx:cellWidth/2-4,cy:kind==='full'?94:103,degrees:definition.degrees,lengthA:92,lengthB:86,showLabel:false})}<text x="${cellWidth/2}" y="143" text-anchor="middle" fill="${palette.ink}" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="900">${definition.label}</text><text x="${cellWidth/2}" y="166" text-anchor="middle" fill="${palette.muted}" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="800">${degreeLabel}</text></g>`;
     }).join('');
     return `<svg class="angle-vocabulary-svg angle-vocabulary-gallery" viewBox="0 0 ${width} ${height}" role="img" aria-label="${extended?'Angles nul, aigu, droit, obtus, plat et plein':'Angles aigu, droit, obtus et plat'}">${cards}</svg>`;
   }
@@ -87,8 +87,34 @@
     return `<svg class="angle-vocabulary-svg angle-vocabulary-bisector" viewBox="0 0 520 285" role="img" aria-label="Une bissectrice partage un angle en deux angles égaux"><path d="M ${upper.x.toFixed(1)} ${upper.y.toFixed(1)} L ${start.x} ${start.y} L ${lower.x} ${lower.y} M ${start.x} ${start.y} L ${middle.x.toFixed(1)} ${middle.y.toFixed(1)}" fill="none" stroke="${palette.line}" stroke-width="7" stroke-linecap="round"/><path d="${arcPath(start.x,start.y,48,46)}" fill="none" stroke="${palette.arc}" stroke-width="6"/><path d="M ${point(start.x,start.y,59,46).x.toFixed(1)} ${point(start.x,start.y,59,46).y.toFixed(1)} A 59 59 0 0 0 ${point(start.x,start.y,59,92).x.toFixed(1)} ${point(start.x,start.y,59,92).y.toFixed(1)}" fill="none" stroke="${palette.arc}" stroke-width="6"/><text x="286" y="130" fill="${palette.green}" font-family="Arial,Helvetica,sans-serif" font-size="20" font-weight="900">bissectrice</text><path d="M 279 137 L 239 153" stroke="${palette.green}" stroke-width="3" marker-end="url(#angleBisectorArrow)"/><defs><marker id="angleBisectorArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="${palette.green}"/></marker></defs><text x="260" y="270" text-anchor="middle" fill="${palette.ink}" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="900">La bissectrice partage l’angle en deux angles égaux.</text></svg>`;
   }
 
-  function parallel(){
-    return `<svg class="angle-vocabulary-svg angle-vocabulary-parallel" viewBox="0 0 560 310" role="img" aria-label="Deux droites parallèles coupées par une sécante"><g stroke="${palette.line}" stroke-width="7" stroke-linecap="round"><line x1="60" y1="82" x2="500" y2="82"/><line x1="60" y1="230" x2="500" y2="230"/><line x1="175" y1="25" x2="365" y2="286"/></g><g fill="none" stroke="${palette.green}" stroke-width="5"><path d="M 244 82 A 39 39 0 0 1 221 114"/><path d="M 296 230 A 39 39 0 0 0 319 198"/></g><g fill="${palette.arc}"><path d="M 103 69 l 10 13 -10 13"/><path d="M 103 217 l 10 13 -10 13"/></g><text x="280" y="299" text-anchor="middle" fill="${palette.ink}" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="900">Alternes-internes : de part et d’autre de la sécante.</text></svg>`;
+  function parallel(data={}){
+    const corresponding=data.relation==='corresponding';
+    const marks=corresponding
+      ?'<path d="M 244 82 A 39 39 0 0 1 221 114"/><path d="M 363 230 A 39 39 0 0 1 340 262"/>'
+      :'<path d="M 244 82 A 39 39 0 0 1 221 114"/><path d="M 296 230 A 39 39 0 0 0 319 198"/>';
+    const caption=corresponding?'Correspondants : même position aux deux intersections.':'Alternes-internes : de part et d’autre de la sécante.';
+    return `<svg class="angle-vocabulary-svg angle-vocabulary-parallel" viewBox="0 0 560 310" role="img" aria-label="Deux angles ${corresponding?'correspondants':'alternes-internes'} formés par des parallèles et une sécante"><g stroke="${palette.line}" stroke-width="7" stroke-linecap="round"><line x1="60" y1="82" x2="500" y2="82"/><line x1="60" y1="230" x2="500" y2="230"/><line x1="175" y1="25" x2="365" y2="286"/></g><g fill="none" stroke="${palette.green}" stroke-width="5">${marks}</g><g fill="${palette.arc}"><path d="M 103 69 l 10 13 -10 13"/><path d="M 103 217 l 10 13 -10 13"/></g><text x="280" y="299" text-anchor="middle" fill="${palette.ink}" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="900">${caption}</text></svg>`;
+  }
+
+  function protractor(data={}){
+    const degrees=Math.max(0,Math.min(180,Number(data.degrees)||40)),reveal=data.reveal===true;
+    const cx=260,cy=242,radius=194;
+    let ticks='',labels='';
+    for(let degree=0;degree<=180;degree+=5){
+      const major=degree%10===0,inner=major?171:182;
+      const outside=point(cx,cy,radius,degree),inside=point(cx,cy,inner,degree);
+      ticks+=`<line x1="${inside.x.toFixed(1)}" y1="${inside.y.toFixed(1)}" x2="${outside.x.toFixed(1)}" y2="${outside.y.toFixed(1)}" stroke="${major?palette.ink:palette.muted}" stroke-width="${major?2:1.2}"/>`;
+      if(degree%30===0){
+        const innerLabel=point(cx,cy,151,degree),outerLabel=point(cx,cy,126,degree);
+        const innerY=degree===0||degree===180?cy-18:innerLabel.y;
+        const outerY=degree===0||degree===180?cy-18:outerLabel.y;
+        labels+=`<text x="${innerLabel.x.toFixed(1)}" y="${innerY.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="${palette.ink}" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="850">${degree}</text>`;
+        if(degree!==90) labels+=`<text x="${outerLabel.x.toFixed(1)}" y="${outerY.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="${palette.muted}" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="800">${180-degree}</text>`;
+      }
+    }
+    const ray=point(cx,cy,181,degrees),arc=arcPath(cx,cy,57,degrees);
+    const answer=reveal?`<text x="260" y="326" text-anchor="middle" fill="${palette.green}" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="900">On part du 0° à droite : ${degrees}°.</text>`:`<text x="260" y="326" text-anchor="middle" fill="${palette.muted}" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="850">Le premier côté est aligné sur le 0° à droite.</text>`;
+    return `<svg class="angle-vocabulary-svg angle-vocabulary-protractor" viewBox="0 0 520 340" role="img" aria-label="${reveal?'Angle de '+degrees+' degrés lu':'Angle à lire'} sur un rapporteur"><path d="M 66 242 A 194 194 0 0 1 454 242" fill="#f8fbff" stroke="${palette.grid}" stroke-width="4"/><line x1="66" y1="242" x2="454" y2="242" stroke="${palette.ink}" stroke-width="3"/>${ticks}${labels}<line x1="260" y1="242" x2="445" y2="242" stroke="${palette.line}" stroke-width="7" stroke-linecap="round"/><line x1="260" y1="242" x2="${ray.x.toFixed(1)}" y2="${ray.y.toFixed(1)}" stroke="${palette.arc}" stroke-width="7" stroke-linecap="round"/><path d="${arc}" fill="none" stroke="${palette.green}" stroke-width="6" stroke-linecap="round"/><circle cx="260" cy="242" r="5" fill="${palette.ink}"/>${answer}</svg>`;
   }
 
   function setSquare(data){
@@ -112,13 +138,14 @@
     if(kind==='supplementary') return supplementary(data);
     if(kind==='complementary') return complementary(data);
     if(kind==='bisector') return bisector();
-    if(kind==='parallel') return parallel();
+    if(kind==='parallel') return parallel(data);
+    if(kind==='protractor') return protractor(data);
     if(kind==='set-square') return setSquare(data);
     throw new Error('Représentation d’angle inconnue : '+kind);
   }
 
   const component=registry.register('geometry.angle-vocabulary',{
-    version:'1.0.0',label:'Vocabulaire et relations entre angles',render,
+    version:'1.1.0',label:'Vocabulaire et relations entre angles',render,
     presets:[
       {id:'quatre-natures',label:'Aigu, droit, obtus, plat',data:{kind:'gallery'},supports:['phone','computer','projection']},
       {id:'six-natures',label:'Nul à plein',data:{kind:'gallery',extended:true},supports:['phone','computer','projection']},
@@ -129,8 +156,10 @@
       {id:'supplementaires',label:'Angles supplémentaires',data:{kind:'supplementary'},supports:['phone','computer','projection']},
       {id:'complementaires',label:'Angles complémentaires',data:{kind:'complementary'},supports:['phone','computer','projection']},
       {id:'bissectrice',label:'Bissectrice',data:{kind:'bisector'},supports:['phone','computer','projection']},
-      {id:'paralleles',label:'Alternes-internes',data:{kind:'parallel'},supports:['phone','computer','projection']},
-      {id:'equerre',label:'Angles de l’équerre',data:{kind:'set-square'},supports:['phone','computer','projection']}
+      {id:'alternes-internes',label:'Alternes-internes',data:{kind:'parallel',relation:'alternate'},supports:['phone','computer','projection']},
+      {id:'correspondants',label:'Correspondants',data:{kind:'parallel',relation:'corresponding'},supports:['phone','computer','projection']},
+      {id:'equerre',label:'Angles de l’équerre',data:{kind:'set-square'},supports:['phone','computer','projection']},
+      {id:'rapporteur',label:'Lire un rapporteur',data:{kind:'protractor',degrees:40},supports:['phone','computer','projection']}
     ]
   });
   global.angleVocabularyVisual=component.render;

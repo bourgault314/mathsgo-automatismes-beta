@@ -389,11 +389,11 @@ for(let seed=0;seed<1000;seed++){
   for(const count of [5,10,15,20]){
     context.__setSeed(seed);context.__beginQuizBank([context.__angleVocabularyModule]);
     const selected=context.__drawRuntimeModuleQuestions(context.__angleVocabularyModule,context.__angleVocabularyModule.questions,count);
-    const fresh=selected.filter(question=>Number(question.n)>=11),expected=count===5?1:(count===10?3:(count===15?5:8));
+    const fresh=selected.filter(question=>Number(question.n)>=11),expected=count===5?1:(count===10?4:(count===15?7:10));
     if(selected.length!==count||fresh.length!==expected) fail(`Répartition incorrecte des nouveaux formats dnb_17 (${count} questions, seed ${seed}).`);
     const families=selected.map(question=>angleVocabularyRuntime.selection.familyForQuestion(question));
-    if(families.some((family,index)=>index>2&&family===families[index-1]&&family===families[index-2]&&family===families[index-3])) fail(`Quatre familles d’angles identiques se suivent dans dnb_17 (${count} questions, seed ${seed}) : ${families.join(', ')}.`);
-    if(count>=18&&new Set(fresh.map(question=>Number(question.n))).size!==8) fail(`Une série dnb_17 de ${count} questions doit parcourir huit nouveaux formats distincts (seed ${seed}).`);
+    if(families.some((family,index)=>index>0&&family===families[index-1])) fail(`Deux familles d’angles identiques se suivent dans dnb_17 (${count} questions, seed ${seed}) : ${families.join(', ')}.`);
+    if(count===20&&new Set(selected.map(question=>Number(question.n))).size!==20) fail(`Une série dnb_17 de vingt questions doit parcourir les vingt formats sans répétition (seed ${seed}).`);
   }
 }
 
@@ -407,6 +407,7 @@ for(let seed=0;seed<500;seed++){
     if(data.qcm){
       const details=data.qcm.optionDetails;
       if(details.length<3||details.length>4||details.filter(detail=>detail.errorCode==='correct').length!==1) fail(`Le QCM dnb_17 ${template.n} doit avoir une seule réponse correcte.`);
+      if(new Set(details.map(detail=>detail.label)).size!==details.length) fail(`Le QCM dnb_17 ${template.n} contient deux propositions identiques.`);
       if(details.some(detail=>!detail.errorCode)||!html.includes('data-error-code=')) fail(`Chaque distracteur dnb_17 ${template.n} doit porter un code diagnostique.`);
     }
   }
@@ -417,6 +418,11 @@ const comparisonTemplate=angleVocabularyRuntime.selection.virtualTemplates.find(
 const comparisonInstance=context.__makeInstance(context.__angleVocabularyModule,comparisonTemplate);
 const comparisonCodes=comparisonInstance.angleData.qcm.optionDetails.map(detail=>detail.errorCode);
 if(!comparisonCodes.includes('compare-first-side-length')||!comparisonCodes.includes('compare-second-side-length')||!comparisonCodes.includes('requires-measure')) fail('La comparaison d’angles doit reprendre les trois erreurs diagnostiques Eduscol.');
+const protractorTemplate=angleVocabularyRuntime.selection.virtualTemplates.find(template=>template.options.angle_kind==='protractor-reading');
+context.__setSeed(37);
+const protractorInstance=context.__makeInstance(context.__angleVocabularyModule,protractorTemplate);
+const protractorCodes=protractorInstance.angleData.qcm.optionDetails.map(detail=>detail.errorCode);
+if(!protractorCodes.includes('wrong-protractor-scale')||!protractorCodes.includes('one-tick-short')||!protractorCodes.includes('one-tick-far')) fail('La lecture du rapporteur doit diagnostiquer la mauvaise échelle et les erreurs d’une graduation.');
 const legacySupplement=context.__makeInstance(context.__angleVocabularyModule,context.__angleVocabularyModule.questions.find(question=>Number(question.n)===7));
 if(context.__renderQuestion(legacySupplement,false,'with').includes('dont supplémentaires')) fail('La coquille de la question historique sur les angles supplémentaires doit être corrigée au rendu.');
 
@@ -512,6 +518,14 @@ const angleCorrection=context.__renderAngleSumModule(angleInstance,true,'with');
 if(!angleQuestion.includes('angle-triangle-svg')||!angleQuestion.includes('angle-bar-svg')) fail('La question Angles 9 doit assembler la figure et la barre partagées.');
 if(!angleQuestion.includes('𝑥')||!angleCorrection.includes('51°')) fail('Le composant Angles doit masquer puis révéler la mesure inconnue.');
 if(angleQuestion.includes('<polygon points="80,230')) fail('L’ancien SVG de la banque Angles ne doit plus être utilisé.');
+const equabarreHref=angleQuestion.match(/class="angle-bar-resolve-btn" href="([^"]+)"/)?.[1]||'';
+if(!equabarreHref.startsWith('https://mathsgo.re/outils/equabarre_import_splat.html#data=')) fail('La barre d’angles résoluble doit proposer le bouton ÉquaBarre import.');
+else{
+  const payload=JSON.parse(decodeURIComponent(equabarreHref.split('#data=')[1]));
+  if(payload.lhsSide!=='bottom'||payload.x!==51||payload.top?.[0]?.value!==180||payload.bottom?.map(piece=>piece.type).join(',')!=='number,number,x') fail('Le tableau envoyé à ÉquaBarre doit conserver 180° en haut et les deux angles connus puis 𝑥 en bas.');
+}
+const invalidAngleInstance={...angleInstance,q:{n:10},angleSum:{kind:'invalid_two',bar:{view:'bar',values:[110,90],unknown:[],comparison:true}}};
+if(context.__renderAngleSumModule(invalidAngleInstance,false,'with').includes('angle-bar-resolve-btn')) fail('Le cas impossible sans inconnue ne doit pas afficher le bouton ÉquaBarre.');
 
 const thalesInstance={
   module:{id:'dnb_25'},q:{n:1},answers:['1'],

@@ -85,8 +85,8 @@ if(solid&&!solid.render({kind:'cylinder'}).includes('stroke-dasharray="6 5"')) f
 
 const angleVocabulary=registry?.get('geometry.angle-vocabulary');
 if(!angleVocabulary) fail('Le composant geometry.angle-vocabulary est absent.');
-if(angleVocabulary&&angleVocabulary.version!=='1.0.0') fail('Version 1.0.0 attendue pour le vocabulaire des angles.');
-if(angleVocabulary&&angleVocabulary.presets.length!==11) fail('Onze représentations de référence sont attendues pour les angles.');
+if(angleVocabulary&&angleVocabulary.version!=='1.1.0') fail('Version 1.1.0 attendue pour le vocabulaire des angles.');
+if(angleVocabulary&&angleVocabulary.presets.length!==13) fail('Treize représentations de référence sont attendues pour les angles.');
 for(const preset of angleVocabulary?.presets||[]){
   const rendered=angleVocabulary.render(preset.data);
   if(!rendered.startsWith('<svg class="angle-vocabulary-svg')) fail(`Le visuel d’angles ${preset.id} doit produire un SVG autonome.`);
@@ -96,6 +96,7 @@ const fourAngles=angleVocabulary?.render({kind:'gallery'})||'';
 if(!fourAngles.includes('aigu')||!fourAngles.includes('droit')||!fourAngles.includes('90°')||!fourAngles.includes('obtus')||!fourAngles.includes('plat')||!fourAngles.includes('180°')) fail('Le cours des quatre angles doit afficher les noms et les repères 90° et 180°.');
 const sixAngles=angleVocabulary?.render({kind:'gallery',extended:true})||'';
 if(!sixAngles.includes('nul')||!sixAngles.includes('plein')||!sixAngles.includes('360°')) fail('Le cours étendu doit inclure les angles nul et plein.');
+if(!sixAngles.includes('viewBox="0 0 540 540"')||!sixAngles.includes('font-size="22"')) fail('Le tableau des six natures doit rester agrandi en deux colonnes avec de grands libellés.');
 const namedAngle=angleVocabulary?.render({kind:'named'})||'';
 if(!namedAngle.includes('AOB')||!namedAngle.includes('O, le sommet, est au milieu')) fail('Le cours doit nommer un angle avec trois lettres et le sommet au milieu.');
 const variableNamedAngle=angleVocabulary?.render({kind:'named',letters:['C','E','D']})||'';
@@ -106,6 +107,12 @@ const isoscelesSetSquare=angleVocabulary?.render({kind:'set-square',known:45,rev
 if(!isoscelesSetSquare.includes('M 130 238 L 130 58 L 310 238 Z')||!isoscelesSetSquare.includes('45°–45°–90°')) fail('L’équerre à 45° doit être représentée par un triangle rectangle isocèle.');
 const comparison=angleVocabulary?.render({kind:'compare'})||'';
 if(!comparison.includes('pas la longueur des côtés')) fail('La comparaison doit rappeler que la longueur des côtés ne détermine pas l’angle.');
+const corresponding=angleVocabulary?.render({kind:'parallel',relation:'corresponding'})||'';
+if(!corresponding.includes('Correspondants : même position')) fail('Le cours doit représenter les angles correspondants, pas seulement les alternes-internes.');
+const protractorQuestion=angleVocabulary?.render({kind:'protractor',degrees:40})||'';
+const protractorCorrection=angleVocabulary?.render({kind:'protractor',degrees:40,reveal:true})||'';
+if(!protractorQuestion.includes('Le premier côté est aligné sur le 0° à droite.')||protractorQuestion.includes('Angle de 40 degrés lu')) fail('Le rapporteur doit indiquer le zéro de départ sans révéler la réponse.');
+if(!protractorCorrection.includes('On part du 0° à droite : 40°.')||!protractorCorrection.includes('Angle de 40 degrés lu')) fail('La correction du rapporteur doit révéler la mesure sur la même figure.');
 
 const squareArea=registry?.get('numbers.square-area');
 if(!squareArea) fail('Le composant numbers.square-area est absent.');
@@ -452,6 +459,8 @@ const angleModule=fs.readFileSync(new URL('auto/scripts/modules/geometry/dnb_18.
 if(angleModule.includes('<svg')) fail('dnb_18 ne doit plus embarquer son propre SVG de triangle.');
 if(questionEngine.includes('function angleSumBarSvg')) fail('Le modèle en barres des angles ne doit plus être défini dans le gros moteur.');
 if(!questionEngine.includes('triangleAngleSumVisual(bar,correction)')) fail('Le module angles doit appeler le composant partagé.');
+if(!questionEngine.includes("const EQUABARRE_IMPORT_URL='https://mathsgo.re/outils/equabarre_import_splat.html'")||!questionEngine.includes("source:'automatismes_triangle_angles'")||!questionEngine.includes('Résoudre dans ÉquaBarre')) fail('Les barres résolubles de dnb_18 doivent conserver leur liaison vers ÉquaBarre import.');
+if(!questionEngine.includes('if(!values.length||!unknownIndexes.length||data.comparison) return null;')) fail('Les tableaux sans inconnue et les cas impossibles ne doivent pas afficher le bouton ÉquaBarre.');
 
 const pythagorasMill=registry?.get('geometry.pythagoras-mill');
 if(!pythagorasMill) fail('Le composant geometry.pythagoras-mill est absent.');

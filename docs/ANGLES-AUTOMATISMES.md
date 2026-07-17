@@ -6,7 +6,7 @@ protocole commun sans le remplacer.
 ## Périmètre pédagogique
 
 La banque historique conserve ses dix numéros. Une couche fonctionnelle ajoute
-neuf formats sans modifier leur identité ni l’empreinte de la banque V1.20.
+dix formats sans modifier leur identité ni l’empreinte de la banque V1.20.
 
 Le cadrage est vérifié le 16 juillet 2026 dans la
 [liste Eduscol des automatismes du DNB](https://eduscol.education.gouv.fr/sites/default/files/document/liste-indicative-dautomatismes-pour-le-dnbpdf-116340.pdf)
@@ -20,19 +20,34 @@ les relations liées aux droites parallèles.
 | Notion | Formats présents |
 |---|---|
 | Nature d’un angle | figure → nom, mesure → nom, nom → figure, six natures |
-| Mesures repères | angle droit 90°, angle plat 180°, équerres 30°–60°–90° et 45°–45°–90° |
+| Mesure | angle droit 90°, angle plat 180°, lecture d’un rapporteur, équerres 30°–60°–90° et 45°–45°–90° |
 | Nom d’un angle | trois lettres, sommet au milieu, chapeau conservé |
 | Comparaison | ouvertures sur quadrillage, analyse de l’erreur « côtés plus longs » |
 | Relations | adjacents, opposés par le sommet, complémentaires, supplémentaires |
 | Constructions | bissectrice |
-| Parallélisme | reconnaissance d’angles alternes-internes |
+| Parallélisme | reconnaissance d’angles alternes-internes et correspondants |
+
+## Audit de variété du 17 juillet 2026
+
+Les vingt formats disponibles se répartissent dans neuf familles pédagogiques :
+nature, mesures repères, mesure au rapporteur, nom, comparaison et analyse
+d’erreur, relations entre angles, calcul, construction et parallélisme. Les
+formes inverses restent classées avec la notion qu’elles contrôlent ; elles ne
+créent donc pas une catégorie artificielle supplémentaire.
+
+La série maximale de vingt questions contient désormais les dix gabarits
+historiques et les dix formats fonctionnels exactement une fois. Les séries de
+5, 10 et 15 questions prennent respectivement 1, 4 et 7 formats fonctionnels.
+La sélection évite deux familles consécutives dès qu’une autre famille reste
+disponible. Elle ne répète donc plus deux anciens gabarits tout en omettant un
+format récent, comme le faisait l’ancienne sélection de vingt questions.
 
 ## Cours contextuel
 
 Le bouton `Cours` n’ouvre jamais une fiche générale pour toute la catégorie.
 La rubrique affichée dépend de la question : angle droit, angle plat, nature,
 nom, comparaison, angles opposés, adjacents, complémentaires, supplémentaires,
-bissectrice, parallélisme ou équerre.
+bissectrice, parallélisme, équerre ou lecture du rapporteur.
 
 Chaque fiche transmet une seule idée. Le schéma porte l’information principale
 et le texte se limite à un titre et un libellé bref. Les quatre angles usuels
@@ -53,9 +68,9 @@ reprennent la règle validée dans l’espace Axelle : nom près du dessin, 90°
 ## Sélection
 
 Les formats fonctionnels sont introduits progressivement : un dans une série de
-cinq questions, trois dans une série de dix, cinq dans une série de quinze et
-huit dans une série de dix-huit ou plus. La sélection alterne les familles pour éviter une
-longue succession de tâches identiques.
+cinq questions, quatre dans une série de dix, sept dans une série de quinze et
+dix dans une série de vingt. La sélection alterne les familles et évite deux
+familles consécutives tant qu’une autre famille reste disponible.
 
 ## Distracteurs
 
@@ -64,6 +79,11 @@ Les distracteurs issus de la comparaison d’angles sont documentés dans
 correspondent à des confusions nommables : sommet mal placé dans le nom,
 médiatrice confondue avec bissectrice, angles opposés confondus avec adjacents.
 Une proposition absurde ou seulement piégeuse est exclue.
+
+La lecture du rapporteur emploie trois erreurs diagnostiques : partir du mauvais
+zéro, s’arrêter une graduation trop tôt ou une graduation trop loin. La figure
+indique explicitement le côté aligné sur 0°, et la correction reprend le même
+rapporteur avec la bonne graduation.
 
 La ressource Eduscol
 [Les automatismes au collège](https://eduscol.education.gouv.fr/sites/default/files/document/automatismes-mathematiquespdf-91875.pdf),

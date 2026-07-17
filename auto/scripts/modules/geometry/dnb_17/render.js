@@ -38,7 +38,8 @@
     if(data.kind==='name-angle') visual=component().render({kind:'named',letters:data.letters});
     if(['compare-opening','analyze-length-error'].includes(data.kind)) visual=component().render({kind:'compare'});
     if(data.kind==='bisector') visual=component().render({kind:'bisector'});
-    if(data.kind==='parallel-relations') visual=component().render({kind:'parallel'});
+    if(data.kind==='parallel-relations') visual=component().render({kind:'parallel',relation:data.relation});
+    if(data.kind==='protractor-reading') visual=component().render({kind:'protractor',degrees:data.degrees,reveal:correction});
     const longOptions=['compare-opening','analyze-length-error'].includes(data.kind)?'angle-options-long':'';
     return '<div class="question angle-prompt">'+renderMathSegments(data.prompt)+'</div><div class="angle-question-visual">'+visual+'</div>'+renderOptions(data,correction,renderMathSegments,escapeHtml,longOptions);
   }

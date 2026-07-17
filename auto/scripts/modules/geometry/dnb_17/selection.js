@@ -3,12 +3,13 @@
     Object.freeze({n:11,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'nature',angle_kind:'extended-nature',template_version:2})}),
     Object.freeze({n:12,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'naming',angle_kind:'name-angle',template_version:2})}),
     Object.freeze({n:13,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'comparison',angle_kind:'compare-opening',template_version:2})}),
-    Object.freeze({n:14,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'reasoning',angle_kind:'analyze-length-error',template_version:2})}),
+    Object.freeze({n:14,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'comparison',angle_kind:'analyze-length-error',template_version:2})}),
     Object.freeze({n:15,statement:'',answer:'["value"]',footer:'',options:Object.freeze({angle_family:'relations',angle_kind:'opposite-measure',template_version:2})}),
     Object.freeze({n:16,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'construction',angle_kind:'bisector',template_version:2})}),
     Object.freeze({n:17,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'parallelism',angle_kind:'parallel-relations',template_version:2})}),
     Object.freeze({n:18,statement:'',answer:'["value"]',footer:'',options:Object.freeze({angle_family:'benchmarks',angle_kind:'set-square',template_version:2})}),
-    Object.freeze({n:19,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'inverse',angle_kind:'choose-figure',template_version:2})})
+    Object.freeze({n:19,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'nature',angle_kind:'choose-figure',template_version:2})}),
+    Object.freeze({n:20,statement:'',answer:'["correctIndex"]',footer:'',options:Object.freeze({angle_family:'measurement',angle_kind:'protractor-reading',template_version:2})})
   ]);
 
   function familyForQuestion(question){
@@ -22,10 +23,11 @@
 
   function newFormatCount(count){
     if(count<5) return 0;
-    if(count<10) return 1;
-    if(count<15) return 3;
-    if(count<18) return 5;
-    return 8;
+    if(count<=5) return 1;
+    if(count<=10) return 4;
+    if(count<=15) return 7;
+    if(count<20) return Math.min(10,Math.max(8,count-10));
+    return 10;
   }
 
   function arrange(questions,shuffle){
@@ -38,8 +40,7 @@
     });
     const result=[];
     while([...pools.values()].some(pool=>pool.length)){
-      const lastFamily=result.length?familyForQuestion(result[result.length-1]):null;
-      const blockedFamily=result.length>1&&lastFamily===familyForQuestion(result[result.length-2])?lastFamily:null;
+      const blockedFamily=result.length?familyForQuestion(result[result.length-1]):null;
       let candidates=shuffle([...pools.keys()].filter(family=>pools.get(family).length&&family!==blockedFamily));
       if(!candidates.length) candidates=[...pools.keys()].filter(family=>pools.get(family).length);
       candidates.sort((left,right)=>pools.get(right).length-pools.get(left).length);
