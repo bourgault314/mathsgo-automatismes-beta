@@ -309,6 +309,17 @@ if (!setupIcons.includes('const GEOMETRY_SEED = pageSeed();') || setupIcons.incl
 if (!setupIcons.includes('M27 9V4.8') || !setupIcons.includes('width="4.25" height="19"')) {
   fail('Les pictogrammes informatique et données doivent conserver leur drapeau aligné et leur histogramme encadré.');
 }
+const commonIconFrames=(setupIcons.match(/<rect x="3\.5" y="3\.5" width="29" height="29" rx="4\.5"/g)||[]).length;
+if (commonIconFrames < 5) {
+  fail('Les quatre pictogrammes de domaines doivent partager exactement le même cadre.');
+}
+if (!setupIcons.includes('clipPath id="mathsgo-truchet-clip"') || !setupIcons.includes('clip-path="url(#mathsgo-truchet-clip)"')) {
+  fail('Le tracé Truchet doit être coupé sous sa bordure extérieure.');
+}
+const setupStyles = fs.readFileSync(new URL('auto/styles/setup.css', root), 'utf8');
+if (!setupStyles.includes('.header::before{content:"";position:absolute;top:0;right:0;left:0;')) {
+  fail('La signature dégradée de l’en-tête doit occuper toute la largeur.');
+}
 if(questionEngine.includes('function module01PartitionPalette')||questionEngine.includes('function module01HundredGridPart')||questionEngine.includes('function module01BoardSvgPart')){
   fail('Le plateau fraction–décimal ne doit plus être défini dans le gros moteur.');
 }

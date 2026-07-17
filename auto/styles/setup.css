@@ -11,7 +11,7 @@ body{margin:0;font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;background
 body.modal-open{overflow:hidden}
 .app{max-width:860px;margin:0 auto;}
 .header{position:relative;display:flex;align-items:center;justify-content:center;gap:16px;overflow:hidden;background:white;border:1px solid var(--line);border-radius:18px;padding:14px 16px 11px;box-shadow:var(--shadow);}
-.header::before{content:"";position:absolute;top:0;right:13%;left:13%;height:4px;border-radius:0 0 999px 999px;background:linear-gradient(90deg,#08b9b2,var(--blue),#ff880c)}
+.header::before{content:"";position:absolute;top:0;right:0;left:0;height:4px;border-radius:18px 18px 0 0;background:linear-gradient(90deg,#08b9b2,var(--blue),#ff880c)}
 .logo{height:58px;object-fit:contain}
 .logo-link{display:inline-flex;align-items:center;border-radius:12px;outline-offset:4px}
 .logo-link:hover .logo{transform:scale(1.025)}
