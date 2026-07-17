@@ -115,8 +115,6 @@ html.share-test .setup-tools{display:flex}
 .credit{width:max-content;max-width:100%;margin:12px auto 0;text-align:center;color:var(--muted);font-size:.75rem;line-height:1.45}
 .credit>summary{padding:5px 8px;border-radius:8px;cursor:pointer;font-weight:700;list-style:none}
 .credit>summary::-webkit-details-marker{display:none}
-.credit>summary::after{content:" +";color:#8b9ab3}
-.credit[open]>summary::after{content:" −"}
 .credit p{max-width:720px;margin:5px 8px 0}
 .credit a{color:var(--blue);font-weight:700;text-decoration:none}
 @media(hover:hover) and (pointer:fine){.logo-link:hover .logo{transform:scale(1.025)}.setup-tool-button:hover{border-color:#8eb4df;background:#f5f9ff}.bulk-actions button:hover{border-color:#8fb3db;background:#eef6ff;color:var(--blue)}.segment-btn:hover{border-color:var(--cyan);background:#f1fbfb}.theme-summary:hover{background:linear-gradient(90deg,var(--theme-soft),#fff 38%)}.theme-select-all:hover{filter:saturate(1.08) brightness(.985)}.modrow:hover{background:#eef6ff}.credit>summary:hover{background:#edf3fb;color:var(--blue)}.credit a:hover{text-decoration:underline}}
