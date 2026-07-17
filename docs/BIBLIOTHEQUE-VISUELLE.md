@@ -55,6 +55,8 @@ riche déjà publiée : parts au-dessus du tout pour un multiple, parts sous le
 tout pour une fraction, première part colorée, prolongements pointillés et
 flèche ×n ou ÷n. Les formats en dix parts sont déclarés trop denses pour un
 téléphone et restent destinés à l’ordinateur, la projection ou l’impression.
+Dans `dnb_09`, le mode `prominent` agrandit les cases et leurs nombres à
+l’intérieur du même espace réservé afin de préserver la place de la consigne.
 
 `algebra.relation-tiles` sort du gros moteur les représentations symboliques
 utilisées par le même module : rectangles `n`, carré `n²`, unités positives ou

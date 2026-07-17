@@ -2056,6 +2056,7 @@ function makeRelationInstance(mod,q){
   if(relationKind==='fraction_direct') relation={kind:relationKind,divisor:Number(q.options.divisor),value:Number(scope.n),result:Number(scope.n)/Number(q.options.divisor)};
   if(relationKind==='predecessor') relation={kind:relationKind,value:Number(scope.n),result:Number(scope.n)-1};
   if(relationKind==='successor') relation={kind:relationKind,value:Number(scope.n),result:Number(scope.n)+1};
+  if(relation) relation.prominent=true;
   return {module:mod,q,scope,answers,rawStatement,rawFooter,hasSvg:false,relation};
 }
 
