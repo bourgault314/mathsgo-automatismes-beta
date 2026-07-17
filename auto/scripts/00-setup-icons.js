@@ -1,11 +1,13 @@
 (() => {
   'use strict';
 
-  const STATIC_ICONS = {
-    numbers: '<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#fffaf3" stroke="#173a5e" stroke-width="1.3"/><g fill="none" stroke="#aebfd1" stroke-width="1.2" stroke-linecap="round"><path d="M7.5 11.5h21M7.5 18h21M7.5 24.5h21"/></g><g stroke="#fffdf8" stroke-width=".72"><circle cx="10.5" cy="11.5" r="2.55" fill="#08aaa5"/><circle cx="16" cy="11.5" r="2.55" fill="#08aaa5"/><circle cx="25.5" cy="11.5" r="2.55" fill="#0b67b2"/><circle cx="12.5" cy="18" r="2.55" fill="#f58220"/><circle cx="21" cy="18" r="2.55" fill="#f58220"/><circle cx="26.5" cy="18" r="2.55" fill="#f58220"/><circle cx="9.5" cy="24.5" r="2.55" fill="#0b67b2"/><circle cx="18.5" cy="24.5" r="2.55" fill="#08aaa5"/><circle cx="24" cy="24.5" r="2.55" fill="#08aaa5"/></g></svg>',
-    data: '<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#fffaf5" stroke="#173a5e" stroke-width="1.3"/><path d="M8 28h20" fill="none" stroke="#9eb0c2" stroke-width="1.1" stroke-linecap="round"/><g stroke="#fffdf8" stroke-width=".55"><rect x="8.5" y="19.5" width="4.25" height="8.5" rx=".8" fill="#08aaa5"/><rect x="13.55" y="13.5" width="4.25" height="14.5" rx=".8" fill="#0b67b2"/><rect x="18.6" y="17" width="4.25" height="11" rx=".8" fill="#6553b8"/><rect x="23.65" y="9" width="4.25" height="19" rx=".8" fill="#f58220"/></g></svg>',
-    algorithm: '<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#f5f4ff" stroke="#4f5fb3" stroke-width="1.3"/><g fill="none" stroke="#c7ccee" stroke-width=".85"><path d="M13.3 4v28M22.7 4v28M4 13.5h28M4 22.5h28"/></g><circle cx="8.8" cy="27" r="2.4" fill="#08aaa5" stroke="#087f78" stroke-width=".8"/><path d="M9 27h9v-9h9V9" fill="none" stroke="#6553b8" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 9V4.8" fill="none" stroke="#b95016" stroke-width="1.35" stroke-linecap="round"/><path d="M27 4.8h5.6L27 8.4Z" fill="#f58220" stroke="#b95016" stroke-width=".7" stroke-linejoin="round"/></svg>'
-  };
+  const THEME_SEEDS = Object.freeze({
+    numbers: 0x243F6A88,
+    geometry: 0x85A308D3,
+    data: 0x13198A2E,
+    algorithm: 0x03707344
+  });
+  const ICON_CACHE = new Map();
 
   function pageSeed(){
     if (globalThis.crypto?.getRandomValues) {
@@ -17,8 +19,8 @@
   }
 
   // Une composition nouvelle à chaque chargement, mais immuable pendant la
-  // séance : modifier un réglage ne doit pas changer l'identité du domaine.
-  const GEOMETRY_SEED = pageSeed();
+  // séance : modifier un réglage ne doit pas changer l'identité des domaines.
+  const PAGE_SEED = pageSeed();
 
   function seededRandom(seed){
     let state = seed;
@@ -31,8 +33,60 @@
     };
   }
 
+  function themeRandom(theme){
+    return seededRandom((PAGE_SEED ^ (THEME_SEEDS[theme] || 0)) >>> 0);
+  }
+
+  function shuffled(values, random){
+    const result = values.slice();
+    for (let index = result.length - 1; index > 0; index -= 1) {
+      const other = Math.floor(random() * (index + 1));
+      [result[index], result[other]] = [result[other], result[index]];
+    }
+    return result;
+  }
+
+  function numbersIcon(){
+    const random = themeRandom('numbers');
+    const slots = [9.5, 15, 20.5, 26];
+    const rows = [
+      { y: 11.5, colors: ['#08aaa5', '#08aaa5', '#0b67b2'] },
+      { y: 18, colors: ['#f58220', '#f58220', '#f58220'] },
+      { y: 24.5, colors: ['#0b67b2', '#08aaa5', '#08aaa5'] }
+    ];
+    // Trois trous différents évitent que les trois lignes aient le même poids.
+    const emptySlots = shuffled([0, 1, 2, 3], random).slice(0, rows.length);
+    const beads = rows.flatMap((row, rowIndex) => {
+      const occupied = slots.filter((unused, slotIndex) => slotIndex !== emptySlots[rowIndex]);
+      return occupied.map((x, beadIndex) =>
+        `<circle cx="${x}" cy="${row.y}" r="2.55" fill="${row.colors[beadIndex]}"/>`
+      );
+    }).join('');
+    return `<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#fffaf3" stroke="#173a5e" stroke-width="1.3"/><g fill="none" stroke="#aebfd1" stroke-width="1.2" stroke-linecap="round"><path d="M7.5 11.5h21M7.5 18h21M7.5 24.5h21"/></g><g stroke="#fffdf8" stroke-width=".72">${beads}</g></svg>`;
+  }
+
+  function dataIcon(){
+    const random = themeRandom('data');
+    const heights = shuffled([8.5, 11, 14.5, 19], random);
+    const colors = shuffled(['#08aaa5', '#0b67b2', '#6553b8', '#f58220'], random);
+    const xPositions = [8.5, 13.55, 18.6, 23.65];
+    const bars = xPositions.map((x, index) => {
+      const height = heights[index];
+      return `<rect x="${x}" y="${28 - height}" width="4.25" height="${height}" rx=".8" fill="${colors[index]}"/>`;
+    }).join('');
+    return `<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#fffaf5" stroke="#173a5e" stroke-width="1.3"/><path d="M8 28h20" fill="none" stroke="#9eb0c2" stroke-width="1.1" stroke-linecap="round"/><g stroke="#fffdf8" stroke-width=".55">${bars}</g></svg>`;
+  }
+
+  function algorithmIcon(){
+    const random = themeRandom('algorithm');
+    const routes = ['RRUU', 'RURU', 'RUUR', 'URRU', 'URUR', 'UURR'];
+    const route = routes[Math.floor(random() * routes.length)];
+    const path = `M9 27${[...route].map(move => move === 'R' ? 'h9' : 'v-9').join('')}`;
+    return `<svg viewBox="0 0 36 36" focusable="false"><rect x="3.5" y="3.5" width="29" height="29" rx="4.5" fill="#f5f4ff" stroke="#4f5fb3" stroke-width="1.3"/><g fill="none" stroke="#c7ccee" stroke-width=".85"><path d="M13.3 4v28M22.7 4v28M4 13.5h28M4 22.5h28"/></g><circle cx="8.8" cy="27" r="2.4" fill="#08aaa5" stroke="#087f78" stroke-width=".8"/><path d="${path}" fill="none" stroke="#6553b8" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 9V4.8" fill="none" stroke="#b95016" stroke-width="1.35" stroke-linecap="round"/><path d="M27 4.8h5.6L27 8.4Z" fill="#f58220" stroke="#b95016" stroke-width=".7" stroke-linejoin="round"/></svg>`;
+  }
+
   function geometryIcon(){
-    const random = seededRandom(GEOMETRY_SEED);
+    const random = themeRandom('geometry');
     const size = 4;
     const cell = 7;
     const origin = 4;
@@ -106,8 +160,16 @@
   }
 
   function iconMarkup(theme){
-    if (theme === 'geometry') return geometryIcon();
-    return STATIC_ICONS[theme] || '';
+    if (ICON_CACHE.has(theme)) return ICON_CACHE.get(theme);
+    const generators = {
+      numbers: numbersIcon,
+      geometry: geometryIcon,
+      data: dataIcon,
+      algorithm: algorithmIcon
+    };
+    const markup = generators[theme]?.() || '';
+    ICON_CACHE.set(theme, markup);
+    return markup;
   }
 
   function renderThemeIcons(root = document){

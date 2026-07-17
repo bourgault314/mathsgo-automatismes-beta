@@ -307,11 +307,11 @@ if (!questionEngine.includes('const getThemeIconMarkup=globalThis.MATHSGO_SETUP_
   fail('Les icônes du menu doivent être intégrées directement lors de chaque reconstruction des catégories.');
 }
 const setupIcons = fs.readFileSync(new URL('auto/scripts/00-setup-icons.js', root), 'utf8');
-if (!setupIcons.includes('const GEOMETRY_SEED = pageSeed();') || setupIcons.includes('function dailySeed')) {
-  fail('Le pavage Truchet doit changer à chaque rechargement, puis rester stable pendant la séance.');
+if (!setupIcons.includes('const PAGE_SEED = pageSeed();') || !setupIcons.includes('const ICON_CACHE = new Map();') || setupIcons.includes('function dailySeed')) {
+  fail('Les quatre pictogrammes doivent changer à chaque rechargement, puis rester stables pendant la séance.');
 }
-if (!setupIcons.includes('M27 9V4.8') || !setupIcons.includes('width="4.25" height="19"')) {
-  fail('Les pictogrammes informatique et données doivent conserver leur drapeau aligné et leur histogramme encadré.');
+if (!setupIcons.includes("const routes = ['RRUU', 'RURU', 'RUUR', 'URRU', 'URUR', 'UURR'];") || !setupIcons.includes('shuffled([8.5, 11, 14.5, 19], random)')) {
+  fail('Le chemin informatique et l’histogramme doivent rester dans leurs variantes contrôlées.');
 }
 const commonIconFrames=(setupIcons.match(/<rect x="3\.5" y="3\.5" width="29" height="29" rx="4\.5"/g)||[]).length;
 if (commonIconFrames < 5) {
@@ -319,6 +319,51 @@ if (commonIconFrames < 5) {
 }
 if (!setupIcons.includes('clipPath id="mathsgo-truchet-clip"') || !setupIcons.includes('clip-path="url(#mathsgo-truchet-clip)"')) {
   fail('Le tracé Truchet doit être coupé sous sa bordure extérieure.');
+}
+const setupIconApiForSeed = seed => {
+  const iconContext = {
+    crypto: { getRandomValues(values) { values[0] = seed; return values; } },
+    document: { readyState: 'loading', addEventListener() {} }
+  };
+  iconContext.globalThis = iconContext;
+  vm.createContext(iconContext);
+  vm.runInContext(setupIcons, iconContext, { timeout: 1000 });
+  return iconContext.MATHSGO_SETUP_ICONS;
+};
+const iconThemes = ['numbers', 'geometry', 'data', 'algorithm'];
+const setupIconApi = setupIconApiForSeed(0x12345678);
+const renderedSetupIcons = Object.fromEntries(iconThemes.map(theme => [theme, setupIconApi?.markup(theme) || '']));
+for (const theme of iconThemes) {
+  if (!renderedSetupIcons[theme].includes('<rect x="3.5" y="3.5" width="29" height="29" rx="4.5"')) {
+    fail(`Le pictogramme ${theme} doit conserver le cadre commun.`);
+  }
+  if (setupIconApi?.markup(theme) !== renderedSetupIcons[theme]) {
+    fail(`Le pictogramme ${theme} ne doit pas changer pendant la séance.`);
+  }
+}
+const abacusBeads = [...renderedSetupIcons.numbers.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="2\.55" fill="(#[\da-f]+)"\/>/g)];
+if (abacusBeads.length !== 9) fail('Le boulier doit conserver trois billes sur chacune de ses trois lignes.');
+const abacusSlots = [9.5, 15, 20.5, 26];
+const abacusRows = [11.5, 18, 24.5];
+const emptyAbacusSlots = abacusRows.map(row => {
+  const occupied = new Set(abacusBeads.filter(match => Number(match[2]) === row).map(match => Number(match[1])));
+  return abacusSlots.findIndex(slot => !occupied.has(slot));
+});
+if (emptyAbacusSlots.some(slot => slot < 0) || new Set(emptyAbacusSlots).size !== 3) {
+  fail('Les trois lignes du boulier doivent laisser trois emplacements vides différents.');
+}
+const histogramBars = [...renderedSetupIcons.data.matchAll(/<rect x="(?:8\.5|13\.55|18\.6|23\.65)" y="[\d.]+" width="4\.25" height="([\d.]+)" rx="\.8" fill="(#[\da-f]+)"\/>/g)];
+if (histogramBars.length !== 4 || new Set(histogramBars.map(match => match[1])).size !== 4 || new Set(histogramBars.map(match => match[2])).size !== 4) {
+  fail('L’histogramme doit afficher une fois chacune des quatre hauteurs et des quatre couleurs.');
+}
+const algorithmPath = renderedSetupIcons.algorithm.match(/<path d="(M9 27[^"]+)" fill="none" stroke="#6553b8"/)?.[1] || '';
+const algorithmRoute = (algorithmPath.match(/h9|v-9/g) || []).map(move => move === 'h9' ? 'R' : 'U').join('');
+if (!['RRUU', 'RURU', 'RUUR', 'URRU', 'URUR', 'UURR'].includes(algorithmRoute)) {
+  fail('Le chemin informatique doit relier le départ au drapeau avec deux pas à droite et deux pas vers le haut.');
+}
+for (const theme of iconThemes) {
+  const variants = new Set(Array.from({ length: 12 }, (unused, index) => setupIconApiForSeed(index + 1)?.markup(theme) || ''));
+  if (variants.size < 2) fail(`Le pictogramme ${theme} doit réellement varier entre plusieurs rechargements.`);
 }
 const setupStyles = fs.readFileSync(new URL('auto/styles/setup.css', root), 'utf8');
 if (!setupStyles.includes('.header::before{content:"";position:absolute;top:0;right:0;left:0;')) {
