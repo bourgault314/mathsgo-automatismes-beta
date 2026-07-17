@@ -2404,6 +2404,26 @@ function interactiveKeysFor(combinations,options={}){
   if(/π/.test(source)) add('π','π');
   return keys;
 }
+function expectedDisplayFromFooter(inst,rawAnswers){
+ const footer=String(inst.rawFooter||'');
+ if(!footer||!footer.includes('[[formula')) return '';
+ let index=0;
+ return footer
+   .replace(/\[\[[^\]]+\]\]/g,()=>rawAnswers[index++]??rawAnswers[0]??'')
+   .replace(/\$\$/g,'')
+   .replace(/\\qquad/g,' et ')
+   .replace(/\\,/g,'')
+   .replace(/\\;/g,';')
+   .replace(/\\text\{([^{}]*)\}/g,' $1')
+   .replace(/_\{([^{}]*)\}/g,'$1')
+   .replace(/_([A-Za-z0-9])/g,'$1')
+   .replace(/\s*;\s*/g,' ; ')
+   .replace(/\(\s+/g,'(')
+   .replace(/\s+\)/g,')')
+   .replace(/\s*=\s*/g,' = ')
+   .replace(/\s+/g,' ')
+   .trim();
+}
 function interactiveSpecForInstance(inst,correctionHtml){
  if(inst.coordinateData&&['place-one','place-two'].includes(inst.coordinateData.kind)){
    const targets=inst.coordinateData.targets;
@@ -2533,7 +2553,8 @@ function interactiveSpecForInstance(inst,correctionHtml){
 
   const slotCount=Math.max(1,acceptedCombinations[0]?.length||rawAnswers.length||1);
   const slots=Array.from({length:slotCount},(_,index)=>({label:slotCount===1?'Réponse':'Réponse '+(index+1)}));
-  const expected=rawAnswers.length>1?rawAnswers.join(' ; '):(rawAnswers[0]||'');
+  const formattedFooter=moduleId==='dnb_15'?expectedDisplayFromFooter(inst,rawAnswers):'';
+  const expected=formattedFooter||(rawAnswers.length>1?rawAnswers.join(' ; '):(rawAnswers[0]||''));
   return {
     kind:'slots',layout:slotCount>1?'inline':'entry',slots,
     acceptedCombinations,
