@@ -259,6 +259,15 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-17 — Variations contrôlées des pictogrammes du menu.** Les quatre
+  domaines conservent le même cadre, les mêmes dimensions et leur univers
+  graphique. Une seule graine est tirée au chargement puis les pictogrammes
+  restent immuables pendant la séance, y compris lorsque le menu est
+  reconstruit. Le boulier place trois billes parmi quatre positions avec un
+  trou différent sur chaque ligne ; le pavage Truchet conserve son tirage ;
+  l’histogramme permute ses quatre hauteurs et ses quatre couleurs sans en
+  omettre ; le chemin informatique choisit l’un des six trajets monotones de
+  deux pas à droite et deux pas vers le haut, avec départ et arrivée fixes.
 - **2026-07-17 — Liaison des barres d’angles vers ÉquaBarre.** Dans `dnb_18`,
   un bouton compact accompagne uniquement un schéma en barres qui représente
   une équation résoluble. Il envoie la rangée totale et la rangée décomposée à
