@@ -106,7 +106,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'e9c9a86143cb5cf0304b9961ae5507d99510c00d0c6b4b33826106b93b352d3b';
+const expectedBankHash = 'faeaa908dbe32029823790a0a401c0e59682e2b18b99a95c362a83618811d587';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
