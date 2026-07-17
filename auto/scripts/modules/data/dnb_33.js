@@ -52,7 +52,7 @@ const MODULE_DNB_33 = {
     },
     {
       "n": 5,
-      "statement": "Pour chaque valeur de $$x$$, on calcule $$y=${k}\\times x$$.<br>La grandeur $$y$$ est-elle proportionnelle à la grandeur $$x$$ ?&&Oui&&Non&&Cela dépend&&Parfois, mais pas tout le temps&&",
+      "statement": "Pour chaque valeur de $$x$$, on calcule $$y=${k}x$$.<br>La grandeur $$y$$ est-elle proportionnelle à la grandeur $$x$$ ?&&Oui&&Non&&Cela dépend&&Parfois, mais pas tout le temps&&",
       "answer": "[\"1\"]",
       "options": {
         "formula_code": "setNB(1)\nk=RD(2,8)",
