@@ -266,8 +266,11 @@ réellement utile.
   reconstruit. Le boulier place trois billes parmi quatre positions avec un
   trou différent sur chaque ligne ; le pavage Truchet conserve son tirage ;
   l’histogramme permute ses quatre hauteurs et ses quatre couleurs sans en
-  omettre ; le chemin informatique choisit l’un des six trajets monotones de
-  deux pas à droite et deux pas vers le haut, avec départ et arrivée fixes.
+  omettre ; le chemin informatique choisit l’un des vingt trajets monotones de
+  trois pas à droite et trois pas vers le haut, avec départ et arrivée fixes.
+  Dans ce menu, les effets `:hover` sont réservés aux appareils équipés d’un
+  pointeur fin ; le tactile utilise uniquement un retour `:active` bref afin
+  qu’aucun fond coloré ne persiste après une désélection.
 - **2026-07-17 — Liaison des barres d’angles vers ÉquaBarre.** Dans `dnb_18`,
   un bouton compact accompagne uniquement un schéma en barres qui représente
   une équation résoluble. Il envoie la rangée totale et la rangée décomposée à

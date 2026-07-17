@@ -310,7 +310,7 @@ const setupIcons = fs.readFileSync(new URL('auto/scripts/00-setup-icons.js', roo
 if (!setupIcons.includes('const PAGE_SEED = pageSeed();') || !setupIcons.includes('const ICON_CACHE = new Map();') || setupIcons.includes('function dailySeed')) {
   fail('Les quatre pictogrammes doivent changer à chaque rechargement, puis rester stables pendant la séance.');
 }
-if (!setupIcons.includes("const routes = ['RRUU', 'RURU', 'RUUR', 'URRU', 'URUR', 'UURR'];") || !setupIcons.includes('shuffled([8.5, 11, 14.5, 19], random)')) {
+if (!setupIcons.includes('const routes = monotoneRoutes(3, 3);') || !setupIcons.includes('shuffled([8.5, 11, 14.5, 19], random)')) {
   fail('Le chemin informatique et l’histogramme doivent rester dans leurs variantes contrôlées.');
 }
 const commonIconFrames=(setupIcons.match(/<rect x="3\.5" y="3\.5" width="29" height="29" rx="4\.5"/g)||[]).length;
@@ -357,17 +357,26 @@ if (histogramBars.length !== 4 || new Set(histogramBars.map(match => match[1])).
   fail('L’histogramme doit afficher une fois chacune des quatre hauteurs et des quatre couleurs.');
 }
 const algorithmPath = renderedSetupIcons.algorithm.match(/<path d="(M9 27[^"]+)" fill="none" stroke="#6553b8"/)?.[1] || '';
-const algorithmRoute = (algorithmPath.match(/h9|v-9/g) || []).map(move => move === 'h9' ? 'R' : 'U').join('');
-if (!['RRUU', 'RURU', 'RUUR', 'URRU', 'URUR', 'UURR'].includes(algorithmRoute)) {
-  fail('Le chemin informatique doit relier le départ au drapeau avec deux pas à droite et deux pas vers le haut.');
+const algorithmRoute = (algorithmPath.match(/h6|v-6/g) || []).map(move => move === 'h6' ? 'R' : 'U').join('');
+if (algorithmRoute.length !== 6 || (algorithmRoute.match(/R/g) || []).length !== 3 || (algorithmRoute.match(/U/g) || []).length !== 3) {
+  fail('Le chemin informatique doit relier le départ au drapeau avec trois pas à droite et trois pas vers le haut.');
 }
 for (const theme of iconThemes) {
   const variants = new Set(Array.from({ length: 12 }, (unused, index) => setupIconApiForSeed(index + 1)?.markup(theme) || ''));
   if (variants.size < 2) fail(`Le pictogramme ${theme} doit réellement varier entre plusieurs rechargements.`);
 }
+const algorithmVariants = new Set(Array.from({ length: 256 }, (unused, index) => setupIconApiForSeed(index + 1)?.markup('algorithm') || ''));
+if (algorithmVariants.size !== 20) fail(`Les vingt chemins informatiques doivent être réellement accessibles (${algorithmVariants.size} trouvé(s)).`);
 const setupStyles = fs.readFileSync(new URL('auto/styles/setup.css', root), 'utf8');
 if (!setupStyles.includes('.header::before{content:"";position:absolute;top:0;right:0;left:0;')) {
   fail('La signature dégradée de l’en-tête doit occuper toute la largeur.');
+}
+const fineHoverMedia = setupStyles.indexOf('@media(hover:hover) and (pointer:fine){');
+if (fineHoverMedia < 0 || setupStyles.indexOf(':hover') < fineHoverMedia || !setupStyles.includes('@media(hover:none),(pointer:coarse){') || !setupStyles.includes('.modrow:active{background:#eef6ff}')) {
+  fail('Les survols du menu doivent être réservés à la souris et remplacés par un retour tactile bref.');
+}
+if (!setupStyles.includes('.theme-group[open]>.theme-summary{') || setupStyles.includes('.theme-summary:hover,.theme-group[open]')) {
+  fail('Une catégorie ouverte doit rester identifiable sans réintroduire de survol tactile persistant.');
 }
 if(questionEngine.includes('function module01PartitionPalette')||questionEngine.includes('function module01HundredGridPart')||questionEngine.includes('function module01BoardSvgPart')){
   fail('Le plateau fraction–décimal ne doit plus être défini dans le gros moteur.');
