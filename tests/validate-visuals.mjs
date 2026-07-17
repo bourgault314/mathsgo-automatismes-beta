@@ -295,6 +295,13 @@ const questionEngine = fs.readFileSync(new URL('auto/scripts/02-question-engine.
 if (!questionEngine.includes('const getThemeIconMarkup=globalThis.MATHSGO_SETUP_ICONS?.markup;') || !questionEngine.includes("const iconMarkup=typeof getThemeIconMarkup==='function'?getThemeIconMarkup(theme.id):'';")) {
   fail('Les icônes du menu doivent être intégrées directement lors de chaque reconstruction des catégories.');
 }
+const setupIcons = fs.readFileSync(new URL('auto/scripts/00-setup-icons.js', root), 'utf8');
+if (!setupIcons.includes('const GEOMETRY_SEED = pageSeed();') || setupIcons.includes('function dailySeed')) {
+  fail('Le pavage Truchet doit changer à chaque rechargement, puis rester stable pendant la séance.');
+}
+if (!setupIcons.includes('M27 9V4.8') || !setupIcons.includes('width="4.25" height="19"')) {
+  fail('Les pictogrammes informatique et données doivent conserver leur drapeau aligné et leur histogramme encadré.');
+}
 if(questionEngine.includes('function module01PartitionPalette')||questionEngine.includes('function module01HundredGridPart')||questionEngine.includes('function module01BoardSvgPart')){
   fail('Le plateau fraction–décimal ne doit plus être défini dans le gros moteur.');
 }
