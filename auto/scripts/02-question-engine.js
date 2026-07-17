@@ -3567,7 +3567,8 @@ function equationDetailHtml(data){
 function renderEquationModule(inst,correction=false,mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
   const data=inst.equationData;
-  let html='<div class="question equation-prompt">'+escapeHtml(data.prompt)+'</div>';
+  let html='<div class="equation-resolve-button-row equation-mobile-resolve-button-row">'+equationResolveButtonHtml(data)+'</div>'
+    +'<div class="question equation-prompt">'+escapeHtml(data.prompt)+'</div>';
   if(!data.contextual) html+=equationWithResolveHtml(data,'equation-main');
 
   if(!isWithoutVisuals(mode)){

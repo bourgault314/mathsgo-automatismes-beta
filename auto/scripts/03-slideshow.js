@@ -82,6 +82,9 @@ function makeDiapoWindowHtml(seriesData,experienceMode='interactive'){
     multiply:placeValueToolHtml({value:3.07,factor:1000,shift:3,result:3070,symbol:'×'},true),
     divide:placeValueToolHtml({value:52,factor:1000,shift:-3,result:0.052,symbol:'÷'},true)
   });
+  const equationCourseExamplePayload=JSON.stringify(equationDetailHtml({
+    ...equationBuildResolution(3,5,0,17,4)
+  }));
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -304,6 +307,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .equation-main,.equation-help-equation{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(2.2rem,3.8vw,4.1rem);font-weight:800;line-height:1.05;margin:1px auto 3px}
 .equation-resolve-stack{width:100%;margin:0 auto}
 .equation-resolve-button-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;width:min(100%,920px);margin:0 auto -1px}
+.equation-mobile-resolve-button-row{display:none}
 .equation-resolve-btn{grid-column:2;justify-self:center;margin:0;padding:6px 11px;border:2px solid #159d52;border-radius:11px;background:#eefbf3;color:#087238;font-family:Arial,Helvetica,sans-serif;font-size:clamp(.8rem,1.08vw,.96rem);font-weight:900;line-height:1;text-decoration:none;white-space:nowrap;box-shadow:0 1px 0 rgba(8,114,56,.08)}
 .equation-resolve-btn:hover,.equation-resolve-btn:focus-visible{background:#dcf8e8;border-color:#087b3d;outline:none}
 .equation-aligned-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:baseline;column-gap:.22em;width:min(100%,920px);margin-left:auto;margin-right:auto}
@@ -321,7 +325,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .equation-options{margin-top:5px;max-width:980px;gap:9px 12px}
 .equation-options.options-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .equation-options .opt{font-size:clamp(1.05rem,1.55vw,1.55rem);padding:11px 13px}
-@media(max-width:800px){.diapo.equation-mode .stage{padding:7px 7px 14px}.equation-prompt{font-size:clamp(1.12rem,5vw,1.45rem);margin-bottom:2px}.equation-resolve-button-row{width:min(100%,720px);margin-bottom:-1px}.equation-resolve-btn{padding:4px 7px;border-radius:8px;font-size:.68rem;border-width:1.5px}.equation-main{font-size:clamp(1.65rem,7.5vw,2.1rem);margin:1px auto 2px}.equation-help{height:clamp(155px,29vh,225px)}.equation-help-equation{font-size:clamp(1.25rem,5.5vw,1.65rem)}.equation-splat-svg{width:min(100%,620px)}.equation-answer-shell{grid-template-columns:minmax(54px,1fr) auto minmax(54px,1fr)}.equation-answer{font-size:clamp(1.65rem,7.3vw,2.1rem)}.equation-detail-btn{margin-left:5px;padding:6px 8px;border-radius:9px;font-size:.78rem}.equation-options,.equation-options.options-3{grid-template-columns:1fr;gap:6px;margin-top:4px}.equation-options .opt{font-size:clamp(.88rem,3.75vw,1.05rem);padding:8px 9px}}
+@media(max-width:800px){.diapo.equation-mode .stage{padding:7px 7px 14px}.equation-mobile-resolve-button-row{display:grid;width:min(100%,720px);margin:0 auto 3px}.equation-resolve-button-row:not(.equation-mobile-resolve-button-row){display:none}.equation-prompt{font-size:clamp(1.12rem,5vw,1.45rem);margin-bottom:0}.equation-resolve-btn{padding:4px 7px;border-radius:8px;font-size:.68rem;border-width:1.5px}.equation-main{font-size:clamp(1.65rem,7.5vw,2.1rem);margin:5px auto}.equation-help{height:auto;justify-content:flex-start}.equation-help-equation{font-size:clamp(1.25rem,5.5vw,1.65rem);margin:5px auto}.equation-splat-svg{width:calc(100% + 14px);max-width:none;margin-left:-7px;margin-right:-7px}.equation-splat-svg>g>circle,.equation-splat-svg>g>path,.equation-splat-svg>g>text{transform-box:fill-box;transform-origin:center;transform:scale(1.12)}.equation-answer-shell{grid-template-columns:minmax(54px,1fr) auto minmax(54px,1fr)}.equation-answer{font-size:clamp(1.65rem,7.3vw,2.1rem)}.equation-detail-btn{margin-left:5px;padding:6px 8px;border-radius:9px;font-size:.78rem}.equation-options,.equation-options.options-3{grid-template-columns:1fr;gap:6px;margin-top:4px}.equation-options .opt{font-size:clamp(.88rem,3.75vw,1.05rem);padding:8px 9px}}
 .diapo.fraction-percent-mode .stage{align-items:center;padding:14px 22px 18px;overflow:auto}
 .diapo.fraction-percent-mode .slide{max-width:1080px}
 .fraction-percent-prompt{font-size:clamp(1.9rem,3vw,3.25rem);line-height:1.12;margin:0 auto 7px}
@@ -717,6 +721,7 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .course-rule>strong{display:block;margin-bottom:5px;color:#e86100;font-size:1.08em}
 .course-example{display:block;margin-top:8px;padding:7px 9px;border-radius:9px;background:#eef5fd;color:#17384d;font-size:.9em;font-weight:750}
 .course-equation{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.12em;margin-top:7px;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:1.22em;font-weight:800}
+.course-equation-goals{display:grid;gap:7px}.course-equation-goals strong{display:inline;color:#073a75}.course-equation-resolution{margin:4px auto 0;padding:4px 0 1px;border-radius:11px;background:#fff}.course-equation-resolution .equation-detail-resolution{width:min(100%,620px)}.course-equation-resolution .equation-detail-equation{min-height:40px;font-size:clamp(1.22rem,2vw,1.65rem)}.course-equation-resolution .equation-detail-operation{min-height:34px;font-size:clamp(.86rem,1.35vw,1.08rem)}
 .course-frac{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:1.35em;line-height:1;vertical-align:middle}.course-frac>span:first-child{width:100%;padding:0 .15em .08em;border-bottom:2px solid currentColor;text-align:center}.course-frac>span:last-child{padding:.08em .15em 0}
 .course-visual{display:block;width:min(100%,390px);height:auto;max-height:210px;margin:9px auto 4px}.course-visual text{font-family:Arial,"Helvetica Neue",sans-serif}.course-visual .math-text{font-family:"Cambria Math","Times New Roman",serif}.course-rule-wide{grid-column:1/-1}.course-multiplier{display:inline-flex;align-items:center;justify-content:center;min-width:1.8em;padding:.02em .18em;border-radius:.28em;background:#fff1df;color:#9a4100;font-weight:900}
 .course-card.place-value-course-card{width:min(980px,100%)}.course-place-value-example{margin-top:9px}.course-place-value-example .place-value-tool{width:100%;margin-top:4px}.course-place-value-example .place-value-head{height:28px;font-size:.7rem}.course-place-value-example .place-value-preview-row,.course-place-value-example .place-value-fixed-row{height:43px}.course-place-value-example .place-value-drag-bar{top:5px;height:33px}.course-place-value-example .place-value-strip-digit,.course-place-value-example .place-value-fixed-digit{font-size:1.65rem}.course-place-value-example .place-value-comma{bottom:1px;font-size:1.7rem}.course-place-value-example .place-value-tool-note{height:30px;min-height:30px;margin-top:3px;font-size:.9rem}
@@ -834,6 +839,7 @@ svg{display:block;max-width:100%;height:auto}
 const seriesBank=${payload};
 const experienceMode=${experiencePayload};
 const placeValueCourseExamples=${placeValueCoursePayload};
+const equationCourseExample=${equationCourseExamplePayload};
 ${setupPlaceValueTools.toString()}
 ${setupReadDataTools.toString()}
 const interactiveMode=experienceMode==='interactive';
@@ -1097,9 +1103,9 @@ Object.assign(courseCatalog,{
     ['Exemple','<span class="course-equation">3(x + 4) = 3x + 12</span> et <span class="course-equation">5x + 15 = 5(x + 3)</span>.']
   ]},
   equations:{title:'Résoudre une équation',rules:[
-    ['But','Résoudre, c’est trouver la valeur de l’inconnue qui rend l’égalité vraie.'],
-    ['Conserver l’égalité','On effectue la même opération dans les deux membres. On défait les opérations dans l’ordre inverse.'],
-    ['Exemple','<span class="course-equation">3x + 5 = 17 → 3x = 12 → x = 4</span><span class="course-example">Vérification : 3 × 4 + 5 = 17.</span>']
+    ['But','<div class="course-equation-goals"><span><strong>Équation :</strong> trouver la valeur de l’inconnue qui rend l’égalité vraie.</span><span><strong>Splat :</strong> trouver la valeur qui se cache sous chaque tache.</span></div>'],
+    ['Conserver l’égalité','On effectue la même opération dans les deux membres pour conserver l’équilibre.'],
+    ['Exemple','<div class="course-equation-resolution">'+equationCourseExample+'</div><span class="course-example">Vérification : 3 × 4 + 5 = 17.</span>',true]
   ]},
   number_line:{title:'Lire une abscisse',rules:[
     ['Trouver le pas','On calcule l’écart entre deux graduations repérées, puis on le partage par le nombre d’intervalles.'],
