@@ -19,6 +19,10 @@ if(!styles.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) fail('
 for(const mobileScale of ['.logo{height:50px}', 'min-height:44px', '.theme-icon{width:36px;height:36px}', 'min-height:62px']){
   if(!styles.includes(mobileScale)) fail('Le menu mobile doit agrandir les deux blocs à l’échelle de la version normale.');
 }
+if(styles.includes('.segment-btn:hover:not(:disabled){background:#fff}')) fail('Un choix actif ne doit jamais blanchir à cause d’un survol tactile persistant.');
+if(!styles.includes('.segment-btn:not(.is-active):not([aria-pressed="true"]):hover:not(:disabled)')) fail('Le survol clair doit être réservé aux choix inactifs.');
+if(!styles.includes('grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 10px')) fail('Les automatismes doivent revenir sur deux colonnes sur ordinateur.');
+if(!styles.includes('.setup-action-bar .generate-action{min-width:0;min-height:48px;padding:11px 26px;border:0;border-radius:999px;background:#f58220')) fail('Le bouton de lancement doit utiliser un orange uni et calme.');
 if(index.includes('revision-badge')) fail('Le badge de version ne doit pas modifier la façade reprise du Studio.');
 if(!index.includes('segment-dnb-calculator')) fail('Le choix DNB doit conserver la calculatrice barrée du Studio.');
 
