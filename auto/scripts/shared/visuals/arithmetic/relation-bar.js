@@ -29,20 +29,20 @@
     const arrow=(label,up=false)=>{
       const marker='<defs><marker id="relation-arrow-head" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#4b5563" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
       if(prominent){
-        const topCenter=topY+topH/2,bottomCenter=bottomY+bottomH/2,labelX=18;
+        const topCenter=topY+topH/2,bottomCenter=bottomY+bottomH/2,labelX=24;
         if(data.arrowStyle!=='hand'){
-          const path=up?'M54 140 C33 134 30 108 34 84 C37 69 47 60 54 58 L54 52':'M54 52 C33 58 30 84 34 108 C37 123 47 132 54 134 L54 140';
+          const path=up?'M54 140 C41 134 38 108 41 84 C43 69 50 60 54 58 L54 52':'M54 52 C41 58 38 84 41 108 C43 123 50 132 54 134 L54 140';
           return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(labelX,(topCenter+bottomCenter)/2,label,20,750)}`;
         }
-        const path=up?'M54 142 C32 132 28 108 34 84 C38 68 48 60 54 58 L54 52':'M54 50 C32 60 28 84 34 108 C38 124 48 132 54 134 L54 140';
+        const path=up?'M54 142 C40 132 36 108 40 84 C43 68 50 60 54 58 L54 52':'M54 50 C40 60 36 84 40 108 C43 124 50 132 54 134 L54 140';
         return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(labelX,(topCenter+bottomCenter)/2,label,20,750)}`;
       }
       if(data.arrowStyle!=='hand'){
-        const path=up?'M70 139 C48 133 42 108 47 84 C51 69 62 60 70 59 L70 55':'M70 55 C48 61 42 86 47 110 C51 125 62 134 70 135 L70 139';
-        return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(20,97,label,18,750)}`;
+        const path=up?'M70 139 C54 133 50 108 54 84 C57 69 65 60 70 59 L70 55':'M70 55 C54 61 50 86 54 110 C57 125 65 134 70 135 L70 139';
+        return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(26,97,label,18,750)}`;
       }
-      const path=up?'M58 142 C38 132 34 108 39 84 C43 68 52 59 58 58 L58 54':'M58 54 C38 64 34 88 39 112 C43 128 52 137 58 138 L58 142';
-      return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(18,98,label,18,750)}`;
+      const path=up?'M58 142 C46 132 42 108 46 84 C49 68 54 59 58 58 L58 54':'M58 54 C46 64 42 88 46 112 C49 128 54 137 58 138 L58 142';
+      return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(24,98,label,18,750)}`;
     };
     let body='';
 
