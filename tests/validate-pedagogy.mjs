@@ -838,6 +838,19 @@ const catalogue=fs.readFileSync(new URL('auto/dev/visual-library.html',root),'ut
 const app=fs.readFileSync(new URL('auto/scripts/04-app.js',root),'utf8');
 const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'utf8');
 const questionEngine=fs.readFileSync(new URL('auto/scripts/02-question-engine.js',root),'utf8');
+if(!slideshow.includes("divisibility_rules:{title:'Critères de divisibilité'")) fail('Le catalogue de cours doit utiliser l’identifiant pédagogique divisibility_rules pour les critères de divisibilité.');
+if(slideshow.includes("divisibility:{title:'Critères de divisibilité'")) fail('L’ancien identifiant divisibility ne doit pas remplacer l’identifiant pédagogique divisibility_rules.');
+const requiredCourseBindings=[
+  ['integer_squares','integer_squares:courseCatalog.squares'],
+  ['solid_recognition','solid_recognition:courseCatalog.solids'],
+  ['area','area:courseCatalog.area_formulas'],
+  ['volume','volume:courseCatalog.volume_formulas'],
+  ['trigonometry_reasoning',"'trigonometry_reasoning'].includes"],
+  ['trigonometry_calculation',"'trigonometry_calculation'].includes"]
+];
+for(const [courseKind,binding] of requiredCourseBindings){
+  if(!slideshow.includes(binding)) fail(`Le cours ${courseKind} n’est pas raccordé au catalogue du diaporama.`);
+}
 const functionBlock=(source,name,nextName)=>source.slice(source.indexOf(`function ${name}(`),source.indexOf(`function ${nextName}(`));
 const thalesTemplateBlock=slideshow.slice(slideshow.indexOf('function courseThalesTemplateVisual('),slideshow.indexOf('const courseCatalog='));
 const registryPosition=index.indexOf('scripts/shared/pedagogy/00-registry.js');
