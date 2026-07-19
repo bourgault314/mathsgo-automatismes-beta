@@ -239,9 +239,11 @@ choisir une variante adaptée au support.
 prisme droit, le cylindre, la pyramide, le cône et la sphère. Les faces
 visibles, les arêtes cachées pointillées, les palettes par famille, la rotation
 et le miroir sont paramétrables. Ses sept préréglages sont vectoriels et
-compatibles téléphone, ordinateur, projection et impression. Les SVG
-historiques de `dnb_20` sont conservés jusqu’à leur comparaison visuelle
-question par question avec ce nouveau traceur.
+compatibles téléphone, ordinateur, projection et impression. Le composant prend
+aussi en charge les prismes pentagonaux, les pyramides triangulaires ou
+pentagonales et les mesures utiles aux volumes. Il remplace à l’affichage les
+figures géométriques et de comptage de `dnb_20`, ainsi que les solides cotés de
+`dnb_23`; les dessins d’objets réels de `dnb_20` restent spécifiques au module.
 
 ## Règles d’évolution
 

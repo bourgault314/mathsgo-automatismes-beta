@@ -74,7 +74,7 @@ if(!cartesianGraph?.render(cartesianGraph.presets.find(preset=>preset.id==='bill
 
 const solid=registry?.get('geometry.solid');
 if(!solid) fail('Le composant geometry.solid est absent.');
-if(solid&&solid.version!=='1.0.0') fail('Version 1.0.0 attendue pour le traceur de solides.');
+if(solid&&solid.version!=='1.1.0') fail('Version 1.1.0 attendue pour le traceur de solides.');
 if(solid&&solid.presets.length!==7) fail('Sept familles de solides sont attendues.');
 for(const preset of solid?.presets||[]){
   const rendered=solid.render(preset.data);
@@ -82,6 +82,10 @@ for(const preset of solid?.presets||[]){
   if(!rendered.includes('role="img"')) fail(`Le solide ${preset.id} doit rester accessible.`);
 }
 if(solid&&!solid.render({kind:'cylinder'}).includes('stroke-dasharray="6 5"')) fail('Les arêtes cachées des solides doivent rester pointillées.');
+const measuredPrism=solid?.render({kind:'prism',labels:{base:'10 cm',baseHeight:'8 cm',length:'12 cm'}})||'';
+if(!measuredPrism.includes('solid-svg--measured')||!measuredPrism.includes('10 cm')||!measuredPrism.includes('solid-hidden-edges')) fail('Le prisme mesuré doit conserver ses mesures et distinguer ses arêtes cachées.');
+if(!solid?.render({kind:'prism',variant:'pentagonal'}).includes('43,89 76,48 127,65 120,126 61,143')) fail('Le prisme pentagonal doit être disponible pour les questions de comptage.');
+if(!solid?.render({kind:'pyramid',variant:'triangular'}).includes('x1="50" y1="158" x2="226" y2="151"')) fail('La pyramide triangulaire doit être disponible pour le comptage des arêtes.');
 
 const angleVocabulary=registry?.get('geometry.angle-vocabulary');
 if(!angleVocabulary) fail('Le composant geometry.angle-vocabulary est absent.');
@@ -443,26 +447,26 @@ for (const testCase of cases) {
 
 const relationBar = registry?.get('arithmetic.relation-bar');
 if (!relationBar) fail('Le composant arithmetic.relation-bar est absent.');
-if (relationBar && relationBar.version !== '1.4.0') fail('Version 1.4.0 attendue pour les schémas de relations.');
+if (relationBar && relationBar.version !== '1.6.0') fail('Version 1.6.0 attendue pour les schémas de relations.');
 if (relationBar && relationBar.presets.length !== 14) fail('Quatorze préréglages de schémas en barres sont attendus.');
 if (relationBar && context.relationBarSvg !== relationBar.render) {
   fail('Le point d’entrée historique relationBarSvg doit utiliser le composant enregistré.');
 }
 const relationHashes=new Map([
-  ['double',['4715816637837a3bf32e1e306dc1078d0d70e9b342fe700f7982177d69d3f537','a14b9cc1acf6244896e69904cf0cdfd81c50b8560d7139eedab51261b688b986']],
-  ['triple',['74df7bd57d3ee3501a06f19269a96bc354f7e8c315d3dbcb1c77b35d0fd24ced','abbaa0fbdd1127a1fe1ef24508dd2a8917d9326e36f9972c3cd4ec41965d43c0']],
-  ['quadruple',['0e4955e99239120487ba9e4f416aa48ca946859349a4d53847325c95655f7e41','5730d732041fcf5bf2921697062e0e99284a0eda4c859eaac5814b4c188733f3']],
-  ['quintuple',['24362944a144b97ea2704fba0c257277f1c2e91d07b5ae3c10dcce7430098a86','6cef99fd06b1e5a7c47fe34716cef01c3628d584702221be2b3f4d6ce1eea240']],
-  ['decuple',['e9fc33dea197d2b92c682bb119260dc7a22c498e5275700f77f08866c360a8f4','96691e6522cdd1d59954815b31f04760bc2ac7d5c118acd0ce047a110fafaade']],
-  ['triple-inverse',['54bc1a7ac740667f9032c5f7299687f19210a26c0e7caca8799e445d5199bba1','4bd407e8a50afe3f402fd855b25ce1a17e5d9ac0363a50416c609ec5c480eb81']],
-  ['moitie',['7ee166d8a8ccb0a33529e61303b5fbe7b9a6d91047891a8254ff1e3e644bbd6d','ede9e22dd572f8239027cc66a6074f9391fc7bf25c77f8f9a2f8e87fa71447b0']],
-  ['tiers',['8891a166ca3410f8997f1e71441285577a9b31e22981b007ca0b0d42954dc239','cfb4aa64b80d64a3e207d03678a5f607bf1861185e605be616af15dc4d5139dd']],
-  ['quart',['f5365f68bdbb5cd27062def79d0839eb8258e879715e620479f1b2f023069543','a1d62e8c9bb4904d89b4b8ac8a7bc2e183556961cb5f7994f25bb3ea16a0b9b9']],
-  ['cinquieme',['3497c38b10d4c537ecbf1f21df55e5115a644cb8a5076b87935cd57ea5e3768e','e122b2357fb635e9dc2c257afab6cb3e47ca2c4dc2f2bd6a7e6691ccfe25a1cc']],
-  ['dixieme',['a0dd7446db36c3dab460dc46d2b4bd851e2292f4f705e1e762c4e78b1ec93589','94f9a1b2976fa83a39a91838411254da6ea24116dd148abf808a3dc610813d83']],
+  ['double',['0114a299321d0189c27fc71c388cb23783321278aef93d3332c276f597d9ef4a','215f9180f64827c8d732a208a7a1050e83de07f72e64361dd6add8a04908c2d0']],
+  ['triple',['89dec1f3ac3e89394ef1ec252ae396edced9eab8fd4a9a6dc91b87feb1177e6d','394c1db5727c05cda568ec05bfcd03b6e17a020373d74faa5e77cd279442e5bc']],
+  ['quadruple',['9771774ddb41852b78cf873e1439de0799474ec78b327092a199689a5c30ddcc','870c67cc97c625ac92f8fb392b9fa410d46f26fb2d5294427d8272dc8328d046']],
+  ['quintuple',['466766c22d46b30851517aeef0cc0e77c959419e01e5171d8dae3d823b27190b','e38dc3bb4635d946069e07fb59520b81ec86fde63d31c13125ee8559bec08c0c']],
+  ['decuple',['7705d6789ba90faf16aa132776e3e0c55b00c86af37c17efe0cdcf2d48f5f802','699ff1aa3daf1fe251a9b1df26d3b0c83027e941fb1da39603189ff77bfa5c6d']],
+  ['triple-inverse',['7d6b6456e51ac09925987015c3ae3b489b2fde37d1d3b01712a212f7e55c15ed','416f947b34fae5651612e26149bd0025d7dd0cee0c76dcebb5e1ac8d93ea1dfd']],
+  ['moitie',['90dcf16ab667ecf1298dacb77bb4abe93bc468f2eda703ade8cdb6082229fc07','523ab091046653b06528a0a1f361911d76bd480b6a28ff4ec6a57a48e36f6e1e']],
+  ['tiers',['49fe99f8ccb949a836a57e1dc8f0ec8769fbdd4fef9b74950b36fc8525dc9795','6d6d93cba3bc8f347b729e8345ab15a1ac65cf28f8a5d558468592efe0d4c1d3']],
+  ['quart',['aa7edc6f6df060d5d71fa6aa6d02d8e1781ba2190d2d2071eb976de672369d55','f969e3802135e0c12d6ce477f2c7723b9ef6547458e7251c188359abf55af1b0']],
+  ['cinquieme',['066dc804a3a45e83d958c5f7c7e21e088c6fee85650072fc8dcdd5238e5fdeea','ed800e90d63b26bda6ea077cb56cacca9ed019e8ff29bdf0c4e20db37fe74f9c']],
+  ['dixieme',['a8a49e6b755ebd0fbd22b13cbda370c12bac97797d65d7adf92e8ae22313ec14','25c70cebf7ad8dd8eecc5361a3d102f46727d06f5d4dfa6eea70bf43f9dbbdfd']],
   ['predecesseur',['d16314da1b71fc16deda28af15ad7ac89e3abf00e49995ae3cecf01ce3664286','41244493ef0baf1d98a4f7ca3d07b5d19be312e77fc80d471f661dbf1db64ebd']],
   ['successeur',['d9f141188da706dc1a7acf03026242a6473405f087b5ef16cab89bf7cb405acb','07478579aa2159a68494f226bf4a7de47cbe3a553aa92171426a35429e844ee8']],
-  ['partage-decimal',['90a21eb04d4d7f6f04bbcb124bebb661501040618123172378f0a90e9c617d4a','2ed4972bae395a025149d1b0081751f1bb78de19b7ad48b3cf686c1c5bcc89db']]
+  ['partage-decimal',['0c2509f46e6869cf8c8d0de223bfda1aca9a418ad2ba1f0c6efbe9b275fa4a87','1ed445676b75d24006df6fb12e0a685c713887644b4bd1eb970d6309a245480a']]
 ]);
 for(const preset of relationBar?.presets||[]){
   for(const correction of [false,true]){
@@ -475,7 +479,10 @@ const multipleModel=relationBar?.render({kind:'multiple_direct',factor:5,value:5
 const fractionModel=relationBar?.render({kind:'fraction_direct',divisor:5,value:25,result:5},false)||'';
 const decimalSharing=relationBar?.render({kind:'fraction_direct',divisor:3,value:2.1,result:.7,showValue:true,questionLabel:'une part ?'},false)||'';
 const prominentDouble=relationBar?.render({kind:'multiple_direct',factor:2,value:12,result:24,prominent:true},true)||'';
+const prominentTriple=relationBar?.render({kind:'multiple_direct',factor:3,value:7,result:21,prominent:true},true)||'';
 if(!prominentDouble.includes('class="relation-bar-svg relation-bar-svg-prominent"')||!prominentDouble.includes('viewBox="0 0 720 192"')||!prominentDouble.includes('font-size="31"')) fail('Le grand schéma double/triple doit agrandir le tableau et ses nombres.');
+if(!prominentTriple.includes('M54 52 C41 58 38 84 41 108 C43 123 50 132 54 134 L54 140')||!prominentTriple.includes('orient="auto"')||!prominentTriple.includes('M1 1L9 5L1 9')) fail('La flèche du grand schéma triple doit arriver verticalement avec une pointe orientée automatiquement.');
+if(!prominentTriple.includes('<text x="24" y="96"')||!prominentTriple.includes('>× 3</text>')) fail('Le libellé × 3 doit rester visible sur téléphone et séparé de l’arc de la flèche.');
 if(!multipleModel.includes('× 5')||!multipleModel.includes('LE QUINTUPLE')) fail('Le modèle multiplicatif doit afficher le regroupement ×5.');
 if(!fractionModel.includes('÷ 5')||!fractionModel.includes('le cinquième')) fail('Le modèle de fraction doit afficher le partage ÷5.');
 if(!decimalSharing.includes('2,1')||!decimalSharing.includes('une part ?')||decimalSharing.includes('0,7')) fail('Le partage décimal doit montrer le total et garder la valeur d’une part inconnue.');
