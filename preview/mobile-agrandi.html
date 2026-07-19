@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+html,body{margin:0;width:390px;height:844px;overflow:hidden;background:#fff}
+iframe{display:block;width:390px;height:844px;border:0}
+</style>
+<iframe id="phone" title="Aperçu téléphone 390 × 844" src="https://raw.githack.com/bourgault314/mathsgo-automatismes-beta/10b8c81283d81905cd3234ff6cbe8b4641b93ddc/auto/index.html?mobile-preview=1"></iframe>
+<script>
+const frame=document.getElementById('phone');
+frame.addEventListener('load',()=>{
+  if(!new URLSearchParams(location.search).has('selected')) return;
+  setTimeout(()=>{
+    const doc=frame.contentDocument;
+    const group=doc.querySelector('.theme-group[data-theme="numbers"]');
+    if(group) group.open=true;
+    setTimeout(()=>doc.querySelector('.modcb')?.click(),250);
+  },900);
+});
+</script>
