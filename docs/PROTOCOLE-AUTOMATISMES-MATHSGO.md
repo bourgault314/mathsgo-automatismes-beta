@@ -259,6 +259,15 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-19 — Menu Studio branché sur la bêta.** La façade de préparation
+  reprend le menu Studio validé dans une colonne de 620 px : réglages en grille
+  2 × 2, domaines repliables, sélection mémorisée lors d'un changement de
+  niveau ou de mode, barre d'action fixe et lancement dans le même onglet. Le
+  menu lit le manifeste et les contrats de série de la bêta ; il ne conserve
+  aucune copie concurrente du catalogue. Les fonctions expérimentales
+  « Ouvrir une série » et « Partager » restent présentes mais cachées hors du
+  mode de test `?partage=1`.
+
 - **2026-07-19 — Coefficients de la réduction littérale `dnb_10`.** Dans la
   réponse interactive, les emplacements sont déterminés par le degré maximal
   présent dans l'expression ou le plateau initial, jamais par les coefficients

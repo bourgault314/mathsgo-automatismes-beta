@@ -4086,6 +4086,19 @@ const MODULE_MENU_GROUPS={
     {id:'pensee-informatique',title:'Pensée informatique',moduleIds:['dnb_37']}
   ]
 };
+const MODULE_SELECTION_MEMORY=new Set();
+let skipSelectionCaptureOnce=false;
+function rememberCurrentModuleSelections(){
+  document.querySelectorAll('.modcb').forEach(input=>{
+    if(input.checked) MODULE_SELECTION_MEMORY.add(input.value);
+    else MODULE_SELECTION_MEMORY.delete(input.value);
+  });
+}
+function replaceRememberedModuleSelections(ids){
+  MODULE_SELECTION_MEMORY.clear();
+  ids.forEach(id=>MODULE_SELECTION_MEMORY.add(id));
+  skipSelectionCaptureOnce=true;
+}
 function menuGroupsForTheme(themeId,members){
   const memberById=new Map(members.map(module=>[module.id,module]));
   const used=new Set();
@@ -4120,6 +4133,8 @@ function updateThemeCounts(){
 function renderModuleList(){
   const box=document.getElementById('modules');
   const openTheme=box.querySelector('.theme-group[open]')?.dataset.theme||null;
+  if(skipSelectionCaptureOnce) skipSelectionCaptureOnce=false;
+  else rememberCurrentModuleSelections();
   // Les catégories sont reconstruites à chaque changement de réglage. L'icône
   // doit donc faire partie de ce rendu, et non être ajoutée après coup.
   const getThemeIconMarkup=globalThis.MATHSGO_SETUP_ICONS?.markup;
@@ -4154,7 +4169,13 @@ function renderModuleList(){
       menuGroup.members.forEach(m=>{
         const row=document.createElement('label'); row.className='modrow';
         row.innerHTML='<input type="checkbox" class="modcb" value="'+m.id+'"> <span><strong>'+m.title+'</strong></span>';
-        row.querySelector('input').addEventListener('change',updateThemeCounts);
+        const input=row.querySelector('input');
+        input.checked=MODULE_SELECTION_MEMORY.has(m.id);
+        input.addEventListener('change',()=>{
+          if(input.checked) MODULE_SELECTION_MEMORY.add(input.value);
+          else MODULE_SELECTION_MEMORY.delete(input.value);
+          updateThemeCounts();
+        });
         subgroupItems.appendChild(row);
       });
       subgroup.append(heading,subgroupItems);
@@ -4163,7 +4184,11 @@ function renderModuleList(){
     group.append(summary,items);
     const themeCheckbox=itemsToolbar.querySelector('.theme-select-cb');
     themeCheckbox.addEventListener('change',()=>{
-      group.querySelectorAll('.modcb').forEach(cb=>cb.checked=themeCheckbox.checked);
+      group.querySelectorAll('.modcb').forEach(cb=>{
+        cb.checked=themeCheckbox.checked;
+        if(cb.checked) MODULE_SELECTION_MEMORY.add(cb.value);
+        else MODULE_SELECTION_MEMORY.delete(cb.value);
+      });
       updateThemeCounts();
     });
     group.addEventListener('toggle',()=>{
@@ -4173,7 +4198,14 @@ function renderModuleList(){
   });
   updateThemeCounts();
 }
-function selectVisible(on){ document.querySelectorAll('.modcb').forEach(cb=>cb.checked=on); updateThemeCounts(); }
+function selectVisible(on){
+  document.querySelectorAll('.modcb').forEach(cb=>{
+    cb.checked=on;
+    if(on) MODULE_SELECTION_MEMORY.add(cb.value);
+    else MODULE_SELECTION_MEMORY.delete(cb.value);
+  });
+  updateThemeCounts();
+}
 
 function buildCleanSlideHtml(inst, correction=false, mode=null){
   return renderQuestion(inst, correction, mode);
