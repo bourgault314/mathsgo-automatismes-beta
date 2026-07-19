@@ -259,6 +259,15 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-19 — Menu Studio branché sur la bêta.** La façade de préparation
+  reprend le menu Studio validé dans une colonne de 620 px : réglages en grille
+  2 × 2, domaines repliables, sélection mémorisée lors d'un changement de
+  niveau ou de mode, barre d'action fixe et lancement dans le même onglet. Le
+  menu lit le manifeste et les contrats de série de la bêta ; il ne conserve
+  aucune copie concurrente du catalogue. Les fonctions expérimentales
+  « Ouvrir une série » et « Partager » restent présentes mais cachées hors du
+  mode de test `?partage=1`.
+
 - **2026-07-19 — Coefficients de la réduction littérale `dnb_10`.** Dans la
   réponse interactive, les emplacements sont déterminés par le degré maximal
   présent dans l'expression ou le plateau initial, jamais par les coefficients
@@ -273,101 +282,4 @@ réellement utile.
   domaines conservent le même cadre, les mêmes dimensions et leur univers
   graphique. Une seule graine est tirée au chargement puis les pictogrammes
   restent immuables pendant la séance, y compris lorsque le menu est
-  reconstruit. Le boulier place trois billes parmi quatre positions avec un
-  trou différent sur chaque ligne ; le pavage Truchet conserve son tirage ;
-  l’histogramme permute ses quatre hauteurs et ses quatre couleurs sans en
-  omettre ; le chemin informatique choisit l’un des vingt trajets monotones de
-  trois pas à droite et trois pas vers le haut, avec départ et arrivée fixes.
-  Dans ce menu, les effets `:hover` sont réservés aux appareils équipés d’un
-  pointeur fin ; le tactile utilise uniquement un retour `:active` bref afin
-  qu’aucun fond coloré ne persiste après une désélection.
-- **2026-07-17 — Liaison des barres d’angles vers ÉquaBarre.** Dans `dnb_18`,
-  un bouton compact accompagne uniquement un schéma en barres qui représente
-  une équation résoluble. Il envoie la rangée totale et la rangée décomposée à
-  la route technique existante `equabarre_import_splat.html`, sans déplacer ni
-  renommer cette route. Les questions de validation et d’impossibilité restent
-  sans bouton.
-- **2026-07-16 — Manipulation de la somme des angles.** Les dix gabarits
-  historiques de `dnb_18` restent figés. Un format fonctionnel en deux temps
-  ajoute le placement de `180°`, de deux angles connus et de `𝑥`, puis le
-  calcul de `𝑥`. Une série de cinq questions de cette catégorie en contient
-  une. Le générateur passe en version 1.15.0 ; les décisions détaillées sont
-  consignées dans [`ANGLES-TRIANGLE-AUTOMATISMES.md`](ANGLES-TRIANGLE-AUTOMATISMES.md).
-- **2026-07-16 — Largeur mobile des tableaux et schémas en barres.** Le rendu
-  de « Fraction d’un nombre et pourcentage » devient la référence commune :
-  700 unités utiles dans un cadre de 760, cases hautes et hauteur uniforme. Le
-  composant `geometry.triangle-angle-sum` applique cette règle ; son cas
-  impossible reste volontairement plus court, avec 640 unités utiles, et réduit
-  proportionnellement les deux rangées afin de garder la plus longue entièrement
-  visible.
-- **2026-07-16 — Coordonnées dans un repère `dnb_15`.** Les neuf gabarits
-  historiques restent figés. La réponse du gabarit à deux points est composée
-  en deux groupes autonomes et passe sur deux lignes sur téléphone. Trois
-  formats fonctionnels limités sont ajoutés hors de la banque : placer un
-  point, placer successivement deux points et juger une affirmation vrai/faux.
-  Une série de 5 en contient un ; les erreurs vrai/faux visent l’ordre et les
-  signes. Les décisions détaillées sont consignées dans
-  [`COORDONNEES-AUTOMATISMES.md`](COORDONNEES-AUTOMATISMES.md).
-- **2026-07-17 — Audit des angles `dnb_17`.** Les vingt formats sont regroupés
-  dans neuf familles pédagogiques. Une série maximale utilise les dix gabarits
-  historiques et les dix formats fonctionnels sans répétition ; les familles
-  consécutives sont évitées dès qu’une autre reste disponible. La lecture du
-  rapporteur complète la mesure et le parallélisme alterne désormais entre
-  angles alternes-internes et correspondants. Le tableau des six natures passe
-  à deux colonnes afin d’agrandir réellement dessins et libellés sur téléphone.
-  Le générateur passe en version 1.15.0 pour que les liens partagés ne changent
-  pas silencieusement de sélection.
-- **2026-07-16 — Angles `dnb_17`.** Le cours déclaré
-  `angle_vocabulary` devient contextuel et appelle le composant partagé
-  `geometry.angle-vocabulary`. Neuf formats fonctionnels complètent les dix
-  gabarits historiques : six natures, nom à trois lettres, comparaison
-  d’ouvertures, analyse de l’erreur de longueur, mesure d’angles opposés,
-  bissectrice, parallélisme, équerre et choix inverse d’une figure. Les
-  distracteurs de comparaison suivent l’analyse Eduscol de l’évaluation 6e
-  2025, question 22. Les décisions propres au module sont consignées dans
-  [`ANGLES-AUTOMATISMES.md`](ANGLES-AUTOMATISMES.md).
-- **2026-07-16 — Droite graduée `dnb_14`.** Les 18 gabarits de la banque V1.18
-  restent inchangés. Trois formats fonctionnels limités sont ajoutés hors de la
-  banque figée : placer un point, déterminer le pas et choisir la droite
-  correcte. Leurs distracteurs suivent l’index
-  `docs/data/eduscol-droites-graduees.json` ; les étiquettes d’abscisses à
-  déplacer et le problème intermédiaire « 7 et 10 » restent exclus.
-- **2026-07-16 — Cours sans aide.** Le mode « Sans aide » masque l'étayage de la
-  question mais laisse le cours général accessible dans toutes les catégories.
-- **2026-07-16 — Variété des séries.** La combinaison direct/QCM/inverse/contexte/
-  raisonnement est une grille d'analyse adaptable, pas un quota commun.
-- **2026-07-16 — Distracteurs diagnostiques.** Chaque proposition fausse est
-  contrôlée, plausible et reliée à un code d'erreur stable lorsque le
-  générateur la construit.
-- **2026-07-16 — Questions tactiles.** Elles peuvent rester disponibles sur
-  ordinateur. Une incompatibilité réelle avec le diaporama se traite avant le
-  tirage, par remplacement, et non par masquage après génération.
-- **2026-07-16 — Évolution de `dnb_02b`.** La banque V1.17 conserve ses douze
-  numéros historiques. La couche fonctionnelle transforme les anciens tirages
-  mixtes 7 et 8 en contexte monétaire et analyse d'erreur, avec une version de
-  gabarit 2 dans les nouvelles séries. Le générateur passe en version 1.13.0
-  afin qu'une même version de lien ne produise jamais deux séries différentes.
-- **2026-07-16 — Banque V1.19.** La séparation des décimaux relatifs porte la
-  banque à 43 modules et 476 gabarits. Le générateur passe en version 1.14.0 ;
-  le nouveau code MG1 permanent de `dnb_39` est 42.
-- **2026-07-16 — Banque V1.20 et filtre DNB des relatifs.** Dès lors que les
-  calculs avec des décimaux relatifs sont proposés dans le filtre DNB,
-  l’addition d’entiers relatifs doit également y rester accessible. `dnb_38`
-  porte donc les niveaux 5e, 4e, 3e et DNB, comme `dnb_39`. Ce changement de
-  classement ne modifie ni les huit gabarits de `dnb_38`, ni leurs tirages.
-- **2026-07-16 — Clôture et publication.** Tout compte rendu distingue l'état
-  local, poussé, en pull request, fusionné et déployé. Une demande de
-  publication inclut le commit, le push et la pull request de la bêta ; un lot
-  encore local doit être signalé spontanément.
-- **2026-07-16 — Décimaux.** Les décisions propres à `dnb_02` sont consignées
-  dans [`DECIMAUX-AUTOMATISMES.md`](DECIMAUX-AUTOMATISMES.md).
-- **2026-07-16 — Décimaux relatifs et espace écran.** `dnb_02` devient
-  exclusivement positif ; `dnb_39` récupère les familles négatives et la somme
-  historique. Les cartes acceptent glisser et toucher–toucher. Les calculs,
-  consignes, réponses et composants sont dimensionnés après captures aux
-  écrans de référence. Les décisions sont consignées dans
-  [`DECIMAUX-RELATIFS-AUTOMATISMES.md`](DECIMAUX-RELATIFS-AUTOMATISMES.md).
-
-Lorsqu'un nouveau point est validé, consigner ici la date, la décision, les
-catégories concernées et les composants retenus. Ne pas transformer une piste
-de discussion en règle avant validation explicite.
+  reconstruit. Le b
