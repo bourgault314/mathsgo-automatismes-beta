@@ -41,13 +41,13 @@
     return faces+hidden+labelHtml;
   }
   function triangularPrismBody(p,data){
-    const a=[42,158],b=[94,48],c=[160,158],dx=72,dy=-18;
+    const a=[28,158],b=[78,52],c=[134,158],dx=108,dy=-18;
     const aa=[a[0]+dx,a[1]+dy],bb=[b[0]+dx,b[1]+dy],cc=[c[0]+dx,c[1]+dy];
     const faces=poly(`${a} ${b} ${c}`,p.front,p.line)
       +poly(`${b} ${bb} ${cc} ${c}`,p.top,p.line)
       +poly(`${a} ${c} ${cc} ${aa}`,p.side,p.line);
-    const visible=line(b[0],b[1],bb[0],bb[1],p.line)+line(c[0],c[1],cc[0],cc[1],p.line)+line(bb[0],bb[1],cc[0],cc[1],p.line);
-    const hidden=`<path class="solid-hidden-edges" d="M${a[0]} ${a[1]}L${aa[0]} ${aa[1]}L${bb[0]} ${bb[1]}M${aa[0]} ${aa[1]}L${cc[0]} ${cc[1]}" fill="none" stroke="${p.line}" stroke-width="2.4"${dash}/>`;
+    const visible=line(a[0],a[1],aa[0],aa[1],p.line)+line(b[0],b[1],bb[0],bb[1],p.line)+line(c[0],c[1],cc[0],cc[1],p.line)+line(bb[0],bb[1],cc[0],cc[1],p.line);
+    const hidden=`<path class="solid-hidden-edges" d="M${aa[0]} ${aa[1]}L${bb[0]} ${bb[1]}M${aa[0]} ${aa[1]}L${cc[0]} ${cc[1]}" fill="none" stroke="${p.line}" stroke-width="2.4"${dash}/>`;
     const labels=data.labels||{};
     const altitude=labels.baseHeight
       ?`<line class="solid-construction" x1="${b[0]}" y1="${b[1]}" x2="${b[0]}" y2="${a[1]}" stroke="${p.line}" stroke-width="1.8"/>`
@@ -55,7 +55,7 @@
       :'';
     return faces+visible+hidden+altitude
       +measure((a[0]+c[0])/2,a[1]+24,labels.base)
-      +measure(b[0]+13,(b[1]+a[1])/2,labels.baseHeight,'start')
+      +measure(b[0]-6,(b[1]+a[1])/2+25,labels.baseHeight,'end')
       +measure((b[0]+bb[0])/2,b[1]+dy/2-8,labels.length)
       +measure(135,198,labels.baseArea)
       +measure(232,181,labels.height,'end');
