@@ -74,7 +74,7 @@ if(!cartesianGraph?.render(cartesianGraph.presets.find(preset=>preset.id==='bill
 
 const solid=registry?.get('geometry.solid');
 if(!solid) fail('Le composant geometry.solid est absent.');
-if(solid&&solid.version!=='1.0.0') fail('Version 1.0.0 attendue pour le traceur de solides.');
+if(solid&&solid.version!=='1.1.0') fail('Version 1.1.0 attendue pour le traceur de solides.');
 if(solid&&solid.presets.length!==7) fail('Sept familles de solides sont attendues.');
 for(const preset of solid?.presets||[]){
   const rendered=solid.render(preset.data);
@@ -82,6 +82,10 @@ for(const preset of solid?.presets||[]){
   if(!rendered.includes('role="img"')) fail(`Le solide ${preset.id} doit rester accessible.`);
 }
 if(solid&&!solid.render({kind:'cylinder'}).includes('stroke-dasharray="6 5"')) fail('Les arêtes cachées des solides doivent rester pointillées.');
+const measuredPrism=solid?.render({kind:'prism',labels:{base:'10 cm',baseHeight:'8 cm',length:'12 cm'}})||'';
+if(!measuredPrism.includes('solid-svg--measured')||!measuredPrism.includes('10 cm')||!measuredPrism.includes('solid-hidden-edges')) fail('Le prisme mesuré doit conserver ses mesures et distinguer ses arêtes cachées.');
+if(!solid?.render({kind:'prism',variant:'pentagonal'}).includes('43,89 76,48 127,65 120,126 61,143')) fail('Le prisme pentagonal doit être disponible pour les questions de comptage.');
+if(!solid?.render({kind:'pyramid',variant:'triangular'}).includes('x1="50" y1="158" x2="226" y2="151"')) fail('La pyramide triangulaire doit être disponible pour le comptage des arêtes.');
 
 const angleVocabulary=registry?.get('geometry.angle-vocabulary');
 if(!angleVocabulary) fail('Le composant geometry.angle-vocabulary est absent.');

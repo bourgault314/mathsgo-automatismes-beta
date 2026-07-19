@@ -18,6 +18,7 @@ const sources = [
   'auto/scripts/shared/visuals/numbers/square-area.js',
   'auto/scripts/shared/visuals/geometry/coordinate-plane.js',
   'auto/scripts/shared/visuals/geometry/angle-vocabulary.js',
+  'auto/scripts/shared/visuals/geometry/solid.js',
   'auto/scripts/shared/visuals/arithmetic/fraction-decimal-grid.js',
   'auto/scripts/shared/visuals/algebra/area-model.js',
   'auto/scripts/modules/00-runtime-registry.js',
@@ -88,6 +89,8 @@ globalThis.__coordinateModule = MODULE_DNB_15;
 globalThis.__angleVocabularyModule = MODULE_DNB_17;
 globalThis.__angleModule = MODULE_DNB_18;
 globalThis.__perimeterModule = MODULE_DNB_21;
+globalThis.__solidsModule = MODULE_DNB_20;
+globalThis.__volumeModule = MODULE_DNB_23;
 globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
@@ -107,7 +110,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'e239967f763f1c44d01161f542a84c71181b48fc330c13ac6f84ebb8cba10e45';
+const expectedBankHash = 'b3f0bd3902f1fb9dcb7fd5336f682090c9aee92178d98527163a20b8f0c071ca';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -147,6 +150,22 @@ const questionCount = bank.reduce((sum, module) => sum + module.questions.length
 if (questionCount !== 478) fail(`478 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
   fail(`Le contenu ou l’ordre de la banque V1.20 a changé (${bankHash}).`);
+}
+
+for(const question of context.__solidsModule.questions){
+  context.__setSeed(20260719+Number(question.n));
+  const instance=context.__makeInstance(context.__solidsModule,question);
+  const rendered=context.__renderQuestion(instance,false,'with');
+  const category=question.options?.solid_category;
+  if(['drawing','count'].includes(category)&&!rendered.includes('class="solid-svg')) fail(`Le solide ${question.n} doit utiliser le traceur commun.`);
+  if(!rendered.includes('solid-options')) fail(`Le solide ${question.n} doit conserver ses réponses QCM.`);
+}
+for(const number of [1,2,3,4,8,9]){
+  const question=context.__volumeModule.questions.find(item=>Number(item.n)===number);
+  context.__setSeed(20260719+number);
+  const instance=context.__makeInstance(context.__volumeModule,question);
+  const rendered=context.__renderQuestion(instance,false,'with');
+  if(!rendered.includes('volume-visual')||!rendered.includes('solid-svg--measured')) fail(`Le volume ${number} doit afficher un solide coté avec le traceur commun.`);
 }
 
 const integerRelativeModule=JSON.parse(context.__bankSnapshot).find(module=>module.id==='dnb_38');

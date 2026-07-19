@@ -1183,9 +1183,28 @@ function makeReductionInstance(mod,q){
   };
 }
 const SOLID_NAMES=['un cube','un pavé droit','un prisme droit','un cylindre','une pyramide','un cône','une sphère','une boule'];
+function solidVisualForQuestion(q){
+  const meta=q.options||{};
+  if(!['drawing','count'].includes(meta.solid_category)) return null;
+  const variants={
+    1:{kind:'cube'},2:{kind:'cube',mirror:true},
+    3:{kind:'cuboid'},4:{kind:'cuboid',variant:'tall'},
+    5:{kind:'prism'},6:{kind:'prism',mirror:true},
+    7:{kind:'cylinder'},8:{kind:'cylinder',rotation:90},
+    9:{kind:'pyramid'},10:{kind:'pyramid',variant:'triangular'},
+    11:{kind:'cone'},12:{kind:'cone',mirror:true},
+    13:{kind:'sphere'},14:{kind:'sphere',mirror:true},
+    22:{kind:'cube'},23:{kind:'cuboid'},24:{kind:'prism'},
+    25:{kind:'pyramid'},26:{kind:'pyramid',variant:'pentagonal'},
+    27:{kind:'prism',variant:'pentagonal'},28:{kind:'prism',variant:'pentagonal'},
+    29:{kind:'pyramid',variant:'triangular'},30:{kind:'pyramid',variant:'pentagonal'}
+  };
+  return variants[Number(q.n)]||null;
+}
 function makeSolidsInstance(mod,q){
   const meta=q.options||{};
   let prompt=q.statement||'';
+  let visualPrompt='Quel est le nom le plus précis de ce solide ?';
   let correct='';
   let distractors=[];
 
@@ -1199,6 +1218,7 @@ function makeSolidsInstance(mod,q){
       'Combien de faces possède ce solide ?'
     ];
     correct=Number(meta.solid_counts[elementIndex]);
+    visualPrompt=elementQuestions[elementIndex];
     prompt='<div class="solid-prompt">'+elementQuestions[elementIndex]+'</div>'+prompt;
 
     const closeValues=shuffleLocal([correct-1,correct+1,correct-2,correct+2]);
@@ -1224,7 +1244,8 @@ function makeSolidsInstance(mod,q){
     answers:[correctIndex],
     rawStatement:prompt+'&&'+qcmOptions.join('&&')+'&&',
     rawFooter:'',
-    hasSvg:true
+    hasSvg:true,
+    solids:{prompt:visualPrompt,visual:solidVisualForQuestion(q)}
   };
 }
 
@@ -3240,7 +3261,10 @@ function renderSolidsModule(inst,correction=false){
   const qcm=splitQCM(inst.rawStatement);
   if(!qcm) return renderGenericQuestion(inst,correction,'with');
   const corrects=new Set(inst.answers.map(x=>String(x)));
-  let html='<div class="solid-question">'+renderMathSegments(qcm.prompt)+'</div>';
+  const sharedVisual=inst.solids&&inst.solids.visual&&typeof globalThis.solidSvg==='function';
+  let html=sharedVisual
+    ?'<div class="solid-question"><div class="solid-prompt">'+escapeHtml(inst.solids.prompt)+'</div><div class="solid-visual">'+globalThis.solidSvg(inst.solids.visual)+'</div></div>'
+    :'<div class="solid-question">'+renderMathSegments(qcm.prompt)+'</div>';
   html+='<div class="options solid-options">';
   qcm.opts.forEach((option,index)=>{
     const isCorrect=correction&&corrects.has(String(index+1));
@@ -3346,10 +3370,43 @@ function volumeCalculationForQuestion(inst){
   };
   return cases[n]||'V='+answer;
 }
+function volumeVisualForQuestion(inst){
+  if(typeof globalThis.solidSvg!=='function') return '';
+  const n=Number(inst.q.n),s=inst.scope||{},v=name=>fmt(Number(s[name]));
+  const data={
+    1:{kind:'cube',labels:{edge:v('c')+' cm'}},
+    2:{kind:'cuboid',labels:{length:v('L')+' cm',width:v('l')+' cm',height:v('h')+' cm'}},
+    3:{kind:'prism',labels:{base:v('b')+' cm',baseHeight:v('ht')+' cm',length:v('p')+' cm'}},
+    4:{kind:'cylinder',labels:{radius:'r = '+v('r')+' cm',height:v('h')+' cm'}},
+    8:{kind:'prism',labels:{baseArea:'Aire de la base = '+v('a')+' cm²',height:'h = '+v('h')+' cm'}},
+    9:{kind:'cylinder',labels:{diameter:'d = '+v('d')+' cm',height:v('h')+' cm'}}
+  }[n];
+  return data?globalThis.solidSvg(data):'';
+}
+function volumePromptForQuestion(inst){
+  const n=Number(inst.q.n),s=inst.scope||{},v=name=>fmt(Number(s[name]));
+  const prompts={
+    1:'Calcule le volume de ce cube.',
+    2:'Calcule le volume de ce pavé droit.',
+    3:'Calcule le volume de ce prisme droit à base triangulaire.',
+    4:'Calcule le volume de ce cylindre. On prendra $$\\pi\\approx 3,14$$.',
+    8:'Calcule le volume de ce prisme droit.',
+    9:'Calcule le volume de ce cylindre. On prendra $$\\pi\\approx 3,14$$.'
+  };
+  const details={
+    3:'La base triangulaire mesure '+v('b')+' cm et sa hauteur '+v('ht')+' cm. La longueur du prisme est '+v('p')+' cm.',
+    8:'Aire de la base : '+v('a')+' cm² · Hauteur du prisme : '+v('h')+' cm.'
+  };
+  return {prompt:prompts[n]||inst.rawStatement,detail:details[n]||''};
+}
 function renderVolumeModule(inst,correction=false,mode=null){
   if(mode===null) mode=document.getElementById('visualMode').value;
+  const visual=volumeVisualForQuestion(inst);
+  const content=visual?volumePromptForQuestion(inst):{prompt:inst.rawStatement,detail:''};
   let html='<div class="volume-question">';
-  html+='<div class="volume-prompt">'+renderMathSegments(inst.rawStatement)+'</div>';
+  html+='<div class="volume-prompt">'+renderMathSegments(content.prompt)+'</div>';
+  if(visual) html+='<div class="volume-visual">'+visual+'</div>';
+  if(content.detail) html+='<div class="volume-data">'+escapeHtml(content.detail)+'</div>';
   html+='</div>';
   if(correction) html+='<div class="volume-correction-flow"><div class="volume-formula">'+renderMathSegments('$$'+volumeFormulaForQuestion(inst.q.n)+'$$')+'</div><div class="volume-calculation">'+renderMathSegments('$$'+volumeCalculationForQuestion(inst)+'$$')+'</div></div>';
   if(inst.rawFooter){

@@ -40,7 +40,7 @@ Les statuts sont :
 | `geometry.pythagoras-bar` | `/outils/pythabarre.html` et PythaBarre v34 | branché/partiel |
 | `geometry.pythagoras-reasoning` | `dnb_24` et contrats Pythagore de `/studio/` | branché |
 | `geometry.pythagoras-builder` | `dnb_24b` et plateau Pythagore tactile | branché |
-| `geometry.solid` | les 35 gabarits de `modules/geometry/dnb_20.js` | préparé |
+| `geometry.solid` | les 35 gabarits de `modules/geometry/dnb_20.js` et les figures cotées de `dnb_23` | branché/partiel |
 
 ## Règles
 
