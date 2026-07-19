@@ -259,6 +259,16 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-19 — Coefficients de la réduction littérale `dnb_10`.** Dans la
+  réponse interactive, les emplacements sont déterminés par le degré maximal
+  présent dans l'expression ou le plateau initial, jamais par les coefficients
+  finaux non nuls. La présence initiale de `x²` impose les trois coefficients
+  `x²`, `x` et constant ; la présence de `x` sans `x²` impose les coefficients
+  `x` et constant. Les coefficients absents ou annulés restent affichés avec
+  la valeur zéro afin que la forme de réponse ne révèle aucune annulation. Les
+  décisions détaillées sont consignées dans
+  [`CALCUL-LITTERAL-AUTOMATISMES.md`](CALCUL-LITTERAL-AUTOMATISMES.md).
+
 - **2026-07-17 — Variations contrôlées des pictogrammes du menu.** Les quatre
   domaines conservent le même cadre, les mêmes dimensions et leur univers
   graphique. Une seule graine est tirée au chargement puis les pictogrammes
