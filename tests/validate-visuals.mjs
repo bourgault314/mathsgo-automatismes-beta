@@ -443,26 +443,26 @@ for (const testCase of cases) {
 
 const relationBar = registry?.get('arithmetic.relation-bar');
 if (!relationBar) fail('Le composant arithmetic.relation-bar est absent.');
-if (relationBar && relationBar.version !== '1.5.0') fail('Version 1.5.0 attendue pour les schémas de relations.');
+if (relationBar && relationBar.version !== '1.6.0') fail('Version 1.6.0 attendue pour les schémas de relations.');
 if (relationBar && relationBar.presets.length !== 14) fail('Quatorze préréglages de schémas en barres sont attendus.');
 if (relationBar && context.relationBarSvg !== relationBar.render) {
   fail('Le point d’entrée historique relationBarSvg doit utiliser le composant enregistré.');
 }
 const relationHashes=new Map([
-  ['double',['f33eafa7124df33ad8b02147d1250f96d0e59a9ad0b743bcb992de05daa775f1','aedb49f0ac403dfce7deec8ca65b2d747c9123f1663bcc9f25e02fb1742c949e']],
-  ['triple',['c73944410c9e1aab5880f959faffdcd0b71913732eb3949af686975d497be54f','301f34447f800647df0ed3e9e053daf7c743fa2b299a934c5ed9d429f607f56c']],
-  ['quadruple',['cf96a471021a68a93f2dbff907ae2cbd702c4b95744cb60a38b15ff246834172','53811f18f537cd5495112ceafe269773f6e51d622a8f2c00b8bd5fe7bda3129f']],
-  ['quintuple',['c7123774dbd78f95f9e22e2639669d00a4ffae203ff9186e09b55544769df256','fd62cba6ea0e838e136614017228b918e2a4f3d977476f2f2db438931d73641a']],
-  ['decuple',['1064e5f198af81b26cdb7897f154204f7fb53ff6fc0eb63e947b3282792357ce','19419daab94ba201d3b54fcaaa9858ed0fa94ff41c0beaaf90cc5d608fb994f4']],
-  ['triple-inverse',['a7c6caed1f2b24dfea3699e45f2bdadc854c973e30419b2b184e72b61234e7fc','60e87127fc2b5aedbf1390db90e18d37e978b23e4b46d66b117b03178f98edee']],
-  ['moitie',['ef2fca7774b10b7d4088ad8c2f220151b78e9c35e9af35e47819c0e70e933834','9a236e5152b6b51c4cc9568c9c2da7af6c5bf9317c575630fd0f4968c61e7ff5']],
-  ['tiers',['770be46fa4b9f62adc88ad17971f74fe03a58f9b1468c9660eafc4fb66a715dd','2e0f2c2d2d7032eebe910a406fc3f69295bfc0c9bc5a28b64c92de7f064b494e']],
-  ['quart',['40ee34efae94f1ba08170670f1294a0483bea2ae92b6997887992d112d9c933d','c6a512a04f05ce53a3dde004b36e81c4bafafed00fe244711e1aafaa6b4e9896']],
-  ['cinquieme',['f5bc7ae518fb60dbaf12502347620fa5e4b4af95e70e285cc0a00e9a31808134','2635f4cc3424011a9281595511bc955b18d03b472735b830158e0fd4a9923a76']],
-  ['dixieme',['b8b2b70937c305491784f4e5be8bd397cbcda562999579d53b1acb1ad7438376','b4e04763800e04c8f41e776e8c55b8f779a78aad5cfef0a4a3e3896ed0679d00']],
+  ['double',['cd9bff3f9fe7a844fd7929e1bdd20fc4973e59a7c03ac45a1fe3576870adc643','2048bb4ea1baad78c1b196abc0b195f902fe0a28b6a1cea2093e4dcd4284c162']],
+  ['triple',['eb69c3c0f70c87d45faa4fc82ea43887582bc351cdfc4d789964966a650010e6','7a6505dfc9eb288ba6e41c71e419d9485c25882b2dcef1bd0da86b08f8c36b82']],
+  ['quadruple',['71d161d8c5201250e4fe17f4ee72e642b346e2b16ea7c50f00fda9d7b0a7f630','4e964e788bbbf9d7619a62126c83f4cc99f64df95f67d738a7deb12f680fb0ae']],
+  ['quintuple',['986b678494bbf473c3505b1ad63b3cf5023dd3f8267beba89bea7bd988c590b2','da8211352fd2a5a96e83f68aa39cf1668b4dc9b78cd5111945e46591db500237']],
+  ['decuple',['526d80eba42898f40f11f3da839fef5d98b1a6cd9084bf2a446b0e6f3247f655','a821a9ebdd9fe79771af187f96f6d272e1863494c406a085205c135b5e8e4ab4']],
+  ['triple-inverse',['1ee4d06332778d3c8d921c6e89f75a6b860573dbadf0887b6c805aca86580eb8','47d7667085b0e1d32d0904f2c1813a29145b5855b948c450a24600cce5704b83']],
+  ['moitie',['9ea663724c5d57e8ed5857865ec87e68ca0c1c41093a4fad0f8bbdf3c9831c35','65231de6bf2a96749c6f13ed7d1e19579fee0127bd3a3ef8179dfce7a0bb011a']],
+  ['tiers',['f730de2edbd49bfc36004238f2d15e752648c4b84a6f0b2b9fe45606bffba60b','e6b5348fe7c92b8275dfd0ab2ddc631bee3106360d3c14a7a003f52fcc666950']],
+  ['quart',['fd354174fb4bbdec067c45367ca7f33eb679d132413e77d561dff56613d38a28','76cef285f14c785dda9ca78232fd6652cec14f58dfea6f8e8ca790bc80c8a099']],
+  ['cinquieme',['106acd410b84fa7345182960212d7a53207650d484300cdb35b3cfb03b037da4','4eeb810ffed4c5609040a3050b6b6009737feb3eca4b3890bd2f4b6973b9096c']],
+  ['dixieme',['50b2048c2cfe894b333bdafa01a5f558cebddab2aae4496563d75efee05c8751','e659e2d9e51f525f786a4b188bb031c2b3abc2c605c6415a2407aa1a4e7a989e']],
   ['predecesseur',['d16314da1b71fc16deda28af15ad7ac89e3abf00e49995ae3cecf01ce3664286','41244493ef0baf1d98a4f7ca3d07b5d19be312e77fc80d471f661dbf1db64ebd']],
   ['successeur',['d9f141188da706dc1a7acf03026242a6473405f087b5ef16cab89bf7cb405acb','07478579aa2159a68494f226bf4a7de47cbe3a553aa92171426a35429e844ee8']],
-  ['partage-decimal',['8a14807dd39e79d04ae179bede3a935bd71bb1d621e17c307cbf8a60e6ac4fee','2a5c9465a5c8366f7f89da165a7261eb19d8a7f7d8eb10698149515890f986e3']]
+  ['partage-decimal',['d6e33206b6ccfa3f22dfecb96169391a837d5561f9c415c3619e28266af914bc','4f2038c85a86bcd808de440361faf34f0e74f671e24104ec38215bd82f93ce73']]
 ]);
 for(const preset of relationBar?.presets||[]){
   for(const correction of [false,true]){
@@ -477,7 +477,7 @@ const decimalSharing=relationBar?.render({kind:'fraction_direct',divisor:3,value
 const prominentDouble=relationBar?.render({kind:'multiple_direct',factor:2,value:12,result:24,prominent:true},true)||'';
 const prominentTriple=relationBar?.render({kind:'multiple_direct',factor:3,value:7,result:21,prominent:true},true)||'';
 if(!prominentDouble.includes('class="relation-bar-svg relation-bar-svg-prominent"')||!prominentDouble.includes('viewBox="0 0 720 192"')||!prominentDouble.includes('font-size="31"')) fail('Le grand schéma double/triple doit agrandir le tableau et ses nombres.');
-if(!prominentTriple.includes('M54 52 C39 60 39 132 54 140')||!prominentTriple.includes('M54 149 L46 135 L62 135 Z')) fail('La flèche du grand schéma triple doit pointer vers la barre d’arrivée.');
+if(!prominentTriple.includes('M54 52 C33 58 30 84 34 108 C37 123 47 132 54 134 L54 140')||!prominentTriple.includes('orient="auto"')||!prominentTriple.includes('M1 1L9 5L1 9')) fail('La flèche du grand schéma triple doit arriver verticalement avec une pointe orientée automatiquement.');
 if(!prominentTriple.includes('<text x="18" y="96"')||!prominentTriple.includes('>× 3</text>')) fail('Le libellé × 3 doit rester séparé de l’arc de la flèche.');
 if(!multipleModel.includes('× 5')||!multipleModel.includes('LE QUINTUPLE')) fail('Le modèle multiplicatif doit afficher le regroupement ×5.');
 if(!fractionModel.includes('÷ 5')||!fractionModel.includes('le cinquième')) fail('Le modèle de fraction doit afficher le partage ÷5.');

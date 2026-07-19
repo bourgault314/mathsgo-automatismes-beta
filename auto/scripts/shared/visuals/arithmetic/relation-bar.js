@@ -27,25 +27,22 @@
     const x=prominent?66:(data.balanced?75:92),width=prominent?638:610,topY=prominent?8:28,topH=prominent?88:70,bottomY=topY+topH,bottomH=topH;
     const text=(x,y,value,size=24,weight=800)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="#17283f">${visualEscapeHtml(value)}</text>`;
     const arrow=(label,up=false)=>{
+      const marker='<defs><marker id="relation-arrow-head" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#4b5563" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
       if(prominent){
-        const topCenter=topY+topH/2,bottomCenter=bottomY+bottomH/2,arrowX=54,bendX=39,labelX=18;
+        const topCenter=topY+topH/2,bottomCenter=bottomY+bottomH/2,labelX=18;
         if(data.arrowStyle!=='hand'){
-          const path=up?`M${arrowX} ${bottomCenter} C${bendX} ${bottomCenter-8} ${bendX} ${topCenter+8} ${arrowX} ${topCenter}`:`M${arrowX} ${topCenter} C${bendX} ${topCenter+8} ${bendX} ${bottomCenter-8} ${arrowX} ${bottomCenter}`;
-          const head=up
-            ?`M${arrowX} ${topCenter-9} L${arrowX-8} ${topCenter+5} L${arrowX+8} ${topCenter+5} Z`
-            :`M${arrowX} ${bottomCenter+9} L${arrowX-8} ${bottomCenter-5} L${arrowX+8} ${bottomCenter-5} Z`;
-          return `<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/><path d="${head}" fill="#4b5563"/>${text(labelX,(topCenter+bottomCenter)/2,label,20,750)}`;
+          const path=up?'M54 140 C33 134 30 108 34 84 C37 69 47 60 54 58 L54 52':'M54 52 C33 58 30 84 34 108 C37 123 47 132 54 134 L54 140';
+          return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(labelX,(topCenter+bottomCenter)/2,label,20,750)}`;
         }
-        const path=up?`M${arrowX} ${bottomCenter+2} C${bendX} ${bottomCenter-15} ${bendX} ${topCenter+19} ${arrowX} ${topCenter-2}`:`M${arrowX} ${topCenter-2} C${bendX} ${topCenter+19} ${bendX} ${bottomCenter-15} ${arrowX} ${bottomCenter+2}`;
-        return `<defs><marker id="relation-arrow-head" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4b5563"/></marker></defs><path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" marker-end="url(#relation-arrow-head)"/>${text(labelX,(topCenter+bottomCenter)/2,label,20,750)}`;
+        const path=up?'M54 142 C32 132 28 108 34 84 C38 68 48 60 54 58 L54 52':'M54 50 C32 60 28 84 34 108 C38 124 48 132 54 134 L54 140';
+        return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(labelX,(topCenter+bottomCenter)/2,label,20,750)}`;
       }
       if(data.arrowStyle!=='hand'){
-        const path=up?'M70 139 C46 132 46 64 70 56':'M70 55 C46 62 46 130 70 139';
-        const head=up?'M70 47 L62 61 L78 61 Z':'M70 148 L62 134 L78 134 Z';
-        return `<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round"/><path d="${head}" fill="#4b5563"/>${text(20,97,label,18,750)}`;
+        const path=up?'M70 139 C48 133 42 108 47 84 C51 69 62 60 70 59 L70 55':'M70 55 C48 61 42 86 47 110 C51 125 62 134 70 135 L70 139';
+        return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(20,97,label,18,750)}`;
       }
-      const path=up?'M58 142 C40 125 40 73 58 54':'M58 54 C40 73 40 125 58 142';
-      return `<defs><marker id="relation-arrow-head" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4b5563"/></marker></defs><path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" marker-end="url(#relation-arrow-head)"/>${text(18,98,label,18,750)}`;
+      const path=up?'M58 142 C38 132 34 108 39 84 C43 68 52 59 58 58 L58 54':'M58 54 C38 64 34 88 39 112 C43 128 52 137 58 138 L58 142';
+      return `${marker}<path d="${path}" fill="none" stroke="#4b5563" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#relation-arrow-head)"/>${text(18,98,label,18,750)}`;
     };
     let body='';
 
@@ -121,7 +118,7 @@
 
   if(!global.MATHSGO_VISUALS) throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant relation-bar.js.');
   global.MATHSGO_VISUALS.register('arithmetic.relation-bar',{
-    version:'1.5.0',
+    version:'1.6.0',
     label:'Schéma en barres — relations',
     family:'Arithmétique',
     description:'Construit les regroupements ×2, ×3, ×4, ×5 et ×10, leurs fractions unitaires inverses et les nombres voisins.',
