@@ -932,6 +932,11 @@ if(!questionEngine.includes('equation-mobile-resolve-button-row')||
    !slideshow.includes('transform:scale(1.18)')) {
   fail('Le bouton et le plateau Équations doivent utiliser leur présentation agrandie réservée au téléphone.');
 }
+if(!slideshow.includes('.equation-resolve-btn{display:inline-flex;align-items:center;justify-content:center;')||
+   !slideshow.includes('.equation-resolve-btn{height:34px;')||
+   !slideshow.includes('.equation-resolve-btn{height:30px;')) {
+  fail('Le libellé Résoudre doit rester centré dans son bouton sur ordinateur, téléphone et petit écran.');
+}
 const readDataRendererSource=fs.readFileSync(new URL('auto/scripts/modules/data/dnb_32/render.js',root),'utf8');
 let readDataRenderer=null;
 const readDataRendererContext=vm.createContext({
