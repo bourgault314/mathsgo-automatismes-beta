@@ -267,6 +267,7 @@ function visualPolicyForQuestion(m,q){
   if(pedagogyType&&pedagogyType.visual&&pedagogyType.visual.policy){
     return pedagogyType.visual.policy;
   }
+  if(q&&q.options&&q.options.visual_policy) return String(q.options.visual_policy);
   if(m.id==='dnb_01'){
     return q.options&&q.options.module01_kind==='read_visual'?'essential':'optional';
   }

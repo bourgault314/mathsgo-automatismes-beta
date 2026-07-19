@@ -110,7 +110,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = 'b3f0bd3902f1fb9dcb7fd5336f682090c9aee92178d98527163a20b8f0c071ca';
+const expectedBankHash = '0c3d639573fa3294a6c5b11b58162238fc9d10161ba9e5aa2193b82611a31ece';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -149,7 +149,7 @@ for (const id of isolatedModuleIds) {
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
 if (questionCount !== 478) fail(`478 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
-  fail(`Le contenu ou l’ordre de la banque V1.20 a changé (${bankHash}).`);
+  fail(`Le contenu ou l’ordre de la banque V1.21 a changé (${bankHash}).`);
 }
 
 for(const question of context.__solidsModule.questions){
@@ -175,6 +175,11 @@ if(!integerRelativeManifest?.level_tags?.includes('DNB')) fail('Le manifeste doi
 
 const runtime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_08');
 if(!runtime?.generator||!runtime?.selection||!runtime?.renderer) fail('Le pilote dnb_08 doit enregistrer génération, sélection et rendu.');
+if(runtime.generator.version!=='2.0.0'||runtime.selection.version!=='2.0.0'||runtime.renderer.version!=='2.0.0') fail('Le pilote dnb_08 enrichi doit utiliser ses contrats fonctionnels 2.0.0.');
+const legacyTenQuestion=context.__divisibilityModule.questions.find(question=>Number(question.n)===5);
+context.__setSeed(10);
+const legacyTenInstance=context.__makeInstance(context.__divisibilityModule,legacyTenQuestion);
+if(!legacyTenInstance.answers.includes('5')||!legacyTenInstance.rawStatement.includes('par 10')) fail('Le gabarit historique du multiple de 10 doit reconnaître aussi le critère par 10.');
 const placeValueRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02b');
 if(!placeValueRuntime?.generator||!placeValueRuntime?.selection||!placeValueRuntime?.renderer) fail('Le pilote dnb_02b doit enregistrer génération, sélection et rendu.');
 const decimalRuntime=context.MATHSGO_MODULE_RUNTIME?.get('dnb_02');
@@ -208,6 +213,38 @@ for(const seed of [1,2,42,999,233279]){
     }
   }
 }
+
+const exactDivisibilityIndexes=value=>{
+  const indexes=runtime.generator.proposedDivisors
+    .map((divisor,index)=>value%divisor===0?String(index+1):null)
+    .filter(Boolean);
+  return indexes.length?indexes:['6'];
+};
+for(let seed=1;seed<=100;seed++){
+  for(const template of runtime.selection.virtualTemplates){
+    context.__setSeed(seed*100+Number(template.n));
+    const instance=context.__makeInstance(context.__divisibilityModule,template);
+    const expected=exactDivisibilityIndexes(instance.divisibilityData.value);
+    if(JSON.stringify(instance.answers)!==JSON.stringify(expected)) fail(`Réponse de divisibilité incorrecte pour ${instance.divisibilityData.value}.`);
+    if(instance.divisibilityData.divisors.includes(10)&&(!instance.divisibilityData.divisors.includes(2)||!instance.divisibilityData.divisors.includes(5))) fail('Tout multiple de 10 doit être reconnu multiple de 2 et de 5.');
+    if(instance.divisibilityData.divisors.includes(9)&&!instance.divisibilityData.divisors.includes(3)) fail('Tout multiple de 9 doit être reconnu multiple de 3.');
+  }
+}
+
+context.__setSeed(20260719);
+context.__beginQuizBank([context.__divisibilityModule]);
+const divisibilityQuestions=context.__drawRuntimeModuleQuestions(context.__divisibilityModule,context.__divisibilityModule.questions,20);
+const divisibilityInstances=divisibilityQuestions.map(question=>context.__makeInstance(context.__divisibilityModule,question));
+const modernDivisibility=divisibilityInstances.filter(instance=>instance.divisibilityData);
+if(modernDivisibility.length!==15) fail(`Une série de 20 doit contenir 15 sélections modernes, pas ${modernDivisibility.length}.`);
+if(new Set(modernDivisibility.map(instance=>instance.divisibilityData.profile)).size!==12) fail('Une série de 20 doit couvrir les douze profils de divisibilité avant répétition.');
+if(new Set(modernDivisibility.map(instance=>instance.divisibilityData.value)).size!==modernDivisibility.length) fail('Une série de 20 ne doit répéter aucun nombre dans les sélections modernes.');
+const modernNone=modernDivisibility.find(instance=>instance.answers.length===1&&instance.answers[0]==='6');
+const modernQuestion=context.__renderQuestion(modernDivisibility[0],false,'with');
+const modernCorrection=context.__renderQuestion(modernDivisibility[0],true,'with');
+if(!modernQuestion.includes('divisibility-inspector')||!modernQuestion.includes(' = □')) fail('L’aide moderne doit faire observer l’unité et préparer la somme sans la donner.');
+if(!modernCorrection.includes(` = ${modernDivisibility[0].divisibilityData.digitSum}`)||!modernCorrection.includes('divisibility-conclusion')) fail('La correction moderne doit remplir les deux tests et conclure.');
+if(!modernNone||!context.__renderQuestion(modernNone,false,'with').includes('data-exclusive="true"')) fail('La réponse « Aucun » doit être disponible et déclarée exclusive.');
 
 context.__setSeed(42);
 const sharingQuestion=context.__makeInstance(context.__divisibilityModule,context.__divisibilityModule.questions.find(question=>Number(question.n)===10));
@@ -678,5 +715,5 @@ for (const domain of Object.keys(isolatedModulesByDomain)) {
 if ((indexHtml.match(/<script defer src=/g)||[]).length < 30) fail('Les scripts de démarrage doivent rester non bloquants pour le premier affichage.');
 
 if (!process.exitCode) {
-  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.20 figée, registre MG1 cohérent.`);
+  console.log(`OK — ${bank.length} modules, ${questionCount} gabarits, banque V1.21 figée, registre MG1 cohérent.`);
 }

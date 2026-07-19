@@ -840,6 +840,8 @@ const slideshow=fs.readFileSync(new URL('auto/scripts/03-slideshow.js',root),'ut
 const questionEngine=fs.readFileSync(new URL('auto/scripts/02-question-engine.js',root),'utf8');
 if(!slideshow.includes("divisibility_rules:{title:'Critères de divisibilité'")) fail('Le catalogue de cours doit utiliser l’identifiant pédagogique divisibility_rules pour les critères de divisibilité.');
 if(slideshow.includes("divisibility:{title:'Critères de divisibilité'")) fail('L’ancien identifiant divisibility ne doit pas remplacer l’identifiant pédagogique divisibility_rules.');
+if(!slideshow.includes("exclusiveIndices=options.map")||!slideshow.includes("if(exclusive.has(index)) selectedOptions.clear()")) fail('Le lecteur doit appliquer l’exclusivité déclarée par une option de QCM multiple.');
+if(!slideshow.includes('courseDivisibilitySharingVisual()')||!slideshow.includes("layout:'divisibility'")) fail('Le cours de divisibilité doit partir du partage sans reste et utiliser sa présentation dédiée.');
 const requiredCourseBindings=[
   ['integer_squares','integer_squares:courseCatalog.squares'],
   ['solid_recognition','solid_recognition:courseCatalog.solids'],

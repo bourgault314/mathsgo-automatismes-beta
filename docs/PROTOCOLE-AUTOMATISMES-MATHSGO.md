@@ -268,6 +268,15 @@ réellement utile.
   « Ouvrir une série » et « Partager » restent présentes mais cachées hors du
   mode de test `?partage=1`.
 
+- **2026-07-19 — Pilote des critères de divisibilité `dnb_08`.** Le critère
+  par 10 rejoint 2, 3, 5 et 9 dans la banque V1.21 ; le générateur global passe
+  en version 1.16.0. Une série de 20 contient quinze sélections de tous les
+  diviseurs proposés et cinq tâches historiques de sens ou de justification.
+  Les douze profils de réponses passent avant répétition, `Aucun` est exclusif,
+  l'aide fait observer l'unité puis préparer la somme et la correction résout
+  ces deux étapes. Les décisions et sources sont consignées dans
+  [`DIVISIBILITE-AUTOMATISMES.md`](DIVISIBILITE-AUTOMATISMES.md).
+
 - **2026-07-19 — Coefficients de la réduction littérale `dnb_10`.** Dans la
   réponse interactive, les emplacements sont déterminés par le degré maximal
   présent dans l'expression ou le plateau initial, jamais par les coefficients

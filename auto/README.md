@@ -1,4 +1,4 @@
-# Automatismes maths&go — bêta V1.20
+# Automatismes maths&go — bêta V1.21
 
 Cette application est la version de développement d'Automatismes cycle 4 et
 DNB. Elle est publiée avec ses fichiers découpés à l'adresse :
@@ -12,15 +12,16 @@ l'application et du livret A5, pas un deuxième exerciseur.
 ## État de référence
 
 - paquet : `1.32.0-beta.0` ;
-- banque : V1.20 ;
+- banque : V1.21 ;
 - 43 modules ;
-- 476 gabarits ;
+- 478 gabarits ;
 - 27 composants visuels ;
 - 43 modules classés pédagogiquement sur 43 ;
 - 3 formats fonctionnels supplémentaires pour `dnb_14`, sans modifier ses 18
   gabarits historiques dans la banque figée ;
 - 1 format fonctionnel tactile supplémentaire pour `dnb_18`, sans modifier ses
   10 gabarits historiques dans la banque figée ;
+- 12 profils fonctionnels pour `dnb_08`, proposés avant répétition de profil ;
 - partage reproductible par seed, lien, code MG1 et QR code.
 
 Le fichier autonome historique `automatismes_mathsgo.html` n'est plus une
@@ -75,7 +76,7 @@ catégories.
 6. lancer `npm test` avant et après le lot ;
 7. publier un seul objectif cohérent par PR.
 
-Une extraction pure ne modifie pas l'empreinte de la banque V1.20. Une retouche
+Une extraction pure ne modifie pas l'empreinte de la banque V1.21. Une retouche
 visuelle ne remplace jamais une source plus riche par un dessin générique.
 
 ## Documents canoniques
