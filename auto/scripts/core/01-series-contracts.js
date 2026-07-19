@@ -299,13 +299,14 @@ function mathsgoSetSegmentedValue(id,value){
 
 function applySeriesDefinitionToUi(definition){
   const normalized=normalizeSeriesDefinition(definition);
+  const legacyIds=new Set(normalized.moduleIds.map(mathsgoLegacyModuleId));
+  if(typeof replaceRememberedModuleSelections==='function') replaceRememberedModuleSelections(legacyIds);
   mathsgoSetSegmentedValue('level',normalized.level);
   mathsgoSetSegmentedValue('visualMode',normalized.visualMode);
   mathsgoSetSegmentedValue('experienceMode',normalized.experienceMode);
   mathsgoSetSegmentedValue('count',normalized.questionCount);
   document.getElementById('seed').value=String(normalized.seed);
   renderModuleList();
-  const legacyIds=new Set(normalized.moduleIds.map(mathsgoLegacyModuleId));
   document.querySelectorAll('.modcb').forEach(input=>{input.checked=legacyIds.has(input.value);});
   updateThemeCounts();
   if(typeof updateGenerateButtonLabel==='function') updateGenerateButtonLabel();
