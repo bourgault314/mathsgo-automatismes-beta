@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/validate-documentation.mjs && node tests/validate-bank.mjs && node tests/validate-visuals.mjs && node tests/validate-pedagogy.mjs && node tests/validate-manipulations.mjs && node tests/validate-generation-shell.mjs"
+    "test": "node tests/validate-documentation.mjs && node tests/validate-bank.mjs && node tests/validate-visuals.mjs && node tests/validate-pedagogy.mjs && node tests/validate-manipulations.mjs && node tests/validate-generation-shell.mjs && node tests/automatismes-critical-answers.test.mjs"
   }
 }
