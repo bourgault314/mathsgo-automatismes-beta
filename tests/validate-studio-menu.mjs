@@ -14,6 +14,7 @@ const fail=message=>{
 
 if(!styles.includes('.app{max-width:860px}')) fail('Le menu branché doit utiliser toute la largeur historique de la bêta sur ordinateur.');
 if(!styles.includes('width:min(100%,832px)')) fail('La barre de lancement doit suivre la largeur élargie du menu.');
+if(!styles.includes('grid-template-columns:minmax(190px,2.2fr) minmax(140px,1.45fr) minmax(180px,2fr) minmax(145px,1.6fr)')) fail('Les quatre réglages doivent occuper une seule ligne sur ordinateur.');
 if(!styles.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) fail('Les quatre réglages doivent rester en grille 2 × 2.');
 if(index.includes('revision-badge')) fail('Le badge de version ne doit pas modifier la façade reprise du Studio.');
 if(!index.includes('segment-dnb-calculator')) fail('Le choix DNB doit conserver la calculatrice barrée du Studio.');
