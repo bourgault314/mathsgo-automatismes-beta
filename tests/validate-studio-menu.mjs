@@ -23,8 +23,9 @@ if(styles.includes('.segment-btn:hover:not(:disabled){background:#fff}')) fail('
 if(!styles.includes('.segment-btn:not(.is-active):not([aria-pressed="true"]):hover:not(:disabled)')) fail('Le survol clair doit être réservé aux choix inactifs.');
 if(!styles.includes('grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 10px')) fail('Les automatismes doivent revenir sur deux colonnes sur ordinateur.');
 if(!styles.includes('.setup-action-bar .generate-action{min-width:0;min-height:48px;padding:11px 26px;border:0;border-radius:999px;background:#f58220')) fail('Le bouton de lancement doit utiliser un orange uni et calme.');
-if(index.includes('revision-badge')) fail('Le badge de version ne doit pas modifier la façade reprise du Studio.');
-if(!index.includes('segment-dnb-calculator')) fail('Le choix DNB doit conserver la calculatrice barrée du Studio.');
+if(!index.includes('<span class="revision-badge">BÊTA · V1.25</span>')) fail('Le numéro de la bêta doit rester visible dans l’en-tête.');
+if(!index.includes('class="dnb-context-heading"')||!index.includes('class="dnb-context-icon"')) fail('La calculatrice barrée doit apparaître hors du choix DNB.');
+if(!styles.includes('.settings-card:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-context-heading{display:inline-grid}')) fail('La calculatrice barrée doit apparaître uniquement quand DNB est actif.');
 
 const modulesStart=index.indexOf('<section class="modules-card"');
 const credit=index.indexOf('<details class="credit">',modulesStart);
