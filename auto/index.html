@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://mathsgo.re/auto/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles/setup.css?v=20260720-7">
+<link rel="stylesheet" href="styles/setup.css?v=20260720-8">
 </head>
 <body>
 <div class="app">
@@ -97,8 +97,8 @@
           <h2 id="modulesTitle">Choisir les automatismes</h2>
         </div>
         <div class="bulk-actions" role="group" aria-label="Sélection des automatismes">
-          <button class="secondary" id="selectAllButton" type="button" aria-label="Tout sélectionner" onclick="globalThis.selectVisible?.(true)">Tous</button>
-          <button class="secondary" id="selectNoneButton" type="button" aria-label="Tout désélectionner" onclick="globalThis.selectVisible?.(false)" disabled>Aucun</button>
+          <button class="secondary" id="selectAllButton" type="button" aria-label="Tout sélectionner" onclick="globalThis.selectVisible?.(true);this.blur()">Tous</button>
+          <button class="secondary" id="selectNoneButton" type="button" aria-label="Tout désélectionner" onclick="globalThis.selectVisible?.(false);this.blur()" disabled>Aucun</button>
         </div>
       </div>
       <div class="series-message" id="seriesMessage" role="status" aria-live="polite" hidden></div>
