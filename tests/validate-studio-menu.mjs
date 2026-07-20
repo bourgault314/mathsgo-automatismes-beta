@@ -27,7 +27,8 @@ if(!index.includes('<span class="revision-badge">BÊTA · V1.25</span>')) fail('
 if(index.includes('class="dnb-context-heading"')||index.includes('class="dnb-context-icon"')) fail('La calculatrice barrée ne doit plus agrandir le titre du bloc 1.');
 if(!index.includes('class="segment-dnb-calculator"')||!index.includes('class="dnb-launch-context"')) fail('Le mode DNB doit afficher une calculatrice dans le choix ordinateur et près du lancement.');
 if(!styles.includes('.segment-dnb-calculator{position:absolute')||!styles.includes('opacity:0;visibility:hidden')) fail('La calculatrice du choix DNB doit être réservée hors du flux pour ne provoquer aucun déplacement.');
-if(!styles.includes('body:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-launch-context{opacity:1;visibility:visible}')) fail('La calculatrice de lancement doit apparaître uniquement quand DNB est actif.');
+if(!styles.includes('body.is-dnb-level .dnb-launch-context{opacity:1;visibility:visible}')) fail('La calculatrice de lancement doit dépendre explicitement du niveau DNB actif.');
+if(!index.includes("document.body.classList.toggle('is-dnb-level',level?.value==='DNB')")||!index.includes("new MutationObserver(sync).observe(dnbButton")) fail('Quitter DNB doit masquer immédiatement la calculatrice, sans attendre une autre action.');
 if(!styles.includes('.segment-dnb-note,.segment-dnb-calculator,.segment-btn-dnb.is-active .segment-dnb-calculator')) fail('Le choix DNB mobile doit rester compact, sans sous-libellé ni calculatrice.');
 
 const modulesStart=index.indexOf('<section class="modules-card"');
