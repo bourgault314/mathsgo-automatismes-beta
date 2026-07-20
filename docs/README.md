@@ -33,6 +33,9 @@ de vérification et de publication communes à toutes les catégories.
 | [`CORPUS-EDUSCOL-ANGLES.md`](CORPUS-EDUSCOL-ANGLES.md) | sources institutionnelles et distracteurs diagnostiques pour les angles |
 | [`DECIMAUX-RELATIFS-AUTOMATISMES.md`](DECIMAUX-RELATIFS-AUTOMATISMES.md) | provenance et décisions propres aux décimaux relatifs |
 | [`LECTURE-DONNEES-AUTOMATISMES.md`](LECTURE-DONNEES-AUTOMATISMES.md) | décisions propres à la lecture de tableaux, diagrammes et graphiques |
+| [`DIVISIBILITE-AUTOMATISMES.md`](DIVISIBILITE-AUTOMATISMES.md) | cours, profils, aide et sélection de `dnb_08` |
+| [`AUDIT-AUTOMATISMES-V2-DIVISIBILITE-2026-07-19.md`](AUDIT-AUTOMATISMES-V2-DIVISIBILITE-2026-07-19.md) | audit daté à transmettre à l'auteur de la V2 |
+| [`RECETTE-DNB-08-20-QUESTIONS-2026-07-19.md`](RECETTE-DNB-08-20-QUESTIONS-2026-07-19.md) | série de recette de 20 questions avec réponses attendues |
 
 Les audits et documents de reprise décrivent un état daté du chantier. Ils
 servent de traces et de feuilles de route, mais ne remplacent jamais le
