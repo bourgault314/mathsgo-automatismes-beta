@@ -64,17 +64,25 @@
     if(data.style==='decimal-decomposition') return decimalDecomposition(data,correction);
     const rows=(Array.isArray(data.rows)&&data.rows.length?data.rows:[{coefficient:1,power:1},{coefficient:3,power:0}]).map(term=>({coefficient:Number(term.coefficient),power:Number(term.power)||0}));
     const columns=(Array.isArray(data.columns)&&data.columns.length?data.columns:[{coefficient:1,power:1},{coefficient:4,power:0}]).map(term=>({coefficient:Number(term.coefficient),power:Number(term.power)||0}));
-    const compact=!!data.compact,gridX=compact?142:160,gridY=compact?82:100,gridW=compact?570:560,gridH=compact?104:230,headerW=compact?74:82,headerH=compact?46:54,cellW=gridW/columns.length,cellH=gridH/rows.length,style=data.style==='table'?'table':'tiles',viewHeight=compact?270:410;
-    let body=heading(380,27,data.title||'Modèle d’aire');
+    const compact=!!data.compact,gridX=compact?142:160,gridY=compact?82:100,gridW=compact?570:560,gridH=compact?104:230,headerW=compact?74:82,headerH=compact?46:54,cellW=gridW/columns.length,cellH=gridH/rows.length,style=data.style==='table'?'table':'tiles',viewHeight=compact?270:410,factorize=data.mode==='factorize';
+    let body=heading(380,27,data.title||(factorize?'Retrouver les dimensions':'Modèle d’aire'));
     body+=`<rect x="${gridX-headerW}" y="${gridY-headerH}" width="${headerW}" height="${headerH}" fill="#fff" stroke="#333" stroke-width="1.7"/>${text(gridX-headerW/2,gridY-headerH/2,'×',22,800)}`;
-    columns.forEach((term,index)=>{const x=gridX+index*cellW;body+=`<rect x="${x}" y="${gridY-headerH}" width="${cellW}" height="${headerH}" fill="${style==='table'?'#e9e9e9':'#fff'}" stroke="#333" stroke-width="1.7"/>${text(x+cellW/2,gridY-headerH/2,signedLabel(term,index),20,800)}`;});
-    rows.forEach((term,index)=>{const y=gridY+index*cellH;body+=`<rect x="${gridX-headerW}" y="${y}" width="${headerW}" height="${cellH}" fill="${style==='table'?'#e9e9e9':'#fff'}" stroke="#333" stroke-width="1.7"/>${text(gridX-headerW/2,y+cellH/2,signedLabel(term,index),20,800)}`;});
+    columns.forEach((term,index)=>{
+      const x=gridX+index*cellW,hidden=factorize&&!correction;
+      if(hidden&&data.interactiveHeaders){
+        body+=`<g class="area-model-slot" data-distributive-slot="${index}" role="button" tabindex="0"><rect x="${x}" y="${gridY-headerH}" width="${cellW}" height="${headerH}" fill="#e9e9e9" stroke="#333" stroke-width="1.7"/>`;
+        body+=`<text data-distributive-value="${index}" x="${x+cellW/2}" y="${gridY-headerH/2}" text-anchor="middle" dominant-baseline="middle" font-family="Cambria Math,Times New Roman,serif" font-size="20" font-weight="850" fill="#31516e">…</text></g>`;
+      }else{
+        body+=`<rect x="${x}" y="${gridY-headerH}" width="${cellW}" height="${headerH}" fill="${style==='table'?'#e9e9e9':'#fff'}" stroke="#333" stroke-width="1.7"/>${text(x+cellW/2,gridY-headerH/2,hidden?'…':signedLabel(term,index),20,800)}`;
+      }
+    });
+    rows.forEach((term,index)=>{const y=gridY+index*cellH,label=factorize&&!correction&&!data.revealFactorInQuestion?'?':signedLabel(term,index);body+=`<rect x="${gridX-headerW}" y="${y}" width="${headerW}" height="${cellH}" fill="${style==='table'?'#e9e9e9':'#fff'}" stroke="#333" stroke-width="1.7"/>${text(gridX-headerW/2,y+cellH/2,label,20,800)}`;});
     rows.forEach((rowTerm,row)=>columns.forEach((columnTerm,column)=>{
       const x=gridX+column*cellW,y=gridY+row*cellH,term=product(rowTerm,columnTerm);
       const slotIndex=row*columns.length+column,interactive=!!data.interactive;
       if(interactive) body+=`<g class="area-model-slot" data-distributive-slot="${slotIndex}" role="button" tabindex="0">`;
       body+=`<rect x="${x}" y="${y}" width="${cellW}" height="${cellH}" fill="${style==='table'?'#f3f3f3':'#fff'}" stroke="#333" stroke-width="1.7" ${style==='table'&&column?'stroke-dasharray="5 5"':''}/>`;
-      if(correction){
+      if(correction||factorize){
         const label=Array.isArray(data.cellLabels)&&data.cellLabels[slotIndex]?data.cellLabels[slotIndex]:termLabel(term);
         body+=style==='tiles'?tileProduct(x+cellW/2,y+cellH/2,term,cellW,cellH):text(x+cellW/2,y+cellH/2,label,compact?19:22,850);
       }else if(interactive){
@@ -101,7 +109,7 @@
 
   if(!global.MATHSGO_VISUALS)throw new Error('Le registre MATHSGO_VISUALS doit être chargé avant area-model.js.');
   global.MATHSGO_VISUALS.register('algebra.area-model',{
-    version:'1.2.0',
+    version:'1.3.0',
     label:'Modèle d’aire — distributivité et factorisation',
     family:'Algèbre',
     description:'Génère les facteurs en bordure, les produits partiels et les tuiles ou cases grises des modèles d’aire du livret.',

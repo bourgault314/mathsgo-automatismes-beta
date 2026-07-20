@@ -22,7 +22,7 @@ const fail=message=>{console.error(`ÉCHEC — ${message}`);process.exitCode=1;}
 const registry=context.MATHSGO_MANIPULATIONS;
 if(!registry) fail('Le registre de manipulations est absent.');
 const contracts=registry?.list()||[];
-if(contracts.length!==10) fail(`Dix contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
+if(contracts.length!==11) fail(`Onze contrats de manipulation attendus, ${contracts.length} trouvé(s).`);
 
 for(const contract of contracts){
   if(contract.status==='active'&&!context.MATHSGO_VISUALS.get(contract.componentId)) fail(`Le composant actif ${contract.id} est absent.`);
@@ -57,6 +57,8 @@ for(const id of ['numbers.order-cards','numbers.frame-integers','numbers.distrib
   const contract=registry?.get(id);
   if(contract?.status!=='active'||contract?.validation.mode!=='ordered-slots'||!contract?.actions.some(action=>action.id==='drag-card')||!contract?.actions.some(action=>action.id==='select-card')||!contract?.actions.some(action=>action.id==='place-card')) fail(`La manipulation ${id} doit fonctionner par glisser ou par sélection puis placement ordonné.`);
 }
+const algebraArea=registry?.get('algebra.area-model-cards');
+if(algebraArea?.status!=='active'||algebraArea?.validation.mode!=='ordered-slots'||!algebraArea?.actions.some(action=>action.id==='drag-card')||!algebraArea?.actions.some(action=>action.id==='select-card')||!algebraArea?.actions.some(action=>action.id==='place-card')) fail('Le modèle d’aire algébrique doit fonctionner par glisser ou par sélection puis placement.');
 const algorithm=registry?.get('algorithm.block-sequence');
 if(algorithm?.status!=='planned'||algorithm?.componentId!==null||algorithm?.correction.mode!=='replay') fail('La suite de blocs doit rester planifiée avec une correction rejouée pas à pas.');
 
@@ -76,4 +78,4 @@ if(!slideshow.includes('card.onclick=()=>')||!slideshow.includes('place(decimalS
 if(!slideshow.includes('setupAngleSumTactileInteraction(spec)')||!slideshow.includes('placeAngleSumBuilderToken(spec,value,Number(target.dataset.angleSumSlot))')) fail('Les cartes des angles doivent réutiliser le double geste glisser ou toucher puis toucher.');
 if(!slideshow.includes("angleSumPlacementValidated=true")||!slideshow.includes("'Valider le placement'")||!slideshow.includes("'Valider 𝑥'")) fail('La manipulation des angles doit séparer la validation du placement et celle du calcul.');
 
-if(!process.exitCode) console.log('OK — 10 contrats de manipulation : 9 actifs et 1 planifié, état MG-MANIP-1 cohérent.');
+if(!process.exitCode) console.log('OK — 11 contrats de manipulation : 10 actifs et 1 planifié, état MG-MANIP-1 cohérent.');

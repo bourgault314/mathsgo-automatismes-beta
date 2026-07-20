@@ -739,7 +739,7 @@ for(const color of ['#2F8FC9','#72C475','#FFE64C','#EF3F35']) if(!mathigonTiles.
 
 const areaModel=registry?.get('algebra.area-model');
 if(!areaModel) fail('Le composant algebra.area-model est absent.');
-if(areaModel&&areaModel.version!=='1.2.0') fail('Version 1.2.0 attendue pour le modèle d’aire.');
+if(areaModel&&areaModel.version!=='1.3.0') fail('Version 1.3.0 attendue pour le modèle d’aire.');
 if(areaModel&&areaModel.presets.length!==7) fail('Sept modèles d’aire de référence sont attendus.');
 if(areaModel&&context.areaModel!==areaModel.render) fail('Le point d’entrée areaModel doit utiliser le composant enregistré.');
 const areaModelHashes=new Map([

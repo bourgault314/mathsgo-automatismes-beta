@@ -1,5 +1,5 @@
 const INTERACTIVE_SERIES_COUNT=10;
-const APP_REVISION=typeof MATHSGO_APP_VERSION==='string'?MATHSGO_APP_VERSION:'1.15';
+const APP_REVISION=typeof MATHSGO_APP_VERSION==='string'?MATHSGO_APP_VERSION:'1.19';
 
 function setupReadDataTools(root=globalThis.document){
   const doc=root&&root.ownerDocument?root.ownerDocument:root;
@@ -153,6 +153,8 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .decimal-complement-visual{display:flex;align-items:center;justify-content:center;width:min(100%,620px);height:clamp(92px,16vh,132px);margin:5px auto 0}.decimal-complement-visual svg{display:block;width:100%;height:auto;max-height:100%}
 .area-model-help{display:flex;align-items:center;justify-content:center;width:min(100%,760px);margin:2px auto}.area-model-svg{display:block;width:100%;height:auto;max-height:310px}
 .area-model-compact .area-model-svg{max-height:245px}.area-model-slot{cursor:pointer;touch-action:manipulation}.area-model-slot rect{transition:fill .15s ease}.area-model-slot.is-filled rect{fill:#fff3e3!important;stroke:#e86100}.area-model-slot.is-selected rect{stroke:#ff7a1a;stroke-width:4}
+.expand-factor-shell{display:flex;flex-direction:column;align-items:center;width:100%;gap:8px}.expand-prompt{margin-bottom:0}.expand-expression{font-size:clamp(2rem,5.2vw,3.35rem);font-weight:850;color:#132d4f;text-align:center}.expand-answer{margin-top:2px}.expand-options{width:min(100%,850px);margin-top:2px}.expand-manipulation{width:min(100%,760px);padding:4px 10px 8px;border-radius:14px;background:#f7fafc}.expand-manipulation .area-model-help{margin:0 auto}.expand-worked-correction{display:grid;grid-template-columns:auto 1fr;gap:11px;width:min(100%,830px);margin:2px auto 0;padding:11px 14px;border:1.5px solid #f4b76f;border-radius:14px;background:#fffaf4;color:#263b53;text-align:left;font-size:clamp(.91rem,1.65vw,1.08rem);line-height:1.35}.expand-worked-icon{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#f58220;color:#fff;font-size:1.05rem;font-weight:950}.expand-worked-correction h3{margin:1px 0 6px;color:#934000;font-size:1rem}.expand-worked-row{display:grid;grid-template-columns:minmax(98px,auto) 1fr;gap:9px;padding:2px 0}.expand-worked-row strong{color:#173a5e}.expand-worked-correction p{margin:6px 0 0;color:#5c6572}.legacy-expand-factor>.question{margin-bottom:2px}
+@media(min-width:801px){.diapo.expand-factor-mode .stage{padding:6px 20px 9px}.diapo.expand-factor-mode .slide{max-width:1120px}.diapo.expand-factor-mode .expand-factor-shell{gap:5px}.diapo.expand-factor-mode .question{margin:0 auto 1px;font-size:clamp(1.75rem,3vw,2.4rem);line-height:1.08}.diapo.expand-factor-mode .expand-expression{font-size:clamp(1.85rem,3.6vw,2.75rem)}.diapo.expand-factor-mode .area-model-svg{max-height:180px}.diapo.expand-factor-mode .footer{margin-top:2px;font-size:clamp(2rem,3.5vw,2.85rem)}.diapo.expand-factor-mode .options{gap:10px 16px;margin-top:5px}.diapo.expand-factor-mode .opt{padding:12px 16px;font-size:clamp(1.05rem,1.6vw,1.45rem)}.diapo.expand-factor-mode .expand-worked-correction{gap:9px;padding:8px 12px;font-size:.94rem;line-height:1.22}.diapo.expand-factor-mode .expand-worked-correction h3{margin:0 0 4px;font-size:.94rem}.diapo.expand-factor-mode .expand-worked-row{padding:1px 0}.diapo.expand-factor-mode .expand-worked-correction p{margin:4px 0 0}}
 .decimal-decomposition{display:grid;gap:7px;width:min(100%,720px);padding:10px 16px;border:1px solid #d3dfed;border-radius:16px;background:#fff;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif}.decimal-decomposition-title{color:#43536a;font:900 1.05rem Arial,sans-serif;text-align:center}.decimal-decomposition-line{display:flex;align-items:center;justify-content:center;gap:10px;font-size:clamp(1.6rem,3.4vw,2.65rem);font-weight:850;white-space:nowrap}.decimal-decomposition-start{font-size:clamp(1.9rem,4vw,3.1rem)}.decimal-decomposition-slot,.decimal-decomposition-term{display:inline-grid;place-items:center;min-width:190px;min-height:56px;padding:8px 12px;border:2px dashed #86a8cf;border-radius:12px;background:#f8fbff;color:#244d70;font:850 clamp(1.25rem,2.6vw,2rem) "Cambria Math","Times New Roman",serif}.decimal-decomposition-slot.is-filled{border-style:solid;border-color:#e86100;background:#fff7ef;color:#8d3b00}.decimal-decomposition-result{padding-top:5px;border-top:1px solid #dce5f0;color:#087a55;font-size:clamp(1.35rem,2.7vw,2.05rem);font-weight:900;text-align:center}
 .decimal-distributivity-board{padding-top:8px}.decimal-distributivity-board .decimal-card-tray{margin:2px auto 0}
 .decimal-manipulation.is-correction .decimal-card-tray{display:none}
@@ -1153,9 +1155,15 @@ Object.assign(courseCatalog,{
     ['Exemple','Pour x = −3 : <span class="course-equation">2x² = 2 × (−3)² = 2 × 9 = 18</span>.']
   ]},
   expand_factor:{title:'Développer ou factoriser',rules:[
-    ['Développer','On distribue le facteur à chaque terme de la parenthèse : k(a + b) = ka + kb.'],
-    ['Factoriser','On repère le facteur commun et on le place devant une parenthèse : ka + kb = k(a + b).'],
-    ['Exemple','<span class="course-equation">3(x + 4) = 3x + 12</span> et <span class="course-equation">5x + 15 = 5(x + 3)</span>.']
+    ['Somme ou produit&nbsp;?','On regarde l’opération effectuée en dernier. <span class="course-equation">3x + 12</span> est une somme ; <span class="course-equation">3(x + 4)</span> est un produit.',false,'structure'],
+    ['Développer','Développer transforme un produit en somme. Le facteur extérieur multiplie <strong>chacun</strong> des termes : <span class="course-equation">k(a + b) = ka + kb</span> et <span class="course-equation">k(a − b) = ka − kb</span>.<span class="course-example">3(x + 4) = 3 × x + 3 × 4 = 3x + 12.</span>',false,'distribute'],
+    ['Le modèle d’aire','Les dimensions sont écrites sur les bords. Chaque case contient le produit de son en-tête de ligne par son en-tête de colonne. La somme des aires des cases donne l’aire totale.',false,'partial-products'],
+    ['Factoriser au maximum','Factoriser transforme une somme en produit. On cherche le plus grand facteur commun, puis on divise chaque terme par ce facteur.<span class="course-example">12x + 18 = 6 × 2x + 6 × 3 = 6(2x + 3).</span>',false,'common-factor'],
+    ['Les signes','Un facteur négatif change le signe de chaque produit : <span class="course-equation">−3(x + 4) = −3x − 12</span> et <span class="course-equation">−3(x − 4) = −3x + 12</span>.',false,'signs'],
+    ['Vérifier dans l’autre sens','Après une factorisation, on développe mentalement le résultat : on doit retrouver exactement l’expression de départ. Développer, factoriser et réduire sont trois actions différentes.',false,'reverse-check'],
+    ['Double distributivité','Chaque terme du premier facteur multiplie chaque terme du second : quatre produits partiels, puis on réduit.<span class="course-example">(x + 2)(x + 3) = x² + 3x + 2x + 6 = x² + 5x + 6.</span>',false,'double-distribute'],
+    ['Facteur apparent','Quand la même parenthèse est déjà visible dans chaque terme, on la met en facteur.<span class="course-example">3(x + 2) + 5(x + 2) = (3 + 5)(x + 2) = 8(x + 2).</span>',false,'apparent-factor'],
+    ['Identités remarquables','<span class="course-equation">(a + b)² = a² + 2ab + b²</span><span class="course-equation">(a − b)² = a² − 2ab + b²</span><span class="course-equation">a² − b² = (a − b)(a + b)</span><span class="course-example">Le terme du milieu d’un carré est le double produit, pas seulement ab.</span>',true,'identities']
   ]},
   equations:{title:'Résoudre une équation',rules:[
     ['But','<div class="course-equation-goals"><span><strong>Équation :</strong> trouver la valeur de l’inconnue qui rend l’égalité vraie.</span><span><strong>Splat :</strong> trouver la valeur qui se cache sous chaque tache.</span></div>'],
@@ -1469,6 +1477,11 @@ function courseForSlide(slide){
    const rules=course.rules.filter(rule=>sections.includes(rule[3]));
    return {title:course.title,rules:rules.length?rules:course.rules};
  }
+ if(slide.courseKind==='expand_factor'){
+   const course=courseCatalog.expand_factor,sections=Array.isArray(slide.courseContext&&slide.courseContext.helpSections)?slide.courseContext.helpSections:[];
+   const rules=course.rules.filter(rule=>sections.includes(rule[3]));
+   return {title:course.title,rules:rules.length?rules:course.rules};
+ }
  return courseCatalog[slide.courseKind]||null;
 }
 function fitNavNumbers(){
@@ -1494,7 +1507,7 @@ function setModuleClasses(diapo,moduleId){
  const map={
    'module01-mode':['dnb_01'],'decimal-mode':['dnb_02','dnb_39'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
    'multiple-forms-mode':['dnb_05'],'scientific-mode':['dnb_06'],'squares-mode':['dnb_07'],'divisibility-mode':['dnb_08'],
-   'relation-mode':['dnb_09'],'reduction-mode':['dnb_10'],'substitution-mode':['dnb_11'],
+   'relation-mode':['dnb_09'],'reduction-mode':['dnb_10'],'substitution-mode':['dnb_11'],'expand-factor-mode':['dnb_12'],
    'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angles-mode':['dnb_17'],'angle-sum-mode':['dnb_18'],
    'conversion-mode':['dnb_19'],'solids-mode':['dnb_20'],'perimeter-mode':['dnb_21'],'area-mode':['dnb_22'],'volume-mode':['dnb_23'],'average-mode':['dnb_30'],
    'median-mode':['dnb_31'],'read-data-mode':['dnb_32'],'recognize-proportion-mode':['dnb_33'],'proportion-mode':['dnb_34'],'evolution-mode':['dnb_35'],'data-mode':['dnb_28','dnb_29'],
@@ -1600,7 +1613,7 @@ function setupInteractiveSlide(current){
    else if(spec.kind==='angle-sum-tactile') kind.textContent=angleSumPlacementValidated?'Calcule 𝑥':'Place les quatre cartes';
    else if(spec.kind==='decimal-order') kind.textContent='Place les trois nombres';
    else if(spec.kind==='decimal-frame') kind.textContent='Place les deux entiers';
-   else if(spec.kind==='decimal-distributivity') kind.textContent='Place les deux produits';
+   else if(spec.kind==='decimal-distributivity') kind.textContent=spec.instruction||'Place les deux produits';
    else if(spec.layout==='fraction') kind.textContent='Numérateur / dénominateur';
    else if(spec.layout==='polynomial') kind.textContent='Coefficients';
    else kind.textContent=(spec.slots&&spec.slots.length>1)?spec.slots.length+' cases':'Réponse';
@@ -2354,7 +2367,7 @@ function recordInteractiveAttempt(result){
  const session=ensureQuestionSession();pauseQuestionTimer();session.validations++;
  attemptRecorder.record({
    schemaVersion:contract.schemaVersion||1,
-   generatorVersion:contract.generatorVersion||'1.15.0',
+   generatorVersion:contract.generatorVersion||'1.16.0',
    questionInstanceId:contract.questionInstanceId,
    seriesId:contract.seriesId,
    generatedSeriesId:contract.generatedSeriesId,
@@ -2602,6 +2615,14 @@ function interactiveSpecForInstance(inst,correctionHtml){
  if(inst.relativeTokens&&inst.relativeTokens.interactive){
    const result=String(inst.relativeTokens.result);
    return {kind:'relative-tokens',relative:inst.relativeTokens,expectedDisplay:'réponse : '+(result.startsWith('-')?'−'+result.slice(1):result)};
+ }
+ if(inst.expandFactor&&inst.expandFactor.manipulation){
+   const manipulation=inst.expandFactor.manipulation,expected=manipulation.expected.map(String);
+   return {
+     kind:'decimal-distributivity',layout:'cards',cards:manipulation.cards.map(String),
+     slots:manipulation.slotLabels.map(label=>({label})),acceptedCombinations:[expected],
+     expectedDisplay:inst.expandFactor.answerDisplay||expected.join(' ; '),instruction:manipulation.instruction,keys:[]
+   };
  }
  const decimalKind=String(inst.q&&inst.q.options&&inst.q.options.decimal_kind||'');
  const decimalDisplay=value=>String(value??'').replace('.',',').replace('-', '−');

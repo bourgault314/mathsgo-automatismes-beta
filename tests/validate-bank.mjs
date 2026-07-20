@@ -36,6 +36,9 @@ const sources = [
   'auto/scripts/modules/numbers/dnb_14/generate.js',
   'auto/scripts/modules/numbers/dnb_14/selection.js',
   'auto/scripts/modules/numbers/dnb_14/render.js',
+  'auto/scripts/modules/numbers/dnb_12/generate.js',
+  'auto/scripts/modules/numbers/dnb_12/selection.js',
+  'auto/scripts/modules/numbers/dnb_12/render.js',
   ...isolatedModulesByDomain.geometry.map(id => `auto/scripts/modules/geometry/${id}.js`),
   'auto/scripts/modules/geometry/dnb_15/generate.js',
   'auto/scripts/modules/geometry/dnb_15/selection.js',
@@ -84,6 +87,7 @@ globalThis.__decimalModule = MODULE_DNB_02;
 globalThis.__pythagorasTactileModule = MODULE_DNB_24_TACTILE;
 globalThis.__divisibilityModule = MODULE_DNB_08;
 globalThis.__placeValueModule = MODULE_DNB_02B;
+globalThis.__expandFactorModule = MODULE_DNB_12;
 globalThis.__numberLineModule = MODULE_DNB_14;
 globalThis.__coordinateModule = MODULE_DNB_15;
 globalThis.__angleVocabularyModule = MODULE_DNB_17;
@@ -100,6 +104,7 @@ globalThis.__beginQuizBank = beginQuizBank;
 globalThis.__drawFromQuestionDeck = drawFromQuestionDeck;
 globalThis.__drawRuntimeModuleQuestions = drawRuntimeModuleQuestions;
 globalThis.__shuffledCopy = shuffledCopy;
+globalThis.__questionEligibleForLevel = questionEligibleForLevel;
 globalThis.__moduleManifest = MATHSGO_MODULE_MANIFEST;
 globalThis.__moduleFiles = MATHSGO_MODULE_FILES;`;
 
@@ -110,7 +115,7 @@ vm.runInContext(code, context, { timeout: 5000 });
 
 const bank = context.__bank;
 const bankHash = createHash('sha256').update(context.__bankSnapshot).digest('hex');
-const expectedBankHash = '0c3d639573fa3294a6c5b11b58162238fc9d10161ba9e5aa2193b82611a31ece';
+const expectedBankHash = '1a267c10c09f3a4c877dfbc061741b8f909ece147af1e84b597d73726bae5184';
 const fail = message => {
   console.error(`ÉCHEC — ${message}`);
   process.exitCode = 1;
@@ -147,7 +152,7 @@ for (const id of isolatedModuleIds) {
 }
 
 const questionCount = bank.reduce((sum, module) => sum + module.questions.length, 0);
-if (questionCount !== 478) fail(`478 gabarits attendus, ${questionCount} trouvés.`);
+if (questionCount !== 495) fail(`495 gabarits attendus, ${questionCount} trouvés.`);
 if (bankHash !== expectedBankHash) {
   fail(`Le contenu ou l’ordre de la banque V1.21 a changé (${bankHash}).`);
 }
@@ -676,6 +681,54 @@ for(let seed=0;seed<40;seed++){
   }
 }
 if(pythagorasTriangleNames.size<6) fail('Les noms des triangles Pythagore tactiles ne varient pas assez selon la graine.');
+
+const expandFactor=context.__expandFactorModule;
+const byNumber=number=>expandFactor.questions.find(question=>Number(question.n)===number);
+const expectedByLevel={
+  '5e':[1,2,3,4,5,6,7,9,10,11,12,13,14],
+  '4e':Array.from({length:18},(_,index)=>index+1),
+  '3e':Array.from({length:27},(_,index)=>index+1),
+  DNB:[1,2,3,4,5,6,7,8,9,15,16,17]
+};
+for(const [level,expected] of Object.entries(expectedByLevel)){
+  const actual=expandFactor.questions.filter(question=>context.__questionEligibleForLevel(expandFactor,question,level)).map(question=>Number(question.n));
+  if(JSON.stringify(actual)!==JSON.stringify(expected)) fail(`Le filtre ${level} de Développer et factoriser est incorrect : ${actual.join(', ')}.`);
+}
+
+const gcdTest=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){const remainder=a%b;a=b;b=remainder;}return a||1;};
+for(let seed=1;seed<=600;seed++){
+  context.__setSeed(seed);
+  const instance=context.__makeInstance(expandFactor,byNumber(6));
+  if(gcdTest(instance.scope.b,instance.scope.c)!==1) fail(`La factorisation ${instance.scope.k}(${instance.scope.b}x + ${instance.scope.c}) n’est pas maximale (seed ${seed}).`);
+}
+
+for(let seed=1;seed<=240;seed++){
+  for(let number=11;number<=27;number++){
+    context.__setSeed(seed*100+number);
+    const instance=context.__makeInstance(expandFactor,byNumber(number));
+    if(!instance.expandFactor||!instance.answers?.length) fail(`Le gabarit fonctionnel dnb_12 n°${number} est incomplet (seed ${seed}).`);
+    const qcm=instance.expandFactor.qcm;
+    if(qcm){
+      if(qcm.options.filter(option=>option.errorCode==='correct').length!==1) fail(`Le QCM dnb_12 n°${number} doit avoir une seule bonne réponse.`);
+      if(new Set(qcm.options.map(option=>option.html)).size!==qcm.options.length) fail(`Le QCM dnb_12 n°${number} contient un doublon (seed ${seed}).`);
+      if(qcm.options.some(option=>!option.errorCode)) fail(`Un distracteur dnb_12 n°${number} n’a pas de code d’erreur.`);
+    }
+  }
+}
+
+for(const [number,slotCount] of [[13,2],[18,2],[22,4]]){
+  context.__setSeed(20260719+number);
+  const instance=context.__makeInstance(expandFactor,byNumber(number));
+  const questionHtml=context.__renderQuestion(instance,false,'with');
+  const correctionHtml=context.__renderQuestion(instance,true,'with');
+  if((questionHtml.match(/data-distributive-slot=/g)||[]).length!==slotCount) fail(`La manipulation dnb_12 n°${number} doit proposer ${slotCount} cases.`);
+  if((questionHtml.match(/data-decimal-card=/g)||[]).length!==slotCount) fail(`La manipulation dnb_12 n°${number} doit proposer ${slotCount} cartes.`);
+  if(!correctionHtml.includes('Correction expliquée')||!correctionHtml.includes('expand-worked-correction')) fail(`La correction écrite manque pour dnb_12 n°${number}.`);
+}
+
+context.__setSeed(617);
+const factorQuestion=context.__renderQuestion(context.__makeInstance(expandFactor,byNumber(17)),false,'with');
+if(!factorQuestion.includes('Retrouver les dimensions')||!factorQuestion.includes('>?</text>')||!factorQuestion.includes('>…</text>')) fail('L’aide de factorisation doit montrer les aires sans donner immédiatement les dimensions.');
 
 const pythagorasInstance={
   module:{id:'dnb_24'},q:{n:7},scope:{a:3,b:4,c:5},answers:['4'],

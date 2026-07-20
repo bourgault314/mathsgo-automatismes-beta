@@ -97,6 +97,7 @@ promet pas encore un stockage de progression.
 | `numbers.order-cards` | cartes, positions et sens de rangement | cases ordonnées | ordre croissant résolu | actif |
 | `numbers.frame-integers` | décimal, entiers proposés et deux emplacements | cases ordonnées | deux entiers consécutifs | actif |
 | `numbers.distributivity-cards` | facteurs, produits proposés et deux cases | cases ordonnées | décomposition résolue | actif |
+| `algebra.area-model-cards` | facteurs, étiquettes et deux ou quatre cases | cases ordonnées | modèle d’aire complété | actif |
 | `algorithm.block-sequence` | instruction, variables, position, orientation et trace | résultat sémantique | rejeu pas à pas | planifié |
 
 ## Jeux futurs

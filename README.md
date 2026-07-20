@@ -30,10 +30,10 @@ d’audience du site public.
 
 ## État actuel
 
-- Application : **V1.18 bêta**
+- Application : **V1.26 bêta**
 - Source : `bourgault314/maths`, dossier `auto/`
 - Révision copiée : `cd8c2b0407f10be7f272dbb7a42d7af2f682a0f8`
-- Banque chargée : **42 modules et 475 gabarits de questions**
+- Banque chargée : **43 modules et 495 gabarits de questions**
 
 ## Organisation actuelle
 
@@ -51,7 +51,7 @@ d’audience du site public.
 | `auto/dev/visual-library.html` | Catalogue visuel de développement |
 | `tests/` | Vérifications structurelles de la banque |
 
-Les 42 modules sont maintenant isolés avec des identifiants stables et des
+Les 43 modules sont maintenant isolés avec des identifiants stables et des
 tests de reproductibilité.
 
 ### Découpage en cours

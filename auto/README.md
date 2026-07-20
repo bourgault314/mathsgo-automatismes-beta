@@ -11,10 +11,10 @@ l'application et du livret A5, pas un deuxième exerciseur.
 
 ## État de référence
 
-- paquet : `1.32.0-beta.0` ;
+- paquet : `1.33.0-beta.0` ;
 - banque : V1.21 ;
 - 43 modules ;
-- 478 gabarits ;
+- 495 gabarits ;
 - 27 composants visuels ;
 - 43 modules classés pédagogiquement sur 43 ;
 - 3 formats fonctionnels supplémentaires pour `dnb_14`, sans modifier ses 18
