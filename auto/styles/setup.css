@@ -212,9 +212,9 @@ body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:radial
 .setup-summary span{font-size:12px;line-height:1.2;color:#637287}
 .setup-action-shell.is-empty .setup-summary strong{color:#637287;font-weight:600}
 .launch-cluster{display:grid;grid-template-columns:42px auto;align-items:center;gap:8px}
-.dnb-launch-context{display:grid;place-items:center;width:42px;height:42px;border:1px solid #f2c89f;border-radius:999px;background:#fff6ed;color:#335775;box-shadow:0 2px 6px rgba(155,76,14,.08);opacity:0;visibility:hidden;transition:opacity .12s}
+.dnb-launch-context{display:grid;place-items:center;width:42px;height:42px;border:1px solid #f2c89f;border-radius:999px;background:#fff6ed;color:#335775;box-shadow:0 2px 6px rgba(155,76,14,.08);opacity:0;visibility:hidden}
 .dnb-launch-icon{display:block;width:32px;height:32px}
-body:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-launch-context{opacity:1;visibility:visible}
+body.is-dnb-level .dnb-launch-context{opacity:1;visibility:visible}
 .setup-action-bar .generate-action{min-width:0;min-height:48px;padding:11px 26px;border:0;border-radius:999px;background:#f58220;color:#fff;font-size:15.5px;font-weight:700;box-shadow:0 4px 10px rgba(245,130,32,.18);transition:transform .1s,box-shadow .12s,background .12s}
 .setup-action-bar .generate-action:hover:not(:disabled){transform:translateY(-1px);background:#ee7819;box-shadow:0 6px 14px rgba(245,130,32,.22)}
 .setup-action-bar .generate-action:active:not(:disabled){transform:translateY(1px);box-shadow:0 2px 6px rgba(245,130,32,.14)}
