@@ -277,3 +277,20 @@ html.share-test .setup-action-bar{grid-template-columns:minmax(0,1fr) auto auto}
   .modules-toolbar{align-items:flex-start;flex-wrap:wrap}
   .bulk-actions{margin-left:32px}
 }
+
+/* Aperçus temporaires des trois emplacements possibles pour l'information DNB. */
+.settings-card>.section-heading{width:100%}
+.dnb-context{display:none;align-items:center;gap:7px;border:1px solid #f2c89f;background:#fff6ed;color:#9b4c0e;font-size:12px;font-weight:700;line-height:1.15}
+.dnb-context-icon{display:block;width:19px;height:19px;flex:none;color:#335775}
+.dnb-context-heading{min-height:29px;margin-left:auto;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.dnb-context-field{justify-content:center;min-height:30px;margin-top:6px;padding:4px 7px;border-radius:10px;text-align:center}
+.dnb-context-strip{justify-content:center;width:100%;min-height:36px;margin-top:2px;padding:6px 10px;border-radius:11px}
+html[data-dnb-preview="heading"] .settings-card:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-context-heading{display:inline-flex}
+html[data-dnb-preview="field"] .settings-card:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-context-field{display:flex}
+html[data-dnb-preview="strip"] .settings-card:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-context-strip{display:flex}
+@media(max-width:650px){
+  .dnb-context{font-size:11px}
+  .dnb-context-icon{width:18px;height:18px}
+  .dnb-context-heading{min-height:27px;padding:3px 7px}
+  .dnb-context-strip{min-height:34px}
+}
