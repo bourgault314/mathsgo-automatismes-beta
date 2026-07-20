@@ -162,11 +162,12 @@ body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:radial
 .segment-btn.is-active,.segment-btn[aria-pressed="true"]{background:#063f86;color:#fff;font-weight:700;box-shadow:0 2px 5px rgba(6,63,134,.14)}
 .segment-btn:focus-visible{outline:3px solid rgba(6,63,134,.4);outline-offset:2px}
 .segment-separator{width:1px;align-self:stretch;flex:none;margin:4px 3px;background:#dce5ef}
-.segment-btn-dnb{display:flex;align-items:center;justify-content:center;gap:7px;padding:2px 11px;color:#f58220;line-height:1}
+.segment-btn-dnb{position:relative;display:flex;flex:1.35 1 0;align-items:center;justify-content:center;padding:2px 6px;color:#f58220;line-height:1}
 .segment-dnb-text{display:flex;flex-direction:column;align-items:center;gap:1px}
 .segment-dnb-note{font-size:8px;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
-.segment-dnb-calculator{display:none;width:17px;height:17px;flex:none}
-.segment-btn-dnb.is-active .segment-dnb-calculator,.segment-btn-dnb[aria-pressed="true"] .segment-dnb-calculator{display:block}
+.segment-dnb-calculator{position:absolute;right:5px;top:50%;display:block;width:17px;height:17px;transform:translateY(-50%);opacity:0;visibility:hidden}
+.segment-btn-dnb.is-active .segment-dnb-text,.segment-btn-dnb[aria-pressed="true"] .segment-dnb-text{transform:translateX(-5px)}
+.segment-btn-dnb.is-active .segment-dnb-calculator,.segment-btn-dnb[aria-pressed="true"] .segment-dnb-calculator{opacity:1;visibility:visible}
 .segment-btn-dnb.is-active,.segment-btn-dnb[aria-pressed="true"]{background:#f58220;color:#fff;box-shadow:0 2px 5px rgba(245,130,32,.18)}
 .segment-btn-dnb:focus-visible{outline-color:rgba(245,130,32,.5)}
 .modules-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 8px;padding:0;border:0}
@@ -246,6 +247,7 @@ html.share-test .setup-action-bar{grid-template-columns:minmax(0,1fr) auto auto}
   .segment-separator{margin:3px 1px}
   .segment-btn-dnb{padding:2px 4px}
   .segment-dnb-note,.segment-dnb-calculator,.segment-btn-dnb.is-active .segment-dnb-calculator,.segment-btn-dnb[aria-pressed="true"] .segment-dnb-calculator{display:none}
+  .segment-btn-dnb.is-active .segment-dnb-text,.segment-btn-dnb[aria-pressed="true"] .segment-dnb-text{transform:none}
   .modules-toolbar{align-items:center;flex-direction:row;flex-wrap:nowrap;gap:5px;margin-bottom:10px;padding:0}
   .modules-toolbar .section-heading h2{font-size:16px;white-space:nowrap}
   .bulk-actions{margin-left:0;gap:4px}
