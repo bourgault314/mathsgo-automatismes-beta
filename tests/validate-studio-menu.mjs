@@ -12,9 +12,9 @@ const fail=message=>{
   process.exitCode=1;
 };
 
-if(!styles.includes('.app{max-width:860px}')) fail('Le menu branché doit utiliser toute la largeur historique de la bêta sur ordinateur.');
-if(!styles.includes('width:min(100%,832px)')) fail('La barre de lancement doit suivre la largeur élargie du menu.');
-if(!styles.includes('grid-template-columns:minmax(190px,2.2fr) minmax(140px,1.45fr) minmax(180px,2fr) minmax(145px,1.6fr)')) fail('Les quatre réglages doivent occuper une seule ligne sur ordinateur.');
+if(!styles.includes('.app{max-width:620px}')) fail('Le menu bêta doit reprendre la largeur de 620 px validée dans le Studio sur ordinateur.');
+if(!styles.includes('width:min(100%,620px)')) fail('La barre de lancement doit suivre la largeur de 620 px du menu.');
+if(!styles.includes('.controls-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))')) fail('Les quatre réglages doivent reprendre la grille 2 × 2 du Studio sur ordinateur.');
 if(!styles.includes('grid-template-columns:minmax(0,1fr) minmax(0,1fr)')) fail('Les quatre réglages doivent rester en grille 2 × 2.');
 for(const mobileScale of ['.logo{height:50px}', 'min-height:44px', '.theme-icon{width:36px;height:36px}', 'min-height:62px']){
   if(!styles.includes(mobileScale)) fail('Le menu mobile doit agrandir les deux blocs à l’échelle de la version normale.');
@@ -24,8 +24,10 @@ if(!styles.includes('.segment-btn:not(.is-active):not([aria-pressed="true"]):hov
 if(!styles.includes('grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 10px')) fail('Les automatismes doivent revenir sur deux colonnes sur ordinateur.');
 if(!styles.includes('.setup-action-bar .generate-action{min-width:0;min-height:48px;padding:11px 26px;border:0;border-radius:999px;background:#f58220')) fail('Le bouton de lancement doit utiliser un orange uni et calme.');
 if(!index.includes('<span class="revision-badge">BÊTA · V1.25</span>')) fail('Le numéro de la bêta doit rester visible dans l’en-tête.');
-if(!index.includes('class="dnb-context-heading"')||!index.includes('class="dnb-context-icon"')) fail('La calculatrice barrée doit apparaître hors du choix DNB.');
-if(!styles.includes('.settings-card:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-context-heading{display:inline-grid}')) fail('La calculatrice barrée doit apparaître uniquement quand DNB est actif.');
+if(index.includes('class="dnb-context-heading"')||index.includes('class="dnb-context-icon"')) fail('La calculatrice barrée ne doit plus agrandir le titre du bloc 1.');
+if(!index.includes('class="segment-dnb-calculator"')||!index.includes('class="dnb-launch-context"')) fail('Le mode DNB doit afficher une calculatrice dans le choix ordinateur et près du lancement.');
+if(!styles.includes('body:has(.segment-btn-dnb[aria-pressed="true"]) .dnb-launch-context{opacity:1;visibility:visible}')) fail('La calculatrice de lancement doit apparaître uniquement quand DNB est actif.');
+if(!styles.includes('.segment-dnb-note,.segment-dnb-calculator,.segment-btn-dnb.is-active .segment-dnb-calculator')) fail('Le choix DNB mobile doit rester compact, sans sous-libellé ni calculatrice.');
 
 const modulesStart=index.indexOf('<section class="modules-card"');
 const credit=index.indexOf('<details class="credit">',modulesStart);
