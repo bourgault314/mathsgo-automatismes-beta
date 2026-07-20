@@ -259,6 +259,15 @@ réellement utile.
 
 ## Journal de décision
 
+- **2026-07-20 — Dimensions communes des barres de pourcentage.** Les aides de
+  `dnb_04` et `dnb_35` conservent leurs rôles pédagogiques distincts, mais
+  leurs tableaux occupent la même proportion de l’espace disponible et leurs
+  rangées ont la même présence verticale. La barre d’évolution ne réserve plus
+  de zone vide à droite de son SVG ; question et correction gardent exactement
+  le même cadre sur téléphone et ordinateur. La couleur dépend de la valeur
+  d’une case, jamais du sens de l’évolution : deux découpages identiques restent
+  donc visuellement identiques.
+
 - **2026-07-19 — Menu Studio branché sur la bêta.** La façade de préparation
   reprend le menu Studio validé dans une colonne de 620 px : réglages en grille
   2 × 2, domaines repliables, sélection mémorisée lors d'un changement de
