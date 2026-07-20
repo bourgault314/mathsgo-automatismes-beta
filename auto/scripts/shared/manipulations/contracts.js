@@ -216,6 +216,30 @@
     serialization:{version:'MG-MANIP-1',fields:['factors','cards','slots']}
   });
 
+  registry.register('algebra.area-model-cards',{
+    version:'1.0.0',label:'Modèle d’aire à compléter',status:'active',moduleId:'dnb_12',componentId:'algebra.area-model',
+    description:'Placer deux ou quatre produits partiels, ou reconstruire les dimensions d’une factorisation, dans des cases ordonnées.',
+    supports:['phone','computer'],inputMethods:['touch','pointer','keyboard'],
+    state:[
+      {id:'factors',label:'Facteurs et expression de départ',serializable:true},
+      {id:'cards',label:'Produits ou dimensions proposés',serializable:true},
+      {id:'slots',label:'Étiquettes placées dans le modèle',serializable:true},
+      {id:'selected-card',label:'Étiquette sélectionnée',serializable:false}
+    ],
+    actions:[
+      {id:'drag-card',label:'Faire glisser une étiquette vers une case'},
+      {id:'select-card',label:'Sélectionner une étiquette'},
+      {id:'place-card',label:'Placer l’étiquette dans la case choisie'},
+      {id:'remove-card',label:'Retirer une étiquette placée'},
+      {id:'reset',label:'Vider les cases'},
+      {id:'validate',label:'Valider le modèle d’aire'}
+    ],
+    reset:{mode:'empty-slots',preserves:['factors','cards']},
+    validation:{mode:'ordered-slots',trigger:'explicit',expected:'produits partiels ou dimensions dans l’ordre du modèle'},
+    correction:{mode:'target-state',shows:['facteurs','produits partiels','forme développée ou factorisée']},
+    serialization:{version:'MG-MANIP-1',fields:['factors','cards','slots']}
+  });
+
   registry.register('algorithm.block-sequence',{
     version:'1.0.0',label:'Suite de blocs pas à pas',status:'planned',moduleId:'dnb_37',componentId:null,
     description:'Rejouer une suite limitée de calculs, rotations, déplacements, boucles ou constructions.',

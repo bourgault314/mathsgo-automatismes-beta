@@ -36,6 +36,7 @@ de vérification et de publication communes à toutes les catégories.
 | [`DIVISIBILITE-AUTOMATISMES.md`](DIVISIBILITE-AUTOMATISMES.md) | cours, profils, aide et sélection de `dnb_08` |
 | [`AUDIT-AUTOMATISMES-V2-DIVISIBILITE-2026-07-19.md`](AUDIT-AUTOMATISMES-V2-DIVISIBILITE-2026-07-19.md) | audit daté à transmettre à l'auteur de la V2 |
 | [`RECETTE-DNB-08-20-QUESTIONS-2026-07-19.md`](RECETTE-DNB-08-20-QUESTIONS-2026-07-19.md) | série de recette de 20 questions avec réponses attendues |
+| [`DEVELOPPER-FACTORISER-AUTOMATISMES.md`](DEVELOPPER-FACTORISER-AUTOMATISMES.md) | progression 5e, 4e, 3e et DNB, modèle d’aire, distracteurs et corrections de `dnb_12` |
 
 Les audits et documents de reprise décrivent un état daté du chantier. Ils
 servent de traces et de feuilles de route, mais ne remplacent jamais le

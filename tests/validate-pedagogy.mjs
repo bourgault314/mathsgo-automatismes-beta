@@ -603,23 +603,30 @@ for(const [questionNumber,[id,response]] of Object.entries(expectedSubstitution)
 const expandFactor=registry?.getModule('dnb_12');
 if(!expandFactor) fail('Le classement pédagogique de dnb_12 est absent.');
 if(expandFactor&&expandFactor.courseKind!=='expand_factor') fail('dnb_12 doit appeler le cours Développer et factoriser.');
-if(expandFactor&&expandFactor.questionTypes.length!==7) fail('Les sept types de questions Développement et factorisation doivent être explicitement classés.');
+if(expandFactor&&expandFactor.questionTypes.length!==17) fail('Les dix-sept types de questions Développement et factorisation doivent être explicitement classés.');
 const expandFactorBankNumbers=[...(context.__expandFactorQuestionNumbers||[])].sort((a,b)=>a-b);
 const expandFactorClassifiedNumbers=(expandFactor?.questionTypes||[]).flatMap(type=>[...type.questions]).sort((a,b)=>a-b);
 if(JSON.stringify(expandFactorClassifiedNumbers)!==JSON.stringify(expandFactorBankNumbers)) fail('Le catalogue pédagogique doit couvrir chaque gabarit Développement et factorisation exactement une fois.');
 const expectedExpandFactor={
-  1:['developper-forme-simple','expression'],2:['developper-forme-simple','expression'],3:['developper-forme-simple','expression'],
-  4:['developper-coefficient-variable','expression'],5:['choisir-developpement','qcm-one'],
-  6:['factoriser-entier','expression'],7:['factoriser-entier','expression'],8:['factoriser-par-x','expression'],
-  9:['choisir-factorisation','qcm-one'],10:['developper-aire-rectangle','expression']
+  1:['developper-forme-simple','expression','optional','algebra.area-model'],2:['developper-forme-simple','expression','optional','algebra.area-model'],3:['developper-forme-simple','expression','optional','algebra.area-model'],
+  4:['developper-coefficient-variable','expression','optional','algebra.area-model'],5:['choisir-developpement','qcm-one','optional','algebra.area-model'],
+  6:['factoriser-entier','expression','optional','algebra.area-model'],7:['factoriser-entier','expression','optional','algebra.area-model'],8:['factoriser-par-x','expression','optional','algebra.area-model'],
+  9:['choisir-factorisation','qcm-one','optional','algebra.area-model'],10:['developper-aire-rectangle','expression','optional','algebra.area-model'],
+  11:['reconnaitre-structure','qcm-one','none',null],12:['choisir-developpement','qcm-one','optional','algebra.area-model'],
+  13:['placer-produits-partiels','manipulation','essential','algebra.area-model'],14:['choisir-factorisation','qcm-one','optional','algebra.area-model'],
+  15:['developper-facteur-negatif','expression','optional','algebra.area-model'],16:['developper-puis-reduire','expression','optional','algebra.area-model'],
+  17:['factoriser-entier','expression','optional','algebra.area-model'],18:['reconstruire-dimensions','manipulation','essential','algebra.area-model'],
+  19:['double-distributivite','expression','optional','algebra.area-model'],20:['double-distributivite','expression','optional','algebra.area-model'],21:['double-distributivite','expression','optional','algebra.area-model'],
+  22:['placer-quatre-produits','manipulation','essential','algebra.area-model'],23:['factoriser-facteur-apparent','expression','none',null],24:['factoriser-facteur-apparent','expression','none',null],
+  25:['reconnaitre-identite-remarquable','qcm-one','none',null],26:['utiliser-identite-remarquable','expression','none',null],27:['utiliser-identite-remarquable','expression','none',null]
 };
-for(const [questionNumber,[id,response]] of Object.entries(expectedExpandFactor)){
+for(const [questionNumber,[id,response,policy,visualComponent]] of Object.entries(expectedExpandFactor)){
   const type=registry?.getQuestionType('dnb_12',Number(questionNumber));
   if(!type||type.id!==id) fail(`Type incorrect pour la question Développement et factorisation ${questionNumber}.`);
   if(type&&type.response!==response) fail(`Mode de réponse incorrect pour la question Développement et factorisation ${questionNumber}.`);
-  if(type&&type.visual.policy!=='optional') fail(`Le modèle d’aire de la question Développement et factorisation ${questionNumber} doit rester facultatif.`);
-  if(type&&type.visual.component!=='algebra.area-model') fail(`Composant incorrect pour la question Développement et factorisation ${questionNumber}.`);
-  if(type&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Développement et factorisation ${questionNumber}.`);
+  if(type&&type.visual.policy!==policy) fail(`Politique visuelle incorrecte pour la question Développement et factorisation ${questionNumber}.`);
+  if(type&&type.visual.component!==visualComponent) fail(`Composant incorrect pour la question Développement et factorisation ${questionNumber}.`);
+  if(type&&type.visual.component&&!context.MATHSGO_VISUALS.get(type.visual.component)) fail(`Composant visuel absent pour la question Développement et factorisation ${questionNumber}.`);
 }
 
 const equations=registry?.getModule('dnb_13');

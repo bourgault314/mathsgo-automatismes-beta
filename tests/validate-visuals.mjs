@@ -739,7 +739,7 @@ for(const color of ['#2F8FC9','#72C475','#FFE64C','#EF3F35']) if(!mathigonTiles.
 
 const areaModel=registry?.get('algebra.area-model');
 if(!areaModel) fail('Le composant algebra.area-model est absent.');
-if(areaModel&&areaModel.version!=='1.2.0') fail('Version 1.2.0 attendue pour le modèle d’aire.');
+if(areaModel&&areaModel.version!=='1.4.0') fail('Version 1.4.0 attendue pour le modèle d’aire.');
 if(areaModel&&areaModel.presets.length!==7) fail('Sept modèles d’aire de référence sont attendus.');
 if(areaModel&&context.areaModel!==areaModel.render) fail('Le point d’entrée areaModel doit utiliser le composant enregistré.');
 const areaModelHashes=new Map([
@@ -760,6 +760,8 @@ for(const preset of areaModel?.presets||[]){
 }
 const decimalArea=areaModel?.render({style:'table',compact:true,interactive:true,rows:[{coefficient:4,power:0},{coefficient:.7,power:0}],columns:[{coefficient:4,power:0}]},false)||'';
 if((decimalArea.match(/data-distributive-slot=/g)||[]).length!==2||!decimalArea.includes('0,7')) fail('Le tableau décimal doit proposer deux cases tactiles et écrire la virgule française.');
+const prominentPhoneArea=areaModel?.render({style:'table',compact:true,phoneProminent:true,mode:'factorize',rows:[{coefficient:2,power:0}],columns:[{coefficient:5,power:1},{coefficient:4,power:0}]},false)||'';
+if(!prominentPhoneArea.includes('area-model-phone-question')||!prominentPhoneArea.includes('<td>10x</td>')||!prominentPhoneArea.includes('<td class="is-dashed">8</td>')) fail('Le modèle d’aire proéminent doit fournir un tableau téléphonique large et lisible.');
 const mixedAreaQuestion=areaModel?.render(areaModel.presets.find(preset=>preset.id==='signes-mixtes').data,false)||'';
 const mixedAreaCorrection=areaModel?.render(areaModel.presets.find(preset=>preset.id==='signes-mixtes').data,true)||'';
 if(mixedAreaQuestion.includes('#12A886')||mixedAreaQuestion.includes('#EF4B43')) fail('La question du modèle d’aire doit laisser les cases à compléter.');

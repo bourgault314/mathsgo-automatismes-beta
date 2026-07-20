@@ -3997,7 +3997,8 @@ function renderQuestion(inst, correction=false, mode=null){
 }
 // La progression de 5e est volontairement définie question par question :
 // certains modules contiennent aussi des notions qui n'arrivent qu'en 4e.
-// La progression existante de 4e reste inchangée et 3e reprend le DNB.
+// La 4e consolide jusqu'aux factorisations simples ; la 3e ouvre toute la
+// banque, tandis que le filtre DNB reste volontairement plus classique.
 const LEVEL_5E_QUESTIONS={
   dnb_01:'all',
   dnb_02:'all',
@@ -4010,7 +4011,7 @@ const LEVEL_5E_QUESTIONS={
   dnb_09:[2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,18,19],
   dnb_10:[1,2,5,6],
   dnb_11:[1,4,6,11],
-  dnb_12:[1,2,3,4,5,6,7,9,10],
+  dnb_12:[1,2,3,4,5,6,7,9,10,11,12,13,14],
   dnb_13:[1,2,3],
   dnb_14:'all',
   dnb_15:'all',
@@ -4034,6 +4035,16 @@ const LEVEL_5E_QUESTIONS={
   dnb_39:'all'
 };
 
+const LEVEL_4E_QUESTIONS={
+  dnb_12:Array.from({length:18},(_,index)=>index+1)
+};
+
+// Le filtre DNB reste volontairement classique : calculs directs et QCM
+// courts sur la distributivité simple, sans manipulation ni identité remarquable.
+const LEVEL_DNB_QUESTIONS={
+  dnb_12:[1,2,3,4,5,6,7,8,9,15,16,17]
+};
+
 // Pendant la transition des programmes, ces contenus sont déjà travaillés
 // avant la 3e. Le filtre de 5e ci-dessus reste plus précis, question par question.
 ['dnb_27','dnb_36'].forEach(id=>{
@@ -4041,8 +4052,9 @@ const LEVEL_5E_QUESTIONS={
   if(module&&!module.level_tags.includes('4e')) module.level_tags.unshift('4e');
 });
 function questionEligibleForLevel(m,q,level){
-  if(level!=='5e') return true;
-  const allowed=LEVEL_5E_QUESTIONS[m.id];
+  const catalogue=level==='5e'?LEVEL_5E_QUESTIONS:(level==='4e'?LEVEL_4E_QUESTIONS:(level==='DNB'?LEVEL_DNB_QUESTIONS:null));
+  if(!catalogue||!Object.prototype.hasOwnProperty.call(catalogue,m.id)) return true;
+  const allowed=catalogue[m.id];
   return allowed==='all' || (Array.isArray(allowed) && allowed.includes(Number(q.n)));
 }
 function visibleModules(){

@@ -277,6 +277,16 @@ réellement utile.
   ces deux étapes. Les décisions et sources sont consignées dans
   [`DIVISIBILITE-AUTOMATISMES.md`](DIVISIBILITE-AUTOMATISMES.md).
 
+- **2026-07-19 — Développer et factoriser par niveau.** Le module `dnb_12`
+  suit le programme 2026 : distributivité simple dès la 5e, consolidation et
+  signes en 4e, double distributivité, facteur apparent et identités
+  remarquables en 3e. Le filtre DNB conserve uniquement les formes simples et
+  classiques. Les aides utilisent `algebra.area-model` dans les deux sens et
+  les corrections ajoutent une trace écrite. Le générateur passe en version
+  1.17.0 afin que les anciens liens ne changent pas silencieusement de
+  sélection. Les décisions détaillées sont consignées dans
+  [`DEVELOPPER-FACTORISER-AUTOMATISMES.md`](DEVELOPPER-FACTORISER-AUTOMATISMES.md).
+
 - **2026-07-19 — Coefficients de la réduction littérale `dnb_10`.** Dans la
   réponse interactive, les emplacements sont déterminés par le degré maximal
   présent dans l'expression ou le plateau initial, jamais par les coefficients
