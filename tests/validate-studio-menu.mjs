@@ -30,6 +30,8 @@ if(!styles.includes('.segment-dnb-calculator{position:absolute')||!styles.includ
 if(!styles.includes('body.is-dnb-level .dnb-launch-context{opacity:1;visibility:visible}')) fail('La calculatrice de lancement doit dépendre explicitement du niveau DNB actif.');
 if(!index.includes("document.body.classList.toggle('is-dnb-level',level?.value==='DNB')")||!index.includes("new MutationObserver(sync).observe(dnbButton")) fail('Quitter DNB doit masquer immédiatement la calculatrice, sans attendre une autre action.');
 if(!styles.includes('.segment-dnb-note,.segment-dnb-calculator,.segment-btn-dnb.is-active .segment-dnb-calculator')) fail('Le choix DNB mobile doit rester compact, sans sous-libellé ni calculatrice.');
+if(!index.includes("globalThis.selectVisible?.(true);this.blur()")||!styles.includes('.bulk-actions button:hover:not(:disabled),.bulk-actions button:active:not(:disabled){border-color:#cfdcee;background:#fff')) fail('Les actions Tous et Aucun ne doivent pas conserver une couleur tactile trompeuse.');
+if(!styles.includes('.theme-select-all:has(input:checked)')) fail('Tout sélectionner dans un domaine ne doit être coloré que lorsque sa case est cochée.');
 
 const modulesStart=index.indexOf('<section class="modules-card"');
 const credit=index.indexOf('<details class="credit">',modulesStart);
