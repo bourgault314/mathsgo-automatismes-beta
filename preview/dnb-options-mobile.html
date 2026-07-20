@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aperçu mobile DNB</title>
+<style>
+html,body{margin:0;background:#eef3f8}
+iframe{display:block;width:390px;height:844px;border:0;background:#fff}
+</style>
+</head>
+<body>
+<iframe id="phone" title="Aperçu mobile du menu bêta"></iframe>
+<script>
+const variant=new URLSearchParams(location.search).get('variant')||'heading';
+const frame=document.getElementById('phone');
+frame.src='https://raw.githack.com/bourgault314/mathsgo-automatismes-beta/cfd20ae8042a2b287b57bb19cc6ee244f37a312e/auto/index.html?dnbPreview='+encodeURIComponent(variant);
+frame.addEventListener('load',()=>setTimeout(()=>{
+  frame.contentDocument.querySelector('.segment-btn-dnb')?.click();
+  frame.contentDocument.documentElement.style.scrollBehavior='auto';
+  frame.contentWindow.scrollTo(0,0);
+},900));
+</script>
+</body>
+</html>
