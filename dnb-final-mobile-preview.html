@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aperçu mobile DNB</title>
+<style>html,body{margin:0;background:#eef3f8}iframe{display:block;border:0;background:#fff}</style>
+</head>
+<body>
+<iframe id="phone" title="Aperçu mobile du menu bêta"></iframe>
+<script>
+const width=new URLSearchParams(location.search).get('width')==='360'?360:390;
+const frame=document.getElementById('phone');
+frame.style.width=width+'px';
+frame.style.height=(width===360?800:844)+'px';
+frame.src='../auto/index.html';
+frame.addEventListener('load',()=>setTimeout(()=>{
+  frame.contentDocument.querySelector('.segment-btn-dnb')?.click();
+  frame.contentWindow.scrollTo(0,0);
+},1000));
+</script>
+</body>
+</html>
