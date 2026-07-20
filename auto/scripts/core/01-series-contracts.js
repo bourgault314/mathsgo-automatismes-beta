@@ -1,5 +1,5 @@
 const MATHSGO_SCHEMA_VERSION=1;
-const MATHSGO_GENERATOR_VERSION='1.15.0';
+const MATHSGO_GENERATOR_VERSION='1.16.0';
 const MATHSGO_APP_VERSION='1.18';
 const MATHSGO_SERIES_PREFIX='MG1-';
 const MATHSGO_CANONICAL_URL='https://bourgault314.github.io/mathsgo-automatismes-beta/auto/';

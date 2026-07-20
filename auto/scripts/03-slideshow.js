@@ -163,6 +163,29 @@ button{font:inherit;-webkit-appearance:none;appearance:none;-webkit-tap-highligh
 .equal-sharing-svg{display:block;width:min(100%,760px);height:auto;max-height:100%}
 .diapo.divisibility-sharing-mode .options{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 12px;max-width:900px;margin-top:4px}
 .diapo.divisibility-sharing-mode .opt{min-height:54px;padding:10px 13px;font-size:clamp(1rem,1.55vw,1.35rem)}
+.diapo.divisibility-mode .stage{align-items:center;padding:8px 18px 12px}
+.diapo.divisibility-mode .slide{width:100%;max-width:1180px}
+.divisibility-prompt{font-size:clamp(1.55rem,2.55vw,2.7rem);line-height:1.12;margin:0 auto 8px}
+.divisibility-prompt small{display:block;margin-top:5px;color:#60708c;font:800 clamp(.85rem,1.2vw,1.05rem)/1.15 Arial,sans-serif}
+.divisibility-inspector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:min(100%,1040px);margin:6px auto 4px}
+.divisibility-step{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:start;padding:11px 13px;border:2px solid #c9dced;border-radius:15px;background:#f8fbff;color:#17384d;text-align:left}
+.divisibility-step-number{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#0b6fc2;color:#fff;font-size:1.18rem;font-weight:950}
+.divisibility-step strong{display:block;font-size:clamp(1rem,1.45vw,1.3rem);line-height:1.12}
+.divisibility-step small{display:block;margin-top:4px;color:#60708c;font-size:clamp(.78rem,1vw,.92rem);font-weight:750}
+.divisibility-digits{display:flex;justify-content:center;gap:5px;margin:7px auto 3px}
+.divisibility-digit{display:grid;place-items:center;min-width:35px;height:42px;padding:0 6px;border:2px solid #afc4d7;border-radius:9px;background:#fff;font:900 1.45rem/1 Arial,sans-serif}
+.divisibility-digit.is-unit{border-color:#e86100;background:#fff0df;color:#9a4100;box-shadow:0 0 0 2px rgba(232,97,0,.12)}
+.divisibility-sum{margin:12px auto 5px;color:#0b3570;font:900 clamp(1.25rem,2vw,1.8rem)/1.1 "Cambria Math","Times New Roman",serif;text-align:center}
+.divisibility-tests{display:flex;flex-wrap:wrap;gap:6px 9px;margin-top:8px}
+.divisibility-tests>span{display:flex;align-items:center;justify-content:space-between;gap:7px;min-width:112px;padding:5px 8px;border:1px solid #d9e5f1;border-radius:9px;background:#fff;font-size:.9rem;font-weight:850}
+.divisibility-verdict{white-space:nowrap}.divisibility-verdict.is-yes{color:#087a55}.divisibility-verdict.is-no{color:#b42318}
+.divisibility-conclusion{grid-column:1/-1;margin:0;padding:9px 12px;border-radius:12px;background:#eaf8f4;color:#075f48;font-size:clamp(.95rem,1.35vw,1.15rem);font-weight:750;text-align:center}
+.diapo.divisibility-mode .divisibility-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 11px;width:min(100%,940px);margin-top:7px}
+.diapo.divisibility-mode .divisibility-options .opt{min-height:54px;padding:9px 13px;font-size:clamp(1.05rem,1.55vw,1.38rem);text-align:center}
+.divisibility-inspector-placeholder{width:min(100%,1040px);height:145px;margin:5px auto}
+.course-card.divisibility-course-card{max-width:1040px}.course-divisibility-share .equal-sharing-help{height:155px;margin:7px auto 0}.course-divisibility-share .equal-sharing-svg{width:min(100%,520px)}
+.course-divisibility-units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}.course-divisibility-units span{padding:6px 5px;border-radius:8px;background:#edf5ff;color:#0b4f86;font-weight:900;text-align:center}
+.course-divisibility-example{margin-top:8px;padding:8px 9px;border-radius:10px;background:#f8fbff}.course-divisibility-example b{color:#0b6fc2}.course-divisibility-result{display:block;margin-top:6px;color:#087a55;font-weight:900}
 .pythagoras-builder{width:min(100%,780px);margin:0 auto;padding:10px 14px 11px;border:1px solid #cddcf0;border-radius:18px;background:linear-gradient(180deg,#fff,#f7fbff);color:#0b2147;user-select:none}
 .pythagoras-builder-prompt{margin:0 auto 2px;font-size:clamp(1.12rem,2vw,1.48rem);font-weight:850;line-height:1.18}
 .pythagoras-builder-triangle{display:block;width:min(100%,365px);max-height:205px;margin:0 auto}
@@ -821,6 +844,7 @@ svg{display:block;max-width:100%;height:auto}
 @media(max-width:800px){.multiple-forms-help.multiple-forms-line{height:clamp(245px,39vh,315px)}.multiple-forms-line-desktop{display:none}.multiple-forms-line-mobile{display:block;width:min(100%,390px)!important;height:auto}.fraction-ops-result-separated{margin-top:13px}.fraction-ops-simplification{max-width:360px;margin-bottom:3px;font-size:.88rem;line-height:1.12}.legacy-statement-table-wrap{margin:15px auto 20px}}
 @media(max-width:600px){.fullscreen-btn,.diapo.interactive-mode .keyboard-toggle{display:none!important}.diapo:not(.interactive-mode) .top{gap:5px;padding-left:7px;padding-right:7px}.diapo:not(.interactive-mode) .right{gap:6px}.diapo:not(.interactive-mode) .course-btn{width:42px;height:42px;min-height:42px;padding:0;display:inline-grid;place-items:center;border-radius:50%}.diapo:not(.interactive-mode) .course-btn svg{width:21px;height:21px}.diapo:not(.interactive-mode) .course-btn span{display:none}.diapo.interactive-mode .interactive-summary{position:absolute;inset:0;left:0;max-width:none;transform:none;pointer-events:none}.diapo.interactive-mode #interactiveCounter{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap}.diapo.interactive-mode .course-btn{position:absolute;left:max(9px,env(safe-area-inset-left));top:50%;transform:translateY(-50%);width:38px;height:38px;min-height:38px;padding:0;display:inline-grid;place-items:center;border:1px solid #efbb8a;border-radius:50%;background:#fffaf5;color:#9e4200;box-shadow:0 1px 4px rgba(11,33,71,.09)}.diapo.interactive-mode .course-btn svg{width:21px;height:21px}.diapo.interactive-mode .course-btn span{display:none}.diapo.interactive-mode .right{position:static}.diapo.interactive-mode .interactive-score{position:absolute;right:max(9px,env(safe-area-inset-right));top:50%;transform:translateY(-50%)}}
 @media(max-width:800px){.diapo.divisibility-sharing-mode .stage{padding:5px 6px 8px}.diapo.divisibility-sharing-mode .question{font-size:clamp(1.08rem,4.75vw,1.38rem);margin-bottom:1px}.equal-sharing-help{height:clamp(185px,27vh,220px);margin:0 auto 1px}.diapo.divisibility-sharing-mode .options{grid-template-columns:1fr;gap:5px;margin-top:3px}.diapo.divisibility-sharing-mode .opt{min-height:0;padding:7px 9px;font-size:clamp(.82rem,3.6vw,1rem)}}
+@media(max-width:800px){.diapo.divisibility-mode .stage{padding:5px 6px 8px}.diapo.divisibility-mode .slide{width:100%}.divisibility-prompt{font-size:clamp(1.2rem,5.25vw,1.5rem);margin-bottom:4px}.divisibility-prompt small{margin-top:3px;font-size:.76rem}.divisibility-inspector{grid-template-columns:1fr;gap:5px;margin:3px auto}.divisibility-step{grid-template-columns:31px minmax(0,1fr);gap:7px;padding:7px 8px;border-radius:11px}.divisibility-step-number{width:29px;height:29px;font-size:.92rem}.divisibility-step strong{font-size:.91rem}.divisibility-step small{margin-top:2px;font-size:.72rem}.divisibility-digits{gap:3px;margin:4px auto 1px}.divisibility-digit{min-width:29px;height:33px;padding:0 4px;border-width:1.5px;border-radius:7px;font-size:1.15rem}.divisibility-sum{margin:6px auto 2px;font-size:1.2rem}.divisibility-tests{gap:4px 6px;margin-top:5px}.divisibility-tests>span{min-width:92px;padding:3px 5px;font-size:.75rem}.divisibility-conclusion{padding:6px 7px;font-size:.82rem}.diapo.divisibility-mode .divisibility-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:4px}.diapo.divisibility-mode .divisibility-options .opt{min-height:48px;padding:7px 8px;font-size:1rem}.divisibility-inspector-placeholder{height:170px}.course-card.divisibility-course-card{padding:18px 10px 14px}.course-divisibility-units{grid-template-columns:1fr}.course-divisibility-share .equal-sharing-help{height:125px}.course-divisibility-share .equal-sharing-svg{max-height:125px}}
 @media (hover:none) and (pointer:coarse){.navnums{display:none!important}.mobile-counter{display:block!important}}
 @media print{.diapo{--stage-top:20px;--stage-x:20px;--stage-bottom:20px;height:auto;min-height:100vh;overflow:visible}.top{display:none}.stage{min-height:auto;overflow:visible;padding:var(--stage-top) var(--stage-x) var(--stage-bottom)}}
 </style>
@@ -1005,13 +1029,17 @@ function courseReadDataChartVisual(){
 function courseReadDataPictogramVisual(){
  return '<div class="read-data-pictogram" role="img" aria-label="Trois symboles, chaque symbole représente cinq élèves"><strong>espagnol</strong><span class="read-data-stars" aria-hidden="true">★ ★ ★</span><span class="read-data-legend">1 ★ représente 5 élèves</span></div><div class="read-data-course-caption"><b>3 × 5 = 15 élèves</b> : on multiplie, on ne compte pas seulement les symboles.</div>';
 }
+function courseDivisibilitySharingVisual(){
+ const component=globalThis.MATHSGO_VISUALS&&globalThis.MATHSGO_VISUALS.get('arithmetic.equal-sharing-board');
+ return component?'<div class="course-divisibility-share">'+component.render({shares:3,total:12,share:4,showTotal:true},true)+'</div>':'';
+}
 const courseCatalog={
   divisibility_rules:{title:'Critères de divisibilité',rules:[
-    ['Divisible par 2','Son chiffre des unités est 0, 2, 4, 6 ou 8.<span class="course-example">Exemple : 1 438 se termine par 8, donc il est divisible par 2.</span>'],
-    ['Divisible par 3','La somme de ses chiffres est divisible par 3.<span class="course-example">Exemple : 273 → 2 + 7 + 3 = 12, donc 273 est divisible par 3.</span>'],
-    ['Divisible par 5','Son chiffre des unités est 0 ou 5.<span class="course-example">Exemple : 1 245 se termine par 5, donc il est divisible par 5.</span>'],
-    ['Divisible par 9','La somme de ses chiffres est divisible par 9.<span class="course-example">Exemple : 450 → 4 + 5 + 0 = 9, donc 450 est divisible par 9.</span>']
-  ]},
+    ['1. Comprendre « divisible »','On peut partager sans reste en parts entières égales.<span class="course-example">12 est divisible par 3 car 12 objets forment 3 parts de 4.</span>'+courseDivisibilitySharingVisual(),true],
+    ['2. Regarder l’unité','Le chiffre des unités suffit pour 2, 5 et 10.<div class="course-divisibility-units"><span>par 2<br>0, 2, 4, 6, 8</span><span>par 5<br>0 ou 5</span><span>par 10<br>0</span></div><span class="course-example">Pourquoi ? Chaque dizaine est déjà divisible par 2, 5 et 10 : seules les unités peuvent laisser un reste.</span>'],
+    ['3. Additionner les chiffres','Pour 3 et 9, on additionne tous les chiffres.<span class="course-example">273 → 2 + 7 + 3 = 12.<br>12 est divisible par 3, mais pas par 9 : 273 est donc divisible par 3, pas par 9.</span>'],
+    ['4. Appliquer toujours la même méthode','<div class="course-divisibility-example"><b>Exemple : 8 730</b><br>① Unité 0 → oui pour 2, 5 et 10.<br>② Somme 8 + 7 + 3 + 0 = 18 → oui pour 3 et 9.<span class="course-divisibility-result">Conclusion : 8 730 est divisible par 2, 3, 5, 9 et 10.</span></div><span class="course-example">Teste chaque proposition. Plusieurs réponses — ou aucune — peuvent être correctes.</span>',true]
+  ],layout:'divisibility'},
   fraction_mul_div:{title:'Multiplier et diviser des fractions',rules:[
     ['Multiplier','On multiplie les numérateurs entre eux et les dénominateurs entre eux.<span class="course-example"><span class="course-equation">'+courseFraction(2,3)+' × '+courseFraction(5,4)+' = '+courseFraction(10,12)+' = '+courseFraction(5,6)+'</span></span>'],
     ['Simplifier avant','On peut simplifier en croix avant de multiplier.<span class="course-example"><span class="course-equation">'+courseFraction(3,4)+' × '+courseFraction(8,5)+' = '+courseFraction(3,1)+' × '+courseFraction(2,5)+' = '+courseFraction(6,5)+'</span></span>'],
@@ -1465,7 +1493,7 @@ function fitNavNumbers(){
 function setModuleClasses(diapo,moduleId){
  const map={
    'module01-mode':['dnb_01'],'decimal-mode':['dnb_02','dnb_39'],'place-value-mode':['dnb_02b'],'fraction-ops-mode':['dnb_03','dnb_03b'],'fraction-percent-mode':['dnb_04'],
-   'multiple-forms-mode':['dnb_05'],'scientific-mode':['dnb_06'],'squares-mode':['dnb_07'],
+   'multiple-forms-mode':['dnb_05'],'scientific-mode':['dnb_06'],'squares-mode':['dnb_07'],'divisibility-mode':['dnb_08'],
    'relation-mode':['dnb_09'],'reduction-mode':['dnb_10'],'substitution-mode':['dnb_11'],
    'equation-mode':['dnb_13'],'numberline-mode':['dnb_14'],'geometry-choice-mode':['dnb_16','dnb_17'],'angles-mode':['dnb_17'],'angle-sum-mode':['dnb_18'],
    'conversion-mode':['dnb_19'],'solids-mode':['dnb_20'],'perimeter-mode':['dnb_21'],'area-mode':['dnb_22'],'volume-mode':['dnb_23'],'average-mode':['dnb_30'],
@@ -2213,11 +2241,18 @@ function updateInteractiveControls(){
 }
 function toggleInteractiveOption(index){
  if(interactiveLocked) return;
- const singleAnswer=!slides[idx].interactiveSpec.multiple;
+ const spec=slides[idx].interactiveSpec;
+ const singleAnswer=!spec.multiple;
  if(singleAnswer){
    if(selectedOptions.has(index)) selectedOptions.clear();
    else{selectedOptions.clear();selectedOptions.add(index);}
- }else if(selectedOptions.has(index)) selectedOptions.delete(index); else selectedOptions.add(index);
+ }else if(selectedOptions.has(index)) selectedOptions.delete(index);
+ else{
+   const exclusive=new Set(spec.exclusiveIndices||[]);
+   if(exclusive.has(index)) selectedOptions.clear();
+   else exclusive.forEach(optionIndex=>selectedOptions.delete(optionIndex));
+   selectedOptions.add(index);
+ }
  setupInteractiveSlide(slides[idx]);
 }
 function clearInteractiveAnswer(){
@@ -2400,7 +2435,7 @@ function startNextSeries(){
  slides=seriesBank[seriesIndex];
  restartInteractive();
 }
-function openCourse(){const modal=document.getElementById('courseModal'),course=courseForSlide(slides[idx]);if(modal&&course){markQuestionHelp('course');const card=modal.querySelector('.course-card');if(card){card.classList.toggle('thales-course-card',course.layout==='thales');card.classList.toggle('place-value-course-card',course.layout==='place-value');card.classList.toggle('read-data-course-card',slides[idx].courseKind==='read_data');card.classList.toggle('recognize-proportion-course-card',slides[idx].courseKind==='recognize_proportion');card.classList.toggle('angles-course-card',course.layout==='angles');}document.getElementById('courseTitle').textContent=course.title;document.getElementById('courseGrid').innerHTML=course.rules.map(rule=>'<div class="course-rule'+(rule[2]?' course-rule-wide':'')+'"><strong>'+rule[0]+'</strong>'+rule[1]+'</div>').join('');modal.hidden=false;setupPlaceValueTools(modal);const close=modal.querySelector('.course-close');if(close)close.focus();}}
+function openCourse(){const modal=document.getElementById('courseModal'),course=courseForSlide(slides[idx]);if(modal&&course){markQuestionHelp('course');const card=modal.querySelector('.course-card');if(card){card.classList.toggle('thales-course-card',course.layout==='thales');card.classList.toggle('place-value-course-card',course.layout==='place-value');card.classList.toggle('read-data-course-card',slides[idx].courseKind==='read_data');card.classList.toggle('recognize-proportion-course-card',slides[idx].courseKind==='recognize_proportion');card.classList.toggle('angles-course-card',course.layout==='angles');card.classList.toggle('divisibility-course-card',course.layout==='divisibility');}document.getElementById('courseTitle').textContent=course.title;document.getElementById('courseGrid').innerHTML=course.rules.map(rule=>'<div class="course-rule'+(rule[2]?' course-rule-wide':'')+'"><strong>'+rule[0]+'</strong>'+rule[1]+'</div>').join('');modal.hidden=false;setupPlaceValueTools(modal);const close=modal.querySelector('.course-close');if(close)close.focus();}}
 function closeCourse(){const modal=document.getElementById('courseModal');if(modal)modal.hidden=true;}
 function openEquationDetail(){const modal=document.getElementById('equationDetailModal'),body=document.getElementById('equationDetailBody'),detail=slides[idx].equationDetailHtml;if(modal&&body&&detail){markQuestionHelp('equation-detail');body.innerHTML=detail;modal.hidden=false;const close=modal.querySelector('.equation-detail-close');if(close)close.focus();}}
 function closeEquationDetail(){const modal=document.getElementById('equationDetailModal');if(modal)modal.hidden=true;}
@@ -2591,12 +2626,14 @@ function interactiveSpecForInstance(inst,correctionHtml){
   const options=[...probe.querySelectorAll('.opt')];
   if(options.length){
     const correctIndices=options.map((option,index)=>option.classList.contains('correct')?index:null).filter(index=>index!==null);
+    const exclusiveIndices=options.map((option,index)=>option.dataset.exclusive==='true'?index:null).filter(index=>index!==null);
     const letters=correctIndices.map(index=>String.fromCharCode(65+index));
     return {
       kind:'qcm',
       multiple:correctIndices.length>1,
       correctIndices,
-      options:options.map((option,index)=>({index,displayedValue:option.textContent.replace(/^\s*[A-Z]\.\s*/,'').replace(/\s+/g,' ').trim(),errorCode:option.dataset.errorCode||null})),
+      exclusiveIndices,
+      options:options.map((option,index)=>({index,displayedValue:option.textContent.replace(/^\s*[A-Z]\.\s*/,'').replace(/\s+/g,' ').trim(),errorCode:option.dataset.errorCode||null,exclusive:option.dataset.exclusive==='true'})),
       expectedDisplay:(letters.length>1?'réponses ':'réponse ')+letters.join(' et ')
     };
   }

@@ -55,7 +55,7 @@ usuels sont `statement`, `answer`, `options` et `footer`.
    toute substitution visuelle.
 
 Le test fige actuellement les 43 modules, les 476 gabarits, le registre MG1 et
-l’empreinte complète de la banque V1.20. Une extraction pure doit donc laisser
+l’empreinte complète de la banque V1.21. Une extraction pure doit donc laisser
 cette empreinte inchangée.
 
 ## Registre pédagogique associé

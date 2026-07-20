@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://mathsgo.re/auto/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles/setup.css?v=20260720-2">
+<link rel="stylesheet" href="styles/setup.css?v=20260720-4">
 </head>
 <body>
 <div class="app">
@@ -21,6 +21,7 @@
     </a>
     <div class="title">
       <h1>Automatismes<span class="title-cycle">Cycle 4 – DNB</span></h1>
+      <span class="revision-badge">BÊTA · V1.25</span>
     </div>
   </div>
 
@@ -29,6 +30,19 @@
       <div class="section-heading">
         <span class="section-step section-step-settings" aria-hidden="true">1</span>
         <h2 id="settingsTitle">Préparer la série</h2>
+        <span class="dnb-context-heading" role="status" aria-label="Mode DNB : épreuve sans calculatrice" title="Épreuve sans calculatrice">
+          <svg class="dnb-context-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="6" y="2.8" width="12.4" height="18.4" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <rect x="8.5" y="5.5" width="7.4" height="3.6" rx="1" fill="currentColor" opacity=".9"/>
+            <circle cx="9.4" cy="12.6" r="1.05" fill="currentColor"/>
+            <circle cx="12.2" cy="12.6" r="1.05" fill="currentColor"/>
+            <circle cx="15" cy="12.6" r="1.05" fill="currentColor"/>
+            <circle cx="9.4" cy="16.6" r="1.05" fill="currentColor"/>
+            <circle cx="12.2" cy="16.6" r="1.05" fill="currentColor"/>
+            <circle cx="15" cy="16.6" r="1.05" fill="currentColor"/>
+            <path d="M3.6 21.4 20.4 2.6" fill="none" stroke="#f58220" stroke-width="3.4" stroke-linecap="round"/>
+          </svg>
+        </span>
       </div>
       <div class="controls-row">
       <div class="field field-level">
@@ -39,21 +53,7 @@
           <button type="button" class="segment-btn" data-value="4e" aria-pressed="false">4e</button>
           <button type="button" class="segment-btn is-active" data-value="3e" aria-pressed="true">3e</button>
           <span class="segment-separator" aria-hidden="true"></span>
-          <button type="button" class="segment-btn segment-btn-dnb" data-value="DNB" aria-pressed="false" aria-label="DNB — révision de l’épreuve, sans calculatrice">
-            <span class="segment-dnb-text">DNB<span class="segment-dnb-note">épreuve</span></span>
-            <svg class="segment-dnb-calculator" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <rect x="6" y="2.8" width="12.4" height="18.4" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
-              <rect x="8.5" y="5.5" width="7.4" height="3.6" rx="1" fill="currentColor" opacity=".92"/>
-              <circle cx="9.4" cy="12.6" r="1.05" fill="currentColor"/>
-              <circle cx="12.2" cy="12.6" r="1.05" fill="currentColor"/>
-              <circle cx="15" cy="12.6" r="1.05" fill="currentColor"/>
-              <circle cx="9.4" cy="16.6" r="1.05" fill="currentColor"/>
-              <circle cx="12.2" cy="16.6" r="1.05" fill="currentColor"/>
-              <circle cx="15" cy="16.6" r="1.05" fill="currentColor"/>
-              <path d="M3.6 21.4 20.4 2.6" fill="none" stroke="#f58220" stroke-width="4.6" stroke-linecap="round"/>
-              <path d="M3.6 21.4 20.4 2.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
+          <button type="button" class="segment-btn segment-btn-dnb" data-value="DNB" aria-pressed="false" aria-label="DNB — épreuve sans calculatrice">DNB</button>
         </div>
       </div>
       <div class="field field-visual">
