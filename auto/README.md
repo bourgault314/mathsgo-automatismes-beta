@@ -11,7 +11,7 @@ l'application et du livret A5, pas un deuxième exerciseur.
 
 ## État de référence
 
-- paquet : `1.33.0-beta.0` ;
+- paquet : `1.34.0-beta.0` ;
 - banque : V1.21 ;
 - 43 modules ;
 - 495 gabarits ;

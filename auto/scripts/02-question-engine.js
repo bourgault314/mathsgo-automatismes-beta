@@ -3997,7 +3997,8 @@ function renderQuestion(inst, correction=false, mode=null){
 }
 // La progression de 5e est volontairement définie question par question :
 // certains modules contiennent aussi des notions qui n'arrivent qu'en 4e.
-// La progression existante de 4e reste inchangée et 3e reprend le DNB.
+// La 4e consolide jusqu'aux factorisations simples ; la 3e ouvre toute la
+// banque, tandis que le filtre DNB reste volontairement plus classique.
 const LEVEL_5E_QUESTIONS={
   dnb_01:'all',
   dnb_02:'all',

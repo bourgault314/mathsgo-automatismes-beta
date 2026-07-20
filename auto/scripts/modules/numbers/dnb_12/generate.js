@@ -39,6 +39,21 @@
   function manipulationAnswer(expected){
     return {answers:expected.map(String),answerChoices:expected.map(value=>[String(value)])};
   }
+  function polynomialResponse(coefficients,terms=['x2','x','u'],diagnostics=[]){
+    const values={x2:coefficients.x2??0,x:coefficients.x??0,u:coefficients.u??0};
+    return {
+      layout:'polynomial',
+      slots:terms.map((term,index)=>({term,label:term==='x2'?'Coefficient de x carré':(term==='x'?'Coefficient de x':'Constante'),diagnostic:diagnostics[index]||''})),
+      acceptedCombinations:[terms.map(term=>String(values[term]))]
+    };
+  }
+  function templateResponse(slots,segments,accepted,diagnostics=[]){
+    return {
+      layout:'algebra-template',segments,
+      slots:slots.map((label,index)=>({label,diagnostic:diagnostics[index]||''})),
+      acceptedCombinations:[accepted.map(String)]
+    };
+  }
   function base(module,question,data,answer){
     return {module,q:question,scope:data.scope||{},...answer,rawStatement:'',rawFooter:'',hasSvg:true,expandFactor:data};
   }
@@ -117,6 +132,7 @@
     const answer=expressionAnswer(display);
     return base(module,question,{
       kind:'negative-factor',prompt:'Développe puis réduis cette expression.',expression:`−${k}(x + ${a})`,answerDisplay:display,
+      response:polynomialResponse({x:-k,u:-p},['x','u'],['Le coefficient de x est le produit de −'+k+' par 1.','Le terme constant est le produit de −'+k+' par '+a+'.']),
       areaModel:area([constant(-k)],[variable(),constant(a)],`−${k}(x + ${a}) = −${k}x − ${p}`),
       explanation:'Un facteur négatif donne ici deux produits négatifs.',
       steps:[['Premier produit',`−${k} × x = −${k}x.`],['Second produit',`−${k} × ${a} = −${p}.`],['Résultat',display+'.']]
@@ -128,6 +144,7 @@
     const answer=expressionAnswer(display,[`${p}+${xCoefficient}x`]);
     return base(module,question,{
       kind:'develop-reduce',prompt:'Développe puis réduis cette expression.',expression:`${k}(x + ${a}) + ${b}x`,answerDisplay:display,
+      response:polynomialResponse({x:xCoefficient,u:p},['x','u'],['Développe d’abord, puis additionne seulement les coefficients de x.','Le terme constant vient du produit '+k+' × '+a+'.']),
       areaModel:area([constant(k)],[variable(),constant(a)],`${k}(x + ${a}) = ${k}x + ${p}`),
       explanation:`Après le développement, ${k}x et ${b}x sont des termes semblables.`,
       steps:[['Développer',`${k}(x + ${a}) = ${k}x + ${p}.`],['Regrouper',`${k}x + ${b}x = ${xCoefficient}x.`],['Résultat',display+'.']]
@@ -139,6 +156,7 @@
     const answer=expressionAnswer(display,[`${k}(−${c}+${b}x)`]);
     return base(module,question,{
       kind:'factor-difference',prompt:'Factorise au maximum cette expression.',expression:`${left}x − ${right}`,answerDisplay:display,
+      response:templateResponse(['Facteur commun','Coefficient de x dans la parenthèse','Terme constant dans la parenthèse'],[{slot:0},{text:'('},{slot:1},{text:'x − '},{slot:2},{text:')'}],[k,b,c],[`Cherche le plus grand nombre qui divise ${left} et ${right}.`,`Calcule ${left} ÷ le facteur commun.`,`Calcule ${right} ÷ le facteur commun ; le signe moins est déjà écrit.`]),
       areaModel:area([constant(k)],[variable(b),constant(-c)],`${left}x − ${right} = ${k}(${b}x − ${c})`,{mode:'factorize',revealFactorInQuestion:false}),
       explanation:`${k} divise les deux coefficients et les quotients ${b} et ${c} n’ont plus de facteur commun.`,
       steps:[['Facteur commun',`Le PGCD de ${left} et ${right} est ${k}.`],['Diviser',`${left}x ÷ ${k} = ${b}x et −${right} ÷ ${k} = −${c}.`],['Résultat',display+'.']]
@@ -172,9 +190,10 @@
 
   function doubleDirect(module,question,randomInt,kind){
     const data=doubleData(randomInt,kind),display=polynomial(data.coefficients),answer=expressionAnswer(display);
-    const products=data.rows.flatMap(row=>data.columns.map(column=>polynomial({x2:row.coefficient*column.coefficient*((row.power+column.power)===2?1:0),x:row.coefficient*column.coefficient*((row.power+column.power)===1?1:0),u:row.coefficient*column.coefficient*((row.power+column.power)===0?1:0)})));
+    const products=data.rows.flatMap(row=>data.columns.map(column=>polynomial({x2:row.coefficient*column.coefficient*((row.power+column.power)===2?1:0),x:row.coefficient*column.coefficient*((row.power+column.power)===1?1:0),u:row.coefficient*column.coefficient*((row.power+column.power)===0?1:0)}).replace('x^2','x²')));
     return base(module,question,{
       kind,prompt:'Développe puis réduis cette expression.',expression:data.expression,answerDisplay:display,
+      response:polynomialResponse(data.coefficients,['x2','x','u'],['Calcule le produit des deux termes en x.','Additionne les deux produits croisés en x.','Calcule le produit des deux constantes.']),
       areaModel:area(data.rows,data.columns,`${data.expression} = ${display}`,{cellLabels:products}),
       explanation:'Les quatre produits partiels sont calculés, puis les deux termes en x sont regroupés.',
       steps:[['Quatre produits',products.join(' ; ')+'.'],['Réduire',`Les termes en x donnent ${data.coefficients.x}x.`],['Résultat',display+'.']]
@@ -200,6 +219,9 @@
     const answer=expressionAnswer(display,withX?[`(x+${b})(${a}x+${c})`]:[`(x+${b})(${a+c})`]);
     return base(module,question,{
       kind:withX?'apparent-factor-x':'apparent-factor',prompt:'Factorise en utilisant le facteur apparent.',expression:left,answerDisplay:display,
+      response:withX
+        ?templateResponse(['Coefficient de x dans le premier facteur','Constante dans le premier facteur'],[{text:'('},{slot:0},{text:'x + '},{slot:1},{text:`)(x + ${b})`}],[a,c],[`Après avoir sorti (x + ${b}), le premier quotient est ${a}x.`,`Après avoir sorti (x + ${b}), le second quotient est ${c}.`])
+        :templateResponse(['Somme des deux coefficients'],[{slot:0},{text:`(x + ${b})`}],[a+c],[`Le facteur (x + ${b}) reste inchangé ; additionne ${a} et ${c}.`]),
       explanation:`Le facteur (x + ${b}) est écrit dans les deux termes.`,
       steps:[['Repérer',`Le facteur commun est (x + ${b}).`],['Quotients',withX?`${a}x et ${c}.`:`${a} et ${c}.`],['Résultat',display+'.']]
     },answer);
@@ -229,6 +251,7 @@
     const expression=`(x ${negative?'−':'+'} ${a})<sup>2</sup>`,answer=expressionAnswer(display);
     return base(module,question,{
       kind:'identity-expand-square',prompt:'Développe cette identité remarquable.',expression,answerDisplay:display,
+      response:polynomialResponse(coefficients,['x2','x','u'],['Le coefficient de x² vaut 1.','Le terme du milieu est le double produit, avec le signe de la parenthèse.','La constante est le carré de '+a+'.']),
       explanation:'Le terme du milieu est le double produit ; son signe suit celui de la parenthèse.',
       steps:[['Carrés',`x² et ${a}² = ${a*a}.`],['Double produit',`${negative?'−':'+'} 2 × x × ${a} = ${negative?'−':'+'}${2*a}x.`],['Résultat',display+'.']]
     },answer);
@@ -238,6 +261,7 @@
     const a=randomInt(2,9),display=`(x − ${a})(x + ${a})`,answer=expressionAnswer(display,[`(x+${a})(x-${a})`]);
     return base(module,question,{
       kind:'identity-difference',prompt:'Factorise cette différence de deux carrés.',expression:`x<sup>2</sup> − ${a*a}`,answerDisplay:display,
+      response:templateResponse(['Nombre dont le carré est '+a*a],[{text:'(x − '},{slot:0},{text:')(x + '},{slot:0},{text:')'}],[a],[`Cherche le nombre positif dont le carré vaut ${a*a}.`]),
       explanation:`${a*a} = ${a}². Une différence de deux carrés se factorise avec deux facteurs conjugués.`,
       steps:[['Reconnaître',`x² − ${a}².`],['Appliquer',`a² − b² = (a − b)(a + b).`],['Résultat',display+'.']]
     },answer);

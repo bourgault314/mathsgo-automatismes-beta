@@ -721,14 +721,14 @@ for(const [number,slotCount] of [[13,2],[18,2],[22,4]]){
   const instance=context.__makeInstance(expandFactor,byNumber(number));
   const questionHtml=context.__renderQuestion(instance,false,'with');
   const correctionHtml=context.__renderQuestion(instance,true,'with');
-  if((questionHtml.match(/data-distributive-slot=/g)||[]).length!==slotCount) fail(`La manipulation dnb_12 n°${number} doit proposer ${slotCount} cases.`);
+  if((questionHtml.match(/data-distributive-slot=/g)||[]).length!==slotCount*2||!questionHtml.includes('area-model-phone-question')) fail(`La manipulation dnb_12 n°${number} doit proposer ${slotCount} cases dans ses versions projection et téléphone.`);
   if((questionHtml.match(/data-decimal-card=/g)||[]).length!==slotCount) fail(`La manipulation dnb_12 n°${number} doit proposer ${slotCount} cartes.`);
   if(!correctionHtml.includes('Correction expliquée')||!correctionHtml.includes('expand-worked-correction')) fail(`La correction écrite manque pour dnb_12 n°${number}.`);
 }
 
 context.__setSeed(617);
 const factorQuestion=context.__renderQuestion(context.__makeInstance(expandFactor,byNumber(17)),false,'with');
-if(!factorQuestion.includes('Retrouver les dimensions')||!factorQuestion.includes('>?</text>')||!factorQuestion.includes('>…</text>')) fail('L’aide de factorisation doit montrer les aires sans donner immédiatement les dimensions.');
+if(!factorQuestion.includes('Retrouver les dimensions')||!factorQuestion.includes('>?</text>')||!factorQuestion.includes('<th>&nbsp;</th>')||factorQuestion.includes('>…</text>')) fail('L’aide de factorisation doit montrer les aires et laisser les dimensions inconnues réellement vides.');
 
 const pythagorasInstance={
   module:{id:'dnb_24'},q:{n:7},scope:{a:3,b:4,c:5},answers:['4'],

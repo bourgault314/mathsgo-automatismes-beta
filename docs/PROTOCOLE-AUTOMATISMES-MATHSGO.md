@@ -283,7 +283,7 @@ réellement utile.
   remarquables en 3e. Le filtre DNB conserve uniquement les formes simples et
   classiques. Les aides utilisent `algebra.area-model` dans les deux sens et
   les corrections ajoutent une trace écrite. Le générateur passe en version
-  1.16.0 afin que les anciens liens ne changent pas silencieusement de
+  1.17.0 afin que les anciens liens ne changent pas silencieusement de
   sélection. Les décisions détaillées sont consignées dans
   [`DEVELOPPER-FACTORISER-AUTOMATISMES.md`](DEVELOPPER-FACTORISER-AUTOMATISMES.md).
 

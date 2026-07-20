@@ -40,25 +40,44 @@ L'obstacle doit être la structure algébrique, pas l'arithmétique.
 
 | Numéro | Tâche | Réponse | Aide |
 |---:|---|---|---|
-| 1-4 | développer une distributivité simple | saisie | modèle d'aire facultatif |
+| 1-4 | développer une distributivité simple | coefficients de `x` et de la constante | modèle d'aire facultatif |
 | 5 | choisir le bon développement | QCM | modèle d'aire facultatif |
-| 6-8 | factoriser au maximum par un entier ou par `x` | saisie | aire inverse facultative |
+| 6-8 | factoriser au maximum par un entier ou par `x` | cases directement dans la forme factorisée | aire inverse facultative |
 | 9 | choisir la bonne factorisation | QCM | aire inverse facultative |
-| 10 | exprimer l'aire développée d'un rectangle | saisie | modèle d'aire facultatif |
+| 10 | exprimer l'aire développée d'un rectangle | coefficients de `x` et de la constante | modèle d'aire facultatif |
 | 11 | reconnaître une somme ou un produit | QCM | aucune aide artificielle |
 | 12 | juger une égalité de distributivité | vrai/faux | modèle d'aire facultatif |
 | 13 | placer deux produits partiels | manipulation | modèle indispensable |
 | 14 | choisir le plus grand facteur commun | QCM | aire inverse facultative |
-| 15 | développer avec un facteur négatif | saisie | modèle d'aire facultatif |
-| 16 | développer puis réduire | saisie | modèle d'aire facultatif |
-| 17 | factoriser au maximum une différence | saisie | aire inverse facultative |
+| 15 | développer avec un facteur négatif | coefficients signés | modèle d'aire facultatif |
+| 16 | développer puis réduire | coefficients de `x` et de la constante | modèle d'aire facultatif |
+| 17 | factoriser au maximum une différence | cases dans la forme factorisée | aire inverse facultative |
 | 18 | reconstruire les dimensions à partir des aires | manipulation | modèle indispensable |
-| 19-21 | développer deux binômes | saisie | grille de quatre produits facultative |
+| 19-21 | développer deux binômes | coefficients de `x²`, `x` et de la constante | grille de quatre produits facultative |
 | 22 | placer les quatre produits partiels | manipulation | grille indispensable |
-| 23-24 | factoriser un facteur apparent | saisie | cours, sans dessin forcé |
+| 23-24 | factoriser un facteur apparent | quotient(s) dans une forme déjà structurée | cours, sans dessin forcé |
 | 25 | reconnaître une identité remarquable | QCM | cours contextuel |
-| 26 | développer le carré d'une somme ou différence | saisie | cours contextuel |
-| 27 | factoriser une différence de deux carrés | saisie | cours contextuel |
+| 26 | développer le carré d'une somme ou différence | coefficients de `x²`, `x` et de la constante | cours contextuel |
+| 27 | factoriser une différence de deux carrés | nombre à placer dans les deux facteurs conjugués | cours contextuel |
+
+## Réponse sur téléphone
+
+L'élève ne saisit jamais une expression complète comme `4(4x + 5)` sur un
+clavier linéaire. La forme mathématique est déjà affichée et les cases sont
+placées exactement là où les nombres doivent être écrits. Le clavier se limite
+aux dix chiffres et, seulement si la question l'exige, au signe moins. Les
+touches `x`, `x²`, parenthèses et opérations ne sont donc pas nécessaires.
+
+Sur téléphone, le modèle d'aire utilise une table responsive dédiée, presque
+sur toute la largeur de l'écran, avec des lignes de 70 px et une première
+colonne assez large pour les facteurs signés. Les trois manipulations utilisent
+la même grande table : toucher une carte puis une case remplit directement le
+bon produit ou la bonne dimension. La version projetée reste inchangée.
+
+La structure ne révèle pas le résultat : lorsqu'une expression de départ
+contient `x²`, les trois cases `x²`, `x` et constante restent visibles même si
+un coefficient final est nul. Les manipulations 13, 18 et 22 conservent leurs
+cartes à placer et les QCM ne déclenchent aucun clavier.
 
 ## Modèle d'aire
 
@@ -102,11 +121,17 @@ Chaque proposition fausse correspond à une erreur nommable :
   tort dans la parenthèse.
 
 Le QCM n'utilise ni réponse absurde ni valeur choisie seulement parce qu'elle
-est différente.
+est différente. Après validation, le message utilise le code du distracteur ou
+la première case erronée : oubli du second produit, mauvais facteur commun,
+quotient mal calculé, signe du double produit ou carré de la constante. Il ne
+se contente pas d'afficher « faux ».
 
 ## Cours et correction
 
-Le cours est contextuel. Il affiche seulement les cartes utiles à la question :
+Le cours est contextuel. Il commence par un pont numérique (`7 × 12`) pour la
+distributivité simple ou par le tableau de `22 × 12` pour les quatre produits.
+Il réaffiche ensuite le modèle d'aire complété avec les nombres de la question,
+puis seulement les cartes théoriques utiles :
 
 1. reconnaître somme et produit ;
 2. développer et calculer les produits partiels ;
@@ -117,9 +142,11 @@ Le cours est contextuel. Il affiche seulement les cartes utiles à la question :
 7. repérer un facteur apparent ;
 8. reconnaître les trois identités remarquables.
 
-Chaque correction conserve le dessin de la question quand il existe et ajoute
-une trace écrite intitulée « Correction expliquée » : opération reconnue,
-produits ou quotients intermédiaires, réduction éventuelle et résultat.
+Chaque correction conserve le dessin de la question et affiche immédiatement
+le résultat en grand. Une synthèse intitulée « Correction expliquée » reste
+lisible au tableau. Le bouton « Correction détaillée » ouvre le même dessin en
+grand avec l'opération reconnue, les produits ou quotients intermédiaires, la
+réduction éventuelle et le résultat.
 
 ## Revue visuelle
 

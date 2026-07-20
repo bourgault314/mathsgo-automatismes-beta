@@ -7,14 +7,15 @@
   function constant(value){return {coefficient:Number(value),power:0};}
   function variable(value=1){return {coefficient:Number(value),power:1};}
   function minus(value){return String(value).replaceAll('-', '−');}
-  function correctionBox(steps,explanation=''){
+  function correctionBox(steps,explanation='',visual=''){
     const rows=(steps||[]).map(([label,value])=>'<div class="expand-worked-row"><strong>'+label+'</strong><span>'+value+'</span></div>').join('');
-    return '<aside class="expand-worked-correction"><span class="expand-worked-icon" aria-hidden="true">✓</span><div><h3>Correction expliquée</h3>'+rows+(explanation?'<p>'+explanation+'</p>':'')+'</div></aside>';
+    const summary=steps&&steps.length?steps[steps.length-1][1]:'';
+    return '<aside class="expand-worked-correction"><span class="expand-worked-icon" aria-hidden="true">✓</span><div class="expand-worked-summary"><h3>Correction expliquée</h3><p>'+summary+'</p></div><button type="button" class="expand-correction-detail-button" onclick="openExpandCorrectionDetail(this)">Correction détaillée</button><template class="expand-correction-detail-template"><div class="expand-correction-detail-content">'+visual+'<div class="expand-correction-detail-steps">'+rows+(explanation?'<p>'+explanation+'</p>':'')+'</div></div></template></aside>';
   }
   function visualHtml(data,correction,mode,visualPlaceholder){
     if(!data)return '';
     if(mode==='without'||mode==='without-reveal')return visualPlaceholder(mode);
-    return component().render(data,correction);
+    return component().render({...data,phoneProminent:true},correction);
   }
   function mathExpression(expression,renderMathSegments){
     if(/<sup>|<sub>/.test(expression))return '<span class="math-display">'+expression+'</span>';
@@ -49,7 +50,7 @@
     else html+=visual;
     if(data.qcm)html+=qcmHtml(data.qcm,correction,renderMathSegments,escapeHtml,compactQcmClass);
     else if(!data.manipulation||correction)html+=answerLine(data,correction,renderMathSegments);
-    if(correction)html+=correctionBox(data.steps,data.explanation);
+    if(correction)html+=correctionBox(data.steps,data.explanation,visual);
     return html+'</div>';
   }
 
@@ -79,7 +80,7 @@
     const data=legacyData(instance);
     let html=helpers.renderGenericQuestion(instance,correction,'without');
     html=insertBeforeAnswer(html,visualHtml(data.model,correction,mode,helpers.visualPlaceholder));
-    if(correction)html+=correctionBox(data.steps,data.explanation);
+    if(correction)html+=correctionBox(data.steps,data.explanation,visualHtml(data.model,true,'with',helpers.visualPlaceholder));
     return '<div class="expand-factor-shell legacy-expand-factor">'+html+'</div>';
   }
 
