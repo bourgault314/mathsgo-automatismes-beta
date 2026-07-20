@@ -3104,32 +3104,40 @@ function evolutionBraceSvg(x1,x2,y,color,label,W){
   const span=Math.max(1,x2-x1),mid=(x1+x2)/2;
   const inset=Math.min(15,span*.22),gap=Math.min(11,span*.18);
   const labelX=Math.max(125,Math.min(W-125,mid));
-  return `<path d="M ${x1} ${y} Q ${x1} ${y+13} ${x1+inset} ${y+13} L ${mid-gap} ${y+13} Q ${mid-4} ${y+13} ${mid} ${y+22} Q ${mid+4} ${y+13} ${mid+gap} ${y+13} L ${x2-inset} ${y+13} Q ${x2} ${y+13} ${x2} ${y}" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><text x="${labelX}" y="${y+49}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="850" fill="${color}">${escapeHtml(label)}</text>`;
+  return `<path d="M ${x1} ${y} Q ${x1} ${y+13} ${x1+inset} ${y+13} L ${mid-gap} ${y+13} Q ${mid-4} ${y+13} ${mid} ${y+22} Q ${mid+4} ${y+13} ${mid+gap} ${y+13} L ${x2-inset} ${y+13} Q ${x2} ${y+13} ${x2} ${y}" fill="none" stroke="${color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><text x="${labelX}" y="${y+49}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="850" fill="${color}">${escapeHtml(label)}</text>`;
 }
 
 function evolutionBarSvg(data,correction=false){
   const increase=data.direction==='increase';
   const totalCells=increase?data.baseCells+data.deltaCells:data.baseCells;
   const compactCells=totalCells>13;
-  const W=compactCells?680:1120,x=compactCells?40:60,available=compactCells?600:900,topY=20,topH=68,bottomY=88,bottomH=68;
+  // La barre utile occupe la même proportion du cadre que le composant
+  // arithmetic.fraction-percent-bar : elle reste donc large et lisible, sans
+  // réserve vide artificielle sur la droite du SVG.
+  const W=compactCells?660:980,x=compactCells?30:40,available=compactCells?600:900;
+  // Les deux rangées gardent la même hauteur visuelle que le gabarit dnb_04
+  // lorsque les barres sont ramenées à une largeur utile commune.
+  // Le SVG compact est moins large : sa hauteur interne est réduite dans la
+  // même proportion pour conserver exactement la même épaisseur à l'écran.
+  const barH=compactCells?84:124;
+  const topY=18,topH=barH,bottomY=topY+topH,bottomH=barH;
   const baseW=increase?available*data.baseCells/totalCells:available;
   const bottomW=increase?available:baseW;
   const cellW=baseW/data.baseCells;
   const border='#18223d';
-  const increaseFill='#f9b35e';
-  // On conserve le code couleur déjà employé dans les repères de pourcentage :
-  // 50 % en jaune, 25 % en vert, 20 % en bleu et 10 % en orange.
-  const decreaseFill=data.percent===50?'#ffe36d':(data.percent===25?'#91d88e':(data.percent===10?'#f6b36a':'#9ed6f4'));
-  const mainFill=increase?increaseFill:decreaseFill;
-  const neutralFill=increase?'#fff7ee':(data.percent===10?'#fff0df':'#fffdf3');
-  const decreaseTopFill=data.percent===50?'#fff9dc':(data.percent===25?'#eef9ec':(data.percent===10?'#fff0df':'#eef8fe'));
-  const braceY=164;
+  // La couleur décrit la valeur d'une case, et non le sens de l'évolution :
+  // deux découpages identiques gardent ainsi la même couleur pédagogique.
+  const cellPercent=100/data.baseCells;
+  const mainFill=cellPercent===50?'#ffe36d':(cellPercent===25?'#91d88e':(cellPercent===10?'#f6b36a':'#9ed6f4'));
+  const neutralFill=cellPercent===10?'#fff0df':'#fffdf3';
+  const familyTopFill=cellPercent===50?'#fff9dc':(cellPercent===25?'#eef9ec':(cellPercent===10?'#fff0df':'#eef8fe'));
+  const braceY=bottomY+bottomH+8;
   // La hauteur est réservée dès l'énoncé : le tableau ne change ainsi jamais
   // d'échelle lorsque l'accolade et la correction apparaissent.
-  const H=238;
-  const text=(cx,cy,value,size=22,weight=800,fill=border)=>`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="${fill}">${escapeHtml(value)}</text>`;
+  const H=braceY+74;
+  const text=(cx,cy,value,size=28,weight=800,fill=border)=>`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,Helvetica,sans-serif" font-size="${size}" font-weight="${weight}" fill="${fill}">${escapeHtml(value)}</text>`;
   let body='<defs><pattern id="evolution-hatch" patternUnits="userSpaceOnUse" width="18" height="18" patternTransform="rotate(45)"><rect width="18" height="18" fill="#fff8fa"/><line x1="0" y1="0" x2="0" y2="18" stroke="#ffb8c6" stroke-width="4"/></pattern></defs>';
-  body+=`<rect x="${x}" y="${topY}" width="${baseW}" height="${topH}" fill="${increase?'#fff6eb':decreaseTopFill}"/>`;
+  body+=`<rect x="${x}" y="${topY}" width="${baseW}" height="${topH}" fill="${familyTopFill}"/>`;
 
   const removedStart=data.baseCells-data.deltaCells;
   for(let i=0;i<totalCells;i++){
@@ -3145,15 +3153,15 @@ function evolutionBarSvg(data,correction=false){
   for(let i=1;i<totalCells;i++) body+=`<line x1="${x+i*cellW}" y1="${bottomY}" x2="${x+i*cellW}" y2="${bottomY+bottomH}" stroke="${border}" stroke-width="2.1"/>`;
 
   const topLabel=data.normalized?'100 %':fmt(data.initial);
-  body+=text(x+baseW/2,topY+topH/2,topLabel,data.normalized?22:25,850);
-  const cellFont=Math.max(11,Math.min(23,cellW*.34));
+  body+=text(x+baseW/2,topY+topH/2,topLabel,data.normalized?37:36,850);
+  const cellFont=Math.max(14,Math.min(30,cellW*.44));
   for(let i=0;i<totalCells;i++){
     // Pour 5 %, vingt subdivisions doivent rester visibles ensemble sur un
     // téléphone. Une seule valeur de part suffit alors dans la correction.
     const cellLabel=compactCells
       ?(correction&&i===0?fmt(data.normalized?100/data.baseCells:data.cellValue):'')
       :(data.normalized?(fmt(100/data.baseCells)+' %'):(correction?fmt(data.cellValue):'...'));
-    body+=text(x+(i+.5)*cellW,bottomY+bottomH/2,cellLabel,data.normalized?Math.max(13,cellFont):(correction?cellFont:Math.max(13,cellFont)),800);
+    body+=text(x+(i+.5)*cellW,bottomY+bottomH/2,cellLabel,data.normalized?Math.max(17,cellFont):(correction?cellFont:Math.max(17,cellFont)),800);
   }
 
   if(correction||data.braceMode==='coefficient'){
@@ -3178,12 +3186,12 @@ function evolutionBarSvg(data,correction=false){
     if(coefficientCalculation){
       const resultingPercent=increase?100+data.percent:100-data.percent;
       const center=Math.max(125,Math.min(W-125,(x1+x2)/2));
-      const fractionCenter=center+15,numberY=199,denominatorY=228;
-      body+=`<text x="${center-92}" y="214" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="850" fill="${color}">${escapeHtml(fmt(resultingPercent))} %</text>`;
-      body+=`<text x="${fractionCenter}" y="${numberY}" text-anchor="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="21" font-weight="750" fill="${color}">${escapeHtml(fmt(resultingPercent))}</text>`;
-      body+=`<line x1="${fractionCenter-27}" y1="205" x2="${fractionCenter+27}" y2="205" stroke="${color}" stroke-width="2.2"/>`;
-      body+=`<text x="${fractionCenter}" y="${denominatorY}" text-anchor="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="21" font-weight="750" fill="${color}">100</text>`;
-      body+=`<text x="${center+55}" y="214" text-anchor="start" dominant-baseline="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="23" font-weight="750" fill="${color}">= ${escapeHtml(fmt(data.newTotal))}</text>`;
+      const fractionCenter=center+15,numberY=braceY+35,lineY=braceY+41,calculationY=braceY+50,denominatorY=braceY+64;
+      body+=`<text x="${center-92}" y="${calculationY}" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="850" fill="${color}">${escapeHtml(fmt(resultingPercent))} %</text>`;
+      body+=`<text x="${fractionCenter}" y="${numberY}" text-anchor="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="27" font-weight="750" fill="${color}">${escapeHtml(fmt(resultingPercent))}</text>`;
+      body+=`<line x1="${fractionCenter-27}" y1="${lineY}" x2="${fractionCenter+27}" y2="${lineY}" stroke="${color}" stroke-width="2.2"/>`;
+      body+=`<text x="${fractionCenter}" y="${denominatorY}" text-anchor="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="27" font-weight="750" fill="${color}">100</text>`;
+      body+=`<text x="${center+55}" y="${calculationY}" text-anchor="start" dominant-baseline="middle" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-size="29" font-weight="750" fill="${color}">= ${escapeHtml(fmt(data.newTotal))}</text>`;
     }
   }
   return `<div class="evolution-help${compactCells?' evolution-help-compact':''}"><svg class="evolution-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Schéma en barres d’une évolution en pourcentage">${body}</svg></div>`;

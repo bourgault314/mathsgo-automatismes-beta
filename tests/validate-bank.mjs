@@ -99,6 +99,7 @@ globalThis.__makeInstance = makeInstance;
 globalThis.__makeGenericInstance = makeGenericInstance;
 globalThis.__renderQuestion = renderQuestion;
 globalThis.__renderGenericQuestion = renderGenericQuestion;
+globalThis.__evolutionBarSvg = evolutionBarSvg;
 globalThis.__setSeed = setSeed;
 globalThis.__beginQuizBank = beginQuizBank;
 globalThis.__drawFromQuestionDeck = drawFromQuestionDeck;
@@ -172,6 +173,27 @@ for(const number of [1,2,3,4,8,9]){
   const rendered=context.__renderQuestion(instance,false,'with');
   if(!rendered.includes('volume-visual')||!rendered.includes('solid-svg--measured')) fail(`Le volume ${number} doit afficher un solide coté avec le traceur commun.`);
 }
+
+const evolutionRegular=context.__evolutionBarSvg({
+  direction:'decrease',percent:25,initial:80,newTotal:60,amount:20,
+  normalized:false,baseCells:4,deltaCells:1,cellValue:20,braceMode:'remainder'
+},false);
+const evolutionRegularCorrection=context.__evolutionBarSvg({
+  direction:'decrease',percent:25,initial:80,newTotal:60,amount:20,
+  normalized:false,baseCells:4,deltaCells:1,cellValue:20,braceMode:'remainder'
+},true);
+if(!evolutionRegular.includes('viewBox="0 0 980 348"')||!evolutionRegular.includes('x="40" y="142" width="900" height="124"')) fail('La barre d’évolution courante doit occuper toute la largeur utile de son cadre avec deux rangées hautes.');
+if(!evolutionRegularCorrection.includes('viewBox="0 0 980 348"')||!evolutionRegularCorrection.includes('Reste = 60')) fail('La correction d’évolution doit conserver le même cadre large et haut avec son accolade.');
+const evolutionCompact=context.__evolutionBarSvg({
+  direction:'increase',percent:5,initial:200,newTotal:210,amount:10,
+  normalized:false,baseCells:20,deltaCells:1,cellValue:10,braceMode:'newTotal'
+},false);
+if(!evolutionCompact.includes('viewBox="0 0 660 268"')||!evolutionCompact.includes('x="30" y="102" width="600" height="84"')) fail('La barre d’évolution à vingt subdivisions doit garder la même hauteur apparente sans déborder sur téléphone.');
+const evolutionCompactDecrease=context.__evolutionBarSvg({
+  direction:'decrease',percent:15,initial:100,newTotal:85,amount:15,
+  normalized:true,baseCells:20,deltaCells:3,cellValue:5,braceMode:'coefficient'
+},false);
+if(!evolutionCompact.includes('#9ed6f4')||!evolutionCompactDecrease.includes('#9ed6f4')) fail('Deux barres découpées en parts de 5 % doivent conserver la même couleur, quel que soit le sens de l’évolution.');
 
 const integerRelativeModule=JSON.parse(context.__bankSnapshot).find(module=>module.id==='dnb_38');
 if(!integerRelativeModule?.level_tags?.includes('DNB')) fail('L’addition d’entiers relatifs doit rester accessible dans le filtre DNB.');
