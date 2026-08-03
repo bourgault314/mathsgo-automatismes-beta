@@ -1,5 +1,12 @@
 # Automatismes maths&go — bêta
 
+> [!IMPORTANT]
+> **Dépôt figé et application retirée le 3 août 2026.**
+> Ne plus utiliser ce dépôt pour les développements d’Automatismes.
+> La V1 maintenue se trouve dans `bourgault314/maths/auto/` et la nouvelle V2
+> dans `bourgault314/maths/automatismes-v2/`. Le code ci-dessous est conservé
+> uniquement comme historique récupérable.
+
 Ce dépôt est l’espace permanent de développement et de test d’Automatismes
 maths&go. La version publique stable reste dans `bourgault314/maths`, au chemin
 `auto/`.
